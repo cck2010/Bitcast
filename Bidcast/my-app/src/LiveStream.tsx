@@ -35,7 +35,7 @@ function LiveStream() {
     }
 
     useEffect(() => {
-        signal = new IonSFUJSONRPCSignal("ws://192.168.59.76:7000/ws");
+        signal = new IonSFUJSONRPCSignal("ws://localhost:7000/ws");
         client = new Client(signal, config);
         signal.onopen = () => {
             if (client == null) {
