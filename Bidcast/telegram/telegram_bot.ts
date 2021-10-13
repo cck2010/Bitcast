@@ -21,6 +21,10 @@ bot.help((ctx: Context) => {
 bot.hears(/^hi*/i, (ctx) => {
     let query = ctx.message.text.trim();
     query = query.split("").slice("hi".split("").length).join("");
+    if (query == "") {
+        ctx.reply("hi");
+        return;
+    }
     ctx.reply(query.trim());
 });
 
@@ -60,6 +64,8 @@ bot.on("inline_query", (ctx) => {
     // Using context shortcut
     ctx.answerInlineQuery(result);
 });
+
+// bot.sendMessage("@cto56", "testing");
 
 bot.catch((err) => {
     console.log(err);
