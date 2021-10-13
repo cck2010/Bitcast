@@ -18,6 +18,11 @@ function LiveStream() {
             {
                 urls: "stun:stun.l.google.com:19302",
             },
+            {
+                urls: "turn:turn.ctosan.xyz:3478",
+                username: "hello",
+                credential: "world",
+            },
         ],
         codec: "h264",
     };
@@ -103,9 +108,10 @@ function LiveStream() {
                     pubVideo.current.autoplay = true;
                     pubVideo.current.muted = false;
                     localStream = media;
-                    console.log(client);
+                    console.log(client.publish);
 
                     client.publish(media);
+                    console.log("finish");
                 })
                 .catch(console.error);
         }
