@@ -103,9 +103,10 @@ function LiveStream() {
                     pubVideo.current.autoplay = true;
                     pubVideo.current.muted = false;
                     localStream = media;
-                    console.log(client);
+                    console.log(client.publish);
 
                     client.publish(media);
+                    console.log("finish");
                 })
                 .catch(console.error);
         }

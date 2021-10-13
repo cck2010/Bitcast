@@ -45,9 +45,9 @@ portrange = [5000, 5200]
 # [[webrtc.iceserver]]
 # urls = ["stun:stun.stunprotocol.org:3478"]
 [[webrtc.iceserver]]
-urls = ["turn:turn.awsome.org:3478"]
-username = "awsome"
-credential = "awsome"
+urls = ["turn:turn.ctosan.xyz:3478"]
+username = "hello"
+credential = "world"
 
 # sdp semantics:
 # "unified-plan"
