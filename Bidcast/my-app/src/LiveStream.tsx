@@ -18,6 +18,11 @@ function LiveStream() {
             {
                 urls: "stun:stun.l.google.com:19302",
             },
+            {
+                urls: "turn:turn.ctosan.xyz:3478",
+                username: "hello",
+                credential: "world",
+            },
         ],
         codec: "h264",
     };

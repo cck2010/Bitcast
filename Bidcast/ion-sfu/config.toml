@@ -44,10 +44,10 @@ portrange = [5000, 5200]
 # if sfu behind nat, set iceserver
 # [[webrtc.iceserver]]
 # urls = ["stun:stun.stunprotocol.org:3478"]
-[[webrtc.iceserver]]
-urls = ["turn:turn.ctosan.xyz:3478"]
-username = "hello"
-credential = "world"
+# [[webrtc.iceserver]]
+# urls = ["turn:turn.ctosan.xyz:3478"]
+# username = "hello"
+# credential = "world"
 
 # sdp semantics:
 # "unified-plan"
