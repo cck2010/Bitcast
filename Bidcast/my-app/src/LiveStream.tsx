@@ -35,7 +35,8 @@ function LiveStream() {
     }
 
     useEffect(() => {
-        signal = new IonSFUJSONRPCSignal("ws://localhost:7000/ws");
+        // signal = new IonSFUJSONRPCSignal("ws://localhost:7000/ws");
+        signal = new IonSFUJSONRPCSignal("ws://54.251.68.107/ws");
         client = new Client(signal, config);
         signal.onopen = () => {
             if (client == null) {
@@ -55,10 +56,6 @@ function LiveStream() {
                     subVideo.current.controls = true;
                     subVideo.current.autoplay = true;
                     subVideo.current.muted = false;
-
-                    if (track.kind === "video") {
-                        stream.preferLayer("high");
-                    }
 
                     stream.onremovetrack = () => {
                         if (subVideo.current === null) {
@@ -106,6 +103,8 @@ function LiveStream() {
                     pubVideo.current.autoplay = true;
                     pubVideo.current.muted = false;
                     localStream = media;
+                    console.log(client);
+
                     client.publish(media);
                 })
                 .catch(console.error);
