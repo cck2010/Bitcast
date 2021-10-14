@@ -1,10 +1,9 @@
 import React, { useEffect, useRef } from "react";
-import "./LiveStream.scss";
 import { Client, LocalStream } from "ion-sdk-js";
 import { IonSFUJSONRPCSignal } from "ion-sdk-js/lib/signal/json-rpc-impl";
 import { Configuration } from "ion-sdk-js/lib/client.d";
 
-function LiveStream() {
+function LiveStreamWindow() {
     const pubVideo = useRef<HTMLVideoElement>(null);
     const subVideo = useRef<HTMLVideoElement>(null);
 
@@ -40,7 +39,6 @@ function LiveStream() {
     }
 
     useEffect(() => {
-        // signal = new IonSFUJSONRPCSignal("ws://localhost:7000/ws");
         signal = new IonSFUJSONRPCSignal("ws://54.251.68.107/ws");
         client = new Client(signal, config);
         signal.onopen = () => {
@@ -123,7 +121,7 @@ function LiveStream() {
     };
 
     return (
-        <div className="LiveStream">
+        <div className="LiveStreamWindow">
             <div className="flex flex-col h-screen relative">
                 <header className="flex h-16 justify-center items-center text-xl bg-black text-white">
                     {isPub ? (
@@ -172,4 +170,4 @@ function LiveStream() {
     );
 }
 
-export default LiveStream;
+export default LiveStreamWindow;

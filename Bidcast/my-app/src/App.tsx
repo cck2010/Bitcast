@@ -1,6 +1,8 @@
 import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "@fortawesome/fontawesome-free/css/all.css";
 import "./App.scss";
-import LiveStream from "./LiveStream";
+import LiveStream from "./pages/LiveStream/LiveStream";
 
 function App() {
     return (
