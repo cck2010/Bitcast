@@ -7,24 +7,47 @@
 .LiveStreamControlPanel {
     max-height: 200px;
     overflow: hidden;
+    .carousel > div {
+        max-width: 100%;
+    }
     .carousel {
         position: relative;
-        .carousel_img {
+        .carousel_card {
             max-height: 200px;
-        }
+            display: flex !important;
+            align-items: center;
+            justify-content: space-between;
+            .carousel_img {
+                max-height: 100%;
+                max-width: 50%;
+            }
 
-        .sold {
-            filter: contrast(20%);
-        }
+            .sold {
+                filter: contrast(20%);
+            }
 
-        .selected {
-            border: solid 3px gray;
-            box-shadow: 5px 5px 20px -4px rgba(0, 0, 0, 0.84);
+            .selected {
+                border: solid 3px gray;
+                box-shadow: 5px 5px 20px -4px rgba(0, 0, 0, 0.84);
+            }
+
+            .product_info {
+                max-height: 100%;
+                width: 50%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                padding: 0 40px 0 20px;
+                .product_name,
+                .product_price {
+                    margin: 10px 0;
+                }
+            }
         }
 
         .tns-slider {
             display: flex;
-            align-items: center;
         }
 
         .carousel_btn {
@@ -35,6 +58,7 @@
             top: 0;
             bottom: 0;
             opacity: 50%;
+            user-select: none;
         }
 
         .carousel_btn_left {
