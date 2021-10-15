@@ -102,6 +102,9 @@ $largeFontSize: 1.5em;
     .LiveStreamChatRoomMainBody {
         border: 1px solid #dcdcdc;
         height: 658px;
+        .rcs-inner-handle {
+            background-color: #717171;
+        }
         .head {
             margin: 0 0 10px 0;
             font-size: $largeFontSize;
@@ -109,7 +112,7 @@ $largeFontSize: 1.5em;
 
         .messages {
             height: 545px;
-            overflow-y: scroll;
+            // overflow-y: scroll;
         }
 
         .footer {

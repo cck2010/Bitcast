@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import CustomScroll from "react-custom-scroll";
 
 const generateMessage = () => {
     const words = [
@@ -41,39 +42,10 @@ const generateMessage = () => {
     return text.join(" ");
 };
 
-function LiveStreamChatRoom() {
-    const messageEl = useRef<HTMLDivElement>(null);
+function LiveStreamChatRoom(props: {
+    liveStreamRef: React.RefObject<HTMLDivElement>;
+}) {
     const [messages, setMessages] = useState<string[]>([]);
-
-    const [size, setSize] = useState<number>(0);
-    const ref = useRef<HTMLDivElement>(null);
-
-    const dragHandler = useCallback(() => {
-        function onMouseMove(e: MouseEvent) {
-            setSize((currentSize) => currentSize + e.movementY);
-        }
-        function onMouseUp() {
-            if (ref && ref.current) {
-                ref.current.removeEventListener("mousemove", onMouseMove);
-                ref.current.removeEventListener("mouseup", onMouseUp);
-            }
-        }
-        if (ref && ref.current) {
-            ref.current.addEventListener("mousemove", onMouseMove);
-            ref.current.addEventListener("mouseup", onMouseUp);
-        }
-    }, []);
-
-    useEffect(() => {
-        if (messageEl && messageEl.current) {
-            messageEl.current.addEventListener("DOMNodeInserted", (event) => {
-                const { currentTarget: target } = event;
-                // console.log(target);
-
-                // target.scroll({ top: target.scrollHeight, behavior: 'smooth' });
-            });
-        }
-    }, []);
 
     useEffect(() => {
         const generateDummyMessage = () => {
@@ -84,6 +56,32 @@ function LiveStreamChatRoom() {
         generateDummyMessage();
     }, []);
 
+    //drag function
+    const [size, setSize] = useState<number>(0);
+    const dragRef = useRef<HTMLDivElement>(null);
+
+    const dragHandler = useCallback(() => {
+        function onMouseMove(e: MouseEvent) {
+            setSize((currentSize) => currentSize + e.movementY);
+        }
+        function onMouseUp() {
+            props.liveStreamRef?.current?.removeEventListener(
+                "mousemove",
+                onMouseMove
+            );
+            props.liveStreamRef?.current?.removeEventListener(
+                "mouseup",
+                onMouseUp
+            );
+        }
+        props.liveStreamRef?.current?.addEventListener(
+            "mousemove",
+            onMouseMove
+        );
+        props.liveStreamRef?.current?.addEventListener("mouseup", onMouseUp);
+    }, [props.liveStreamRef]);
+    //drag function
+
     return (
         <div className="LiveStreamChatRoom">
             <div
@@ -92,20 +90,23 @@ function LiveStreamChatRoom() {
             >
                 <div className="chat">
                     <div className="head text-center">聊天室</div>
-                    <div
-                        className="messages"
-                        ref={messageEl}
-                        style={{ height: `${545 + size}px` }}
-                    >
-                        {messages.map((m, i) => (
-                            <div
-                                key={i}
-                                className={`msg${i % 2 !== 0 ? " dark" : ""}`}
-                            >
-                                {m}
-                            </div>
-                        ))}
-                    </div>
+                    <CustomScroll keepAtBottom={true}>
+                        <div
+                            className="messages"
+                            style={{ height: `${545 + size}px` }}
+                        >
+                            {messages.map((m, i) => (
+                                <div
+                                    key={i}
+                                    className={`msg${
+                                        i % 2 !== 0 ? " dark" : ""
+                                    } pe-3`}
+                                >
+                                    {m}
+                                </div>
+                            ))}
+                        </div>
+                    </CustomScroll>
                     <div className="footer">
                         <input
                             className="w-100"
@@ -117,7 +118,7 @@ function LiveStreamChatRoom() {
             </div>
             <div
                 className="dragBtn text-center"
-                ref={ref}
+                ref={dragRef}
                 onMouseDown={dragHandler}
             >
                 <i className="fas fa-arrows-alt-v"></i>{" "}
