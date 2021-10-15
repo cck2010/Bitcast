@@ -53,6 +53,13 @@ function LiveStreamWindow() {
             }
             client.join(`test room ${room}`, "");
         };
+        let timerId: NodeJS.Timeout = setInterval(() => {}, 10000);
+        setTimeout(() => {
+            timerId = setInterval(
+                () => signal != null && signal.notify("method", "params"),
+                10000
+            );
+        }, 10000);
 
         if (!isPub) {
             client.ontrack = (track, stream) => {
@@ -75,6 +82,8 @@ function LiveStreamWindow() {
                 };
             };
         }
+
+        return clearInterval(timerId);
     }, []);
 
     const start = (event: boolean): void => {

@@ -1,77 +1,91 @@
 $fontSize: 1.5em;
 
-.LiveStreamControlPanel {
-    max-height: 200px;
-    overflow: hidden;
-    cursor: pointer;
-    .carousel > div {
-        max-width: 100%;
-    }
-    .carousel {
-        .carousel_card {
-            background-color: #f5f5f5;
-            max-height: 200px;
-            .carousel_img {
-                max-width: 50%;
-            }
+.upper_part {
+    max-height: 80vh;
+    .LiveStreamControlPanel {
+        max-height: 200px;
+        overflow: hidden;
+        cursor: pointer;
+        .carousel > div {
+            max-width: 100%;
+        }
+        .carousel {
+            .carousel_card {
+                background-color: #f5f5f5;
+                max-height: 200px;
+                .carousel_img {
+                    max-width: 50%;
+                }
 
-            .sold {
-                filter: contrast(20%);
-            }
+                .sold {
+                    filter: contrast(20%);
+                }
 
-            .selected {
-                border: solid 3px gray;
-                box-shadow: 5px 5px 20px -4px rgba(0, 0, 0, 0.84);
-            }
+                .selected {
+                    border: solid 3px gray;
+                    box-shadow: 5px 5px 20px -4px rgba(0, 0, 0, 0.84);
+                }
 
-            .product_info {
-                padding: 0 40px 0 20px;
-                .product_name,
-                .product_price {
-                    margin: 10px 0;
+                .product_info {
+                    padding: 0 40px 0 20px;
+                    .product_name,
+                    .product_price {
+                        margin: 10px 0;
+                    }
                 }
             }
+
+            .tns-slider {
+                display: flex;
+            }
+
+            .carousel_btn {
+                position: absolute;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                top: 0;
+                bottom: 0;
+                opacity: 50%;
+                user-select: none;
+            }
+            .carousel_btn:focus {
+                box-shadow: none;
+            }
+
+            .carousel_btn_left {
+                left: 10px;
+            }
+
+            .carousel_btn_right {
+                right: 10px;
+            }
+        }
+    }
+
+    .LiveStreamBiddingInfoSeller {
+        background-color: #fffafa;
+        .current_price,
+        .remaining_time {
+            font-size: $fontSize;
         }
 
-        .tns-slider {
-            display: flex;
-        }
-
-        .carousel_btn {
-            position: absolute;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            top: 0;
-            bottom: 0;
-            opacity: 50%;
+        .unavailable_btn {
+            background-color: #708090 !important;
+            border-color: #708090;
+            cursor: default;
             user-select: none;
         }
-
-        .carousel_btn_left {
-            left: 10px;
-        }
-
-        .carousel_btn_right {
-            right: 10px;
+        .unavailable_btn:focus {
+            box-shadow: none;
         }
     }
-}
 
-.LiveStreamBiddingInfoSeller {
-    background-color: #fffafa;
-    .current_price,
-    .remaining_time {
-        font-size: $fontSize;
-    }
-
-    .unavailable_btn {
-        background-color: #708090 !important;
-        border-color: #708090;
-        cursor: default;
-        user-select: none;
-    }
-    .unavailable_btn:focus {
-        box-shadow: none;
+    .LiveStreamChatRoom {
+        border: 1px solid #dcdcdc;
+        .messages {
+            max-height: 80%;
+            overflow-y: scroll;
+        }
     }
 }
