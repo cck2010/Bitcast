@@ -56,7 +56,7 @@ function LiveStreamControlPanel() {
     return (
         <div className="LiveStreamControlPanel">
             <div className="row">
-                <div className="col-6 d-flex d-col carousel">
+                <div className="col-6 d-flex d-col carousel position-relative">
                     <Carousel
                         swipeAngle={false}
                         items={1}
@@ -90,24 +90,28 @@ function LiveStreamControlPanel() {
                         {products.map((product) => (
                             <div
                                 key={product.id}
-                                className={`carousel_card`}
+                                className={`carousel_card d-flex align-items-center justify-content-between`}
                                 aria-label={`card${product.id}`}
                             >
                                 <img
                                     key={product.id}
                                     className={`carousel_img ${
                                         product.isSold ? "sold " : ""
-                                    } ${product.isSelected ? "selected" : ""}`}
+                                    } ${
+                                        product.isSelected ? "selected" : ""
+                                    } mh-100`}
                                     src={product.src}
                                     alt={`pic${product.id}`}
                                 />
-                                <div className="product_info">
+                                <div className="product_info mh-100 w-50 d-flex flex-column justify-content-center align-items-start">
                                     <div className="product_name">
+                                        <i className="fas fa-gavel"></i>{" "}
                                         競價項目:
                                         <br />
                                         {product.name}
                                     </div>
                                     <div className="product_price">
+                                        <i className="fas fa-money-bill-wave"></i>{" "}
                                         起標價:
                                         <br />${product.price}
                                     </div>

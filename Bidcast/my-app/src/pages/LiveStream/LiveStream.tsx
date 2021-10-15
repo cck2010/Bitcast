@@ -7,13 +7,13 @@ import LiveStreamRecommend from "../../component/LiveStream/LiveStreamRecommend"
 
 function LiveStream() {
     return (
-        <div className="LiveStream">
+        <div className="LiveStream m-3">
             <div className="row">
-                <div className="col-9">
+                <div className="col-8">
                     <LiveStreamWindow></LiveStreamWindow>
                     <LiveStreamControlPanel></LiveStreamControlPanel>
                 </div>
-                <div className="col-3">
+                <div className="col-4">
                     <LiveStreamChatRoom></LiveStreamChatRoom>
                 </div>
             </div>

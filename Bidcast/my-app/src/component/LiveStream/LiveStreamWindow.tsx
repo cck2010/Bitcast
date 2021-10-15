@@ -159,14 +159,14 @@ function LiveStreamWindow() {
                 {isPub ? (
                     <video
                         id="pubVideo"
-                        className="bg-black"
+                        className="bg-black w-100 h-100"
                         controls
                         ref={pubVideo}
                     ></video>
                 ) : (
                     <video
-                        id="subVideo"
-                        className="bg-black"
+                        id="subVideo "
+                        className="bg-black w-100 h-100"
                         controls
                         ref={subVideo}
                     ></video>
