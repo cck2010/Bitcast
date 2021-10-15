@@ -1,60 +1,63 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import CustomScroll from "react-custom-scroll";
 
-const generateMessage = () => {
-    const words = [
-        "The sky",
-        "above",
-        "the port",
-        "was",
-        "the color of television",
-        "tuned",
-        "to",
-        "a dead channel",
-        ".",
-        "All",
-        "this happened",
-        "more or less",
-        ".",
-        "I",
-        "had",
-        "the story",
-        "bit by bit",
-        "from various people",
-        "and",
-        "as generally",
-        "happens",
-        "in such cases",
-        "each time",
-        "it",
-        "was",
-        "a different story",
-        ".",
-        "It",
-        "was",
-        "a pleasure",
-        "to",
-        "burn",
-    ];
-    const text = [];
-    let x = 7;
-    while (--x) text.push(words[Math.floor(Math.random() * words.length)]);
-    return text.join(" ");
-};
+// const generateMessage = () => {
+//     const words = [
+//         "The sky",
+//         "above",
+//         "the port",
+//         "was",
+//         "the color of television",
+//         "tuned",
+//         "to",
+//         "a dead channel",
+//         ".",
+//         "All",
+//         "this happened",
+//         "more or less",
+//         ".",
+//         "I",
+//         "had",
+//         "the story",
+//         "bit by bit",
+//         "from various people",
+//         "and",
+//         "as generally",
+//         "happens",
+//         "in such cases",
+//         "each time",
+//         "it",
+//         "was",
+//         "a different story",
+//         ".",
+//         "It",
+//         "was",
+//         "a pleasure",
+//         "to",
+//         "burn",
+//     ];
+//     const text = [];
+//     let x = 7;
+//     while (--x) text.push(words[Math.floor(Math.random() * words.length)]);
+//     return text.join(" ");
+// };
 
-function LiveStreamChatRoom(props: {
+interface LiveStreamChatRoomProps {
     liveStreamRef: React.RefObject<HTMLDivElement>;
-}) {
-    const [messages, setMessages] = useState<string[]>([]);
+}
 
-    useEffect(() => {
-        const generateDummyMessage = () => {
-            setInterval(() => {
-                setMessages((prevMsg) => [...prevMsg, generateMessage()]);
-            }, 2000);
-        };
-        generateDummyMessage();
-    }, []);
+function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
+    const [messages, setMessages] = useState<string[]>([]);
+    const [inputMessage, setInputMessage] = useState<string>("");
+
+    // useEffect(() => {
+    //     const generateDummyMessage = () => {
+    //         setInterval(() => {
+    //             setMessages((prevMsg) => [...prevMsg, generateMessage()]);
+    //         }, 2000);
+    //     };
+    //     generateDummyMessage();
+    // }, []);
 
     //drag function
     const [size, setSize] = useState<number>(0);
@@ -93,7 +96,7 @@ function LiveStreamChatRoom(props: {
                     <CustomScroll keepAtBottom={true}>
                         <div
                             className="messages"
-                            style={{ height: `${545 + size}px` }}
+                            style={{ height: `${535 + size}px` }}
                         >
                             {messages.map((m, i) => (
                                 <div
@@ -107,12 +110,23 @@ function LiveStreamChatRoom(props: {
                             ))}
                         </div>
                     </CustomScroll>
-                    <div className="footer">
+                    <div className="footer d-flex mb-3">
                         <input
-                            className="w-100"
+                            className="inputBox w-100"
                             type="text"
                             placeholder="請在此輸入留言..."
+                            onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>
+                            ) => setInputMessage(e.target.value)}
                         />
+                        <button
+                            className="sendBtn"
+                            onClick={() => {
+                                setMessages([...messages, inputMessage]);
+                            }}
+                        >
+                            <i className="fas fa-paper-plane"></i>
+                        </button>
                     </div>
                 </div>
             </div>

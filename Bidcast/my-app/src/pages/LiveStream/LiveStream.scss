@@ -101,7 +101,6 @@ $largeFontSize: 1.5em;
 .LiveStreamChatRoom {
     .LiveStreamChatRoomMainBody {
         border: 1px solid #dcdcdc;
-        height: 658px;
         .rcs-inner-handle {
             background-color: #717171;
         }
@@ -110,13 +109,16 @@ $largeFontSize: 1.5em;
             font-size: $largeFontSize;
         }
 
-        .messages {
-            height: 545px;
-            // overflow-y: scroll;
-        }
-
         .footer {
             margin: 10px 0 0 0;
+            .inputBox {
+                border: 1px solid #dcdcdc;
+            }
+            .sendBtn {
+                background-color: transparent;
+                border: none;
+                font-size: $largeFontSize;
+            }
         }
     }
     .dragBtn {
