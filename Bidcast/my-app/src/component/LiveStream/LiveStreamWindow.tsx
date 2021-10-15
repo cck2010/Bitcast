@@ -17,8 +17,13 @@ function LiveStreamWindow() {
             {
                 urls: "stun:stun.l.google.com:19302",
             },
+            // {
+            //     urls: "turn:turn.ctosan.xyz:3478",
+            //     username: "hello",
+            //     credential: "world",
+            // },
             {
-                urls: "turn:turn.ctosan.xyz:3478",
+                urls: "turn:turn.bidcast.online:3478",
                 username: "hello",
                 credential: "world",
             },
@@ -39,7 +44,8 @@ function LiveStreamWindow() {
     }
 
     useEffect(() => {
-        signal = new IonSFUJSONRPCSignal("ws://54.251.68.107/ws");
+        // signal = new IonSFUJSONRPCSignal("ws://54.251.68.107/ws");
+        signal = new IonSFUJSONRPCSignal("ws://54.251.210.79/ws");
         client = new Client(signal, config);
         signal.onopen = () => {
             if (client == null) {
