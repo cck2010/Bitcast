@@ -18,7 +18,7 @@ function LiveStreamBiddingInfo() {
         } else {
             setIsDisabled(false);
         }
-    }, [inputPrice, currentPrice]);
+    }, [inputPrice, currentPrice, increment]);
 
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded p-3">
