@@ -30,12 +30,10 @@ setSocketIO(io);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors());
-app.use((req, res, next) => {
-    // console.log(req.path);
-    // console.log(req.method);
-    next();
-});
+app.use(cors({
+    origin: [process.env.FRONTEND_URL!]
+}))
+
 app.set("trust proxy", 1);
 export const userController = new UserController(new UserService(knex));
 
