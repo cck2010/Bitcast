@@ -3,7 +3,12 @@ import Carousel from "react-tiny-slider";
 import { TinySliderInstance } from "tiny-slider";
 import LiveStreamBiddingInfoSeller from "./LiveStreamBiddingInfoSeller";
 
-function LiveStreamControlPanel() {
+interface LiveStreamControlPanelProps {
+    isDesktop: boolean;
+    isTablet: boolean;
+}
+
+function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
     const carousel = useRef<TinySliderInstance>(null);
 
     const goNextSlide = (dir: "next" | "prev") =>
@@ -17,6 +22,8 @@ function LiveStreamControlPanel() {
         isSold: boolean;
         isSelected: boolean;
     }
+
+    const liveStreamControlPanelDesktopSetting = { maxHeight: "400px" };
 
     const [products, setProducts] = useState<Product[]>([
         {
@@ -54,9 +61,16 @@ function LiveStreamControlPanel() {
     ]);
 
     return (
-        <div className="LiveStreamControlPanel h-100 rounded">
+        <div
+            className="LiveStreamControlPanel rounded"
+            style={props.isDesktop ? {} : liveStreamControlPanelDesktopSetting}
+        >
             <div className="row">
-                <div className="col-6 d-flex d-col carousel position-relative">
+                <div
+                    className={`${
+                        props.isDesktop ? "col-6" : "col-12"
+                    } d-flex d-col carousel position-relative`}
+                >
                     <Carousel
                         swipeAngle={false}
                         items={1}
@@ -105,7 +119,7 @@ function LiveStreamControlPanel() {
                                 />
                                 <div className="product_info mh-100 w-50 d-flex flex-column justify-content-center align-items-start">
                                     <div className="product_name">
-                                        <i className="fas fa-gavel"></i>{" "}
+                                        <i className="fas fa-gift"></i>{" "}
                                         競價項目:
                                         <br />
                                         {product.name}
@@ -132,7 +146,7 @@ function LiveStreamControlPanel() {
                         <i className="fas fa-caret-right"></i>
                     </button>
                 </div>
-                <div className="col-6">
+                <div className={`${props.isDesktop ? "col-6" : "col-12 mt-3"}`}>
                     <LiveStreamBiddingInfoSeller />
                 </div>
             </div>

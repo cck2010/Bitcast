@@ -7,7 +7,7 @@ function LiveStreamBiddingInfoSeller() {
     const [isBidding, setIsBidding] = useState<boolean>(false);
 
     return (
-        <div className="LiveStreamBiddingInfoSeller h-100 rounded">
+        <div className="LiveStreamBiddingInfoSeller h-100 rounded p-3">
             <div className="row h-100">
                 <div className="info col-6 d-flex flex-column justify-content-center align-items-center h-100">
                     <div className="current_price mb-2">
@@ -34,7 +34,7 @@ function LiveStreamBiddingInfoSeller() {
                             setIsBidding(true);
                         }}
                     >
-                        開始拍賣
+                        <i className="fas fa-gavel"></i> 開始拍賣
                     </button>
                     <label>
                         <span className="mt-3">設定倒數時間(分鐘):</span>

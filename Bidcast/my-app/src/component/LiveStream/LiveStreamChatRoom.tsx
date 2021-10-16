@@ -1,18 +1,18 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import CustomScroll from "react-custom-scroll";
 
 interface LiveStreamChatRoomProps {
     liveStreamRef: React.RefObject<HTMLDivElement>;
+    isTablet: boolean;
 }
 
 function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
     const [messages, setMessages] = useState<string[]>([]);
     const [inputMessage, setInputMessage] = useState<string>("");
 
+    //scroll button
     const messagesRef = useRef<HTMLDivElement>(null);
     const [isVisible, setIsVisible] = useState<boolean>(false);
-
-    console.log(messagesRef);
 
     const scrollHandler = (event: React.UIEvent<HTMLDivElement>) => {
         const containerHeight = event.currentTarget.clientHeight;
@@ -27,21 +27,7 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
             top: messagesRef.current?.scrollHeight,
         });
     };
-
-    // useEffect(() => {
-    //     window.addEventListener("scroll", handleScroll, { passive: true });
-    //     return window.removeEventListener("scroll", handleScroll);
-    // }, []);
-
-    // const toggleVisible = () => {
-    //     const scrolled = messagesRef.scrollTop;
-    //     if (scrolled > 300){
-    //       setIsVisible(true)
-    //     }
-    //     else if (scrolled <= 300){
-    //       setIsVisible(false)
-    //     }
-    //   };
+    //scroll button
 
     //drag function
     const [size, setSize] = useState<number>(0);
@@ -69,11 +55,44 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
     }, [props.liveStreamRef]);
     //drag function
 
+    //chatroom mobile mode resize
+    function getWindowDimensions() {
+        const { innerWidth: width, innerHeight: height } = window;
+        return {
+            width,
+            height,
+        };
+    }
+
+    const [windowDimensions, setWindowDimensions] = useState(
+        getWindowDimensions()
+    );
+
+    useEffect(() => {
+        function handleResize() {
+            setWindowDimensions(getWindowDimensions());
+        }
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+    //chatroom mobile mode resize
+
     return (
         <div className="LiveStreamChatRoom">
             <div
                 className="LiveStreamChatRoomMainBody p-3"
-                style={{ height: `${658 + size}px` }}
+                style={
+                    props.isTablet
+                        ? { height: `${658 + size}px` }
+                        : {
+                              height: `${
+                                  windowDimensions.height -
+                                  windowDimensions.width / 2 -
+                                  100
+                              }px`,
+                          }
+                }
             >
                 <div className="chat">
                     <div className="head text-center">聊天室</div>
@@ -84,7 +103,17 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
                     >
                         <div
                             className="messages"
-                            style={{ height: `${535 + size}px` }}
+                            style={
+                                props.isTablet
+                                    ? { height: `${535 + size}px` }
+                                    : {
+                                          height: `${
+                                              windowDimensions.height -
+                                              windowDimensions.width / 2 -
+                                              225
+                                          }px`,
+                                      }
+                            }
                             ref={messagesRef}
                         >
                             {messages.map((m, i) => (
@@ -139,14 +168,16 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
                     </div>
                 </div>
             </div>
-            <div
-                className="dragBtn text-center px-3"
-                ref={dragRef}
-                onMouseDown={dragHandler}
-            >
-                <i className="fas fa-arrows-alt-v"></i>{" "}
-                按此拉動滑鼠調整聊天室長度
-            </div>
+            {props.isTablet && (
+                <div
+                    className="dragBtn text-center px-3"
+                    ref={dragRef}
+                    onMouseDown={dragHandler}
+                >
+                    <i className="fas fa-arrows-alt-v"></i>{" "}
+                    按此拉動滑鼠調整聊天室長度
+                </div>
+            )}
         </div>
     );
 }

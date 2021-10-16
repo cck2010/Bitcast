@@ -101,6 +101,7 @@ $largeFontSize: 1.5em;
 .LiveStreamChatRoom {
     .LiveStreamChatRoomMainBody {
         border: 1px solid #dcdcdc;
+        background-color: #fffafa;
 
         .rcs-inner-handle {
             background-color: #717171;
@@ -110,6 +111,10 @@ $largeFontSize: 1.5em;
             .head {
                 margin: 0 0 10px 0;
                 font-size: $largeFontSize;
+            }
+            .rcs-outer-container {
+                border: 1px solid #dcdcdc;
+                background-color: #ffffff;
             }
             .dummyLayer {
                 position: absolute;

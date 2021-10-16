@@ -13,7 +13,9 @@ function LiveStreamHeader() {
                     />
                     <div className="username mx-3">胡迪</div>
                 </div>
-                <div className="viewers">正在觀看人數: {100}人</div>
+                <div className="viewers">
+                    正在觀看人數: {100} <i className="fas fa-user-friends"></i>
+                </div>
             </div>
         </div>
     );
