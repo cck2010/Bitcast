@@ -140,7 +140,7 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
                 </div>
             </div>
             <div
-                className="dragBtn text-center"
+                className="dragBtn text-center px-3"
                 ref={dragRef}
                 onMouseDown={dragHandler}
             >

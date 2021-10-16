@@ -111,7 +111,7 @@ function LiveStreamControlPanel() {
                                         {product.name}
                                     </div>
                                     <div className="product_price">
-                                        <i className="fas fa-money-bill-wave"></i>{" "}
+                                        <i className="fas fa-chart-line"></i>{" "}
                                         起標價:
                                         <br />${product.price}
                                     </div>
@@ -133,7 +133,7 @@ function LiveStreamControlPanel() {
                     </button>
                 </div>
                 <div className="col-6">
-                    <LiveStreamBiddingInfoSeller></LiveStreamBiddingInfoSeller>
+                    <LiveStreamBiddingInfoSeller />
                 </div>
             </div>
         </div>
