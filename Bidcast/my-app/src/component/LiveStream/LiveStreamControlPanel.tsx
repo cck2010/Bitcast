@@ -54,7 +54,7 @@ function LiveStreamControlPanel() {
     ]);
 
     return (
-        <div className="LiveStreamControlPanel">
+        <div className="LiveStreamControlPanel h-100 rounded">
             <div className="row">
                 <div className="col-6 d-flex d-col carousel position-relative">
                     <Carousel

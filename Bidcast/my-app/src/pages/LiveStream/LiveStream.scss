@@ -1,5 +1,24 @@
-$fontSize: 1.5em;
+$largeFontSize: 1.5em;
 
+.LiveStreamHeader {
+    .mainInfo {
+        position: relative;
+        .title {
+            font-size: $largeFontSize;
+        }
+        .userinfo {
+            .profilePic {
+                width: 50px;
+                height: 50px;
+            }
+        }
+        .viewers {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+    }
+}
 .LiveStreamControlPanel {
     max-height: 200px;
     overflow: hidden;
@@ -47,6 +66,9 @@ $fontSize: 1.5em;
             opacity: 50%;
             user-select: none;
         }
+        .carousel_btn:focus {
+            box-shadow: none;
+        }
 
         .carousel_btn_left {
             left: 10px;
@@ -62,7 +84,7 @@ $fontSize: 1.5em;
     background-color: #fffafa;
     .current_price,
     .remaining_time {
-        font-size: $fontSize;
+        font-size: $largeFontSize;
     }
 
     .unavailable_btn {
@@ -73,5 +95,38 @@ $fontSize: 1.5em;
     }
     .unavailable_btn:focus {
         box-shadow: none;
+    }
+}
+
+.LiveStreamChatRoom {
+    .LiveStreamChatRoomMainBody {
+        border: 1px solid #dcdcdc;
+        .rcs-inner-handle {
+            background-color: #717171;
+        }
+        .head {
+            margin: 0 0 10px 0;
+            font-size: $largeFontSize;
+        }
+
+        .footer {
+            margin: 10px 0 0 0;
+            .inputBox {
+                border: 1px solid #dcdcdc;
+            }
+            .sendBtn {
+                background-color: transparent;
+                border: none;
+                font-size: $largeFontSize;
+            }
+        }
+    }
+    .dragBtn {
+        cursor: row-resize;
+        background-color: #1f5dd2;
+        color: white;
+        font-size: $largeFontSize;
+        padding: 10px 0;
+        user-select: none;
     }
 }
