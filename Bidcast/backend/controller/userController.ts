@@ -1,5 +1,7 @@
 import { UserService } from "../service/userService";
 import { Request, Response } from "express";
+import jwtKey from "../jwt/jwt"
+import jwt from "jsonwebtoken"
 // import fetch from "node-fetch";
 // import { ResponseJson } from "../response";
 // import passport from 'passport';
@@ -84,7 +86,29 @@ export class UserController {
             // if (result.data?.user) {
             //     req.session["user"] = result.data.user;
             // }
-            res.json(result);
+            if (result.data?.user) {
+                const payload = {
+                    id: result.data.user.id,
+                    alias: result.data.user.alias,
+                    email: result.data.user.email,
+                    number_tag: result.data.user.number_tag,
+                    created_at: result.data.user.created_at,
+                    updated_at: result.data.user.updated_at,
+
+                }
+                const a = 'http://localhost:3000'
+                const signOptions: {} = {
+                    audience: a,
+                    expiresIn: "12h",
+                    algorithm: "RS512" 			// RSASSA options[ "RS256", "RS384", "RS512" ]
+                };
+
+                const token = jwt.sign(payload, jwtKey.privateKEY, signOptions);
+                res.json({
+                    token: token,
+                });
+            }
+
         } catch (err) {
             console.log(err);
             res.json({
