@@ -1,4 +1,5 @@
 $largeFontSize: 1.5em;
+$smallFontSize: 0.5em;
 
 .LiveStreamHeader {
     .mainInfo {
@@ -85,6 +86,10 @@ $largeFontSize: 1.5em;
     .current_price,
     .remaining_time {
         font-size: $largeFontSize;
+    }
+
+    .highest_bid_user {
+        font-size: $smallFontSize;
     }
 
     .unavailable_btn {

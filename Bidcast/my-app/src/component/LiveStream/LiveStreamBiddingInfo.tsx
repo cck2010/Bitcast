@@ -9,8 +9,11 @@ function LiveStreamBiddingInfo() {
     const [isBidding, setIsBidding] = useState<boolean>(true);
     const [isSeller, setIsSeller] = useState<boolean>(false);
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
+    const [highestBidUser, setHighestBidUser] = useState<string>("");
+    const username = "測試員";
+
     useEffect(() => {
-        if (inputPrice <= currentPrice) {
+        if (inputPrice <= currentPrice + increment - 1) {
             setIsDisabled(true);
         } else {
             setIsDisabled(false);
@@ -21,10 +24,17 @@ function LiveStreamBiddingInfo() {
         <div className="LiveStreamBiddingInfo h-100 rounded p-3">
             <div className="row h-100">
                 <div className="info col-6 d-flex flex-column justify-content-center align-items-center h-100">
-                    <div className="current_price mb-2">
+                    <div className="current_price">
                         現在價格:
                         <br /> <i className="fas fa-money-bill-wave"></i>
                         {"  "}${currentPrice}
+                        <br />
+                        <span className="highest_bid_user mb-3">
+                            叫價者:{" "}
+                            {highestBidUser === ""
+                                ? "暫時未有叫價"
+                                : highestBidUser}
+                        </span>
                     </div>
                     {remainingTime === 0 ? (
                         <div className="remaining_time mt-2">拍賣尚未開始</div>
@@ -77,6 +87,7 @@ function LiveStreamBiddingInfo() {
                                 }`}
                                 onClick={() => {
                                     setCurrentPrice(currentPrice + increment);
+                                    setHighestBidUser(username);
                                 }}
                             >
                                 <i className="fas fa-gavel"></i> 最低叫價
@@ -89,7 +100,8 @@ function LiveStreamBiddingInfo() {
                                 }`}
                                 onClick={() => {
                                     setCurrentPrice(inputPrice);
-                                    setInputPrice(inputPrice + increment);
+                                    setInputPrice(inputPrice);
+                                    setHighestBidUser(username);
                                 }}
                             >
                                 <i className="fas fa-gavel"></i> 自訂叫價
