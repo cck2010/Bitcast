@@ -80,7 +80,7 @@ $largeFontSize: 1.5em;
     }
 }
 
-.LiveStreamBiddingInfoSeller {
+.LiveStreamBiddingInfo {
     background-color: #fffafa;
     .current_price,
     .remaining_time {
@@ -89,7 +89,7 @@ $largeFontSize: 1.5em;
 
     .unavailable_btn {
         background-color: #708090 !important;
-        border-color: #708090;
+        border-color: #708090 !important;
         cursor: default;
         user-select: none;
     }

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import Carousel from "react-tiny-slider";
 import { TinySliderInstance } from "tiny-slider";
-import LiveStreamBiddingInfoSeller from "./LiveStreamBiddingInfoSeller";
+import LiveStreamBiddingInfo from "./LiveStreamBiddingInfo";
 
 interface LiveStreamControlPanelProps {
     isDesktop: boolean;
@@ -23,7 +23,7 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
         isSelected: boolean;
     }
 
-    const liveStreamControlPanelDesktopSetting = { maxHeight: "400px" };
+    const liveStreamControlPanelDesktopSetting = { maxHeight: "500px" };
 
     const [products, setProducts] = useState<Product[]>([
         {
@@ -147,7 +147,7 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
                     </button>
                 </div>
                 <div className={`${props.isDesktop ? "col-6" : "col-12 mt-3"}`}>
-                    <LiveStreamBiddingInfoSeller />
+                    <LiveStreamBiddingInfo />
                 </div>
             </div>
         </div>
