@@ -1,47 +1,6 @@
 import React, { useCallback, useRef, useState } from "react";
 import CustomScroll from "react-custom-scroll";
 
-// const generateMessage = () => {
-//     const words = [
-//         "The sky",
-//         "above",
-//         "the port",
-//         "was",
-//         "the color of television",
-//         "tuned",
-//         "to",
-//         "a dead channel",
-//         ".",
-//         "All",
-//         "this happened",
-//         "more or less",
-//         ".",
-//         "I",
-//         "had",
-//         "the story",
-//         "bit by bit",
-//         "from various people",
-//         "and",
-//         "as generally",
-//         "happens",
-//         "in such cases",
-//         "each time",
-//         "it",
-//         "was",
-//         "a different story",
-//         ".",
-//         "It",
-//         "was",
-//         "a pleasure",
-//         "to",
-//         "burn",
-//     ];
-//     const text = [];
-//     let x = 7;
-//     while (--x) text.push(words[Math.floor(Math.random() * words.length)]);
-//     return text.join(" ");
-// };
-
 interface LiveStreamChatRoomProps {
     liveStreamRef: React.RefObject<HTMLDivElement>;
 }
@@ -50,14 +9,39 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
     const [messages, setMessages] = useState<string[]>([]);
     const [inputMessage, setInputMessage] = useState<string>("");
 
+    const messagesRef = useRef<HTMLDivElement>(null);
+    const [isVisible, setIsVisible] = useState<boolean>(false);
+
+    console.log(messagesRef);
+
+    const scrollHandler = (event: React.UIEvent<HTMLDivElement>) => {
+        const containerHeight = event.currentTarget.clientHeight;
+        const scrollHeight = event.currentTarget.scrollHeight;
+
+        const scrollTop = event.currentTarget.scrollTop;
+        setIsVisible(scrollTop + containerHeight < scrollHeight ? true : false);
+    };
+
+    const scrollToBottom = () => {
+        messagesRef.current?.parentElement?.parentElement?.scrollTo({
+            top: messagesRef.current?.scrollHeight,
+        });
+    };
+
     // useEffect(() => {
-    //     const generateDummyMessage = () => {
-    //         setInterval(() => {
-    //             setMessages((prevMsg) => [...prevMsg, generateMessage()]);
-    //         }, 2000);
-    //     };
-    //     generateDummyMessage();
+    //     window.addEventListener("scroll", handleScroll, { passive: true });
+    //     return window.removeEventListener("scroll", handleScroll);
     // }, []);
+
+    // const toggleVisible = () => {
+    //     const scrolled = messagesRef.scrollTop;
+    //     if (scrolled > 300){
+    //       setIsVisible(true)
+    //     }
+    //     else if (scrolled <= 300){
+    //       setIsVisible(false)
+    //     }
+    //   };
 
     //drag function
     const [size, setSize] = useState<number>(0);
@@ -93,10 +77,15 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
             >
                 <div className="chat">
                     <div className="head text-center">聊天室</div>
-                    <CustomScroll keepAtBottom={true}>
+                    <CustomScroll
+                        className="customScroll"
+                        keepAtBottom={true}
+                        onScroll={scrollHandler}
+                    >
                         <div
                             className="messages"
                             style={{ height: `${535 + size}px` }}
+                            ref={messagesRef}
                         >
                             {messages.map((m, i) => (
                                 <div
@@ -110,14 +99,34 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
                             ))}
                         </div>
                     </CustomScroll>
+                    <div className="dummyLayer">
+                        {isVisible && (
+                            <button
+                                className="scrollToBottom btn btn-primary rounded-circle"
+                                onClick={scrollToBottom}
+                                style={{}}
+                            >
+                                <i className="fas fa-arrow-down"></i>
+                            </button>
+                        )}
+                    </div>
                     <div className="footer d-flex mb-3">
                         <input
                             className="inputBox w-100"
                             type="text"
                             placeholder="請在此輸入留言..."
+                            value={inputMessage}
                             onChange={(
                                 e: React.ChangeEvent<HTMLInputElement>
                             ) => setInputMessage(e.target.value)}
+                            onKeyDown={(
+                                e: React.KeyboardEvent<HTMLInputElement>
+                            ) => {
+                                if (e.key === "Enter") {
+                                    setMessages([...messages, inputMessage]);
+                                    setInputMessage("");
+                                }
+                            }}
                         />
                         <button
                             className="sendBtn"
