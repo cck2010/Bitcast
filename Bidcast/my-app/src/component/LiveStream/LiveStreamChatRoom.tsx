@@ -89,7 +89,7 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
                               height: `${
                                   windowDimensions.height -
                                   windowDimensions.width / 2 -
-                                  100
+                                  175
                               }px`,
                           }
                 }
@@ -110,7 +110,7 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
                                           height: `${
                                               windowDimensions.height -
                                               windowDimensions.width / 2 -
-                                              225
+                                              300
                                           }px`,
                                       }
                             }
