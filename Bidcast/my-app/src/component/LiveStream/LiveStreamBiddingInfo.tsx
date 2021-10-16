@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function LiveStreamBiddingInfo() {
     const [inputRemainingTime, setInputRemainingTime] = useState<number>(2);
     const [remainingTime, setRemainingTime] = useState<number>(0);
+    const [increment, setIncrement] = useState<number>(10);
     const [currentPrice, setCurrentPrice] = useState<number>(100);
     const [inputPrice, setInputPrice] = useState<number>(currentPrice);
     const [isBidding, setIsBidding] = useState<boolean>(true);
     const [isSeller, setIsSeller] = useState<boolean>(false);
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
-    const [increment, setIncrement] = useState<number>(10);
-    const minPrice = currentPrice + increment;
+    useEffect(() => {
+        if (inputPrice <= currentPrice) {
+            setIsDisabled(true);
+        } else {
+            setIsDisabled(false);
+        }
+    }, [inputPrice, currentPrice]);
 
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded p-3">
@@ -95,18 +101,9 @@ function LiveStreamBiddingInfo() {
                                 <input
                                     type="number"
                                     className="action_duration w-75"
-                                    min={minPrice}
-                                    value={Math.max(minPrice, inputPrice)}
+                                    value={inputPrice}
                                     onChange={(e) => {
                                         setInputPrice(parseInt(e.target.value));
-                                        if (
-                                            parseInt(e.target.value) <
-                                            currentPrice + increment
-                                        ) {
-                                            setIsDisabled(true);
-                                        } else {
-                                            setIsDisabled(false);
-                                        }
                                     }}
                                 />
                             </label>
