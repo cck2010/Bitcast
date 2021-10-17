@@ -19,10 +19,10 @@ export type RootAction = RouterAction | UserActions;
 export type RootThunkDispatch = ThunkDispatch<RootState, null, RootAction>;
 
 export interface RootState {
-    user: UserState,
-    router: RouterState,
-    CreateBids: CreateBids,
-    products: ProductsState
+    user: UserState;
+    router: RouterState;
+    CreateBids: CreateBids;
+    products: ProductsState;
 }
 
 const reducer = combineReducers<RootState>({

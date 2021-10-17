@@ -8,6 +8,7 @@ import { Link, Route, Switch } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { HomePageNavbar } from "./pages/homepage/Navbar";
 import { Footer } from "./pages/homepage/Footer";
+import { CreateBids } from "./pages/createbids/CreateBids";
 // import { CreateBids } from "./pages/createbids/CreateBids";
 
 function App() {
@@ -16,6 +17,15 @@ function App() {
             <HomePageNavbar />
             {/* <LiveStream /> */}
             {/* <CreateBids /> */}
+            <Switch>
+                {/* <Route path="/" ><Homepage /></Route> */}
+                <Route path="/createBids">
+                    <CreateBids />
+                </Route>
+                <Route path="/liveStreaming">
+                    <LiveStream />
+                </Route>
+            </Switch>
             <Footer />
         </div>
     );
