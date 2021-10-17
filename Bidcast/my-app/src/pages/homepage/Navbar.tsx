@@ -11,6 +11,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./Homepage.scss";
 import bidcast_logo from "./bidcast_logo.png";
 import lihkg_logo from "./lihkg_logo.png";
+import {Link, Route, Switch} from 'react-router-dom';
+import { CreateBids } from "../createbids/CreateBids";
+import LiveStream from "../LiveStream/LiveStream";
+// import { Homepage } from "./Homepage";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faBell } from "@fortawesome/free-solid-svg-icons";
 
@@ -42,7 +46,8 @@ export function HomePageNavbar() {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto navbar_buttons">
               <Nav.Link href="#">產品</Nav.Link>
-              <Nav.Link href="#">拍賣嘢</Nav.Link>
+              <Nav.Link href="/createBids">拍賣嘢</Nav.Link>
+              <Nav.Link href="/liveStreaming">直播頁面</Nav.Link>
               <NavDropdown title="商品分類" id="collasible-nav-dropdown">
                 <NavDropdown.Item href="#">商品分類1</NavDropdown.Item>
                 <NavDropdown.Item href="#">商品分類2</NavDropdown.Item>
@@ -60,6 +65,11 @@ export function HomePageNavbar() {
           </div>
         </Container>
       </Navbar>
+          <Switch>
+            {/* <Route path="/" ><Homepage /></Route> */}
+            <Route path="/createBids" ><CreateBids /></Route>
+            <Route path="/liveStreaming" ><LiveStream /></Route>
+          </Switch>
     </div>
   );
 }

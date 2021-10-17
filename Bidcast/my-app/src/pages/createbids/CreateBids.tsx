@@ -4,6 +4,7 @@ import { useSelector } from "react-redux"
 import { RootState } from "../../store"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import "./CreateBids.scss"
 
 interface liveInput {
   liveTitle: string,
