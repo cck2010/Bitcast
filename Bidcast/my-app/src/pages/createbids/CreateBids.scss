@@ -1,0 +1,63 @@
+.create_bids_container{
+    width: 100%;
+    padding-left: 20vw;
+    padding-right: 20vw;
+    border: 1px solid #000;
+    box-sizing: border-box;
+}
+form{
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    height: auto;
+}
+label{
+    font-size: 20px;
+}
+.input_default {
+    width: 100% !important;
+    height: 30px;
+    border: 1px solid black;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 1px 2px !important;
+    
+    
+}
+::-webkit-file-upload-button {
+    background: black;
+    color: white;
+    border: transparent;
+    cursor: pointer;
+    // padding: 1em;
+  }
+
+.button_default{
+    cursor: pointer;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #000;
+    color: #fff;
+    border: 0;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 15px !important;
+}
+h1{
+    font-size: 30px;
+}
+
+.text-success{
+    color: green;
+}
+.text-error {
+    display: none;
+    color: red;
+}
+.item_input_container{
+    border-bottom: 1px solid black;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    input{
+
+    }
+}
