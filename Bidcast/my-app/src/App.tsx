@@ -1,13 +1,20 @@
 import React from "react";
+import "react-custom-scroll/dist/customScroll.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "@fortawesome/fontawesome-free/css/all.css";
 import "./App.scss";
-import "./pages/createbids/CreateBids.scss"
-// import LiveStream from "./LiveStream";
-import { CreateBids } from "./pages/createbids/CreateBids";
+import LiveStream from "./pages/LiveStream/LiveStream";
+import { Link, Route, Switch } from "react-router-dom";
+import { Login } from "./pages/Login";
+import { HomePageNavbar } from "./pages/homepage/Navbar";
+import { Footer } from "./pages/homepage/Footer";
 
 function App() {
     return (
         <div className="App">
-            <CreateBids></CreateBids>
+            <HomePageNavbar />
+            <LiveStream />
+            <Footer />
         </div>
     );
 }

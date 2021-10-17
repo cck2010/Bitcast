@@ -1,0 +1,169 @@
+$largeFontSize: 1.5em;
+$smallFontSize: 0.5em;
+
+.LiveStreamHeader {
+    .mainInfo {
+        position: relative;
+        .title {
+            font-size: $largeFontSize;
+        }
+        .userinfo {
+            .profilePic {
+                width: 50px;
+                height: 50px;
+            }
+        }
+        .viewers {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+    }
+}
+.LiveStreamControlPanel {
+    max-height: 200px;
+    overflow: hidden;
+    cursor: pointer;
+    .carousel > div {
+        max-width: 100%;
+    }
+    .carousel {
+        .carousel_card {
+            background-color: #f5f5f5;
+            max-height: 200px;
+            .carousel_img {
+                max-width: 50%;
+            }
+
+            .sold {
+                filter: contrast(20%);
+            }
+
+            .selected {
+                border: solid 3px gray;
+                box-shadow: 5px 5px 20px -4px rgba(0, 0, 0, 0.84);
+            }
+
+            .product_info {
+                padding: 0 40px 0 20px;
+                .product_name,
+                .product_price {
+                    margin: 10px 0;
+                }
+            }
+        }
+
+        .tns-slider {
+            display: flex;
+        }
+
+        .carousel_btn {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            top: 0;
+            bottom: 0;
+            opacity: 50%;
+            user-select: none;
+        }
+        .carousel_btn:focus {
+            box-shadow: none;
+        }
+
+        .carousel_btn_left {
+            left: 10px;
+        }
+
+        .carousel_btn_right {
+            right: 10px;
+        }
+    }
+}
+
+.LiveStreamBiddingInfo {
+    background-color: #fffafa;
+    .current_price,
+    .remaining_time {
+        font-size: $largeFontSize;
+    }
+
+    .highest_bid_user {
+        font-size: $smallFontSize;
+    }
+
+    .unavailable_btn {
+        background-color: #708090 !important;
+        border-color: #708090 !important;
+        cursor: default;
+        user-select: none;
+    }
+    .unavailable_btn:focus {
+        box-shadow: none;
+    }
+}
+
+.LiveStreamChatRoom {
+    .LiveStreamChatRoomMainBody {
+        border: 1px solid #dcdcdc;
+        background-color: #fffafa;
+
+        .rcs-inner-handle {
+            background-color: #717171;
+        }
+        .chat {
+            position: relative;
+            .head {
+                margin: 0 0 10px 0;
+                font-size: $largeFontSize;
+            }
+            .rcs-outer-container {
+                border: 1px solid #dcdcdc;
+                background-color: #ffffff;
+            }
+            .dummyLayer {
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 60px;
+                display: flex;
+                justify-content: center;
+                .scrollToBottom {
+                    user-select: none;
+                    z-index: 10;
+                    -webkit-animation: fade-in-fwd 0.6s
+                        cubic-bezier(0.39, 0.575, 0.565, 1) both;
+                    animation: fade-in-fwd 0.6s
+                        cubic-bezier(0.39, 0.575, 0.565, 1) both;
+                }
+            }
+
+            .footer {
+                margin: 10px 0 0 0;
+                .inputBox {
+                    border: 1px solid #dcdcdc;
+                }
+                .sendBtn {
+                    background-color: transparent;
+                    border: none;
+                    font-size: $largeFontSize;
+                }
+            }
+        }
+    }
+    .dragBtn {
+        cursor: row-resize;
+        background-color: #1f5dd2;
+        color: white;
+        font-size: $largeFontSize;
+        padding: 10px 0;
+        user-select: none;
+    }
+}
+
+.LiveStreamDescription {
+    border: 1px solid #dcdcdc;
+    .recommendAuction {
+        width: 33%;
+    }
+}

@@ -1,10 +1,9 @@
 import React, { useEffect, useRef } from "react";
-import "./LiveStream.scss";
 import { Client, LocalStream } from "ion-sdk-js";
 import { IonSFUJSONRPCSignal } from "ion-sdk-js/lib/signal/json-rpc-impl";
 import { Configuration } from "ion-sdk-js/lib/client.d";
 
-function LiveStream() {
+function LiveStreamWindow() {
     const pubVideo = useRef<HTMLVideoElement>(null);
     const subVideo = useRef<HTMLVideoElement>(null);
 
@@ -18,8 +17,13 @@ function LiveStream() {
             {
                 urls: "stun:stun.l.google.com:19302",
             },
+            // {
+            //     urls: "turn:turn.ctosan.xyz:3478",
+            //     username: "hello",
+            //     credential: "world",
+            // },
             {
-                urls: "turn:turn.ctosan.xyz:3478",
+                urls: "turn:turn.bidcast.online:3478",
                 username: "hello",
                 credential: "world",
             },
@@ -40,8 +44,8 @@ function LiveStream() {
     }
 
     useEffect(() => {
-        // signal = new IonSFUJSONRPCSignal("ws://localhost:7000/ws");
-        signal = new IonSFUJSONRPCSignal("ws://54.251.68.107/ws");
+        // signal = new IonSFUJSONRPCSignal("ws://54.251.68.107/ws");
+        signal = new IonSFUJSONRPCSignal("ws://54.251.210.79/ws");
         client = new Client(signal, config);
         signal.onopen = () => {
             if (client == null) {
@@ -49,6 +53,13 @@ function LiveStream() {
             }
             client.join(`test room ${room}`, "");
         };
+        let timerId: NodeJS.Timeout = setInterval(() => {}, 10000);
+        setTimeout(() => {
+            timerId = setInterval(
+                () => signal != null && signal.notify("method", "params"),
+                10000
+            );
+        }, 10000);
 
         if (!isPub) {
             client.ontrack = (track, stream) => {
@@ -71,6 +82,8 @@ function LiveStream() {
                 };
             };
         }
+
+        return clearInterval(timerId);
     }, []);
 
     const start = (event: boolean): void => {
@@ -108,10 +121,7 @@ function LiveStream() {
                     pubVideo.current.autoplay = true;
                     pubVideo.current.muted = false;
                     localStream = media;
-                    console.log(client.publish);
-
                     client.publish(media);
-                    console.log("finish");
                 })
                 .catch(console.error);
         }
@@ -126,7 +136,7 @@ function LiveStream() {
     };
 
     return (
-        <div className="LiveStream">
+        <div className="LiveStreamWindow">
             <div className="flex flex-col h-screen relative">
                 <header className="flex h-16 justify-center items-center text-xl bg-black text-white">
                     {isPub ? (
@@ -158,14 +168,14 @@ function LiveStream() {
                 {isPub ? (
                     <video
                         id="pubVideo"
-                        className="bg-black"
+                        className="bg-black w-100 h-100"
                         controls
                         ref={pubVideo}
                     ></video>
                 ) : (
                     <video
-                        id="subVideo"
-                        className="bg-black"
+                        id="subVideo "
+                        className="bg-black w-100 h-100"
                         controls
                         ref={subVideo}
                     ></video>
@@ -175,4 +185,4 @@ function LiveStream() {
     );
 }
 
-export default LiveStream;
+export default LiveStreamWindow;
