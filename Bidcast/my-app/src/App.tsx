@@ -9,6 +9,7 @@ import { Login } from "./pages/Login";
 import { HomePageNavbar } from "./pages/homepage/Navbar";
 import { Footer } from "./pages/homepage/Footer";
 import { CreateBids } from "./pages/createbids/CreateBids";
+import LiveStreamSeller from "./pages/LiveStream/LiveStreamSeller";
 // import { CreateBids } from "./pages/createbids/CreateBids";
 
 function App() {
@@ -24,6 +25,9 @@ function App() {
                 </Route>
                 <Route path="/liveStreaming">
                     <LiveStream />
+                </Route>
+                <Route path="/liveStreamingSeller">
+                    <LiveStreamSeller />
                 </Route>
             </Switch>
             <Footer />
