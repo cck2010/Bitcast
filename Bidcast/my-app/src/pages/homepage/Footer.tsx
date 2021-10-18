@@ -1,6 +1,6 @@
-import { Button, Container, Nav } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import bidcast_logo from "./bidcast_logo.png";
-import { Link, Route, Switch } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export function Footer() {
   return (

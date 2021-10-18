@@ -1,11 +1,11 @@
 import {
-    Container,
-    Form,
-    FormControl,
-    Nav,
-    Navbar,
-    Image,
-    NavDropdown,
+  Container,
+  Form,
+  FormControl,
+  Nav,
+  Navbar,
+  Image,
+  NavDropdown,
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Homepage.scss";
@@ -29,7 +29,7 @@ export function HomePageNavbar() {
   };
   return (
     <div>
-      <Navbar collapseOnSelect expand="md" className="navbar">
+      <Navbar collapseOnSelect expand="md" className="navbar py-0">
         <Container className="logo_container">
           <Link to="/" className="nav_link">
             <img
@@ -40,21 +40,24 @@ export function HomePageNavbar() {
               className="d-inline-block align-top"
             />
           </Link>
-          <div className="buttons_container">
-            <Form className="d-flex">
-              <FormControl
-                type="search"
-                placeholder="搵下嘢"
-                className="me-2 search_bar"
-                aria-label="Search"
-              />
-            </Form>
-
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-            <Navbar.Collapse id="responsive-navbar-nav">
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            {/* <div className="buttons_container"> */}
               <Nav className="me-auto navbar_buttons">
-                <Link to="/" className="nav_link">主頁</Link>
-                <Link to="/createBids" className="nav_link">拍賣嘢</Link>
+                <Form className="d-flex">
+                  <FormControl
+                    type="search"
+                    placeholder="搵下嘢"
+                    className="me-2 search_bar"
+                    aria-label="Search"
+                  />
+                </Form>
+                <Link to="/" className="nav_link">
+                  主頁
+                </Link>
+                <Link to="/createBids" className="nav_link">
+                  拍賣嘢
+                </Link>
                 <NavDropdown
                   title="商品分類"
                   id="collasible-nav-dropdown"
@@ -73,16 +76,23 @@ export function HomePageNavbar() {
                     商品分類3
                   </Link>
                 </NavDropdown>
-                <Link to="/" className="nav_link">登入 ／ 註冊</Link>
                 <Link to="/" className="nav_link">
-                <FontAwesomeIcon icon={faBell} />
-              </Link>
+                  登入 ／ 註冊
+                </Link>
+                <Link to="/" className="nav_link">
+                  <FontAwesomeIcon icon={faBell} />
+                </Link>
+                <Link to="/profilePage" className="nav_link">
+                  <Image
+                    src={lihkg_logo}
+                    width="40"
+                    height="40"
+                    roundedCircle
+                  />
+                </Link>
               </Nav>
-            </Navbar.Collapse>
-            <Link to="/profilePage" className="nav_link">
-            <Image src={lihkg_logo} width="40" height="40" roundedCircle />
-          </Link>
-          </div>
+            {/* </div> */}
+          </Navbar.Collapse>
         </Container>
       </Navbar>
     </div>

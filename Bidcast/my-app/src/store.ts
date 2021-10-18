@@ -11,12 +11,19 @@ import thunk, { ThunkDispatch } from "redux-thunk";
 import { UserActions } from "./redux/user/actions";
 import { createBidsReducer } from "./redux/createbid/reducer";
 import { productsReducer, ProductsState } from "./redux/products/reducer";
+import { liveStreamReducer, LiveStreamState } from "./redux/LiveStream/reducer";
+import { LiveStreamActions } from "./redux/LiveStream/actions";
 import { ProductsActions } from "./redux/products/actions";
 import { CreateBids, createBidsActions } from "./redux/createbid/actions";
 
 export const history = createBrowserHistory();
 
-export type RootAction = RouterAction | UserActions | ProductsActions | createBidsActions;
+export type RootAction =
+    | RouterAction
+    | UserActions
+    | ProductsActions
+    | LiveStreamActions
+    | createBidsActions;
 
 export type RootThunkDispatch = ThunkDispatch<RootState, null, RootAction>;
 
@@ -25,6 +32,7 @@ export interface RootState {
     router: RouterState;
     CreateBids: CreateBids;
     products: ProductsState;
+    liveStream: LiveStreamState;
 }
 
 const reducer = combineReducers<RootState>({
@@ -32,6 +40,7 @@ const reducer = combineReducers<RootState>({
     CreateBids: createBidsReducer,
     products: productsReducer,
     router: connectRouter(history),
+    liveStream: liveStreamReducer,
 });
 
 declare global {
