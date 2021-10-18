@@ -13,11 +13,12 @@ export class UserController {
     constructor(private userService: UserService) { }
     register = async (req: Request, res: Response) => {
         try {
-            const { alias, email, password } = req.body;
+            const { username, email, password, phone_number } = req.body;
             const result: any = await this.userService.register(
-                alias,
+                username,
                 email,
-                password
+                password,
+                phone_number
             );
             // console.log(result);
 
@@ -89,9 +90,16 @@ export class UserController {
             if (result.data?.user) {
                 const payload = {
                     id: result.data.user.id,
-                    alias: result.data.user.alias,
+                    username: result.data.user.username,
+                    status_id: result.data.user.status_id,
+                    profile_pic: result.data.user.profile_pic,
+                    phone_number: result.data.user.phone_number,
+                    role_id: result.data.user.role_id,
+                    telegram_acct: result.data.user.telegram_acct,
+                    telegram_is_verified: result.data.user.telegram_is_verified,
+                    telegram_chat_id: result.data.user.telegram_chat_id,
+                    login_method_id: result.data.user.login_method_id,
                     email: result.data.user.email,
-                    number_tag: result.data.user.number_tag,
                     created_at: result.data.user.created_at,
                     updated_at: result.data.user.updated_at,
 
@@ -120,10 +128,19 @@ export class UserController {
             });
         }
     };
-
-
-
-
-
+    getCurrentUser = async (req: Request, res: Response) => {
+        try {
+            res.json(req.user)
+        } catch (err) {
+            console.log(err);
+            res.json({
+                success: false,
+                error: err,
+                data: {
+                    msg: "getCurrentUser controller failure",
+                },
+            });
+        }
+    }
 
 }
