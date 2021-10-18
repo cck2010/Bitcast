@@ -6,17 +6,17 @@ export class ProductsService {
 
     getCategories = async () => {
         try {
-            const results = await this.knex.select("*").from("category");
-            return console.log("results", results);
-            // return {
-            //     success: true,
-            //     data:{msg:"get categories success", ?? },
-            // };
+            const results = await this.knex.select("*").from("categories");
+            // return console.log("results", results);
+            return {
+                success: true,
+                data:{msg:"get categories success", results },
+            };
         } catch (error) {
             console.log(error);
             return {
                 success: false,
-                data:{msg:"get categories fail"},
+                data:{msg:"service side get categories fail"},
                 error: new Error("get categories fail")
             }
             

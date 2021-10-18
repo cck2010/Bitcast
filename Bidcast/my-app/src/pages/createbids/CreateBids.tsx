@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker";
 import {v4} from "uuid";
 import "react-datepicker/dist/react-datepicker.css";
 import "./CreateBids.scss"
+import { fetchCategories } from "../../redux/products/actions";
 
 interface liveInput {
   liveTitle: string,
@@ -52,7 +53,7 @@ function ProductsInfoInput(): any {
       <p><label>即買價: <input className={"input_default"} type="number" {...register('productInput.buyPrice')} /></label></p>
       <p><label>分類: <select>
         {categories.map(category => (
-          <option value={category.id} key={category.id}>{category.name}</option>
+          <option value={category.id} key={category.id}>{category.category}</option>
         ))}
       </select></label></p>
     </div>
@@ -72,7 +73,7 @@ export function CreateBids() {
 
   useEffect(() => {
     // fetch ser 拎 categories data
-    // dispatch(fetchCategories());
+    dispatch(fetchCategories());
   },[dispatch])
 
 

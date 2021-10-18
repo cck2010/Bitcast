@@ -26,7 +26,9 @@ export interface Product {
 
 export interface Category {
     id: number;
-    name: string;
+    category: string;
+    created_at:Date;
+    updated_at:Date;
     productIds: number[]; //分類頁面用 or do it with knex?
 }
 
@@ -55,13 +57,15 @@ export function fetchCategories() {
     return async(dispatch:  RootThunkDispatch, getState: () => RootState)=>{
         const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/categories`)
         const json = await res.json();
+        const categoriesData = json.data.results;
+        console.log("json", categoriesData);
 
-        for(let category of json) {
-         const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/categories/${category.id}/products`)   
-         const productJson = await res.json();
+        // for(let category of json) {
+        //  const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/categories/${category.id}/products`)   
+        //  const productJson = await res.json();
 
-         dispatch(loadProduct(productJson, category.id));
-        }
-        dispatch(loadCategories(json));
+        //  dispatch(loadProduct(productJson, category.id));
+        // }
+        dispatch(loadCategories(categoriesData));
     }
 }

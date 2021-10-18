@@ -11,12 +11,12 @@ export class ProductsController {
         } catch (error) {
             res.json({
                 success:false,
-                data:{msg:"get categories fail"},
+                data:{msg:"controller get categories fail"},
                 error: new Error("get categories fail"),
             })
         }
     }
-    
+
 
 
 }
