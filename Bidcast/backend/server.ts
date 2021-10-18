@@ -14,7 +14,7 @@ import { UserService } from "./service/UserService";
 import { knex } from "./db";
 import cors from "cors";
 // import { isLoggedIn } from "./guard";
-import path from "path";
+// import path from "path";
 
 // import { hashPassword, } from './hash';
 import { pageNotFound } from "./middlewares";

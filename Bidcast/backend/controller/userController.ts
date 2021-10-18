@@ -96,9 +96,9 @@ export class UserController {
                     updated_at: result.data.user.updated_at,
 
                 }
-                const a = 'http://localhost:3000'
+
                 const signOptions: {} = {
-                    audience: a,
+
                     expiresIn: "12h",
                     algorithm: "RS512" 			// RSASSA options[ "RS256", "RS384", "RS512" ]
                 };
