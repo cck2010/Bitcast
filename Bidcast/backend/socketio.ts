@@ -6,17 +6,17 @@ import socketIO from "socket.io";
 export let io: socketIO.Server;
 
 
-type members = member[]
+// type members = member[]
 
-type member = {
-    socketID: string;
-    userID: string;
-    userEmail: string;
-    lastSeen: string;
+// type member = {
+//     socketID: string;
+//     userID: string;
+//     userEmail: string;
+//     lastSeen: string;
 
-}
+// }
 
-let members: member[] = [];
+// let members: member[] = [];
 
 export function setSocketIO(value: socketIO.Server) {
     io = value;
