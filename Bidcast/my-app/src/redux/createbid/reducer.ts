@@ -1,15 +1,9 @@
-export interface Bid {
-    productId: number;
-    amount: number;
-    finish: boolean;
-    success: boolean;
-  }
+import produce from "immer";
+import { CreateBids,createBidsActions } from "./actions";
 
-  export interface CreateBids {
-      bids: Bid[];
-  }
 
-  const initialState = {
+
+  const initialState:CreateBids = {
       bids: []
   }
 
