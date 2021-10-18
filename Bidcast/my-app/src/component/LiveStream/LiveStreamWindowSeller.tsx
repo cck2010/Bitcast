@@ -3,7 +3,7 @@ import { Client, LocalStream } from "ion-sdk-js";
 import { IonSFUJSONRPCSignal } from "ion-sdk-js/lib/signal/json-rpc-impl";
 import { config, webSocketIP } from "../../configuration/ion-sfu";
 import { useLiveStreamToken } from "../../hooks/useLiveStreamToken";
-import { Button, ButtonGroup } from "reactstrap";
+import { ButtonGroup } from "reactstrap";
 
 function LiveStreamWindow() {
     const pubVideo = useRef<HTMLVideoElement>(null);
