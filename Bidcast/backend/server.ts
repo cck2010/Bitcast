@@ -21,6 +21,9 @@ import { pageNotFound } from "./middlewares";
 import { LiveStreamController } from "./controller/liveStreamController";
 import { LiveStreamService } from "./service/liveStreamService";
 import liveStreamRoutes from "./router/liveStreamRoutes";
+import productsRoutes from "./router/productsRoutes";
+import { ProductsService } from "./service/productsService";
+import { ProductsController } from "./controller/productsController";
 
 // import { hashPassword, } from './hash';
 
@@ -44,10 +47,14 @@ export const userController = new UserController(new UserService(knex));
 export const liveStreamController = new LiveStreamController(
     new LiveStreamService(knex)
 );
+export const productsController = new ProductsController(
+    new ProductsService(knex)
+);
 
 // app.use(requestLogger, dummyCounter);
 app.use(userRoutes);
 app.use(liveStreamRoutes);
+app.use(productsRoutes);
 app.get("/profile", (req: express.Request, res: express.Response) => {
     res.sendFile(path.join(__dirname, "public", "404.html"));
 });

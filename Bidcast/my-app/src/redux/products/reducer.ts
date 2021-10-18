@@ -1,21 +1,8 @@
-export interface Product {
-    id: number;
-    name: string;
-    latestBid: number;
-    deadline: number; // timestamp
-    image: string; // url
-    minimumBid: number;
-    eachBidAmount: number;
-    username: string;
-    categoryId: number;
-  }
-  
-  export interface Category {
-    id: number;
-    name: string;
-    order: number;
-    productIds: number[];
-  }
+import produce from "immer";
+import { Category, Product, ProductsActions } from "./actions"
+
+
+
   
   export interface ProductsState {
     products: {
@@ -45,13 +32,23 @@ export interface Product {
   }
 
 
-  export function productsReducer(state: ProductsState = initialState): ProductsState {
+  export function productsReducer(state: ProductsState = initialState, action:ProductsActions): ProductsState {
 
-    //fetch ser 拎 products data
-
-
+    
     //fetch ser 拎 categories data
-  
-  
-    return initialState
+    return produce(state, state =>{
+      if(action.type === '@@products/LOAD_CATEGORIES'){
+        for (let category of action.categories) {
+          state.categories[category.id] = category
+        }
+        //fetch ser 拎 products data
+      }else if (action.type === '@@products/LOAD_PRODUCTS') {
+        for(let product of action.products){
+          state.products[product.id] = product
+        }
+        if (state.categories[action.categoryId] != null) {
+          state.categories[action.categoryId].productIds = action.products.map(p =>p.id)
+        }
+      }
+    }) 
   }

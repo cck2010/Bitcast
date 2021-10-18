@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker";
 import {v4} from "uuid";
 import "react-datepicker/dist/react-datepicker.css";
 import "./CreateBids.scss"
+import { fetchCategories } from "../../redux/products/actions";
 
 interface liveInput {
   liveTitle: string,
@@ -40,16 +41,19 @@ function ProductsInfoInput(): any {
   // function numFilter(e: any) {
   //   setNum(e.target.value);
   // }
+  let infoId:string = v4(); 
+  // key={infoId}
   return (
-    <div className="item_input_container" key={v4()}>
-      <p><label>物品名稱: <input className={"input_default"} {...register("productInput.name")} /></label></p>
+    
+    <div className="item_input_container" >
+      <p><label>物品名稱: <input className={"input_default"} {...register("productInput.name") } /></label></p>
       <p><label>物品圖片: <input className={"input_default"} type="file" {...register('productInput.image')} /></label></p>
       <p><label>底價: <input className={"input_default"} type="number"{...register('productInput.minimumBid')} /></label></p>
       <p><label>每口價: <input className={"input_default"} type="number" {...register('productInput.eachBidAmount')} /></label></p>
       <p><label>即買價: <input className={"input_default"} type="number" {...register('productInput.buyPrice')} /></label></p>
       <p><label>分類: <select>
         {categories.map(category => (
-          <option value={category.id} key={category.id}>{category.name}</option>
+          <option value={category.id} key={category.id}>{category.category}</option>
         ))}
       </select></label></p>
     </div>
@@ -69,7 +73,7 @@ export function CreateBids() {
 
   useEffect(() => {
     // fetch ser 拎 categories data
-    // dispatch(fetchCategories());
+    dispatch(fetchCategories());
   },[dispatch])
 
 

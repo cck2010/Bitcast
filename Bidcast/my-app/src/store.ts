@@ -13,10 +13,15 @@ import { CreateBids, createBidsReducer } from "./redux/createbid/reducer";
 import { productsReducer, ProductsState } from "./redux/products/reducer";
 import { liveStreamReducer, LiveStreamState } from "./redux/LiveStream/reducer";
 import { LiveStreamActions } from "./redux/LiveStream/actions";
+import { ProductsActions } from "./redux/products/actions";
 
 export const history = createBrowserHistory();
 
-export type RootAction = RouterAction | UserActions | LiveStreamActions;
+export type RootAction =
+    | RouterAction
+    | UserActions
+    | ProductsActions
+    | LiveStreamActions;
 
 export type RootThunkDispatch = ThunkDispatch<RootState, null, RootAction>;
 
