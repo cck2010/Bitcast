@@ -8,6 +8,7 @@
     "@types/node": "^16.11.0",
     "@types/permit": "^0.2.2",
     "@types/pg": "^8.6.1",
+    "gen-env": "^0.2.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.95.11",
     "permit": "^0.2.4",

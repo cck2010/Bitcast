@@ -5,6 +5,7 @@ import socketIO from "socket.io";
 
 export let io: socketIO.Server;
 
+// type members = member[]
 
 // type members = member[]
 
@@ -36,12 +37,10 @@ export function setSocketIO(value: socketIO.Server) {
         //     members.push(member)
         //     let currentTime = format(new Date(), "yyyy-MM-dd HH:mm:ss");
         //     // console.table(members);
-
         //     io.emit("getMemberOnline",members,currentTime)
         //     // console.log("socket", socket.id);
         //     logger.info(`[New socket] , ${socket.id}`);
         // }
-
         // socket.on("")
     });
 }

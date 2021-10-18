@@ -235,6 +235,11 @@ function-bind@^1.1.1:
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
 
+gen-env@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/gen-env/-/gen-env-0.2.0.tgz#7b5cd8d8fd68da9383a40ef29bd5fac4ef88b762"
+  integrity sha512-Z9nt1fuJTQ0FjQKL+QfQdMYm4Ap/f0wjvKEt3qYOBDV/UT5P8e7mdXLoBIUFHSpTqfC7PpLK+789lqPg5tD37w==
+
 getopts@2.2.5:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/getopts/-/getopts-2.2.5.tgz#67a0fe471cacb9c687d817cab6450b96dde8313b"
