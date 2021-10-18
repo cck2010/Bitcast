@@ -1,8 +1,9 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store"
 import DatePicker from "react-datepicker";
+import {v4} from "uuid";
 import "react-datepicker/dist/react-datepicker.css";
 import "./CreateBids.scss"
 
@@ -27,13 +28,9 @@ type Inputs = {
 
 };
 
-// type Inputs = {
-//     name: string,
-//     image: string,
-//     minimumBid: string,
-//     eachBidAmount: string,
-//     buyPrice: string,
-//   };
+
+
+
 
 function ProductsInfoInput(): any {
   const categories = useSelector((state: RootState) => Object.values(state.products.categories))
@@ -44,7 +41,7 @@ function ProductsInfoInput(): any {
   //   setNum(e.target.value);
   // }
   return (
-    <div className="item_input_container" >
+    <div className="item_input_container" key={v4()}>
       <p><label>物品名稱: <input className={"input_default"} {...register("productInput.name")} /></label></p>
       <p><label>物品圖片: <input className={"input_default"} type="file" {...register('productInput.image')} /></label></p>
       <p><label>底價: <input className={"input_default"} type="number"{...register('productInput.minimumBid')} /></label></p>
@@ -65,8 +62,15 @@ export function CreateBids() {
   const [startDate, setStartDate] = useState(new Date());
   // const [startTime, setStartTime] = useState<any>();
   const [productsList, setProductsList] = useState<any>([]);
-
   const { register, handleSubmit} = useForm<Inputs>();
+
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // fetch ser 拎 categories data
+    // dispatch(fetchCategories());
+  },[dispatch])
 
 
 

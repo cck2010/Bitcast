@@ -29,22 +29,29 @@ export interface Product {
   const initialState: ProductsState = {
     products: {},
     categories: {
-      '1': {
-        id: 1,
-        name: '電子產品',
-        order: 99,
-        productIds: [1, 2]
-      },
-      '2': {
-        id: 1,
-        name: '時尚服飾',
-        order: 1,
-        productIds: [3, 4]
-      },
+      // '1': {
+      //   id: 1,
+      //   name: '電子產品',
+      //   order: 99,
+      //   productIds: [1, 2]
+      // },
+      // '2': {
+      //   id: 1,
+      //   name: '時尚服飾',
+      //   order: 1,
+      //   productIds: [3, 4]
+      // },
     }
   }
 
 
   export function productsReducer(state: ProductsState = initialState): ProductsState {
+
+    //fetch ser 拎 products data
+
+
+    //fetch ser 拎 categories data
+  
+  
     return initialState
   }

@@ -14,16 +14,16 @@ export function Footer() {
             className="d-inline-block align-top"
           />
           <div>
-            <span className="get_started">Ready to get started?</span>
+            <span className="get_started">想拍賣嘢？</span>
             <Button variant="success" className="get_started_button">
-              Get Started
+              㩒呢度
             </Button>
           </div>
         </div>
         <div className="footer_links">
-          <Nav.Link href="#">About Us</Nav.Link>
-          <Nav.Link href="#">Created Bid</Nav.Link>
-          <Nav.Link href="#">Profile Page</Nav.Link>
+          <Nav.Link href="#">產品</Nav.Link>
+          <Nav.Link href="#">拍賣嘢</Nav.Link>
+          <Nav.Link href="#">登入 ／ 註冊</Nav.Link>
         </div>
         <span className="copyright">
           Copyright © 2021 Bidcast All Rights Reserved.
