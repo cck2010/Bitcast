@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import { Client } from "ion-sdk-js";
 import { IonSFUJSONRPCSignal } from "ion-sdk-js/lib/signal/json-rpc-impl";
-import { Configuration } from "ion-sdk-js/lib/client.d";
+import { config, webSocketIP } from "../../configuration/ion-sfu";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 function LiveStreamWindow() {
     const subVideo = useRef<HTMLVideoElement>(null);
@@ -9,39 +11,18 @@ function LiveStreamWindow() {
     let client: Client | null = null;
     let signal: IonSFUJSONRPCSignal | null = null;
 
-    const config: Configuration = {
-        iceServers: [
-            {
-                urls: "stun:stun.l.google.com:19302",
-            },
-            // {
-            //     urls: "turn:turn.ctosan.xyz:3478",
-            //     username: "hello",
-            //     credential: "world",
-            // },
-            {
-                urls: "turn:turn.bidcast.online:3478",
-                username: "hello",
-                credential: "world",
-            },
-        ],
-        codec: "h264",
-    };
-
     const room: string | null = new URLSearchParams(window.location.search).get(
         "room"
     );
 
-    // if (URL) {
-    //     isPub = true;
-    // } else {
-    //     isPub = false;
-    // }
+    const thumbnail = useSelector(
+        (state: RootState) => state.liveStream.liveStreamInfo.thumbnail
+    );
 
     useEffect(() => {
-        // signal = new IonSFUJSONRPCSignal("ws://54.251.68.107/ws");
+        // signal = new IonSFUJSONRPCSignal(webSocketIPBackUp);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        signal = new IonSFUJSONRPCSignal("ws://54.251.210.79/ws");
+        signal = new IonSFUJSONRPCSignal(webSocketIP);
         // eslint-disable-next-line react-hooks/exhaustive-deps
         client = new Client(signal, config);
         signal.onopen = () => {
@@ -86,10 +67,14 @@ function LiveStreamWindow() {
             <div className="flex flex-col h-screen relative">
                 <header className="flex h-16 justify-center items-center text-xl bg-black text-white"></header>
                 <video
-                    id="subVideo "
-                    className="bg-black w-100 h-100"
+                    id="subVideo"
+                    poster="transparent.png"
+                    className="w-100 h-100"
                     controls
                     ref={subVideo}
+                    style={{
+                        backgroundImage: `url("${thumbnail}")`,
+                    }}
                 ></video>
             </div>
         </div>

@@ -48,9 +48,7 @@ function LiveStreamBiddingInfo() {
                                 <i className="fas fa-gavel"></i> 開始拍賣
                             </button>
                             <label>
-                                <span className="mt-3">
-                                    設定倒數時間(分鐘):
-                                </span>
+                                <span className="mt-3">倒數時間(分鐘):</span>
                                 <input
                                     type="number"
                                     className="action_duration w-75"

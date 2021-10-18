@@ -14,10 +14,16 @@ import { UserService } from "./service/UserService";
 import { knex } from "./db";
 import cors from "cors";
 // import { isLoggedIn } from "./guard";
-// import path from "path";
+import path from "path";
 
 // import { hashPassword, } from './hash';
 import { pageNotFound } from "./middlewares";
+import { LiveStreamController } from "./controller/liveStreamController";
+import { LiveStreamService } from "./service/liveStreamService";
+import liveStreamRoutes from "./router/liveStreamRoutes";
+import productsRoutes from "./router/productsRoutes";
+import { ProductsService } from "./service/productsService";
+import { ProductsController } from "./controller/productsController";
 
 // import { hashPassword, } from './hash';
 
@@ -30,18 +36,39 @@ setSocketIO(io);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors({
-    origin: [process.env.FRONTEND_URL!]
-}))
+app.use(
+    cors({
+        origin: [process.env.FRONTEND_URL!],
+    })
+);
 
 app.set("trust proxy", 1);
 export const userController = new UserController(new UserService(knex));
+export const liveStreamController = new LiveStreamController(
+    new LiveStreamService(knex)
+);
+export const productsController = new ProductsController(
+    new ProductsService(knex)
+);
 
 // app.use(requestLogger, dummyCounter);
 app.use(userRoutes);
-
-
-
+app.use(liveStreamRoutes);
+app.use(productsRoutes);
+app.get("/profile", (req: express.Request, res: express.Response) => {
+    res.sendFile(path.join(__dirname, "public", "404.html"));
+});
+app.use(express.static("public"));
+app.use(express.static("public", { extensions: ["html"] }));
+app.use(express.static("css"));
+app.use(express.static("logos"));
+app.use(express.static("uploads"));
+app.get(
+    "/profile/:alias/:number_tag",
+    (req: express.Request, res: express.Response) => {
+        res.sendFile(path.join(__dirname, "public", "profile.html"));
+    }
+);
 
 // app.use(isLoggedIn, express.static("protected"));
 
