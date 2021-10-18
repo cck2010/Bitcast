@@ -67,10 +67,10 @@ export async function isLoggedIn(
                 req.user = user.data.user
                 return next();
             } else {
-                return res.status(401).json("Unauthorized")
+                return res.status(401).json("請先登入")
             }
         } else {
-            return res.status(401).json("Unauthorized")
+            return res.status(401).json("請先登入")
         }
 
 

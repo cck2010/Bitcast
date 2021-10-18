@@ -37,7 +37,7 @@ export class UserService {
             return {
                 success: false,
                 data: {
-                    msg: "Please fill in the blank form",
+                    msg: "請填入空白欄位",
                     user: {},
                 },
                 error: new Error("Please fill in the blank form"),
@@ -51,7 +51,7 @@ export class UserService {
             return {
                 success: false,
                 data: {
-                    msg: "Plese follow the required password format",
+                    msg: "請遵循所需的密碼格式",
                     user: {},
                 },
                 error: new Error(
@@ -63,7 +63,7 @@ export class UserService {
             return {
                 success: false,
                 data: {
-                    msg: "Please input your correct email",
+                    msg: "請輸入正確的郵箱",
                     user: {},
                 },
                 error: new Error(
@@ -75,7 +75,7 @@ export class UserService {
             return {
                 success: false,
                 data: {
-                    msg: "Please input your correct phone number",
+                    msg: "請輸入正確的電話號碼",
                     user: {},
                 },
                 error: new Error(
@@ -121,100 +121,67 @@ export class UserService {
         // check repeat email  ,cannot login if repeat and delete db
         const checkRepeatEmail = await this.knex.raw(`
                         SELECT email,count(*) as count FROM users 
-                        where email = '${email}'
+                        where email = '${email}' and  login_method_id = 1
                         GROUP BY email
                         `);
         const emailCount = parseInt(checkRepeatEmail.rows[0].count);
         console.log("emailCount=", emailCount);
 
-        if (emailCount == 1) {
-            // check repeat username
-            const checkRepeatusername = await this.knex.raw(`
-                SELECT username,count(*) as count FROM users 
-                where username = '${username}'
-                GROUP BY username
-                `);
-            // console.log("checkRepeatTable=", checkRepeatTable);
-            const count = parseInt(checkRepeatusername.rows[0].count);
-            // console.log(count);
-            // count+1
-            if (count > 1) {
-                // console.log("count = ", count);
-
-                // table,table then no need ',' to select above table
-                const getBlankRandomNum = await this.knex
-                    .raw(`WITH number_range_table as(
-                            SELECT ones.n + 10*tens.n + 100*hundreds.n + 1000*thousands.n as userid
-                            FROM (VALUES(0),(1),(2),(3),(4),(5),(6),(7),(8),(9)) ones(n),
-                                 (VALUES(0),(1),(2),(3),(4),(5),(6),(7),(8),(9)) tens(n),
-                                 (VALUES(0),(1),(2),(3),(4),(5),(6),(7),(8),(9)) hundreds(n),
-                                 (VALUES(0),(1),(2),(3),(4),(5),(6),(7),(8),(9)) thousands(n)
-                                 ORDER BY 1),                                
-                         filter_users as (
-                             select number_tag from users where alias = '${users[0].alias}'
-                         )
-                         
-                         select userid from number_range_table where userid not in (select number_tag from filter_users) order by random() limit 1;
-                         
-                         `);
-                // console.log(
-                //     "exclusive random number=",
-                //     getBlankRandomNum.rows[0].userid
-                // );
-                await this.knex.raw(
-                    `UPDATE users SET number_tag = '${getBlankRandomNum.rows[0].userid}' WHERE email = '${users[0].email}'`
-                );
-
-                return {
-                    success: true,
-                    data: {
-                        msg: "number_tag is repeated and randomed",
-                        user: {
-                            id: users[0].id,
-                            email: users[0].email,
-                            created_at: users[0].created_at,
-                            updated_at: users[0].updated_at,
-                        },
-                    },
-                    error: new Error("signup with repeated alias"),
-                };
-            } else {
-                return {
-                    success: true,
-                    data: {
-                        msg: "signup with not repeated alias",
-                        user: {
-                            id: users[0].id,
-
-                            email: users[0].email,
-
-                            created_at: users[0].created_at,
-                            updated_at: users[0].updated_at,
-                        },
-                    },
-                    error: new Error("signup with not repeated alias"),
-                };
-            }
-
-            // if (emailCount == 1)
-        } else {
-            // console.log("emailcount>1");
-
-            await this.knex("achievement")
-                .del()
-                .where({ user_id: createUserResult[0] });
+        if (emailCount != 1) {
             await this.knex("users")
                 .del()
                 .where("id", createUserResult[0]);
             return {
                 success: false,
                 data: {
-                    msg: "Duplicated email",
+                    msg: "重複的電子郵件",
                     user: {},
                 },
                 error: new Error("Duplicated email"),
             };
         }
+        // check repeat username
+        const checkRepeatusername = await this.knex.raw(`
+                SELECT username,count(*) as count FROM users 
+                where username = '${username}'
+                GROUP BY username
+                `);
+        // console.log("checkRepeatTable=", checkRepeatTable);
+        const usernameCount = parseInt(checkRepeatusername.rows[0].count);
+        // console.log(count);
+        // count+1
+        if (usernameCount != 1) {
+            return {
+                success: false,
+                data: {
+                    msg: "用戶名重複，請重新選擇",
+                    user: {
+                        id: users[0].id,
+                        email: users[0].email,
+                        created_at: users[0].created_at,
+                        updated_at: users[0].updated_at,
+                    },
+                },
+                error: new Error("username repeated"),
+            };
+        }
+        return {
+            success: true,
+            data: {
+                msg: "註冊成功",
+                user: {
+                    id: users[0].id,
+                    email: users[0].email,
+                    created_at: users[0].created_at,
+                    updated_at: users[0].updated_at,
+                },
+            },
+            error: new Error("signin success"),
+        };
+
+
+        // if (emailCount == 1)
+
 
         // if (schema.validate(password)) {
 
@@ -223,59 +190,69 @@ export class UserService {
     };
 
     login = async (email: string, password: string): Promise<ResponseJson> => {
-        if (email && password) {
-            const users = await this.knex("users")
-                .select("*")
-                .where("email", email);
-
-            if (users.length == 0) {
-                // console.log(users.length);
-                return {
-                    success: false,
-                    data: {
-                        msg: "User does not exsist",
-                        user: {},
-                    },
-                    error: new Error("User does not exsist"),
-                };
-            }
-
-            else if (!(await checkPassword(password, users[0].password))) {
-                return {
-                    success: false,
-                    data: {
-                        msg: "Wrong password",
-                        user: {},
-                    },
-                    error: new Error("Wrong password"),
-                };
-            } else {
-                return {
-                    data: {
-                        user: {
-                            id: users[0].id,
-
-                            email: users[0].email,
-
-                            created_at: users[0].created_at,
-                            updated_at: users[0].updated_at,
-                        },
-
-                        msg: "return user data successfully",
-                    },
-                    success: true,
-                };
-            }
-        } else {
+        if (!(email && password)) {
             return {
                 success: false,
                 data: {
-                    msg: "Please fill in the blank form",
+                    msg: "請填入空白欄位",
                     user: {},
                 },
                 error: new Error("Please fill in the blank form"),
             };
         }
+        const users = await this.knex("users")
+            .select("*")
+            .where({
+                "email": email,
+                "login_method_id": 1,
+            });
+
+        if (users.length == 0) {
+            // console.log(users.length);
+            return {
+                success: false,
+                data: {
+                    msg: "用戶不存在",
+                    user: {},
+                },
+                error: new Error("User does not exsist"),
+            };
+        }
+
+        if (!(await checkPassword(password, users[0].password))) {
+            return {
+                success: false,
+                data: {
+                    msg: "密碼錯誤",
+                    user: {},
+                },
+                error: new Error("Wrong password"),
+            };
+        } else {
+            return {
+                data: {
+                    user: {
+                        id: users[0].id,
+                        username: users[0].username,
+                        status_id: users[0].status_id,
+                        profile_pic: users[0].profile_pic,
+                        email: users[0].email,
+                        phone_number: users[0].phone_number,
+                        role_id: users[0].role_id,
+                        telegram_acct: users[0].telegram_acct,
+                        telegram_is_verified: users[0].telegram_is_verified,
+                        telegram_chat_id: users[0].telegram_chat_id,
+                        login_method_id: users[0].login_method_id,
+                        created_at: users[0].created_at,
+                        updated_at: users[0].updated_at,
+                    },
+
+                    msg: "成功登入",
+                },
+                success: true,
+            };
+        }
+
     };
 
 
@@ -286,7 +263,7 @@ export class UserService {
     ): Promise<ResponseJson> => {
 
 
-        const user = await this.knex("users")
+        const users = await this.knex("users")
             .select()
             .where("id", id)
 
@@ -296,9 +273,19 @@ export class UserService {
             data: {
                 msg: "return user data successfully",
                 user: {
-                    id: user[0].id,
-                    email: user[0].email,
-                    profilePic: user[0].profile_pic,
+                    id: users[0].id,
+                    username: users[0].username,
+                    status_id: users[0].status_id,
+                    profile_pic: users[0].profile_pic,
+                    email: users[0].email,
+                    phone_number: users[0].phone_number,
+                    role_id: users[0].role_id,
+                    telegram_acct: users[0].telegram_acct,
+                    telegram_is_verified: users[0].telegram_is_verified,
+                    telegram_chat_id: users[0].telegram_chat_id,
+                    login_method_id: users[0].login_method_id,
+                    created_at: users[0].created_at,
+                    updated_at: users[0].updated_at,
 
 
                 },
