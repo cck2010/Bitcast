@@ -10,6 +10,28 @@ export interface LiveStreamInfo {
     thumbnail: string;
 }
 
+export interface LiveStreamProduct {
+    id: number;
+    productName: string;
+    liveId: number;
+    sellerId: number;
+    minPrice: number;
+    currentPrice: number;
+    buyPrice: number;
+    bidIncrement: number;
+    buyerId: number;
+    categoryId: number;
+    productImage: string;
+    isSelected: boolean;
+    countdownStartTime: Date;
+    duration: number;
+    isEnded: boolean;
+    createdBy: string;
+    updatedBy: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
 export function loadInfo(info: LiveStreamInfo) {
     return {
         type: "@@liveStream/LOAD_INFO" as const,
