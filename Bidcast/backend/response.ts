@@ -11,14 +11,18 @@ interface Data {
     msg: string;
     user?: {
         id?: number;
-        alias?: string;
+        username?: string;
         email?: string;
-        role?: number;
+        role_id?: number;
         created_at?: Date;
         updated_at?: Date;
         profile_pic?: string;
-        number_tag?: number;
-        profilePic?: string;
+        status_id?: number;
+        phone_number?: number;
+        telegram_acct?: string;
+        telegram_is_verified?: boolean;
+        telegram_chat_id?: number;
+        login_method_id?: number;
     };
     queryrows?: {}[];
     queryrows2?: {}[];
@@ -30,7 +34,7 @@ interface Data {
 }
 
 export interface ResponseJson {
-    success: boolean;
+    success?: boolean;
     data: Data;
     error?: Error;
 }

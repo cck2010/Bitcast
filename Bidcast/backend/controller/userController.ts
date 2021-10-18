@@ -89,9 +89,9 @@ export class UserController {
             if (result.data?.user) {
                 const payload = {
                     id: result.data.user.id,
-                    alias: result.data.user.alias,
+
                     email: result.data.user.email,
-                    number_tag: result.data.user.number_tag,
+
                     created_at: result.data.user.created_at,
                     updated_at: result.data.user.updated_at,
 

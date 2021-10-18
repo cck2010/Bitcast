@@ -21,23 +21,19 @@ schema
     .has()
     .symbols(); //Must have symbols
 
-function getRandomInt(min: any, max: any) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-}
 
 export class UserService {
     constructor(private knex: Knex) { }
 
     register = async (
-        alias: string,
+        username: string,
         email: string,
-        password: string
+        password: string,
+        phone_number: number,
     ): Promise<ResponseJson> => {
         // ("users").groupBy('alias', 'count').having('count', '>', 1);
 
-        if (!alias || !email || !password) {
+        if (!username || !email || !password || !phone_number) {
             return {
                 success: false,
                 data: {
@@ -75,31 +71,47 @@ export class UserService {
                 ),
             };
         }
+        if (phone_number.toString().length != 8) {
+            return {
+                success: false,
+                data: {
+                    msg: "Please input your correct phone number",
+                    user: {},
+                },
+                error: new Error(
+                    "Please input your correct phone number"
+                ),
+            };
+
+        }
 
         const hashedPassword = await hashPassword(password);
         // inserted user
         const createUserResult /*  = result.rows */ = await this.knex("users")
             .insert({
-                alias: alias,
+                username: username,
                 email: email,
-                role: 1,
+                phone_number: phone_number,
                 password: hashedPassword,
                 created_at: new Date(),
                 updated_at: new Date(),
-                number_tag: getRandomInt(1, 9999),
+                telegram_is_verified: false,
                 profile_pic:
-                    "/assets/img/360_F_391192211_2w5pQpFV1aozYQhcIw3FqA35vuTxJKrB.jpg",
+                    "/backend/img/360_F_391192211_2w5pQpFV1aozYQhcIw3FqA35vuTxJKrB.jpg",
+                created_by: username,
+                updated_by: username,
             })
             .returning("id");
-        await this.knex("achievement").insert({
-            user_id: createUserResult[0],
-            as1: false,
-            as2: false,
-            as3: false,
-            ah1: false,
-            ah2: false,
-            ah3: false,
+        await this.knex("status").insert({
+            status: "active"
         });
+        await this.knex("login_methods").insert({
+            login_method: "local"
+        });
+        await this.knex("roles").insert({
+            role_name: "user"
+        });
+
 
         //    users is the new input db row
         const users = await this.knex("users")
@@ -116,14 +128,14 @@ export class UserService {
         console.log("emailCount=", emailCount);
 
         if (emailCount == 1) {
-            // check repeat alias
-            const checkRepeatTable = await this.knex.raw(`
-                SELECT alias,count(*) as count FROM users 
-                where alias = '${alias}'
-                GROUP BY alias
+            // check repeat username
+            const checkRepeatusername = await this.knex.raw(`
+                SELECT username,count(*) as count FROM users 
+                where username = '${username}'
+                GROUP BY username
                 `);
             // console.log("checkRepeatTable=", checkRepeatTable);
-            const count = parseInt(checkRepeatTable.rows[0].count);
+            const count = parseInt(checkRepeatusername.rows[0].count);
             // console.log(count);
             // count+1
             if (count > 1) {
@@ -159,10 +171,7 @@ export class UserService {
                         msg: "number_tag is repeated and randomed",
                         user: {
                             id: users[0].id,
-                            alias: users[0].alias,
                             email: users[0].email,
-                            number_tag:
-                                getBlankRandomNum.rows[0].userid,
                             created_at: users[0].created_at,
                             updated_at: users[0].updated_at,
                         },
@@ -176,9 +185,9 @@ export class UserService {
                         msg: "signup with not repeated alias",
                         user: {
                             id: users[0].id,
-                            alias: users[0].alias,
+
                             email: users[0].email,
-                            number_tag: users[0].number_tag,
+
                             created_at: users[0].created_at,
                             updated_at: users[0].updated_at,
                         },
@@ -245,9 +254,9 @@ export class UserService {
                     data: {
                         user: {
                             id: users[0].id,
-                            alias: users[0].alias,
+
                             email: users[0].email,
-                            number_tag: users[0].number_tag,
+
                             created_at: users[0].created_at,
                             updated_at: users[0].updated_at,
                         },
@@ -271,14 +280,11 @@ export class UserService {
 
 
     getCurrentUser = async (
-        username: string,
-        id: number
+
+        id: number | ""
 
     ): Promise<ResponseJson> => {
-        interface user {
-            name: string;
-            age: number;
-        }
+
 
         const user = await this.knex("users")
             .select()
@@ -297,7 +303,7 @@ export class UserService {
 
                 },
             },
-        };
+        } as ResponseJson;
     };
 
 
