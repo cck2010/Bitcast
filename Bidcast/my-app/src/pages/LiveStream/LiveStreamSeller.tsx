@@ -8,7 +8,7 @@ import { useMediaQuery } from "react-responsive";
 import { Button, ButtonGroup } from "reactstrap";
 import LiveStreamWindowSeller from "../../component/LiveStream/LiveStreamWindowSeller";
 import LiveStreamControlPanelSeller from "../../component/LiveStream/LiveStreamControlPanelSeller";
-import { fetchInfo } from "../../redux/LiveStream/actions";
+import { fetchliveStreamInfo } from "../../redux/LiveStream/actions";
 import { useDispatch } from "react-redux";
 
 function LiveStream() {
@@ -32,7 +32,7 @@ function LiveStream() {
         let token = new URLSearchParams(window.location.search).get("token");
         token = token != null ? token : "";
 
-        dispatch(fetchInfo(room, token));
+        dispatch(fetchliveStreamInfo(room, token));
     }, [dispatch]);
 
     return (
