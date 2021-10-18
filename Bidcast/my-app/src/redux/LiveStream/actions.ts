@@ -20,16 +20,11 @@ export interface LiveStreamProduct {
     buyPrice: number;
     bidIncrement: number;
     buyerId: number;
-    categoryId: number;
     productImage: string;
     isSelected: boolean;
     countdownStartTime: Date;
     duration: number;
     isEnded: boolean;
-    createdBy: string;
-    updatedBy: string;
-    createdAt: Date;
-    updatedAt: Date;
 }
 
 export function loadInfo(info: LiveStreamInfo) {
