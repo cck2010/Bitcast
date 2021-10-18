@@ -5,11 +5,14 @@ $logoColor: #11f3a2;
 .navbar {
   background-color: $navbarColor;
 }
-.nav-link {
+.nav_link {
   color: #ffffff !important;
   padding: 0.5rem !important;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
 }
-.nav-link:hover {
+.nav_link:hover {
   color: $logoColor !important;
   font-size: 1.1em;
 }
@@ -219,4 +222,25 @@ footer {
 }
 .share_icon{
   color: $navbarColor;
+}
+.nav-link{
+  color: #ffffff !important;
+  padding: 0.5rem !important;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.nav-link:hover {
+  color: $logoColor !important;
+  font-size: 1.1em;
+}
+.dropdown_items {
+  color: $navbarColor;
+  display: flex;
+  padding: .5em;
+  text-decoration: none;
+}
+.dropdown_items:hover {
+  color: $navbarColor;
+  background-color: #9b97a7;
 }
