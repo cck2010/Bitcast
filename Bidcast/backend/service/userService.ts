@@ -270,4 +270,35 @@ export class UserService {
     };
 
 
+    getCurrentUser = async (
+        username: string,
+        id: number
+
+    ): Promise<ResponseJson> => {
+        interface user {
+            name: string;
+            age: number;
+        }
+
+        const user = await this.knex("users")
+            .select()
+            .where("id", id)
+
+
+        return {
+            success: true,
+            data: {
+                msg: "return user data successfully",
+                user: {
+                    id: user[0].id,
+                    email: user[0].email,
+                    profilePic: user[0].profile_pic,
+
+
+                },
+            },
+        };
+    };
+
+
 }

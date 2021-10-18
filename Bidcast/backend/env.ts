@@ -21,4 +21,6 @@ export const env = {
     TWITTER_ACCESS_SECRET: process.env.TWITTER_ACCESS_SECRET || "",
     FACEBOOK_APP_ID: process.env.FACEBOOK_APP_ID || "",
     FACEBOOK_APP_SECRET: process.env.FACEBOOK_APP_SECRET || "",
+    PUBLIC_KEY: process.env.PUBLIC_KEY || "",
+    PRIVATE_KEY: process.env.PRIVATE_KEY || "",
 };

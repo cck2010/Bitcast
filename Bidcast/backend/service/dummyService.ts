@@ -7,11 +7,11 @@ export class DummyService {
         console.log(this.knex);
     };
 
-    SellerChecking = (token: string) => {
+    findRoom = (token: string) => {
         if (token == "123") {
-            return true;
+            return "abc";
         } else {
-            return false;
+            return "";
         }
     };
 }

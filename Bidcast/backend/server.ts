@@ -21,6 +21,9 @@ import { pageNotFound } from "./middlewares";
 import productsRoutes from "./router/productsRoutes";
 import { ProductsService } from "./service/productsService";
 import { ProductsController } from "./controller/productsController";
+import { DummyController } from "./controller/dummyController";
+import { DummyService } from "./service/dummyService";
+import dummyRoutes from "./router/dummyRoutes";
 
 // import { hashPassword, } from './hash';
 
@@ -33,16 +36,22 @@ setSocketIO(io);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors({
-    origin: [process.env.FRONTEND_URL!]
-}))
+app.use(
+    cors({
+        origin: [process.env.FRONTEND_URL!],
+    })
+);
 
 app.set("trust proxy", 1);
 export const userController = new UserController(new UserService(knex));
 export const productsController = new ProductsController(new ProductsService(knex));
+export const dummyController = new DummyController(new DummyService(knex));
+
+
 
 // app.use(requestLogger, dummyCounter);
 app.use(userRoutes);
+app.use(dummyRoutes);
 app.use(productsRoutes);
 app.get("/profile", (req: express.Request, res: express.Response) => {
     res.sendFile(path.join(__dirname, "public", "404.html"));

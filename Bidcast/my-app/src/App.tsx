@@ -11,6 +11,8 @@ import { Footer } from "./pages/homepage/Footer";
 import { CreateBids } from "./pages/createbids/CreateBids";
 import LiveStreamSeller from "./pages/LiveStream/LiveStreamSeller";
 import { Homepage } from "./pages/homepage/Homepage";
+import { profile } from "console";
+import { ProfilePage } from "./pages/Profile-Page/Profilepage";
 // import { CreateBids } from "./pages/createbids/CreateBids";
 
 function App() {
@@ -32,6 +34,9 @@ function App() {
         </Route>
         <Route path="/liveStreamingSeller">
           <LiveStreamSeller />
+        </Route>
+        <Route path="/profilePage">
+          <ProfilePage />
         </Route>
       </Switch>
       <Footer />

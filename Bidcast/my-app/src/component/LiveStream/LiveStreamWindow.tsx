@@ -1,32 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import { Client } from "ion-sdk-js";
 import { IonSFUJSONRPCSignal } from "ion-sdk-js/lib/signal/json-rpc-impl";
-import { Configuration } from "ion-sdk-js/lib/client.d";
+import { config, webSocketIP } from "../../configuration/ion-sfu";
 
 function LiveStreamWindow() {
     const subVideo = useRef<HTMLVideoElement>(null);
 
     let client: Client | null = null;
     let signal: IonSFUJSONRPCSignal | null = null;
-
-    const config: Configuration = {
-        iceServers: [
-            {
-                urls: "stun:stun.l.google.com:19302",
-            },
-            // {
-            //     urls: "turn:turn.ctosan.xyz:3478",
-            //     username: "hello",
-            //     credential: "world",
-            // },
-            {
-                urls: "turn:turn.bidcast.online:3478",
-                username: "hello",
-                credential: "world",
-            },
-        ],
-        codec: "h264",
-    };
 
     const room: string | null = new URLSearchParams(window.location.search).get(
         "room"
@@ -39,9 +20,9 @@ function LiveStreamWindow() {
     // }
 
     useEffect(() => {
-        // signal = new IonSFUJSONRPCSignal("ws://54.251.68.107/ws");
+        // signal = new IonSFUJSONRPCSignal(webSocketIPBackUp);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        signal = new IonSFUJSONRPCSignal("ws://54.251.210.79/ws");
+        signal = new IonSFUJSONRPCSignal(webSocketIP);
         // eslint-disable-next-line react-hooks/exhaustive-deps
         client = new Client(signal, config);
         signal.onopen = () => {
