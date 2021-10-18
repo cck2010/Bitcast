@@ -1,6 +1,4 @@
-export interface LiveStream {}
-
-export interface Category {}
+export interface LiveStreamWindow {}
 
 export interface LiveStreamState {}
 

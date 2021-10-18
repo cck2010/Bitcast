@@ -18,6 +18,9 @@ import path from "path";
 
 // import { hashPassword, } from './hash';
 import { pageNotFound } from "./middlewares";
+import { DummyController } from "./controller/dummyController";
+import { DummyService } from "./service/dummyService";
+import dummyRoutes from "./router/dummyRoutes";
 
 // import { hashPassword, } from './hash';
 
@@ -30,15 +33,19 @@ setSocketIO(io);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors({
-    origin: [process.env.FRONTEND_URL!]
-}))
+app.use(
+    cors({
+        origin: [process.env.FRONTEND_URL!],
+    })
+);
 
 app.set("trust proxy", 1);
 export const userController = new UserController(new UserService(knex));
+export const dummyController = new DummyController(new DummyService(knex));
 
 // app.use(requestLogger, dummyCounter);
 app.use(userRoutes);
+app.use(dummyRoutes);
 app.get("/profile", (req: express.Request, res: express.Response) => {
     res.sendFile(path.join(__dirname, "public", "404.html"));
 });
