@@ -1,22 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 function LiveStreamBiddingInfo() {
+    const [inputRemainingTime, setInputRemainingTime] = useState<number>(2);
     const [remainingTime, setRemainingTime] = useState<number>(0);
-    const [increment, setIncrement] = useState<number>(10);
     const [currentPrice, setCurrentPrice] = useState<number>(100);
-    const [inputPrice, setInputPrice] = useState<number>(currentPrice);
     const [isBidding, setIsBidding] = useState<boolean>(true);
-    const [isDisabled, setIsDisabled] = useState<boolean>(false);
     const [highestBidUser, setHighestBidUser] = useState<string>("");
-    const username = "測試員";
-
-    useEffect(() => {
-        if (inputPrice <= currentPrice + increment - 1) {
-            setIsDisabled(true);
-        } else {
-            setIsDisabled(false);
-        }
-    }, [inputPrice, currentPrice, increment]);
 
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded p-3">
@@ -47,42 +36,32 @@ function LiveStreamBiddingInfo() {
                     {
                         <>
                             <button
-                                disabled={!isBidding}
-                                className={`min_bid btn btn-danger w-75 ${
-                                    !isBidding && "unavailable_btn"
+                                disabled={isBidding}
+                                className={`start_auction btn btn-primary mb-3 w-75 ${
+                                    isBidding && "unavailable_btn"
                                 }`}
                                 onClick={() => {
-                                    setCurrentPrice(currentPrice + increment);
-                                    setHighestBidUser(username);
+                                    setRemainingTime(inputRemainingTime * 60);
+                                    setIsBidding(true);
                                 }}
                             >
-                                <i className="fas fa-gavel"></i> 最低叫價
-                            </button>
-                            <button
-                                disabled={!isBidding || isDisabled}
-                                className={`custom_bid btn btn-primary mb-3 w-75 ${
-                                    (!isBidding || isDisabled) &&
-                                    "unavailable_btn"
-                                }`}
-                                onClick={() => {
-                                    setCurrentPrice(inputPrice);
-                                    setInputPrice(inputPrice);
-                                    setHighestBidUser(username);
-                                }}
-                            >
-                                <i className="fas fa-gavel"></i> 自訂叫價
+                                <i className="fas fa-gavel"></i> 開始拍賣
                             </button>
                             <label>
                                 <span className="mt-3">
-                                    (一口叫價為${increment})
+                                    設定倒數時間(分鐘):
                                 </span>
                                 <input
                                     type="number"
                                     className="action_duration w-75"
-                                    value={inputPrice}
-                                    onChange={(e) => {
-                                        setInputPrice(parseInt(e.target.value));
-                                    }}
+                                    max={5}
+                                    min={1}
+                                    value={inputRemainingTime}
+                                    onChange={(e) =>
+                                        setInputRemainingTime(
+                                            parseInt(e.target.value)
+                                        )
+                                    }
                                 />
                             </label>
                         </>

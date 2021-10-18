@@ -8,17 +8,35 @@ import { Link, Route, Switch } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { HomePageNavbar } from "./pages/homepage/Navbar";
 import { Footer } from "./pages/homepage/Footer";
+import { CreateBids } from "./pages/createbids/CreateBids";
+import LiveStreamSeller from "./pages/LiveStream/LiveStreamSeller";
+import { Homepage } from "./pages/homepage/Homepage";
 // import { CreateBids } from "./pages/createbids/CreateBids";
 
 function App() {
-    return (
-        <div className="App">
-            <HomePageNavbar />
-            {/* <LiveStream /> */}
-            {/* <CreateBids /> */}
-            <Footer />
-        </div>
-    );
+  return (
+    <div className="App">
+      <HomePageNavbar />
+      {/* <LiveStream /> */}
+      {/* <CreateBids /> */}
+      <Switch>
+        {/* <Route path="/" ><Homepage /></Route> */}
+        <Route path="/" exact>
+          <Homepage />
+        </Route>
+        <Route path="/createBids">
+          <CreateBids />
+        </Route>
+        <Route path="/liveStreaming">
+          <LiveStream />
+        </Route>
+        <Route path="/liveStreamingSeller">
+          <LiveStreamSeller />
+        </Route>
+      </Switch>
+      <Footer />
+    </div>
+  );
 }
 
 export default App;

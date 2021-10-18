@@ -1,13 +1,15 @@
-import "./App.scss";
-import { Footer } from "./Footer";
+import "./Homepage.scss";
+import { Broadcasting } from "./Broadcasting";
 import { ComingAuction } from "./Incoming-auction";
-import { HomePageNavbar } from "./Navbar";
 import { Recommendation } from "./Recommendation";
+import { SellWithBidcast } from "./SellWithBidcast";
 
 export function Homepage() {
   return (
     <div>
-      <HomePageNavbar />
+      <section>
+        <Broadcasting />
+      </section>
       <section>
         <ComingAuction />
       </section>
@@ -15,7 +17,7 @@ export function Homepage() {
         <Recommendation />
       </section>
       <section>
-        <Footer />
+        <SellWithBidcast />
       </section>
     </div>
   );
