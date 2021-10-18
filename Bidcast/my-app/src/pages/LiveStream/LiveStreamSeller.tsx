@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./LiveStream.scss";
 import LiveStreamChatRoom from "../../component/LiveStream/LiveStreamChatRoom";
 import LiveStreamRecommend from "../../component/LiveStream/LiveStreamRecommend";
@@ -8,6 +8,8 @@ import { useMediaQuery } from "react-responsive";
 import { Button, ButtonGroup } from "reactstrap";
 import LiveStreamWindowSeller from "../../component/LiveStream/LiveStreamWindowSeller";
 import LiveStreamControlPanelSeller from "../../component/LiveStream/LiveStreamControlPanelSeller";
+import { fetchInfo } from "../../redux/LiveStream/actions";
+import { useDispatch } from "react-redux";
 
 function LiveStream() {
     const liveStreamRef = useRef<HTMLDivElement>(null);
@@ -21,6 +23,17 @@ function LiveStream() {
     });
 
     const [page, setPage] = useState<number>(1);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        let room = new URLSearchParams(window.location.search).get("room");
+        room = room != null ? room : "";
+        let token = new URLSearchParams(window.location.search).get("token");
+        token = token != null ? token : "";
+
+        dispatch(fetchInfo(room, token));
+    }, [dispatch]);
 
     return (
         <div className="LiveStream m-3" ref={liveStreamRef}>

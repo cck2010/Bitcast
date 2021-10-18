@@ -4,6 +4,8 @@ import { IonSFUJSONRPCSignal } from "ion-sdk-js/lib/signal/json-rpc-impl";
 import { config, webSocketIP } from "../../configuration/ion-sfu";
 import { useLiveStreamToken } from "../../hooks/useLiveStreamToken";
 import { ButtonGroup } from "reactstrap";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 function LiveStreamWindow() {
     const pubVideo = useRef<HTMLVideoElement>(null);
@@ -18,6 +20,10 @@ function LiveStreamWindow() {
     ).get("token");
 
     const room = useLiveStreamToken(token);
+
+    const thumbnail = useSelector(
+        (state: RootState) => state.liveStream.liveStreamInfo.thumbnail
+    );
 
     useEffect(() => {
         // signal = new IonSFUJSONRPCSignal(webSocketIPBackUp);
@@ -42,8 +48,6 @@ function LiveStreamWindow() {
         return () => {
             clearInterval(timerId);
             if (preventFirstTime.current) {
-                console.log(preventFirstTime);
-
                 preventFirstTime.current = false;
             } else {
                 client?.leave();
@@ -102,7 +106,7 @@ function LiveStreamWindow() {
     };
 
     return (
-        <div className="LiveStreamWindow">
+        <div className="LiveStreamWindowSeller">
             <div className="flex flex-col h-screen relative">
                 <ButtonGroup className="w-100">
                     <button
@@ -126,9 +130,13 @@ function LiveStreamWindow() {
                 </ButtonGroup>
                 <video
                     id="pubVideo"
-                    className="bg-black w-100 h-100"
+                    poster="transparent.png"
+                    className="w-100 h-100"
                     controls
                     ref={pubVideo}
+                    style={{
+                        backgroundImage: `url("${thumbnail}")`,
+                    }}
                 ></video>
             </div>
         </div>

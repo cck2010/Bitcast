@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from "react";
 import { Client } from "ion-sdk-js";
 import { IonSFUJSONRPCSignal } from "ion-sdk-js/lib/signal/json-rpc-impl";
 import { config, webSocketIP } from "../../configuration/ion-sfu";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 function LiveStreamWindow() {
     const subVideo = useRef<HTMLVideoElement>(null);
@@ -13,11 +15,9 @@ function LiveStreamWindow() {
         "room"
     );
 
-    // if (URL) {
-    //     isPub = true;
-    // } else {
-    //     isPub = false;
-    // }
+    const thumbnail = useSelector(
+        (state: RootState) => state.liveStream.liveStreamInfo.thumbnail
+    );
 
     useEffect(() => {
         // signal = new IonSFUJSONRPCSignal(webSocketIPBackUp);
@@ -67,10 +67,14 @@ function LiveStreamWindow() {
             <div className="flex flex-col h-screen relative">
                 <header className="flex h-16 justify-center items-center text-xl bg-black text-white"></header>
                 <video
-                    id="subVideo "
-                    className="bg-black w-100 h-100"
+                    id="subVideo"
+                    poster="transparent.png"
+                    className="w-100 h-100"
                     controls
                     ref={subVideo}
+                    style={{
+                        backgroundImage: `url("${thumbnail}")`,
+                    }}
                 ></video>
             </div>
         </div>

@@ -18,9 +18,9 @@ import path from "path";
 
 // import { hashPassword, } from './hash';
 import { pageNotFound } from "./middlewares";
-import { DummyController } from "./controller/dummyController";
-import { DummyService } from "./service/dummyService";
-import dummyRoutes from "./router/dummyRoutes";
+import { LiveStreamController } from "./controller/liveStreamController";
+import { LiveStreamService } from "./service/liveStreamService";
+import liveStreamRoutes from "./router/liveStreamRoutes";
 
 // import { hashPassword, } from './hash';
 
@@ -41,11 +41,13 @@ app.use(
 
 app.set("trust proxy", 1);
 export const userController = new UserController(new UserService(knex));
-export const dummyController = new DummyController(new DummyService(knex));
+export const liveStreamController = new LiveStreamController(
+    new LiveStreamService(knex)
+);
 
 // app.use(requestLogger, dummyCounter);
 app.use(userRoutes);
-app.use(dummyRoutes);
+app.use(liveStreamRoutes);
 app.get("/profile", (req: express.Request, res: express.Response) => {
     res.sendFile(path.join(__dirname, "public", "404.html"));
 });
