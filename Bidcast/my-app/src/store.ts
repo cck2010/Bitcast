@@ -9,11 +9,12 @@ import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import { userReducer, UserState } from "./redux/user/reducer";
 import thunk, { ThunkDispatch } from "redux-thunk";
 import { UserActions } from "./redux/user/actions";
-import { CreateBids, createBidsReducer } from "./redux/createbid/reducer";
+import { createBidsReducer } from "./redux/createbid/reducer";
 import { productsReducer, ProductsState } from "./redux/products/reducer";
 import { liveStreamReducer, LiveStreamState } from "./redux/LiveStream/reducer";
 import { LiveStreamActions } from "./redux/LiveStream/actions";
 import { ProductsActions } from "./redux/products/actions";
+import { CreateBids, createBidsActions } from "./redux/createbid/actions";
 
 export const history = createBrowserHistory();
 
@@ -21,7 +22,8 @@ export type RootAction =
     | RouterAction
     | UserActions
     | ProductsActions
-    | LiveStreamActions;
+    | LiveStreamActions
+    | createBidsActions;
 
 export type RootThunkDispatch = ThunkDispatch<RootState, null, RootAction>;
 
