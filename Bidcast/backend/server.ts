@@ -14,7 +14,7 @@ import { UserService } from "./service/UserService";
 import { knex } from "./db";
 import cors from "cors";
 // import { isLoggedIn } from "./guard";
-import path from "path";
+// import path from "path";
 
 // import { hashPassword, } from './hash';
 import { pageNotFound } from "./middlewares";
@@ -39,20 +39,9 @@ export const userController = new UserController(new UserService(knex));
 
 // app.use(requestLogger, dummyCounter);
 app.use(userRoutes);
-app.get("/profile", (req: express.Request, res: express.Response) => {
-    res.sendFile(path.join(__dirname, "public", "404.html"));
-});
-app.use(express.static("public"));
-app.use(express.static("public", { extensions: ["html"] }));
-app.use(express.static("css"));
-app.use(express.static("logos"));
-app.use(express.static("uploads"));
-app.get(
-    "/profile/:alias/:number_tag",
-    (req: express.Request, res: express.Response) => {
-        res.sendFile(path.join(__dirname, "public", "profile.html"));
-    }
-);
+
+
+
 
 // app.use(isLoggedIn, express.static("protected"));
 
