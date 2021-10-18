@@ -18,6 +18,9 @@ import path from "path";
 
 // import { hashPassword, } from './hash';
 import { pageNotFound } from "./middlewares";
+import productsRoutes from "./router/productsRoutes";
+import { ProductsService } from "./service/productsService";
+import { ProductsController } from "./controller/productsController";
 
 // import { hashPassword, } from './hash';
 
@@ -36,9 +39,11 @@ app.use(cors({
 
 app.set("trust proxy", 1);
 export const userController = new UserController(new UserService(knex));
+export const productsController = new ProductsController(new ProductsService(knex));
 
 // app.use(requestLogger, dummyCounter);
 app.use(userRoutes);
+app.use(productsRoutes);
 app.get("/profile", (req: express.Request, res: express.Response) => {
     res.sendFile(path.join(__dirname, "public", "404.html"));
 });

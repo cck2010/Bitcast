@@ -40,9 +40,12 @@ function ProductsInfoInput(): any {
   // function numFilter(e: any) {
   //   setNum(e.target.value);
   // }
+  let infoId:string = v4(); 
+  // key={infoId}
   return (
-    <div className="item_input_container" key={v4()}>
-      <p><label>物品名稱: <input className={"input_default"} {...register("productInput.name")} /></label></p>
+    
+    <div className="item_input_container" >
+      <p><label>物品名稱: <input className={"input_default"} {...register("productInput.name") } /></label></p>
       <p><label>物品圖片: <input className={"input_default"} type="file" {...register('productInput.image')} /></label></p>
       <p><label>底價: <input className={"input_default"} type="number"{...register('productInput.minimumBid')} /></label></p>
       <p><label>每口價: <input className={"input_default"} type="number" {...register('productInput.eachBidAmount')} /></label></p>
