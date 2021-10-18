@@ -1,0 +1,20 @@
+@import '~react-pro-sidebar/dist/scss/styles.scss';
+
+
+.sidebar_logo{
+    display: flex;
+    justify-content: center;
+    padding: .8em;
+}
+.logout_button {
+    padding: .8em;
+}
+.pro-sidebar > .pro-sidebar-inner > .pro-sidebar-layout {
+    min-height: 100vh !important;
+}
+.profile_container{
+    display: flex;
+}
+.pro-sidebar>.pro-sidebar-inner {
+    background: #0c1e35 !important;
+}
