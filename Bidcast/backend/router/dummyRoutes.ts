@@ -3,8 +3,6 @@ import { dummyController } from "../server";
 
 const dummyRoutes = express.Router();
 
-dummyRoutes.get("/room?=token", (req, res) =>
-    dummyController.findRoom(req, res)
-);
+dummyRoutes.get("/room", (req, res) => dummyController.findRoom(req, res));
 
 export default dummyRoutes;

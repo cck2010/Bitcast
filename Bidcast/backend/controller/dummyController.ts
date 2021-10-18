@@ -6,6 +6,7 @@ export class DummyController {
 
     findRoom = async (req: Request, res: Response) => {
         const token = req.query.token as string;
+        console.log(token);
 
         const result = await this.dummyService.findRoom(token);
         console.log(result);

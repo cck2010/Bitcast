@@ -3,9 +3,11 @@ import { Client, LocalStream } from "ion-sdk-js";
 import { IonSFUJSONRPCSignal } from "ion-sdk-js/lib/signal/json-rpc-impl";
 import { config, webSocketIP } from "../../configuration/ion-sfu";
 import { useLiveStreamToken } from "../../hooks/useLiveStreamToken";
+import { Button, ButtonGroup } from "reactstrap";
 
 function LiveStreamWindow() {
     const pubVideo = useRef<HTMLVideoElement>(null);
+    const preventFirstTime = useRef<boolean>(true);
 
     let client: Client | null = null;
     let signal: IonSFUJSONRPCSignal | null = null;
@@ -15,8 +17,7 @@ function LiveStreamWindow() {
         window.location.search
     ).get("token");
 
-    let room = useLiveStreamToken(token);
-    console.log(room);
+    const room = useLiveStreamToken(token);
 
     useEffect(() => {
         // signal = new IonSFUJSONRPCSignal(webSocketIPBackUp);
@@ -28,18 +29,28 @@ function LiveStreamWindow() {
             if (client == null) {
                 return;
             }
-            client.join(`test room ${token}`, "");
+            client.join(`test room ${room}`, "");
         };
-        let timerId: NodeJS.Timeout = setInterval(() => {}, 10000);
+        let timerId: NodeJS.Timeout = setInterval(() => {}, 45000);
         setTimeout(() => {
             timerId = setInterval(
                 () => signal != null && signal.notify("method", "params"),
-                10000
+                45000
             );
         }, 10000);
 
-        return clearInterval(timerId);
-    }, []);
+        return () => {
+            clearInterval(timerId);
+            if (preventFirstTime.current) {
+                console.log(preventFirstTime);
+
+                preventFirstTime.current = false;
+            } else {
+                client?.leave();
+                signal?.close();
+            }
+        };
+    }, [room]);
 
     const start = (event: boolean): void => {
         if (event) {
@@ -93,38 +104,32 @@ function LiveStreamWindow() {
     return (
         <div className="LiveStreamWindow">
             <div className="flex flex-col h-screen relative">
-                <header className="flex h-16 justify-center items-center text-xl bg-black text-white">
-                    <div className="absolute top-2 right-5">
-                        <button
-                            id="bnt_pubcam"
-                            className="bg-blue-500 px-4 py-2 text-white rounded-lg mr-5"
-                            onClick={() => start(true)}
-                        >
-                            Publish Camera
-                        </button>
-                        <button
-                            id="bnt_pubscreen"
-                            className="bg-green-500 px-4 py-2 text-white rounded-lg"
-                            onClick={() => start(false)}
-                        >
-                            Publish Screen
-                        </button>
-                        <button
-                            id="bnt_pubscreen"
-                            className="bg-green-500 px-4 py-2 text-white rounded-lg"
-                            onClick={() => stop()}
-                        >
-                            Shut Up
-                        </button>
-                    </div>
-                </header>
+                <ButtonGroup className="w-100">
+                    <button
+                        className="btn btn-primary"
+                        onClick={() => start(true)}
+                    >
+                        鏡頭直播
+                    </button>
+                    <button
+                        className="btn btn-success"
+                        onClick={() => start(false)}
+                    >
+                        電腦畫面直播
+                    </button>
+                    <button
+                        className="btn btn-secondary"
+                        onClick={() => stop()}
+                    >
+                        停止直播
+                    </button>
+                </ButtonGroup>
                 <video
                     id="pubVideo"
                     className="bg-black w-100 h-100"
                     controls
                     ref={pubVideo}
                 ></video>
-                )
             </div>
         </div>
     );
