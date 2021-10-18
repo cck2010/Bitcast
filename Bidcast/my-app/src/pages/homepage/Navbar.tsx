@@ -4,7 +4,7 @@ import {
     FormControl,
     Nav,
     Navbar,
-    // Image,
+    Image,
     NavDropdown,
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -15,9 +15,9 @@ import { Link, Route, Switch } from "react-router-dom";
 import { CreateBids } from "../createbids/CreateBids";
 import LiveStream from "../LiveStream/LiveStream";
 import { useState } from "react";
-// import { Homepage } from "./Homepage";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faBell } from "@fortawesome/free-solid-svg-icons";
+import { Homepage } from "./Homepage";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBell } from "@fortawesome/free-solid-svg-icons";
 
 export function HomePageNavbar() {
   const [show, setShow] = useState(false);
@@ -29,9 +29,9 @@ export function HomePageNavbar() {
   };
   return (
     <div>
-      <Navbar collapseOnSelect expand="lg" className="navbar">
+      <Navbar collapseOnSelect expand="md" className="navbar">
         <Container className="logo_container">
-          <Navbar.Brand href="#home">
+          <Link to="/" className="nav_link">
             <img
               alt="bidcast_logo"
               src={bidcast_logo}
@@ -39,7 +39,7 @@ export function HomePageNavbar() {
               height="60"
               className="d-inline-block align-top"
             />
-          </Navbar.Brand>
+          </Link>
           <div className="buttons_container">
             <Form className="d-flex">
               <FormControl
@@ -53,8 +53,8 @@ export function HomePageNavbar() {
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="me-auto navbar_buttons">
-                <Nav.Link href="#">主頁</Nav.Link>
-                <Nav.Link href="#">拍賣嘢</Nav.Link>
+                <Link to="/" className="nav_link">主頁</Link>
+                <Link to="/createBids" className="nav_link">拍賣嘢</Link>
                 <NavDropdown
                   title="商品分類"
                   id="collasible-nav-dropdown"
@@ -63,25 +63,25 @@ export function HomePageNavbar() {
                   onMouseEnter={showDropdown}
                   onMouseLeave={hideDropdown}
                 >
-                  <NavDropdown.Item href="#" className="dropdown_items">
+                  <Link to="/" className="dropdown_items">
                     商品分類1
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="#" className="dropdown_items">
+                  </Link>
+                  <Link to="/" className="dropdown_items">
                     商品分類2
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="#" className="dropdown_items">
+                  </Link>
+                  <Link to="/" className="dropdown_items">
                     商品分類3
-                  </NavDropdown.Item>
+                  </Link>
                 </NavDropdown>
-                <Nav.Link href="#">登入 ／ 註冊</Nav.Link>
-                {/* <Nav.Link href="#">
+                <Link to="/" className="nav_link">登入 ／ 註冊</Link>
+                <Link to="/" className="nav_link">
                 <FontAwesomeIcon icon={faBell} />
-              </Nav.Link> */}
+              </Link>
               </Nav>
             </Navbar.Collapse>
-            {/* <Nav.Link href="#">
+            <Link to="/profilePage" className="nav_link">
             <Image src={lihkg_logo} width="40" height="40" roundedCircle />
-          </Nav.Link> */}
+          </Link>
           </div>
         </Container>
       </Navbar>

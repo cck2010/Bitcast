@@ -7,6 +7,8 @@ import {
   faExternalLinkAlt,
   faPodcast,
 } from "@fortawesome/free-solid-svg-icons";
+import { push } from "connected-react-router";
+import { useDispatch } from "react-redux";
 
 const responsive = {
   desktop: {
@@ -27,6 +29,7 @@ const responsive = {
 };
 
 export function Broadcasting() {
+  const dispatch = useDispatch();
   return (
     <div>
       <Container>
@@ -88,7 +91,9 @@ export function Broadcasting() {
                   依家嘅價: <span className="biding_price">HKD 100</span>
                 </Card.Text>
                 <div className="bid_share_container">
-                  <Button variant="outline-dark" className="bid_button">
+                  <Button variant="outline-dark" className="bid_button" onClick={()=>{
+                    dispatch(push(`/liveStreaming?room=`))
+                  }}>
                     即刻去咇！
                   </Button>
                   <FontAwesomeIcon
@@ -99,48 +104,7 @@ export function Broadcasting() {
               </Card.Body>
             </Card>
           </div>
-          <div>
-            <Card className="product_card">
-            <div className="img_icon_container">
-                <Image
-                  className="img_fluid"
-                  src="https://i0.wp.com/sneakerhistory.com/wp-content/uploads/2019/08/kobe-ad-mid.jpg?resize=560%2C361&ssl=1"
-                  fluid
-                />
-                <FontAwesomeIcon className="podcast_icon" icon={faPodcast} />
-              </div>
-              <Card.Body>
-                <div className="counter">
-                  <div className="countdown_time">
-                    <div className="time_value">00</div>
-                    <div className="time_label">日</div>
-                  </div>
-                  <div className="countdown_time">
-                    <div className="time_value">00</div>
-                    <div className="time_label">時</div>
-                  </div>
-                  <div className="countdown_time">
-                    <div className="time_value">00</div>
-                    <div className="time_label">分</div>
-                  </div>
-                  <div className="countdown_time">
-                    <div className="time_value">00</div>
-                    <div className="time_label">秒</div>
-                  </div>
-                </div>
-                <Card.Title>產品名</Card.Title>
-                <Card.Text>
-                  依家嘅價: <span className="biding_price">HKD 100</span>
-                </Card.Text>
-                <div className="bid_share_container">
-                  <Button variant="outline-dark" className="bid_button">
-                    即刻去咇！
-                  </Button>
-                  <FontAwesomeIcon icon={faExternalLinkAlt} />
-                </div>
-              </Card.Body>
-            </Card>
-          </div>
+          <div>111</div>
           <div>111</div>
           <div>111</div>
         </Carousel>

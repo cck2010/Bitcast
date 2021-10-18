@@ -9,7 +9,7 @@ import {
   SidebarFooter,
 } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
-import bidcast_logo from "../bidcast_logo.png";
+import bidcast_logo from "../homepage/bidcast_logo.png";
 import "./Profilepage.scss";
 
 export function Sidebar() {
