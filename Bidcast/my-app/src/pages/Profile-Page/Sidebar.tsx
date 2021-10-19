@@ -15,8 +15,8 @@ import { useState } from "react";
 export function Sidebar() {
   // const intl = useIntl()
   const [toggled, setToggled] = useState(false);
-  const handleToggleSidebar = (value: boolean) => {
-    setToggled(value);
+  const handleToggleSidebar = () => {
+    setToggled(!false);
   };
   return (
     <div>

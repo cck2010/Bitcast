@@ -5,11 +5,11 @@ export function SellWithBidcast() {
     <div>
       <div className="start_bid_section">
         <div className="discription_container">
-          <h3 className="bid_with_bidcast">喺Bidcast拍賣</h3>
-          <p>想知你嘅產品最高可以賣到幾多錢？</p>
-          <p>喺度試下拍賣米知囉！</p>
+          <h3 className="bid_with_bidcast">在Bidcast拍賣</h3>
+          <p>想知道你的產品最高能賣到多少錢？</p>
+          <p>立刻嘗試拍賣就知道！</p>
           <Button variant="outline-dark" className="bid_button">
-            即刻拍賣
+            馬上拍賣
           </Button>
         </div>
         <div>

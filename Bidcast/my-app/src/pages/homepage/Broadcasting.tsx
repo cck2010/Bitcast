@@ -9,6 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { push } from "connected-react-router";
 import { useDispatch } from "react-redux";
+import { RWebShare } from "react-web-share";
 
 const responsive = {
   desktop: {
@@ -33,7 +34,7 @@ export function Broadcasting() {
   return (
     <div>
       <Container>
-        <h4 className="Incoming_auction">拍賣緊</h4>
+        <h4 className="Incoming_auction">直播中</h4>
         <SvgBorder />
         <Carousel
           additionalTransfrom={0}
@@ -88,18 +89,32 @@ export function Broadcasting() {
                 </div>
                 <Card.Title>產品名</Card.Title>
                 <Card.Text>
-                  依家嘅價: <span className="biding_price">HKD 100</span>
+                  目前價格: <span className="biding_price">HKD 100</span>
                 </Card.Text>
                 <div className="bid_share_container">
-                  <Button variant="outline-dark" className="bid_button" onClick={()=>{
-                    dispatch(push(`/liveStreaming?room=`))
-                  }}>
-                    即刻去咇！
+                  <Button
+                    variant="outline-dark"
+                    className="bid_button"
+                    onClick={() => {
+                      dispatch(push(`/liveStreaming?room=`));
+                    }}
+                  >
+                    馬上出價！
                   </Button>
-                  <FontAwesomeIcon
-                    className="share_icon"
-                    icon={faExternalLinkAlt}
-                  />
+
+                  <RWebShare
+                    data={{
+                      text: "Like humans, flamingos make friends for life",
+                      url: "https://on.natgeo.com/2zHaNup",
+                      title: "Flamingos",
+                    }}
+                    onClick={() => console.log("shared successfully!")}
+                  >
+                    <FontAwesomeIcon
+                      className="share_icon"
+                      icon={faExternalLinkAlt}
+                    />
+                  </RWebShare>
                 </div>
               </Card.Body>
             </Card>

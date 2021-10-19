@@ -47,7 +47,7 @@ export function HomePageNavbar() {
                 <Form className="d-flex">
                   <FormControl
                     type="search"
-                    placeholder="搵下嘢"
+                    placeholder="搜尋"
                     className="me-2 search_bar"
                     aria-label="Search"
                   />
@@ -56,7 +56,7 @@ export function HomePageNavbar() {
                   主頁
                 </Link>
                 <Link to="/createBids" className="nav_link">
-                  拍賣嘢
+                  拍賣
                 </Link>
                 <NavDropdown
                   title="商品分類"

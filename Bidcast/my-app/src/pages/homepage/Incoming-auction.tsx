@@ -80,7 +80,7 @@ export function ComingAuction() {
                   起價: <span className="biding_price">HKD 100</span>
                 </Card.Text>
                 <Button variant="outline-dark" className="bid_button">
-                  Mark低先
+                  收藏
                 </Button>
               </Card.Body>
             </Card>
@@ -116,7 +116,7 @@ export function ComingAuction() {
                   起價: <span className="biding_price">HKD 100</span>
                 </Card.Text>
                 <Button variant="outline-dark" className="bid_button">
-                  Mark低先
+                  收藏
                 </Button>
               </Card.Body>
             </Card>
@@ -153,7 +153,7 @@ export function ComingAuction() {
                     起價: <span className="biding_price">HKD 100</span>
                   </Card.Text>
                   <Button variant="outline-dark" className="bid_button">
-                    Mark低先
+                    收藏
                   </Button>
                 </Card.Body>
               </Card>
@@ -191,7 +191,7 @@ export function ComingAuction() {
                     起價: <span className="biding_price">HKD 100</span>
                   </Card.Text>
                   <Button variant="outline-dark" className="bid_button">
-                    Mark低先
+                    收藏
                   </Button>
                 </Card.Body>
               </Card>
