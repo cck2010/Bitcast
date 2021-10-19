@@ -30,8 +30,8 @@ export function HomePageNavbar() {
   return (
     <div>
       <Navbar collapseOnSelect expand="md" className="navbar py-0">
-        <Container className="logo_container">
-          <Link to="/" className="nav_link">
+        {/* <Container className="logo_container"> */}
+          <Link to="/" className="nav_link ms-3 mt-2 mt-md-0">
             <img
               alt="bidcast_logo"
               src={bidcast_logo}
@@ -82,7 +82,7 @@ export function HomePageNavbar() {
                 <Link to="/" className="nav_link">
                   <FontAwesomeIcon icon={faBell} />
                 </Link>
-                <Link to="/profilePage" className="nav_link">
+                <Link to="/profilePage" className="nav_link mb-md-0 mb-3 me-0 me-md-3">
                   <Image
                     src={lihkg_logo}
                     width="40"
@@ -93,7 +93,7 @@ export function HomePageNavbar() {
               </Nav>
             {/* </div> */}
           </Navbar.Collapse>
-        </Container>
+        {/* </Container> */}
       </Navbar>
     </div>
   );

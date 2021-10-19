@@ -2,12 +2,17 @@ import { Button, Card, Container, Image } from "react-bootstrap";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { SvgBorder } from "./SvgBorder";
+import { RWebShare } from "react-web-share";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
+import { RootState } from "../../store";
+import { useSelector } from "react-redux";
 
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 3,
-    slidesToSlide: 3, // optional, default to 1.
+    items: 4,
+    slidesToSlide: 2, // optional, default to 1.
   },
   tablet: {
     breakpoint: { max: 1024, min: 464 },
@@ -22,6 +27,10 @@ const responsive = {
 };
 
 export function ComingAuction() {
+  const auctions = useSelector((state: RootState)=> Object.values(state.comingAuction.comingAuctions.comingAuctionsArr))
+
+  console.log(auctions);
+  
   return (
     <div>
       <Container>
@@ -29,9 +38,11 @@ export function ComingAuction() {
         <SvgBorder />
         <Carousel
           additionalTransfrom={0}
-          arrows={false}
+          arrows
+          removeArrowOnDeviceType="desktop"
+          autoPlay
           autoPlaySpeed={3000}
-          centerMode
+          centerMode={false}
           className=""
           containerClass="container-with-dots"
           dotListClass=""
@@ -40,7 +51,7 @@ export function ComingAuction() {
           infinite
           itemClass=""
           keyBoardControl
-          minimumTouchDrag={100}
+          minimumTouchDrag={90}
           renderButtonGroupOutside={false}
           renderDotsOutside={false}
           responsive={responsive}
@@ -79,9 +90,25 @@ export function ComingAuction() {
                 <Card.Text>
                   起價: <span className="biding_price">HKD 100</span>
                 </Card.Text>
-                <Button variant="outline-dark" className="bid_button">
-                  收藏
-                </Button>
+                <div className="bid_share_container">
+                  <Button variant="outline-dark" className="bid_button">
+                    收藏
+                  </Button>
+
+                  <RWebShare
+                    data={{
+                      text: "",
+                      url: "",
+                      title: "Look at this amazing live",
+                    }}
+                    onClick={() => console.log("shared successfully!")}
+                  >
+                    <FontAwesomeIcon
+                      className="share_icon"
+                      icon={faExternalLinkAlt}
+                    />
+                  </RWebShare>
+                </div>
               </Card.Body>
             </Card>
           </div>
