@@ -32,7 +32,6 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
         (state: RootState) =>
             state.liveStream.liveStreamProducts.liveStreamProductsArr
     );
-    console.log(products);
 
     return (
         <div
