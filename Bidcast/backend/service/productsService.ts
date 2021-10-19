@@ -1,8 +1,8 @@
-import {Knex} from 'knex';
+import { Knex } from "knex";
 // import { ResponseJson } from '../response';
 
 export class ProductsService {
-    constructor(private knex: Knex){}
+    constructor(private knex: Knex) {}
 
     getCategories = async () => {
         try {
@@ -10,26 +10,27 @@ export class ProductsService {
             // return console.log("results", results);
             return {
                 success: true,
-                data:{msg:"get categories success", results },
+                data: { msg: "get categories success", results },
             };
         } catch (error) {
             console.log(error);
             return {
                 success: false,
-                data:{msg:"service side get categories fail"},
-                error: new Error("get categories fail")
-            }
-            
+                data: { msg: "service side get categories fail" },
+                error: new Error("get categories fail"),
+            };
         }
-    }
-    submitBid = async (liveInput:Object,productInput:[Object]) => {
+    };
+    submitBid = async (liveInput: Object, productInput: [Object]) => {
         console.table(liveInput);
         console.table(productInput);
         try {
-            
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    }
+    };
 
+    putBidIncrement = async (productId: number) => {
+        return productId + 10;
+    };
 }

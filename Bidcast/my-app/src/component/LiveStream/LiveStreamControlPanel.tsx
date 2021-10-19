@@ -17,7 +17,7 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
     const goNextSlide = (dir: "next" | "prev") =>
         carousel.current != null && carousel.current.goTo(dir);
 
-    const liveStreamControlPanelDesktopSetting = { maxHeight: "500px" };
+    const liveStreamControlPanelDesktopSetting = { maxHeight: "600px" };
 
     const dispatch = useDispatch();
     const liveId = useSelector(
@@ -41,7 +41,7 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
             <div className="row">
                 <div
                     className={`${
-                        props.isDesktop ? "col-6" : "col-12"
+                        props.isDesktop ? "col-5" : "col-12"
                     } d-flex d-col carousel position-relative`}
                 >
                     <Carousel
@@ -96,7 +96,7 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
                         <i className="fas fa-caret-right"></i>
                     </button>
                 </div>
-                <div className={`${props.isDesktop ? "col-6" : "col-12 mt-3"}`}>
+                <div className={`${props.isDesktop ? "col-7" : "col-12 mt-3"}`}>
                     <LiveStreamBiddingInfo />
                 </div>
             </div>

@@ -75,12 +75,14 @@ function LiveStream() {
                     </ButtonGroup>
                     {page === 1 && <LiveStreamHeader />}
                     {page === 2 && (
-                        <LiveStreamControlPanelSeller
-                            isDesktop={isDesktop}
-                            isTablet={isTablet}
-                        />
+                        <>
+                            <LiveStreamControlPanelSeller
+                                isDesktop={isDesktop}
+                                isTablet={isTablet}
+                            />
+                            <LiveStreamDescription />
+                        </>
                     )}
-                    {page === 1 && <LiveStreamDescription />}
                     {page === 3 && (
                         <LiveStreamChatRoom
                             liveStreamRef={liveStreamRef}

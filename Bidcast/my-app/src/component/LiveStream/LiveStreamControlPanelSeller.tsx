@@ -21,7 +21,7 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
     const goNextSlide = (dir: "next" | "prev") =>
         carousel.current != null && carousel.current.goTo(dir);
 
-    const liveStreamControlPanelDesktopSetting = { maxHeight: "500px" };
+    const liveStreamControlPanelDesktopSetting = { maxHeight: "600px" };
 
     const dispatch = useDispatch();
     const liveId = useSelector(
