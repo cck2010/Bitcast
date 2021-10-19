@@ -226,6 +226,7 @@ footer {
 }
 .share_icon {
   color: $navbarColor;
+  cursor: pointer;
 }
 .nav-link {
   color: #ffffff !important;
@@ -266,4 +267,8 @@ footer {
     flex-direction: row;
     height: 100px;
   }
+}
+.navbar-toggler-icon {
+  background-color: #ffffff;
+  border-radius: 6px;
 }

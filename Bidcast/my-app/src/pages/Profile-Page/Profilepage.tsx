@@ -6,15 +6,15 @@ import { useState } from "react";
 
 export function ProfilePage() {
   const [toggled, setToggled] = useState(false);
-  const handleToggleSidebar = (value:boolean) => {
-    setToggled(value);
+  const handleToggleSidebar = () => {
+    setToggled(!false);
   };
 
   return (
     <div>
-      <div className={`profilePage ${toggled ? 'toggled' : ''}`}>
-        <Sidebar />
-        <MainContent />
+      <div className={`profilePage ${toggled ? "toggled" : ""}`}>
+          <Sidebar />
+          <MainContent />
       </div>
     </div>
   );
