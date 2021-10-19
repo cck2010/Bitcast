@@ -2,14 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { Client, LocalStream } from "ion-sdk-js";
 import { IonSFUJSONRPCSignal } from "ion-sdk-js/lib/signal/json-rpc-impl";
 import { config, webSocketIP } from "../../configuration/ion-sfu";
-import { useLiveStreamToken } from "../../hooks/useLiveStreamToken";
 import { ButtonGroup } from "reactstrap";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import useFetch from "react-fetch-hook";
 
 function LiveStreamWindow() {
     const pubVideo = useRef<HTMLVideoElement>(null);
-    const preventFirstTime = useRef<boolean>(true);
 
     const [client, setClient] = useState<Client | null>(null);
     let signal: IonSFUJSONRPCSignal | null = null;
@@ -19,7 +18,9 @@ function LiveStreamWindow() {
         window.location.search
     ).get("token");
 
-    const room = useLiveStreamToken(token);
+    const result = useFetch<{ room: string }>(
+        `${process.env.REACT_APP_BACKEND_URL}/room?token=${token}`
+    );
 
     const thumbnail = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.thumbnail
@@ -30,8 +31,7 @@ function LiveStreamWindow() {
     );
 
     useEffect(() => {
-        if (!preventFirstTime.current && !client) {
-            console.log("start", room);
+        if (!result.isLoading && !client) {
             // signal = new IonSFUJSONRPCSignal(webSocketIPBackUp);
             // eslint-disable-next-line react-hooks/exhaustive-deps
             signal = new IonSFUJSONRPCSignal(webSocketIP);
@@ -41,7 +41,7 @@ function LiveStreamWindow() {
                 if (ClientConnection == null) {
                     return;
                 }
-                ClientConnection.join(`test room ${room}`, "");
+                ClientConnection.join(`test room ${result.data?.room}`, "");
             };
             setClient(ClientConnection);
             // setTimeout(() => {
@@ -55,17 +55,10 @@ function LiveStreamWindow() {
 
             // }, 10000);
         }
-
-        return () => {
-            if (preventFirstTime.current) {
-                preventFirstTime.current = false;
-            }
-        };
-    }, [room, timerId]);
+    }, [result]);
 
     useEffect(() => {
         return () => {
-            console.log("ended connection", client);
             clearInterval(timerId);
             client?.close();
             signal?.close();
