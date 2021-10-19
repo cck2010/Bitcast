@@ -30,7 +30,7 @@ export function HomePageNavbar() {
   return (
     <div>
       <Navbar collapseOnSelect expand="md" className="navbar py-0">
-        <Container className="logo_container">
+        {/* <Container className="logo_container"> */}
           <Link to="/" className="nav_link">
             <img
               alt="bidcast_logo"
@@ -93,7 +93,7 @@ export function HomePageNavbar() {
               </Nav>
             {/* </div> */}
           </Navbar.Collapse>
-        </Container>
+        {/* </Container> */}
       </Navbar>
     </div>
   );

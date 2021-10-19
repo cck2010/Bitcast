@@ -104,9 +104,9 @@ export function Broadcasting() {
 
                   <RWebShare
                     data={{
-                      text: "Like humans, flamingos make friends for life",
-                      url: "https://on.natgeo.com/2zHaNup",
-                      title: "Flamingos",
+                      text: "",
+                      url: "",
+                      title: "Look at this amazing live",
                     }}
                     onClick={() => console.log("shared successfully!")}
                   >

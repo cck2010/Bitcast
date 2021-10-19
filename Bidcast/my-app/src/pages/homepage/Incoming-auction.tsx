@@ -2,6 +2,11 @@ import { Button, Card, Container, Image } from "react-bootstrap";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { SvgBorder } from "./SvgBorder";
+import { RWebShare } from "react-web-share";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
+import { RootState } from "../../store";
+import { useSelector } from "react-redux";
 
 const responsive = {
   desktop: {
@@ -22,6 +27,10 @@ const responsive = {
 };
 
 export function ComingAuction() {
+  const auctions = useSelector((state: RootState)=> Object.values(state.comingAuction.comingAuctions.comingAuctionsArr))
+
+  console.log(auctions);
+  
   return (
     <div>
       <Container>
@@ -79,9 +88,25 @@ export function ComingAuction() {
                 <Card.Text>
                   起價: <span className="biding_price">HKD 100</span>
                 </Card.Text>
-                <Button variant="outline-dark" className="bid_button">
-                  收藏
-                </Button>
+                <div className="bid_share_container">
+                  <Button variant="outline-dark" className="bid_button">
+                    收藏
+                  </Button>
+
+                  <RWebShare
+                    data={{
+                      text: "",
+                      url: "",
+                      title: "Look at this amazing live",
+                    }}
+                    onClick={() => console.log("shared successfully!")}
+                  >
+                    <FontAwesomeIcon
+                      className="share_icon"
+                      icon={faExternalLinkAlt}
+                    />
+                  </RWebShare>
+                </div>
               </Card.Body>
             </Card>
           </div>
