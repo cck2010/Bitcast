@@ -15,6 +15,9 @@ function LiveStreamHeader() {
     const currentViewers = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.currentViewers
     );
+    const description = useSelector(
+        (state: RootState) => state.liveStream.liveStreamInfo.description
+    );
 
     return (
         <div className="LiveStreamHeader px-3">
@@ -27,11 +30,12 @@ function LiveStreamHeader() {
                         alt="profilePic"
                     />
                     <div className="username mx-3">{seller}</div>
+                    <div className="viewers">
+                        正在觀看人數: {currentViewers}{" "}
+                        <i className="fas fa-user-friends"></i>
+                    </div>
                 </div>
-                <div className="viewers">
-                    正在觀看人數: {currentViewers}{" "}
-                    <i className="fas fa-user-friends"></i>
-                </div>
+                <div className="description m-3 mb-5">{description}</div>
             </div>
         </div>
     );

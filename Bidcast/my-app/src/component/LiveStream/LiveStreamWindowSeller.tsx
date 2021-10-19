@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Client, LocalStream } from "ion-sdk-js";
 import { IonSFUJSONRPCSignal } from "ion-sdk-js/lib/signal/json-rpc-impl";
 import { config, webSocketIP } from "../../configuration/ion-sfu";
@@ -11,7 +11,7 @@ function LiveStreamWindow() {
     const pubVideo = useRef<HTMLVideoElement>(null);
     const preventFirstTime = useRef<boolean>(true);
 
-    let client: Client | null = null;
+    const [client, setClient] = useState<Client | null>(null);
     let signal: IonSFUJSONRPCSignal | null = null;
     let localStream: LocalStream | null = null;
 
@@ -25,41 +25,58 @@ function LiveStreamWindow() {
         (state: RootState) => state.liveStream.liveStreamInfo.thumbnail
     );
 
+    let [timerId, setTimerId] = useState<NodeJS.Timeout>(
+        setInterval(() => {}, 45000)
+    );
+
     useEffect(() => {
-        // signal = new IonSFUJSONRPCSignal(webSocketIPBackUp);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        signal = new IonSFUJSONRPCSignal(webSocketIP);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        client = new Client(signal, config);
-        signal.onopen = () => {
-            if (client == null) {
-                return;
-            }
-            client.join(`test room ${room}`, "");
-        };
-        let timerId: NodeJS.Timeout = setInterval(() => {}, 45000);
-        setTimeout(() => {
-            timerId = setInterval(
-                () => signal != null && signal.notify("method", "params"),
-                45000
+        if (!preventFirstTime.current && !client) {
+            console.log("start", room);
+            // signal = new IonSFUJSONRPCSignal(webSocketIPBackUp);
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            signal = new IonSFUJSONRPCSignal(webSocketIP);
+            let ClientConnection = new Client(signal, config);
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            signal.onopen = () => {
+                if (ClientConnection == null) {
+                    return;
+                }
+                ClientConnection.join(`test room ${room}`, "");
+            };
+            setClient(ClientConnection);
+            // setTimeout(() => {
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            setTimerId(
+                setInterval(
+                    () => signal != null && signal.notify("method", "params"),
+                    45000
+                )
             );
-        }, 10000);
+
+            // }, 10000);
+        }
 
         return () => {
-            clearInterval(timerId);
             if (preventFirstTime.current) {
                 preventFirstTime.current = false;
-            } else {
-                client?.leave();
-                signal?.close();
             }
         };
-    }, [room]);
+    }, [room, timerId]);
+
+    useEffect(() => {
+        return () => {
+            console.log("ended connection", client);
+            clearInterval(timerId);
+            client?.close();
+            signal?.close();
+        };
+    }, [client, signal, timerId]);
 
     const start = (event: boolean): void => {
         if (event) {
             LocalStream.getUserMedia({
                 resolution: "vga",
+                // resolution: "hd",
                 audio: true,
                 codec: "vp8",
             })
@@ -78,6 +95,7 @@ function LiveStreamWindow() {
         } else {
             LocalStream.getDisplayMedia({
                 resolution: "vga",
+                // resolution: "hd",
                 video: true,
                 audio: true,
                 codec: "vp8",
@@ -108,26 +126,29 @@ function LiveStreamWindow() {
     return (
         <div className="LiveStreamWindowSeller">
             <div className="flex flex-col h-screen relative">
-                <ButtonGroup className="w-100">
-                    <button
-                        className="btn btn-primary"
-                        onClick={() => start(true)}
-                    >
-                        鏡頭直播
-                    </button>
-                    <button
-                        className="btn btn-success"
-                        onClick={() => start(false)}
-                    >
-                        電腦畫面直播
-                    </button>
-                    <button
-                        className="btn btn-secondary"
-                        onClick={() => stop()}
-                    >
-                        停止直播
-                    </button>
-                </ButtonGroup>
+                {client != null && (
+                    <ButtonGroup className="w-100">
+                        <button
+                            className="btn btn-primary"
+                            onClick={() => start(true)}
+                        >
+                            鏡頭直播
+                        </button>
+                        <button
+                            className="btn btn-success"
+                            onClick={() => start(false)}
+                        >
+                            電腦畫面直播
+                        </button>
+                        <button
+                            className="btn btn-secondary"
+                            onClick={() => stop()}
+                        >
+                            停止直播
+                        </button>
+                    </ButtonGroup>
+                )}
+
                 <video
                     id="pubVideo"
                     poster="transparent.png"

@@ -59,12 +59,14 @@ export async function isLoggedIn(
             expiresIn: "12h",
             algorithm: "RS512"
         };
-        const payload = jwt.verify(token, jwtKey.publicKEY, verifyOptions as {});
+        const User = jwt.verify(token, jwtKey.publicKEY, verifyOptions as {});
+        // console.log(User)
         // database check
-        if (typeof payload != "string") {
-            const user = await userService.getCurrentUser(payload.id)
-            if (user) {
-                req.user = user.data.user
+        if (typeof User != "string") {
+            const id = User.id
+            const result = await userService.getCurrentUser(id)
+            if (result.success === true) {
+                req.user = result.data.user
                 return next();
             } else {
                 return res.status(401).json("請先登入")

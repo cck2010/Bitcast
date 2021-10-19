@@ -21,6 +21,7 @@ const initialState: LiveStreamState = {
         sellerImage: "/defaultUser.png",
         currentViewers: 0,
         thumbnail: "",
+        description: "description",
         success: true,
     },
     liveStreamProducts: { liveStreamProductsArr: [], success: true },

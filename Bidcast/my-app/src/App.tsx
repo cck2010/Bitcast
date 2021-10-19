@@ -5,7 +5,7 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import "./App.scss";
 import LiveStream from "./pages/LiveStream/LiveStream";
 import { Link, Route, Switch } from "react-router-dom";
-import { Login } from "./pages/Login";
+import { Login } from "./pages/login/Login";
 import { HomePageNavbar } from "./pages/homepage/Navbar";
 import { Footer } from "./pages/homepage/Footer";
 import { CreateBids } from "./pages/createbids/CreateBids";
@@ -37,6 +37,9 @@ function App() {
         </Route>
         <Route path="/profilePage">
           <ProfilePage />
+        </Route>
+        <Route path="/login">
+          <Login />
         </Route>
       </Switch>
       <Footer />

@@ -1,5 +1,6 @@
 import { Knex } from "knex";
 import { hashPassword, checkPassword } from "../hash";
+
 import PasswordValidator from "password-validator";
 import { ResponseJson } from "../response";
 import validator from "email-validator"
@@ -90,14 +91,17 @@ export class UserService {
         const createUserResult /*  = result.rows */ = await this.knex("users")
             .insert({
                 username: username,
+                status_id: 1,
                 email: email,
                 phone_number: phone_number,
                 password: hashedPassword,
+                role_id: 1,
                 created_at: new Date(),
                 updated_at: new Date(),
                 telegram_is_verified: false,
                 profile_pic:
                     "/backend/img/360_F_391192211_2w5pQpFV1aozYQhcIw3FqA35vuTxJKrB.jpg",
+                login_method_id: 1,
                 created_by: username,
                 updated_by: username,
             })
@@ -156,10 +160,6 @@ export class UserService {
                 data: {
                     msg: "用戶名重複，請重新選擇",
                     user: {
-                        id: users[0].id,
-                        email: users[0].email,
-                        created_at: users[0].created_at,
-                        updated_at: users[0].updated_at,
                     },
                 },
                 error: new Error("username repeated"),
@@ -171,21 +171,22 @@ export class UserService {
                 msg: "註冊成功",
                 user: {
                     id: users[0].id,
+                    username: users[0].username,
+                    status_id: users[0].status_id,
+                    profile_pic: users[0].profile_pic,
                     email: users[0].email,
+                    phone_number: users[0].phone_number,
+                    role_id: users[0].role_id,
+                    telegram_acct: users[0].telegram_acct,
+                    telegram_is_verified: users[0].telegram_is_verified,
+                    telegram_chat_id: users[0].telegram_chat_id,
+                    login_method_id: users[0].login_method_id,
                     created_at: users[0].created_at,
                     updated_at: users[0].updated_at,
                 },
             },
             error: new Error("signin success"),
         };
-
-
-        // if (emailCount == 1)
-
-
-        // if (schema.validate(password)) {
-
-        // if (alias && email && password)
 
     };
 
@@ -200,6 +201,7 @@ export class UserService {
                 error: new Error("Please fill in the blank form"),
             };
         }
+
         const users = await this.knex("users")
             .select("*")
             .where({
@@ -220,6 +222,7 @@ export class UserService {
         }
 
         if (!(await checkPassword(password, users[0].password))) {
+
             return {
                 success: false,
                 data: {
@@ -228,39 +231,36 @@ export class UserService {
                 },
                 error: new Error("Wrong password"),
             };
-        } else {
-            return {
-                data: {
-                    user: {
-                        id: users[0].id,
-                        username: users[0].username,
-                        status_id: users[0].status_id,
-                        profile_pic: users[0].profile_pic,
-                        email: users[0].email,
-                        phone_number: users[0].phone_number,
-                        role_id: users[0].role_id,
-                        telegram_acct: users[0].telegram_acct,
-                        telegram_is_verified: users[0].telegram_is_verified,
-                        telegram_chat_id: users[0].telegram_chat_id,
-                        login_method_id: users[0].login_method_id,
-                        created_at: users[0].created_at,
-                        updated_at: users[0].updated_at,
-                    },
-
-                    msg: "成功登入",
-                },
-                success: true,
-            };
         }
 
-    };
+        return {
+            data: {
+                user: {
+                    id: users[0].id,
+                    username: users[0].username,
+                    status_id: users[0].status_id,
+                    profile_pic: users[0].profile_pic,
+                    email: users[0].email,
+                    phone_number: users[0].phone_number,
+                    role_id: users[0].role_id,
+                    telegram_acct: users[0].telegram_acct,
+                    telegram_is_verified: users[0].telegram_is_verified,
+                    telegram_chat_id: users[0].telegram_chat_id,
+                    login_method_id: users[0].login_method_id,
+                    created_at: users[0].created_at,
+                    updated_at: users[0].updated_at,
+                },
+
+                msg: "成功登入",
+            },
+            success: true,
+        };
+    }
 
 
-    getCurrentUser = async (
 
-        id: number | ""
 
-    ): Promise<ResponseJson> => {
+    getCurrentUser = async (id: number): Promise<ResponseJson> => {
 
 
         const users = await this.knex("users")
