@@ -28,11 +28,11 @@ const fBCallback = async (userInfo: ReactFacebookLoginInfo & { accessToken: stri
           dispatch(login(res.data.token))
           dispatch(push('/'))
         } else {
-          setError('錯密碼啊老友')
+          setError('email or password wrong')
         }
       } catch (e: any) {
         if (e?.response.status === 401) {
-          setError('錯密碼啊老友')
+          setError('發生未知錯誤')
         } else {
           console.error(e)
           setError('發生未知錯誤')
