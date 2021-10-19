@@ -6,7 +6,9 @@ import { RWebShare } from "react-web-share";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { RootState } from "../../store";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getComingAuctions } from "../../redux/homepage/action";
+import { useEffect } from "react";
 
 const responsive = {
   desktop: {
@@ -27,10 +29,18 @@ const responsive = {
 };
 
 export function ComingAuction() {
-  const auctions = useSelector((state: RootState)=> Object.values(state.comingAuction.comingAuctions.comingAuctionsArr))
+  const dispatch = useDispatch();
+  useEffect(() => {
+    console.log("dfasdfd");
+
+    dispatch(getComingAuctions());
+  }, [dispatch]);
+  const auctions = useSelector((state: RootState) =>
+    Object.values(state.comingAuction.comingAuctions.comingAuctionsArr)
+  );
 
   console.log(auctions);
-  
+
   return (
     <div>
       <Container>
@@ -38,10 +48,9 @@ export function ComingAuction() {
         <SvgBorder />
         <Carousel
           additionalTransfrom={0}
-          arrows
-          removeArrowOnDeviceType="desktop"
           autoPlay
-          autoPlaySpeed={3000}
+          arrows={false}
+          autoPlaySpeed={5000}
           centerMode={false}
           className=""
           containerClass="container-with-dots"
@@ -58,7 +67,7 @@ export function ComingAuction() {
           showDots={false}
           sliderClass=""
           slidesToSlide={1}
-          swipeable
+          swipeable={false}
         >
           <div>
             <Card className="product_card">

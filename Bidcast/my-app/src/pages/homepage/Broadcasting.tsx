@@ -38,10 +38,9 @@ export function Broadcasting() {
         <SvgBorder />
         <Carousel
           additionalTransfrom={0}
-          arrows
-          removeArrowOnDeviceType="desktop"
+          arrows={false}
           autoPlay
-          autoPlaySpeed={3000}
+          autoPlaySpeed={5000}
           centerMode={false}
           className=""
           containerClass="container-with-dots"
@@ -58,7 +57,7 @@ export function Broadcasting() {
           showDots={false}
           sliderClass=""
           slidesToSlide={1}
-          swipeable
+          swipeable={false}
         >
           <div>
             <Card className="product_card">
