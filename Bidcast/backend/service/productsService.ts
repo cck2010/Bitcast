@@ -22,5 +22,14 @@ export class ProductsService {
             
         }
     }
+    submitBid = async (liveInput:Object,productInput:[Object]) => {
+        console.table(liveInput);
+        console.table(productInput);
+        try {
+            
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
 }

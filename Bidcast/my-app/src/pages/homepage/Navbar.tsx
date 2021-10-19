@@ -76,7 +76,7 @@ export function HomePageNavbar() {
                     商品分類3
                   </Link>
                 </NavDropdown>
-                <Link to="/" className="nav_link">
+                <Link to="/login" className="nav_link">
                   登入 ／ 註冊
                 </Link>
                 <Link to="/" className="nav_link">

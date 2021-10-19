@@ -35,6 +35,7 @@ export class LiveStreamController {
                 sellerImage: string;
                 currentViewers: number;
                 thumbnail: string;
+                description: string;
                 success: boolean;
             }
 
@@ -45,6 +46,7 @@ export class LiveStreamController {
                 sellerImage: result.sellerImage,
                 currentViewers: result.currentViewers,
                 thumbnail: result.thumbnail,
+                description: result.description,
                 success: true,
             };
 

@@ -83,28 +83,13 @@ export class UserController {
     login = async (req: Request, res: Response) => {
         try {
             const { email, password } = req.body;
+
             const result: any = await this.userService.login(email, password);
             // if (result.data?.user) {
             //     req.session["user"] = result.data.user;
             // }
-            if (result.data?.user) {
-                const payload = {
-                    id: result.data.user.id,
-                    username: result.data.user.username,
-                    status_id: result.data.user.status_id,
-                    profile_pic: result.data.user.profile_pic,
-                    phone_number: result.data.user.phone_number,
-                    role_id: result.data.user.role_id,
-                    telegram_acct: result.data.user.telegram_acct,
-                    telegram_is_verified: result.data.user.telegram_is_verified,
-                    telegram_chat_id: result.data.user.telegram_chat_id,
-                    login_method_id: result.data.user.login_method_id,
-                    email: result.data.user.email,
-                    created_at: result.data.user.created_at,
-                    updated_at: result.data.user.updated_at,
-
-                }
-
+            if (result.success === true) {
+                const payload = result.data.user
                 const signOptions: {} = {
 
                     expiresIn: "12h",
@@ -112,6 +97,7 @@ export class UserController {
                 };
 
                 const token = jwt.sign(payload, jwtKey.privateKEY, signOptions);
+
                 res.json({
                     token: token,
                 });
