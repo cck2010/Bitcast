@@ -8,6 +8,7 @@ export interface LiveStreamInfo {
     sellerImage: string;
     currentViewers: number;
     thumbnail: string;
+    description: string;
     success: boolean;
 }
 
@@ -65,6 +66,7 @@ export function fetchliveStreamInfo(room: string, token: string) {
                     sellerImage: "/defaultUser.png",
                     currentViewers: 0,
                     thumbnail: "",
+                    description: "",
                     success: false,
                 })
             );
