@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form"
 import axios from 'axios'
 import { useDispatch } from "react-redux"
-import { login } from "../redux/user/actions";
+import { login } from "../../redux/user/actions";
 import { useState } from "react";
 import { push } from "connected-react-router";
 import ReactFacebookLogin, { ReactFacebookLoginInfo } from "react-facebook-login";
@@ -46,7 +46,7 @@ const fBCallback = async (userInfo: ReactFacebookLoginInfo & { accessToken: stri
       <form onSubmit={handleSubmit(async data => {
         try {
           const res = await axios.post<any>(`${process.env.REACT_APP_BACKEND_URL}/login`, {
-            username: data.username,
+            email: data.email,
             password: data.password
           })
           
