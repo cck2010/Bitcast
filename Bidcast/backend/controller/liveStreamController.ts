@@ -7,7 +7,6 @@ export class LiveStreamController {
     getRoom = async (req: Request, res: Response) => {
         try {
             const token = req.query.token as string;
-            console.log(token);
 
             const room = await this.liveStreamService.getRoom(token);
             console.log(room);
@@ -66,7 +65,7 @@ export class LiveStreamController {
                 currentPrice: number;
                 buyPrice: number;
                 bidIncrement: number;
-                buyerId?: number;
+                buyer?: string;
                 productImage: string;
                 isSelected: boolean;
                 countdownStartTime?: Date;

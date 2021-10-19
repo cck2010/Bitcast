@@ -19,12 +19,18 @@ export interface LiveStreamProduct {
     currentPrice: number;
     buyPrice: number;
     bidIncrement: number;
-    buyerId?: number;
+    buyer?: string;
     productImage: string;
     isSelected: boolean;
     countdownStartTime?: Date;
     duration: number;
     isEnded: boolean;
+    success: boolean;
+}
+
+export interface UpdatePrice {
+    id: number;
+    newPrice: number;
     success: boolean;
 }
 
@@ -46,14 +52,23 @@ export function loadLiveStreamProducts(
     };
 }
 
+export function bidIncrement(id: number, newPrice: number) {
+    return {
+        type: "@@liveStream/BID_INCREMENT" as const,
+        id,
+        newPrice,
+    };
+}
+
 export type LiveStreamActions =
     | ReturnType<typeof loadliveStreamInfo>
-    | ReturnType<typeof loadLiveStreamProducts>;
+    | ReturnType<typeof loadLiveStreamProducts>
+    | ReturnType<typeof bidIncrement>;
 
 export function fetchliveStreamInfo(room: string, token: string) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         const res = await axios.get<LiveStreamInfo>(
-            `${process.env.REACT_APP_BACKEND_URL}/liveStream/Info?room=${room}&token=${token}`
+            `${process.env.REACT_APP_BACKEND_URL}/liveStream/info?room=${room}&token=${token}`
         );
         if (res.data.success) {
             dispatch(loadliveStreamInfo(res.data));
@@ -80,7 +95,7 @@ export function fetchliveStreamProducts(liveId: number) {
             liveStreamProducts: LiveStreamProduct[];
             success: boolean;
         }>(
-            `${process.env.REACT_APP_BACKEND_URL}/liveStream/Products?liveId=${liveId}`
+            `${process.env.REACT_APP_BACKEND_URL}/liveStream/products?liveId=${liveId}`
         );
 
         if (res.data.success) {
@@ -92,6 +107,21 @@ export function fetchliveStreamProducts(liveId: number) {
             );
         } else {
             dispatch(loadLiveStreamProducts([], false));
+        }
+    };
+}
+
+export function fetchBidIncrement(productId: number) {
+    return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
+        const res = await axios.put<UpdatePrice>(
+            `${process.env.REACT_APP_BACKEND_URL}/liveStream/products/currentPrice`,
+            {
+                productId,
+            }
+        );
+
+        if (res.data.success) {
+            dispatch(bidIncrement(productId, res.data.newPrice));
         }
     };
 }
