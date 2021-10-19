@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { Request} from "express";
 import multer from "multer";
 import path from "path";
 import { productsController } from "../server";
