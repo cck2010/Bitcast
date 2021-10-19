@@ -11,8 +11,8 @@ import { useSelector } from "react-redux";
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 3,
-    slidesToSlide: 3, // optional, default to 1.
+    items: 4,
+    slidesToSlide: 2, // optional, default to 1.
   },
   tablet: {
     breakpoint: { max: 1024, min: 464 },
@@ -38,9 +38,11 @@ export function ComingAuction() {
         <SvgBorder />
         <Carousel
           additionalTransfrom={0}
-          arrows={false}
+          arrows
+          removeArrowOnDeviceType="desktop"
+          autoPlay
           autoPlaySpeed={3000}
-          centerMode
+          centerMode={false}
           className=""
           containerClass="container-with-dots"
           dotListClass=""
@@ -49,7 +51,7 @@ export function ComingAuction() {
           infinite
           itemClass=""
           keyBoardControl
-          minimumTouchDrag={100}
+          minimumTouchDrag={90}
           renderButtonGroupOutside={false}
           renderDotsOutside={false}
           responsive={responsive}
