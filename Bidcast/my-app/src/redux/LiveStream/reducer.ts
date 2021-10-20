@@ -41,6 +41,19 @@ export function liveStreamReducer(
                     action.liveStreamProducts;
                 state.liveStreamProducts.success = action.success;
                 break;
+            case "@@liveStream/BID_INCREMENT":
+                // for (let ind in state.liveStreamProducts
+                //     .liveStreamProductsArr) {
+                //     if (
+                //         state.liveStreamProducts.liveStreamProductsArr[ind]
+                //             .id === action.id
+                //     ) {
+                //         state.liveStreamProducts.liveStreamProductsArr[
+                //             ind
+                //         ].currentPrice = action.newPrice;
+                //     }
+                // }
+                break;
         }
     });
 }

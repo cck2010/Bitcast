@@ -1,6 +1,4 @@
 import { RootState, RootThunkDispatch } from "../../store";
-import { Dispatch } from "react";
-
 
 export interface Product {
     id: number;
@@ -27,45 +25,67 @@ export interface Product {
 export interface Category {
     id: number;
     category: string;
-    created_at:Date;
-    updated_at:Date;
+    created_at: Date;
+    updated_at: Date;
     productIds: number[]; //分類頁面用 or do it with knex?
 }
 
 // Action creator
-export function loadCategories(categories:Category[]){
+export function loadCategories(categories: Category[]) {
     return {
-        type: '@@products/LOAD_CATEGORIES' as const,
-        categories
-    }
+        type: "@@products/LOAD_CATEGORIES" as const,
+        categories,
+    };
 }
 
-export function loadProduct(products:Product[],categoryId:number){
+//load product search result
+export function loadProductSearchResult(products: Product[]) {
     return {
-        type: '@@products/LOAD_PRODUCTS' as const,
+        type: "@@products/LOAD_PRODUCT_SEARCH_RESULT" as const,
         products,
-        categoryId
     }
 }
 
-export type ProductsActions =    ReturnType<typeof loadCategories> |
-                                ReturnType<typeof loadProduct>
+export type ProductsActions = ReturnType<typeof loadCategories> 
+                            | ReturnType<typeof loadProductSearchResult>;
+
+
 
 // Thunk action creator (fetch)
 
 export function fetchCategories() {
-    return async(dispatch:  RootThunkDispatch, getState: () => RootState)=>{
-        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/categories`)
+    return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
+        const res = await fetch(
+            `${process.env.REACT_APP_BACKEND_URL}/categories`
+        );
         const json = await res.json();
         const categoriesData = json.data.results;
         console.log("json", categoriesData);
 
         // for(let category of json) {
-        //  const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/categories/${category.id}/products`)   
+        //  const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/categories/${category.id}/products`)
         //  const productJson = await res.json();
 
         //  dispatch(loadProduct(productJson, category.id));
         // }
         dispatch(loadCategories(categoriesData));
+    };
+}
+
+export function fetchProductSearchResult(searchKeywords: string) {
+    return async (dispatch: RootThunkDispatch, getState: ()=>RootState) =>{
+        try {
+            const res = await fetch(`
+            ${process.env.REACT_APP_BACKEND_URL}/product/search?keywords=${searchKeywords}
+            `)
+            console.log(res);
+            
+            const json = await res.json();
+            console.log(json);
+            
+            dispatch(loadProductSearchResult(json.data.results.rows))
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

@@ -1,4 +1,4 @@
-import express, { Request} from "express";
+import express, { Request } from "express";
 import multer from "multer";
 import path from "path";
 import { productsController } from "../server";
@@ -42,15 +42,23 @@ const submitProductsStorage = multer.diskStorage({
 
 
 
+// ^^^^^^^^^^^^^^^^^^ for createBids upload profile ^^^^^^^^^^^^^^^^^^^^//
 
-
-
-productsRoutes.get("/categories",(req,res)=> productsController.getCategories(req,res));
+productsRoutes.get("/categories", (req, res) =>
+    productsController.getCategories(req, res)
+);
 // productsRoutes.get("/categories/:id/products",(req,res)=> productsController.getProducts(req,res));
 
+export default productsRoutes;
+
+//-------------------  for update products info ---------------------//
 
 // Bids Panel
 productsRoutes.post("/createBids/submitBid/submitLive",submitLiveMulter,(req,res)=>productsController.submitBidLiveInfo(req,res));
 productsRoutes.post("/createBids/submitBid/submitProduct",submitProductsMulter,(req,res)=>productsController.submitProductInfo(req,res));
+productsRoutes.put("/liveStream/products/currentPrice", (req, res) =>
+    productsController.putBidIncrement(req, res)
+);
 
-export default productsRoutes;
+//-------------------  for searching products ---------------------//
+productsRoutes.get("/product/search", (req, res) => productsController.searchProductResults(req, res))

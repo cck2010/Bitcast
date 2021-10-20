@@ -29,7 +29,7 @@ declare global {
                 telegram_is_verified?: boolean;
                 telegram_chat_id?: number;
                 login_method_id?: number;
-            }
+            };
         }
     }
 }

@@ -1,9 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Carousel from "react-tiny-slider";
 import { TinySliderInstance } from "tiny-slider";
 import {
-    fetchliveStreamProducts,
     LiveStreamProduct,
     loadLiveStreamProducts,
 } from "../../redux/LiveStream/actions";
@@ -21,31 +20,26 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
     const goNextSlide = (dir: "next" | "prev") =>
         carousel.current != null && carousel.current.goTo(dir);
 
-    const liveStreamControlPanelDesktopSetting = { maxHeight: "500px" };
+    const liveStreamControlPanelDesktopSetting = { maxHeight: "600px" };
 
     const dispatch = useDispatch();
-    const liveId = useSelector(
-        (state: RootState) => state.liveStream.liveStreamInfo.id
-    );
-
-    useEffect(() => {
-        dispatch(fetchliveStreamProducts(liveId));
-    }, [dispatch, liveId]);
 
     const products = useSelector(
         (state: RootState) =>
             state.liveStream.liveStreamProducts.liveStreamProductsArr
     );
 
+    console.log(products);
+
     return (
         <div
             className="LiveStreamControlPanel rounded"
             style={props.isDesktop ? {} : liveStreamControlPanelDesktopSetting}
         >
-            <div className="row">
+            <div className="row g-0">
                 <div
                     className={`${
-                        props.isDesktop ? "col-6" : "col-12"
+                        props.isDesktop ? "col-5" : "col-12"
                     } d-flex d-col carousel position-relative`}
                 >
                     <Carousel
@@ -114,6 +108,7 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
                             </div>
                         ))}
                     </Carousel>
+
                     <button
                         className="btn btn-secondary carousel_btn carousel_btn_left"
                         onClick={() => goNextSlide("prev")}
@@ -127,7 +122,7 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
                         <i className="fas fa-caret-right"></i>
                     </button>
                 </div>
-                <div className={`${props.isDesktop ? "col-6" : "col-12 mt-3"}`}>
+                <div className={`${props.isDesktop ? "col-7" : "col-12 mt-3"}`}>
                     <LiveStreamBiddingInfoSeller />
                 </div>
             </div>

@@ -14,7 +14,7 @@ export class ProductsController {
                 success: false,
                 data: { msg: "controller get categories fail" },
                 error: new Error("get categories fail"),
-            })
+            });
         }
     }
     submitBidLiveInfo = async (req: Request, res: Response) => {
@@ -72,4 +72,30 @@ export class ProductsController {
         }
     }   
 
+    putBidIncrement = async (req: Request, res: Response) => {
+        try {
+            const { productId } = req.body;
+            const result = await this.productsService.putBidIncrement(
+                productId
+            );
+            const response = { id: productId, newPrice: result, success: true };
+            res.json(response);
+        } catch (e) {
+            console.log(e);
+            res.json(e);
+        }
+    };
+    searchProductResults = async (req: Request, res: Response) => {
+        try {
+            const searchKeywords = req.params.name
+            const result = await this.productsService.searchProductResults(searchKeywords)
+            res.json(result)
+        } catch (error) {
+            res.json({
+                success: false,
+                data: { msg: "No relevant products" },
+                error: new Error("search product fail"),
+            });
+        }
+    }
 }
