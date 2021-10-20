@@ -4,7 +4,6 @@ import LiveStreamWindow from "../../component/LiveStream/LiveStreamWindow";
 import LiveStreamControlPanel from "../../component/LiveStream/LiveStreamControlPanel";
 import LiveStreamChatRoom from "../../component/LiveStream/LiveStreamChatRoom";
 import LiveStreamRecommend from "../../component/LiveStream/LiveStreamRecommend";
-import LiveStreamDescription from "../../component/LiveStream/LiveStreamDescription";
 import LiveStreamHeader from "../../component/LiveStream/LiveStreamHeader";
 import { useMediaQuery } from "react-responsive";
 import { Button, ButtonGroup } from "reactstrap";
@@ -72,8 +71,6 @@ function LiveStream() {
                         console.log(message);
                     });
                     ws.on("render", (slideIndex) => {
-                        console.log("re");
-
                         setTimeout(
                             () => dispatch(fetchliveStreamProducts(liveId)),
                             500
@@ -98,7 +95,6 @@ function LiveStream() {
                                 isTablet={isTablet}
                                 ws={ws}
                             />
-                            <LiveStreamDescription />
                         </>
                     ) : (
                         <>
@@ -124,7 +120,6 @@ function LiveStream() {
                                         isTablet={isTablet}
                                         ws={ws}
                                     />
-                                    <LiveStreamDescription />
                                 </>
                             )}
                             {page === 3 && (

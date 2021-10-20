@@ -49,7 +49,6 @@ function LiveStreamBiddingInfo() {
             }
         }
     }, [products]);
-    console.log(products);
 
     useEffect(() => {
         if (
@@ -92,7 +91,7 @@ function LiveStreamBiddingInfo() {
                         </div>
                     )}
                 </div>
-                <div className="input col-8 d-flex flex-column justify-content-center h-100 px-2">
+                <div className="input col-8 d-flex flex-column justify-content-center h-100 px-3">
                     {
                         <div className="row g-0">
                             <div className="col-8">
@@ -139,7 +138,7 @@ function LiveStreamBiddingInfo() {
                             <div className="col-4">
                                 <button
                                     disabled={!isBidding}
-                                    className={`custom_bid btn btn-success mx-1 w-100 h-100 ${
+                                    className={`custom_bid btn btn-success ms-1 w-100 h-100 ${
                                         !isBidding && "unavailable_btn"
                                     }`}
                                     onClick={() => {}}

@@ -25,6 +25,7 @@ export interface LiveStreamProduct {
     countdownStartTime?: Date;
     duration: number;
     isEnded: boolean;
+    description?: string;
     success: boolean;
 }
 
