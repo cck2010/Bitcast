@@ -1,10 +1,12 @@
 import { useForm } from "react-hook-form"
 import axios from 'axios'
 import { useDispatch } from "react-redux"
-import { login } from "../../redux/user/actions";
+import { login, loadToken } from "../../redux/user/actions";
 import { useState } from "react";
 import { push } from "connected-react-router";
 import ReactFacebookLogin, { ReactFacebookLoginInfo } from "react-facebook-login";
+import {  useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 
 const { REACT_APP_BACKEND_URL } = process.env
@@ -13,6 +15,7 @@ export function Login() {
   const dispatch = useDispatch();
   const [error, setError] = useState('')
   const [registerError, setRegisterEror]=useState('')
+  const userInfo = useSelector((state: RootState) => state.user.isAuthenticate)
 
   const fBOnCLick = ()=> {
     return null;
@@ -45,24 +48,24 @@ const fBCallback = async (userInfo: ReactFacebookLoginInfo & { accessToken: stri
 }
   return (
     <div>
-      
+      {/* login form */}
       <form onSubmit={handleSubmit(async data => {
         try {
           const res = await axios.post<any>(`${REACT_APP_BACKEND_URL}/login`, {
             email: data.loginEmail,
             password: data.loginPassword
           })
+          // console.log(res.data.result.data.msg)
           
           if (res.data.token != null) {
             
             localStorage.setItem('token', res.data.token)
             dispatch(login(res.data.token))
+            dispatch(loadToken(res.data.token))
             dispatch(push('/'))
           }
-          else if(res.data.allInfo.success ===false){
-            setError(`${res.data.allInfo.data.msg}`)
-          }else{
-            setError('no token and success false')
+          else{
+            setError(`${res.data.data.msg}`)
           }
         } catch (e: any) {
           setError('unknown error')
@@ -92,12 +95,11 @@ const fBCallback = async (userInfo: ReactFacebookLoginInfo & { accessToken: stri
             
             localStorage.setItem('token', res.data.token)
             dispatch(login(res.data.token))
+            dispatch(loadToken(res.data.token))
             dispatch(push('/'))
           }
-          else if(res.data.allInfo.success ===false){
-            setRegisterEror(`${res.data.allInfo.data.msg}`)
-          }else{
-            setRegisterEror('no token and success false')
+          else {
+            setRegisterEror(`${res.data.data.msg}`)
           }
         } catch (e: any) {
           setRegisterEror('unknown error')

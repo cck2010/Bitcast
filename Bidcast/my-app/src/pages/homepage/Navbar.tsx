@@ -18,6 +18,10 @@ import { useState } from "react";
 import { Homepage } from "./Homepage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { checkCurrentUser, logoutThunk } from '../../redux/user/actions';
+import { RootState } from '../../store';
 
 export function HomePageNavbar() {
   const [show, setShow] = useState(false);
@@ -27,6 +31,15 @@ export function HomePageNavbar() {
   const hideDropdown = () => {
     setShow(false);
   };
+
+  const dispatch = useDispatch();
+  const isAuthenticate = useSelector((state: RootState) => state.user.isAuthenticate)
+
+  useEffect(() => {
+    dispatch(checkCurrentUser());
+  }, [])
+
+
   return (
     <div>
       <Navbar collapseOnSelect expand="md" className="navbar py-0">
@@ -76,9 +89,13 @@ export function HomePageNavbar() {
                     商品分類3
                   </Link>
                 </NavDropdown>
-                <Link to="/login" className="nav_link">
+                { !isAuthenticate && <Link to="/login" className="nav_link">
                   登入 ／ 註冊
-                </Link>
+                </Link>}
+                { isAuthenticate && <a href="#" onClick={e=>{
+                  e.preventDefault();
+                  dispatch(logoutThunk())}}
+                   className="nav_link">登出</a>}
                 <Link to="/" className="nav_link">
                   <FontAwesomeIcon icon={faBell} />
                 </Link>
