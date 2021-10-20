@@ -42,4 +42,4 @@ productsRoutes.put("/liveStream/products/currentPrice", (req, res) =>
 );
 
 //-------------------  for searching products ---------------------//
-productsRoutes.get("/product/search", (req, res) => productsController.searchProductResults(req, res))
+productsRoutes.post("/product/search", (req, res) => productsController.searchProductResults(req, res))
