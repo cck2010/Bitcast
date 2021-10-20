@@ -14,6 +14,15 @@ export function logout() {
     }
 }
 
+export function loadToken(token: string) {
+    return {
+        type: '@Auth/load_token' as const,
+        token,
+    }
+}
+
+export type LoadToken = ReturnType<typeof loadToken>
+
 export type UserActions = ReturnType<typeof login> | ReturnType<typeof logout>;
 
 export function logoutThunk() {

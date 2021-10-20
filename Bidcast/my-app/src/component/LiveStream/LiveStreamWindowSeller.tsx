@@ -12,7 +12,7 @@ function LiveStreamWindow() {
 
     const [client, setClient] = useState<Client | null>(null);
     let signal: IonSFUJSONRPCSignal | null = null;
-    let localStream: LocalStream | null = null;
+    const [localStream, setLocalStream] = useState<LocalStream | null>(null);
 
     const token: string | null = new URLSearchParams(
         window.location.search
@@ -41,7 +41,7 @@ function LiveStreamWindow() {
                 if (ClientConnection == null) {
                     return;
                 }
-                ClientConnection.join(`test room ${result.data?.room}`, "");
+                ClientConnection.join(`room ${result.data?.room}`, "");
             };
             setClient(ClientConnection);
             // setTimeout(() => {
@@ -81,7 +81,7 @@ function LiveStreamWindow() {
                     pubVideo.current.controls = true;
                     pubVideo.current.autoplay = true;
                     pubVideo.current.muted = false;
-                    localStream = media;
+                    setLocalStream(media);
                     client.publish(media);
                 })
                 .catch(console.error);
@@ -101,7 +101,7 @@ function LiveStreamWindow() {
                     pubVideo.current.controls = true;
                     pubVideo.current.autoplay = true;
                     pubVideo.current.muted = false;
-                    localStream = media;
+                    setLocalStream(media);
                     client.publish(media);
                 })
                 .catch(console.error);
@@ -112,6 +112,10 @@ function LiveStreamWindow() {
         if (pubVideo.current == null || localStream == null) {
             return;
         }
+        let tracks = localStream.getTracks();
+        tracks.forEach(function (track) {
+            track.stop();
+        });
         localStream.unpublish();
         pubVideo.current.srcObject = null;
     };

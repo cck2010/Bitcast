@@ -1,8 +1,7 @@
-import React, { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useRef } from "react";
+import { useSelector } from "react-redux";
 import Carousel from "react-tiny-slider";
 import { TinySliderInstance } from "tiny-slider";
-import { fetchliveStreamProducts } from "../../redux/LiveStream/actions";
 import { RootState } from "../../store";
 import LiveStreamBiddingInfo from "./LiveStreamBiddingInfo";
 
@@ -18,15 +17,6 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
         carousel.current != null && carousel.current.goTo(dir);
 
     const liveStreamControlPanelDesktopSetting = { maxHeight: "600px" };
-
-    const dispatch = useDispatch();
-    const liveId = useSelector(
-        (state: RootState) => state.liveStream.liveStreamInfo.id
-    );
-
-    useEffect(() => {
-        dispatch(fetchliveStreamProducts(liveId));
-    }, [dispatch, liveId]);
 
     const products = useSelector(
         (state: RootState) =>

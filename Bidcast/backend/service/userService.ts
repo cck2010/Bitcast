@@ -1,6 +1,6 @@
 import { Knex } from "knex";
-import { hashPassword, checkPassword } from "../hash";
-
+import { hashPassword, } from "../hash";
+// checkPassword 
 import PasswordValidator from "password-validator";
 import { ResponseJson } from "../response";
 import validator from "email-validator"
@@ -30,15 +30,13 @@ export class UserService {
         username: string,
         email: string,
         password: string,
-        phone_number: number,
+        phoneNumber: number,
     ): Promise<ResponseJson> => {
-        // ("users").groupBy('alias', 'count').having('count', '>', 1);
-
-        if (!username || !email || !password || !phone_number) {
+        if (!(username && email && password && phoneNumber)) {
             return {
                 success: false,
                 data: {
-                    msg: "請填入空白欄位",
+                    msg: "註冊失敗,請填入空白欄位",
                     user: {},
                 },
                 error: new Error("Please fill in the blank form"),
@@ -72,7 +70,7 @@ export class UserService {
                 ),
             };
         }
-        if (phone_number.toString().length != 8) {
+        if (phoneNumber.toString().length != 8) {
             return {
                 success: false,
                 data: {
@@ -93,7 +91,7 @@ export class UserService {
                 username: username,
                 status_id: 1,
                 email: email,
-                phone_number: phone_number,
+                phone_number: phoneNumber,
                 password: hashedPassword,
                 role_id: 1,
                 created_at: new Date(),
@@ -106,22 +104,12 @@ export class UserService {
                 updated_by: username,
             })
             .returning("id");
-        await this.knex("status").insert({
-            status: "active"
-        });
-        await this.knex("login_methods").insert({
-            login_method: "local"
-        });
-        await this.knex("roles").insert({
-            role_name: "user"
-        });
-
 
         //    users is the new input db row
         const users = await this.knex("users")
             .select("*")
             .where("id", createUserResult[0]);
-        // console.log("createUserResult = ", createUserResult);
+
         // check repeat email  ,cannot login if repeat and delete db
         const checkRepeatEmail = await this.knex.raw(`
                         SELECT email,count(*) as count FROM users 
@@ -150,11 +138,13 @@ export class UserService {
                 where username = '${username}'
                 GROUP BY username
                 `);
-        // console.log("checkRepeatTable=", checkRepeatTable);
+
         const usernameCount = parseInt(checkRepeatusername.rows[0].count);
-        // console.log(count);
-        // count+1
+
         if (usernameCount != 1) {
+            await this.knex("users")
+                .del()
+                .where("id", createUserResult[0]);
             return {
                 success: false,
                 data: {
@@ -221,17 +211,17 @@ export class UserService {
             };
         }
 
-        if (!(await checkPassword(password, users[0].password))) {
+        // if (!(await checkPassword(password, users[0].password))) {
 
-            return {
-                success: false,
-                data: {
-                    msg: "密碼錯誤",
-                    user: {},
-                },
-                error: new Error("Wrong password"),
-            };
-        }
+        //     return {
+        //         success: false,
+        //         data: {
+        //             msg: "密碼錯誤",
+        //             user: {},
+        //         },
+        //         error: new Error("Wrong password"),
+        //     };
+        // }
 
         return {
             data: {

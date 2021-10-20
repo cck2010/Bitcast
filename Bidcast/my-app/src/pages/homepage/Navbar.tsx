@@ -14,13 +14,15 @@ import lihkg_logo from "./lihkg_logo.png";
 import { Link, Route, Switch } from "react-router-dom";
 import { CreateBids } from "../createbids/CreateBids";
 import LiveStream from "../LiveStream/LiveStream";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Homepage } from "./Homepage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { fetchProductSearchResult } from "../../redux/products/actions";
+import React, { useEffect } from "react";
+import { checkCurrentUser, logoutThunk } from "../../redux/user/actions";
 
 export function HomePageNavbar() {
   const [show, setShow] = useState(false);
@@ -30,15 +32,25 @@ export function HomePageNavbar() {
   const hideDropdown = () => {
     setShow(false);
   };
+
+  const dispatch = useDispatch();
+  const isAuthenticate = useSelector(
+    (state: RootState) => state.user.isAuthenticate
+  );
+
+  useEffect(() => {
+    dispatch(checkCurrentUser());
+  }, []);
+
   const [searchInput, setSearchInput] = useState("");
   const searchingResults = useSelector((state: RootState) =>
     Object.values(state.products.products)
   );
-  const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(fetchProductSearchResult(searchInput));
   }, [dispatch, searchInput]);
-  
+
   return (
     <div>
       <Navbar collapseOnSelect expand="md" className="navbar py-0">
@@ -85,19 +97,33 @@ export function HomePageNavbar() {
               onMouseEnter={showDropdown}
               onMouseLeave={hideDropdown}
             >
-              <Link to="/categoryResult?id=" className="dropdown_items">
+              <Link to="/categoryResult?id=" className="dropdown_items"></Link>
                 商品分類1
               </Link>
-              <Link to="/categoryResult?id=" className="dropdown_items">
+              <Link to="/categoryResult?id=" className="dropdown_items"></Link>
                 商品分類2
               </Link>
-              <Link to="/categoryResult?id=" className="dropdown_items">
+              <Link to="/categoryResult?id=" className="dropdown_items"></Link>
                 商品分類3
               </Link>
             </NavDropdown>
-            <Link to="/login" className="nav_link">
-              登入 ／ 註冊
-            </Link>
+            {!isAuthenticate && (
+              <Link to="/login" className="nav_link">
+                登入 ／ 註冊
+              </Link>
+            )}
+            {isAuthenticate && (
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  dispatch(logoutThunk());
+                }}
+                className="nav_link"
+              >
+                登出
+              </a>
+            )}
             <Link to="/" className="nav_link">
               <FontAwesomeIcon icon={faBell} />
             </Link>

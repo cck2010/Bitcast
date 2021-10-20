@@ -4,9 +4,11 @@
 import { useState } from "react";
 import { FaBars } from "react-icons/fa";
 import { Sidebar } from "./Sidebar";
+import {  useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 export function MainContent() {
-  
+  const username = useSelector((state: RootState) => state.authState.user)
   const [toggled, setToggled] = useState(false);
   console.log(toggled);
   
@@ -39,7 +41,8 @@ export function MainContent() {
           {toggled? <Sidebar /> : " "}
           <FaBars />
         </div>
-        <header>Testing</header>
+        <header>Testing{JSON.stringify(username)}</header>
+        
       </main>
     </div>
   );

@@ -6,9 +6,9 @@ import {
 } from "connected-react-router";
 import { createBrowserHistory } from "history";
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
-import { userReducer, UserState } from "./redux/user/reducer";
+import { userReducer, UserState, AuthState, authReducer } from "./redux/user/reducer";
 import thunk, { ThunkDispatch } from "redux-thunk";
-import { UserActions } from "./redux/user/actions";
+import { UserActions, LoadToken } from "./redux/user/actions";
 import { createBidsReducer } from "./redux/createbid/reducer";
 import { productsReducer, ProductsState } from "./redux/products/reducer";
 import { liveStreamReducer, LiveStreamState } from "./redux/LiveStream/reducer";
@@ -27,7 +27,7 @@ export type RootAction =
     | LiveStreamActions
     | createBidsActions
     | ComingAuctionActions
-
+    | LoadToken
 export type RootThunkDispatch = ThunkDispatch<RootState, null, RootAction>;
 
 export interface RootState {
@@ -37,6 +37,7 @@ export interface RootState {
     products: ProductsState;
     liveStream: LiveStreamState;
     comingAuction: ComingAuctionState;
+    authState: AuthState
 }
 
 const reducer = combineReducers<RootState>({
@@ -46,6 +47,7 @@ const reducer = combineReducers<RootState>({
     router: connectRouter(history),
     liveStream: liveStreamReducer,
     comingAuction: comingAuctionReducer,
+    authState: authReducer
 });
 
 declare global {
