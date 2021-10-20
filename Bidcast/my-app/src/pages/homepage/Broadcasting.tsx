@@ -92,6 +92,7 @@ export function Broadcasting() {
                 <Card.Text>
                   目前價格: <span className="biding_price">HKD 100</span>
                 </Card.Text>
+                <Card.Text>由XXX主辦</Card.Text>
                 <div className="bid_share_container">
                   <Button
                     variant="outline-dark"

@@ -33,7 +33,6 @@ export function ComingAuction() {
     Object.values(state.comingAuction.comingAuctions.comingAuctionsArr)
   );
 
-  console.log(auctions);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getComingAuctions());
@@ -72,7 +71,7 @@ export function ComingAuction() {
               <Image
                 key={auction.id}
                 className="img_fluid"
-                src={auction.productImage}
+                src={auction.product_image}
                 fluid
               />
               <Card.Body>
@@ -94,11 +93,12 @@ export function ComingAuction() {
                     <div className="time_label">秒</div>
                   </div>
                 </div>
-                <Card.Title>{auction.productName}</Card.Title>
+                <Card.Title>{auction.product_name}</Card.Title>
                 <Card.Text>
-                  起價:{" "}
-                  <span className="biding_price">HKD {auction.minPrice}</span>
+                  底價:{" "}
+                  <span className="biding_price">HKD {auction.min_price}</span>
                 </Card.Text>
+                <Card.Text>由{auction.username}主辦</Card.Text>
                 <div className="bid_share_container">
                   <Button variant="outline-dark" className="bid_button">
                     收藏
@@ -149,8 +149,9 @@ export function ComingAuction() {
               </div>
               <Card.Title>產品名</Card.Title>
               <Card.Text>
-                起價: <span className="biding_price">HKD 100</span>
+                底價: <span className="biding_price">HKD 100</span>
               </Card.Text>
+              <Card.Text>由xxx主辦</Card.Text>
               <Button variant="outline-dark" className="bid_button">
                 收藏
               </Button>

@@ -61,7 +61,7 @@ export class UserController {
 
             return res.json({
                 token: token,
-                allInfo: result
+
             });
             // req.session["user"] = result.data.user;
         } catch (err) {
@@ -134,13 +134,10 @@ export class UserController {
 
                 return res.json({
                     token: token,
-                    allInfo: result
+
                 });
             }
-            return res.json({
-
-                allInfo: result
-            });
+            return res.json(result);
 
         } catch (err) {
             console.log(err);

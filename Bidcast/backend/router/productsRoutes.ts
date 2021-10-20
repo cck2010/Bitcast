@@ -5,11 +5,11 @@ import { productsController } from "../server";
 
 const productsRoutes = express.Router();
 
-//-------------------  for createBids upload profile ---------------------//
+//-------------------  for submit LiveStreaming upload picture ---------------------//
 
-const createBidsStorage = multer.diskStorage({
+const submitLiveStorage = multer.diskStorage({
     destination: function (req: Request, file: any, cb: any) {
-        cb(null, path.resolve("./createBidsPicture"));
+        cb(null, path.resolve("./submitLivePicture"));
     },
     filename: function (req: Request, file: any, cb: any) {
         cb(
@@ -18,8 +18,28 @@ const createBidsStorage = multer.diskStorage({
         );
     },
 });
-const createBidsUpload = multer({ storage: createBidsStorage });
-const createBidsMulter = createBidsUpload.single("image");
+const submitLiveUpload = multer({ storage: submitLiveStorage });
+const submitLiveMulter = submitLiveUpload.single("liveImage");
+
+// ^^^^^^^^^^^^^^^^^^ for  submit LiveStreaming upload picture  ^^^^^^^^^^^^^^^^^^^^//
+
+//-------------------  for submit products upload picture ---------------------//
+
+const submitProductsStorage = multer.diskStorage({
+    destination: function (req: Request, file: any, cb: any) {
+        cb(null, path.resolve("./submitProductsPicture"));
+    },
+    filename: function (req: Request, file: any, cb: any) {
+        cb(
+            null,
+            `${file.fieldname}-${Date.now()}.${file.mimetype.split("/")[1]}`
+        );
+    },
+});
+const submitProductsUpload = multer({ storage: submitProductsStorage });
+const submitProductsMulter = submitProductsUpload.single("productImage");
+
+// ^^^^^^^^^^^^^^^^^^ for submit products upload picture  ^^^^^^^^^^^^^^^^^^^^//
 
 // ^^^^^^^^^^^^^^^^^^ for createBids upload profile ^^^^^^^^^^^^^^^^^^^^//
 
@@ -28,15 +48,21 @@ productsRoutes.get("/categories", (req, res) =>
 );
 // productsRoutes.get("/categories/:id/products",(req,res)=> productsController.getProducts(req,res));
 
-// Bids Panel
-productsRoutes.post("/createBids/submitBid", createBidsMulter, (req, res) =>
-    productsController.submitBid(req, res)
-);
-
 export default productsRoutes;
 
 //-------------------  for update products info ---------------------//
 
+// Bids Panel
+productsRoutes.post(
+    "/createBids/submitBid/submitLive",
+    submitLiveMulter,
+    (req, res) => productsController.submitBidLiveInfo(req, res)
+);
+productsRoutes.post(
+    "/createBids/submitBid/submitProduct",
+    submitProductsMulter,
+    (req, res) => productsController.submitProductInfo(req, res)
+);
 productsRoutes.put("/liveStream/products/currentPrice", (req, res) =>
     productsController.putBidIncrement(req, res)
 );
@@ -47,4 +73,8 @@ productsRoutes.put("/liveStream/products/isSelected", (req, res) =>
 
 productsRoutes.put("/liveStream/products/productTime", (req, res) =>
     productsController.startBid(req, res)
+);
+//-------------------  for searching products ---------------------//
+productsRoutes.get("/product/search", (req, res) =>
+    productsController.searchProductResults(req, res)
 );
