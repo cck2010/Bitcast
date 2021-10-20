@@ -8,7 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./CreateBids.scss"
 import { fetchCategories } from "../../redux/products/actions";
 import axios from "axios";
-import moment from "moment";
+// import moment from "moment";
 
 interface liveInput {
   liveTitle: string,

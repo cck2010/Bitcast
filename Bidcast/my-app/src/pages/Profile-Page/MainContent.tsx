@@ -6,12 +6,14 @@ import { FaBars } from "react-icons/fa";
 import { Sidebar } from "./Sidebar";
 
 export function MainContent() {
+  
   const [toggled, setToggled] = useState(false);
   console.log(toggled);
   
   const handleToggleSidebar = () => {
     setToggled(!false);
   };
+
   // const [show, setShow] = useState(false);
   // console.log(show);
   

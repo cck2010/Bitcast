@@ -74,6 +74,7 @@ h4 {
   max-height: 200px;
   display: block;
   transition: transform 0.9s;
+  user-select: none;
 }
 .img_fluid:hover {
   transform: scale(1.1);
@@ -213,6 +214,7 @@ footer {
   width: 95%;
   margin-top: 20px;
   overflow: hidden;
+  user-select: none;
 }
 .start_bid_section {
   padding: 40px 0;
@@ -258,9 +260,6 @@ footer {
   background-color: $navbarColor;
   z-index: 100;
 }
-.logo_container {
-  padding: 0;
-}
 
 @media (min-width: 768px) {
   .navbar-expand-md .navbar-nav {
@@ -271,4 +270,7 @@ footer {
 .navbar-toggler-icon {
   background-color: #ffffff;
   border-radius: 6px;
+}
+.navbar-light .navbar-toggler {
+  margin-right: 10px;
 }

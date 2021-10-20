@@ -5,7 +5,7 @@ export function Recommendation() {
   return (
     <div>
       <Container>
-        <h4>我哋推介</h4>
+        <h4>熱門產品</h4>
         <SvgBorder />
         <Row>
           <Col sm={6} className="recommendation_column">

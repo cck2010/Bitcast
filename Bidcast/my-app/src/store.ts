@@ -15,6 +15,8 @@ import { liveStreamReducer, LiveStreamState } from "./redux/LiveStream/reducer";
 import { LiveStreamActions } from "./redux/LiveStream/actions";
 import { ProductsActions } from "./redux/products/actions";
 import { CreateBids, createBidsActions } from "./redux/createbid/actions";
+import { ComingAuctionActions } from "./redux/homepage/action";
+import { comingAuctionReducer, ComingAuctionState } from "./redux/homepage/reducer";
 
 export const history = createBrowserHistory();
 
@@ -23,7 +25,8 @@ export type RootAction =
     | UserActions
     | ProductsActions
     | LiveStreamActions
-    | createBidsActions;
+    | createBidsActions
+    | ComingAuctionActions
 
 export type RootThunkDispatch = ThunkDispatch<RootState, null, RootAction>;
 
@@ -33,6 +36,7 @@ export interface RootState {
     CreateBids: CreateBids;
     products: ProductsState;
     liveStream: LiveStreamState;
+    comingAuction: ComingAuctionState;
 }
 
 const reducer = combineReducers<RootState>({
@@ -41,6 +45,7 @@ const reducer = combineReducers<RootState>({
     products: productsReducer,
     router: connectRouter(history),
     liveStream: liveStreamReducer,
+    comingAuction: comingAuctionReducer,
 });
 
 declare global {

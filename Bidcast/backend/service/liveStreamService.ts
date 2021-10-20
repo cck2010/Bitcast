@@ -1,4 +1,5 @@
 import { Knex } from "knex";
+import { LiveStreamProduct } from "../controller/liveStreamController";
 
 export class LiveStreamService {
     constructor(private knex: Knex) {}
@@ -7,104 +8,109 @@ export class LiveStreamService {
         console.log(this.knex);
     };
 
-    getRoom = (token: string) => {
-        if (token == "123") {
-            return "abc";
-        } else {
+    getRoom = async (token: string) => {
+        const roomResult = await this.knex("live")
+            .select("buyer_link")
+            .where("seller_link", token);
+        if (roomResult.length === 0) {
             return "";
-        }
-    };
-
-    getInfo = (room: string, token: string) => {
-        if (room !== "") {
-            return {
-                id: 1,
-                title: "Test Title",
-                seller: "tester",
-                sellerImage: "https://img.tw.observer/images/vS4jQ2W.jpg",
-                currentViewers: 0,
-                thumbnail: "https://placeimg.com/1280/840/nature",
-                description: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-                
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
-            };
         } else {
-            return {
-                id: 1,
-                title: "Test Title",
-                seller: "tester",
-                sellerImage: "https://img.tw.observer/images/vS4jQ2W.jpg",
-                currentViewers: 0,
-                thumbnail: "https://placeimg.com/1280/840/nature",
-                description: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-                
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
-            };
+            return roomResult[0].buyer_link;
         }
     };
 
-    getProducts = (liveId: number) => {
-        return [
-            {
-                id: 0,
-                productName: "pooh1",
-                minPrice: 10,
-                currentPrice: 10,
-                buyPrice: 100,
-                bidIncrement: 10,
-                productImage:
-                    "https://cdn.shopify.com/s/files/1/0339/7091/3412/products/POPMARTWinniethePooh.jpg",
+    getInfo = async (room: string, token: string) => {
+        const liveResult = await this.knex("live")
+            .select(
+                "id",
+                "title",
+                "user_id",
+                "current_viewers",
+                "image",
+                "description"
+            )
+            .where(
+                `${room !== "" ? "buyer_link" : "seller_link"}`,
+                room !== "" ? room : token
+            );
+        if (liveResult.length === 0) {
+            return {
+                id: -1,
+                title: "Error",
+                seller: "Error",
+                sellerImage: "/defaultUser.png",
+                currentViewers: 0,
+                thumbnail: "",
+                description: "",
+                success: false,
+            };
+        }
+
+        const userResult = (
+            await this.knex("users")
+                .select("username", "profile_pic")
+                .where("id", liveResult[0].user_id)
+        )[0];
+
+        return {
+            id: liveResult[0].id,
+            title: liveResult[0].title,
+            seller: userResult.username,
+            sellerImage:
+                userResult.profile_pic == null
+                    ? "/defaultUser.png"
+                    : userResult.profile_pic,
+            currentViewers: liveResult[0].current_viewers,
+            thumbnail: liveResult[0].image,
+            description: liveResult[0].description,
+        };
+    };
+
+    getProducts = async (liveId: number) => {
+        const productsResult = await this.knex("products")
+            .select(
+                "id",
+                "product_name",
+                "min_price",
+                "current_price",
+                "buy_price",
+                "bid_increment",
+                "product_image",
+                "is_selected",
+                "duration",
+                "is_ended",
+                "description"
+            )
+            .where("live_id", liveId);
+
+        let products: LiveStreamProduct[] = [];
+        for (let productResult of productsResult) {
+            let product: LiveStreamProduct = {
+                id: -1,
+                productName: "",
+                minPrice: 0,
+                currentPrice: 0,
+                buyPrice: 0,
+                bidIncrement: 0,
+                productImage: "",
                 isSelected: false,
-                duration: 2,
+                duration: 0,
+                description: "",
                 isEnded: false,
-            },
-            {
-                id: 1,
-                productName: "pooh2",
-                minPrice: 25,
-                currentPrice: 25,
-                buyPrice: 200,
-                bidIncrement: 5,
-                productImage:
-                    "https://lumiere-a.akamaihd.net/v1/images/c94eed56a5e84479a2939c9172434567c0147d4f.jpeg",
-                isSelected: false,
-                duration: 2,
-                isEnded: false,
-            },
-            {
-                id: 2,
-                productName: "pooh3",
-                minPrice: 30,
-                currentPrice: 30,
-                buyPrice: 300,
-                bidIncrement: 9,
-                productImage:
-                    "https://winniethepoohshow.com/assets/img/WTP-PoohHoneypot-Placeholder.png",
-                isSelected: false,
-                duration: 2,
-                isEnded: false,
-            },
-            {
-                id: 3,
-                productName: "pooh4",
-                minPrice: 40,
-                currentPrice: 40,
-                buyPrice: 400,
-                bidIncrement: 4,
-                productImage:
-                    "https://www.rd.com/wp-content/uploads/2020/01/shutterstock_247528582-2-copy-scaled.jpg",
-                isSelected: false,
-                duration: 2,
-                isEnded: false,
-            },
-        ];
+            };
+            product["id"] = productResult.id;
+            product["productName"] = productResult.product_name;
+            product["minPrice"] = productResult.min_price;
+            product["currentPrice"] = productResult.current_price;
+            product["buyPrice"] = productResult.buy_price;
+            product["bidIncrement"] = productResult.bid_increment;
+            product["productImage"] = productResult.product_image;
+            product["isSelected"] = productResult.is_selected;
+            product["duration"] = productResult.duration;
+            product["description"] = productResult.description;
+            product["isEnded"] = productResult.is_ended;
+            products.push(product);
+        }
+        return products;
     };
 }

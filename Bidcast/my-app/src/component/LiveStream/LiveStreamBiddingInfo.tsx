@@ -1,27 +1,69 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    fetchBidIncrement,
+    LiveStreamProduct,
+} from "../../redux/LiveStream/actions";
+import { RootState } from "../../store";
 
 function LiveStreamBiddingInfo() {
+    const dispatch = useDispatch();
+
     const [remainingTime, setRemainingTime] = useState<number>(0);
-    const [increment, setIncrement] = useState<number>(10);
-    const [currentPrice, setCurrentPrice] = useState<number>(100);
-    const [inputPrice, setInputPrice] = useState<number>(currentPrice);
+    // const [increment, setIncrement] = useState<number>(10);
+    // const [currentPrice, setCurrentPrice] = useState<number>(100);
+    const [inputPrice, setInputPrice] = useState<number>(0);
     const [isBidding, setIsBidding] = useState<boolean>(true);
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
-    const [highestBidUser, setHighestBidUser] = useState<string>("");
+    // const [highestBidUser, setHighestBidUser] = useState<string>("");
     const username = "測試員";
 
+    const products = useSelector(
+        (state: RootState) =>
+            state.liveStream.liveStreamProducts.liveStreamProductsArr
+    );
+
+    const [productId, setProductId] = useState<number>(-1);
+    const [productName, setProductName] = useState<string>("");
+    const [minPrice, setMinPrice] = useState<number>(0);
+    const [currentPrice, setCurrentPrice] = useState<number>(0);
+    const [buyPrice, setBuyPrice] = useState<number>(0);
+    const [bidIncrement, setBidIncrement] = useState<number>(0);
+    const [buyer, setBuyer] = useState<string>("");
+    const [productImage, setProductImage] = useState<string>("");
+    const [countdownStartTime, setCountdownStartTime] = useState<Date>(
+        new Date(1900, 1, 1)
+    );
+    const [duration, setDuration] = useState<number>(0);
+    const [isEnded, setIsEnded] = useState<boolean>(false);
+
+    for (let product of products) {
+        if (product.isSelected) {
+            setProductId(product.id);
+            setProductName(product.productName);
+            setMinPrice(product.minPrice);
+            setCurrentPrice(product.currentPrice);
+            setBuyPrice(product.buyPrice);
+            setBidIncrement(product.bidIncrement);
+            setProductImage(product.productImage);
+            setDuration(product.duration);
+            setIsEnded(product.isEnded);
+            setInputPrice(currentPrice);
+        }
+    }
+
     useEffect(() => {
-        if (inputPrice <= currentPrice + increment - 1) {
+        if (inputPrice <= currentPrice + bidIncrement - 1) {
             setIsDisabled(true);
         } else {
             setIsDisabled(false);
         }
-    }, [inputPrice, currentPrice, increment]);
+    }, [inputPrice, currentPrice, bidIncrement]);
 
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded p-3">
             <div className="row h-100">
-                <div className="info col-6 d-flex flex-column justify-content-center align-items-center h-100">
+                <div className="info col-4 d-flex flex-column justify-content-center align-items-center h-100">
                     <div className="current_price">
                         現在價格:
                         <br /> <i className="fas fa-money-bill-wave"></i>
@@ -29,9 +71,9 @@ function LiveStreamBiddingInfo() {
                         <br />
                         <span className="highest_bid_user mb-3">
                             叫價者:{" "}
-                            {highestBidUser === ""
+                            {buyer != null && buyer === ""
                                 ? "暫時未有叫價"
-                                : highestBidUser}
+                                : buyer}
                         </span>
                     </div>
                     {remainingTime === 0 ? (
@@ -43,49 +85,60 @@ function LiveStreamBiddingInfo() {
                         </div>
                     )}
                 </div>
-                <div className="input col-6 d-flex flex-column justify-content-center h-100 px-2">
+                <div className="input col-8 d-flex flex-column justify-content-center h-100 px-2">
                     {
-                        <>
-                            <button
-                                disabled={!isBidding}
-                                className={`min_bid btn btn-danger w-75 ${
-                                    !isBidding && "unavailable_btn"
-                                }`}
-                                onClick={() => {
-                                    setCurrentPrice(currentPrice + increment);
-                                    setHighestBidUser(username);
-                                }}
-                            >
-                                <i className="fas fa-gavel"></i> 最低叫價
-                            </button>
-                            <button
-                                disabled={!isBidding || isDisabled}
-                                className={`custom_bid btn btn-primary mb-3 w-75 ${
-                                    (!isBidding || isDisabled) &&
-                                    "unavailable_btn"
-                                }`}
-                                onClick={() => {
-                                    setCurrentPrice(inputPrice);
-                                    setInputPrice(inputPrice);
-                                    setHighestBidUser(username);
-                                }}
-                            >
-                                <i className="fas fa-gavel"></i> 自訂叫價
-                            </button>
-                            <label>
-                                <span className="mt-3">
-                                    (一口叫價為${increment})
-                                </span>
-                                <input
-                                    type="number"
-                                    className="action_duration w-75"
-                                    value={inputPrice}
-                                    onChange={(e) => {
-                                        setInputPrice(parseInt(e.target.value));
+                        <div className="row g-0">
+                            <div className="col-8">
+                                <button
+                                    disabled={!isBidding}
+                                    className={`min_bid btn btn-danger mb-1 w-100 ${
+                                        !isBidding && "unavailable_btn"
+                                    }`}
+                                    onClick={() => {
+                                        dispatch(fetchBidIncrement(productId));
                                     }}
-                                />
-                            </label>
-                        </>
+                                >
+                                    <i className="fas fa-gavel"></i> 最低叫價
+                                </button>
+                                <button
+                                    disabled={!isBidding || isDisabled}
+                                    className={`custom_bid btn btn-primary mb-1 w-100 ${
+                                        (!isBidding || isDisabled) &&
+                                        "unavailable_btn"
+                                    }`}
+                                    onClick={() => {}}
+                                >
+                                    <i className="fas fa-gavel"></i> 自訂叫價
+                                    <br />
+                                    (一口叫價為${bidIncrement})
+                                </button>
+                                <label className="w-100">
+                                    <input
+                                        type="number"
+                                        className="action_duration w-100"
+                                        value={inputPrice}
+                                        onChange={(e) => {
+                                            setInputPrice(
+                                                parseInt(e.target.value)
+                                            );
+                                        }}
+                                    />
+                                </label>
+                            </div>
+                            <div className="col-4">
+                                <button
+                                    disabled={!isBidding}
+                                    className={`custom_bid btn btn-success mx-1 w-100 h-100 ${
+                                        !isBidding && "unavailable_btn"
+                                    }`}
+                                    onClick={() => {}}
+                                >
+                                    <i className="fas fa-gavel"></i> 即買價
+                                    <br />
+                                    (${bidIncrement})
+                                </button>
+                            </div>
+                        </div>
                     }
                 </div>
             </div>

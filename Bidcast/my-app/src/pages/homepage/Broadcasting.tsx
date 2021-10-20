@@ -14,13 +14,13 @@ import { RWebShare } from "react-web-share";
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 3,
-    slidesToSlide: 3, // optional, default to 1.
+    items: 4,
+    slidesToSlide: 2, // optional, default to 1.
   },
   tablet: {
     breakpoint: { max: 1024, min: 464 },
     items: 2,
-    slidesToSlide: 2, // optional, default to 1.
+    slidesToSlide: 1, // optional, default to 1.
   },
   mobile: {
     breakpoint: { max: 464, min: 0 },
@@ -39,8 +39,9 @@ export function Broadcasting() {
         <Carousel
           additionalTransfrom={0}
           arrows={false}
-          autoPlaySpeed={3000}
-          centerMode
+          autoPlay
+          autoPlaySpeed={5000}
+          centerMode={false}
           className=""
           containerClass="container-with-dots"
           dotListClass=""
@@ -49,14 +50,14 @@ export function Broadcasting() {
           infinite
           itemClass=""
           keyBoardControl
-          minimumTouchDrag={100}
+          minimumTouchDrag={90}
           renderButtonGroupOutside={false}
           renderDotsOutside={false}
           responsive={responsive}
           showDots={false}
           sliderClass=""
           slidesToSlide={1}
-          swipeable
+          swipeable={false}
         >
           <div>
             <Card className="product_card">
@@ -99,14 +100,14 @@ export function Broadcasting() {
                       dispatch(push(`/liveStreaming?room=`));
                     }}
                   >
-                    馬上出價！
+                    馬上出價
                   </Button>
 
                   <RWebShare
                     data={{
-                      text: "Like humans, flamingos make friends for life",
-                      url: "https://on.natgeo.com/2zHaNup",
-                      title: "Flamingos",
+                      text: "",
+                      url: "",
+                      title: "Look at this amazing live",
                     }}
                     onClick={() => console.log("shared successfully!")}
                   >
