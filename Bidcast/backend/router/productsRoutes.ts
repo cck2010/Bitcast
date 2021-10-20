@@ -5,22 +5,39 @@ import { productsController } from "../server";
 
 const productsRoutes = express.Router();
 
-//-------------------  for createBids upload profile ---------------------//
+//-------------------  for submit LiveStreaming upload picture ---------------------//
 
 
-const createBidsStorage = multer.diskStorage({
+const submitLiveStorage = multer.diskStorage({
     destination: function (req: Request, file: any, cb: any) {
-      cb(null, path.resolve('./createBidsPicture'));
+      cb(null, path.resolve('./submitLivePicture'));
     },
     filename: function (req: Request, file: any, cb: any) {
       cb(null, `${file.fieldname}-${Date.now()}.${file.mimetype.split('/')[1]}`);
     }
   })
-  const createBidsUpload = multer({ storage: createBidsStorage })
-  const createBidsMulter = createBidsUpload.single('image');
+  const submitLiveUpload = multer({ storage: submitLiveStorage })
+  const submitLiveMulter = submitLiveUpload.single('liveImage');
   
   
-  // ^^^^^^^^^^^^^^^^^^ for createBids upload profile ^^^^^^^^^^^^^^^^^^^^//
+// ^^^^^^^^^^^^^^^^^^ for  submit LiveStreaming upload picture  ^^^^^^^^^^^^^^^^^^^^//
+
+//-------------------  for submit products upload picture ---------------------//
+
+
+const submitProductsStorage = multer.diskStorage({
+    destination: function (req: Request, file: any, cb: any) {
+      cb(null, path.resolve('./submitProductsPicture'));
+    },
+    filename: function (req: Request, file: any, cb: any) {
+      cb(null, `${file.fieldname}-${Date.now()}.${file.mimetype.split('/')[1]}`);
+    }
+  })
+  const submitProductsUpload = multer({ storage: submitProductsStorage })
+  const submitProductsMulter = submitProductsUpload.single('productImage');
+  
+  
+  // ^^^^^^^^^^^^^^^^^^ for submit products upload picture  ^^^^^^^^^^^^^^^^^^^^//
 
 
 
@@ -33,6 +50,7 @@ productsRoutes.get("/categories",(req,res)=> productsController.getCategories(re
 
 
 // Bids Panel
-productsRoutes.post("/createBids/submitBid",createBidsMulter,(req,res)=>productsController.submitBid(req,res));
+productsRoutes.post("/createBids/submitBid/submitLive",submitLiveMulter,(req,res)=>productsController.submitBidLiveInfo(req,res));
+productsRoutes.post("/createBids/submitBid/submitProduct",submitProductsMulter,(req,res)=>productsController.submitProductInfo(req,res));
 
 export default productsRoutes;
