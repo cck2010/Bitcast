@@ -39,6 +39,6 @@ export function getComingAuctions() {
 
         // console.log("json", comingAuctionData)
 
-        // dispatch(loadComingAuctions(comingAuctionData, true))
-    };
+        dispatch(loadComingAuctions(json, true))
+    }
 }

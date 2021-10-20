@@ -8,31 +8,65 @@ import jwt from "jsonwebtoken"
 
 // import passport from 'passport';
 // import { env } from "../env";
-
+declare global {
+    namespace Express {
+        interface Request {
+            user?: {
+                id?: number;
+                username?: string;
+                email?: string;
+                role_id?: number;
+                created_at?: Date;
+                updated_at?: Date;
+                profile_pic?: string;
+                status_id?: number;
+                phone_number?: number;
+                telegram_acct?: string;
+                telegram_is_verified?: boolean;
+                telegram_chat_id?: number;
+                login_method_id?: number;
+            };
+        }
+    }
+}
 export class UserController {
     constructor(private userService: UserService) { }
     register = async (req: Request, res: Response) => {
         try {
-            const { username, email, password, phone_number } = req.body;
+            const { username, email, password, phoneNumber } = req.body;
+            console.log(username, email, password, phoneNumber);
+
             const result: any = await this.userService.register(
                 username,
                 email,
                 password,
-                phone_number
+                phoneNumber
             );
-            // console.log(result);
+            console.log(result);
 
-            if (result.success) {
-                await this.userService.login(email, password);
-                // req.session["user"] = result.data.user;
-                res.json(result);
-            } else {
-                res.json(result);
-                console.log('res.json(result)=', result)
+            if (!(result.success)) {
+                // console.log('not success');
+
+                return res.json(result);
             }
+
+            const payload = result.data.user
+            const signOptions: {} = {
+
+                expiresIn: "12h",
+                algorithm: "RS512" 			// RSASSA options[ "RS256", "RS384", "RS512" ]
+            };
+
+            const token = jwt.sign(payload, jwtKey.privateKEY, signOptions);
+
+            return res.json({
+                token: token,
+                allInfo: result
+            });
+            // req.session["user"] = result.data.user;
         } catch (err) {
             console.log(err);
-            res.json({
+            return res.json({
                 success: false,
                 error: err,
                 data: {
@@ -98,14 +132,19 @@ export class UserController {
 
                 const token = jwt.sign(payload, jwtKey.privateKEY, signOptions);
 
-                res.json({
+                return res.json({
                     token: token,
+                    allInfo: result
                 });
             }
+            return res.json({
+
+                allInfo: result
+            });
 
         } catch (err) {
             console.log(err);
-            res.json({
+            return res.json({
                 success: false,
                 error: err,
                 data: {

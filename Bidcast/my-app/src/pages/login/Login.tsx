@@ -7,10 +7,12 @@ import { push } from "connected-react-router";
 import ReactFacebookLogin, { ReactFacebookLoginInfo } from "react-facebook-login";
 
 
+const { REACT_APP_BACKEND_URL } = process.env
 export function Login() {
   const { register, handleSubmit } = useForm()
   const dispatch = useDispatch();
   const [error, setError] = useState('')
+  const [registerError, setRegisterEror]=useState('')
 
   const fBOnCLick = ()=> {
     return null;
@@ -43,34 +45,73 @@ const fBCallback = async (userInfo: ReactFacebookLoginInfo & { accessToken: stri
 }
   return (
     <div>
+      
       <form onSubmit={handleSubmit(async data => {
         try {
-          const res = await axios.post<any>(`${process.env.REACT_APP_BACKEND_URL}/login`, {
-            email: data.email,
-            password: data.password
+          const res = await axios.post<any>(`${REACT_APP_BACKEND_URL}/login`, {
+            email: data.loginEmail,
+            password: data.loginPassword
           })
           
           if (res.data.token != null) {
+            
             localStorage.setItem('token', res.data.token)
             dispatch(login(res.data.token))
             dispatch(push('/'))
-          } else {
-            setError('錯密碼啊老友')
+          }
+          else if(res.data.allInfo.success ===false){
+            setError(`${res.data.allInfo.data.msg}`)
+          }else{
+            setError('no token and success false')
           }
         } catch (e: any) {
-          if (e?.response.status === 401) {
-            setError('錯密碼啊老友')
-          } else {
-            console.error(e)
-            setError('發生未知錯誤')
-          }
+          setError('unknown error')
         }
       })}>
-        <input {...register('username')} />
-        <input {...register('password')} />
-        {error}
+       
+        <input {...register('loginEmail')} />
+        <input {...register('loginPassword')} />
+        
         <input type="submit" />
       </form>
+      {error}
+      
+{/* register form */}
+      <form onSubmit={handleSubmit(async data => {
+        try {
+          
+
+          const res = await axios.post<any>(`${REACT_APP_BACKEND_URL}/register`, {
+            username:data.username,
+            email: data.email,
+            password: data.password,
+            phoneNumber:data.phoneNumber,
+          })
+          console.log(res.data)
+          if (res.data.token != null) {
+            
+            localStorage.setItem('token', res.data.token)
+            dispatch(login(res.data.token))
+            dispatch(push('/'))
+          }
+          else if(res.data.allInfo.success ===false){
+            setRegisterEror(`${res.data.allInfo.data.msg}`)
+          }else{
+            setRegisterEror('no token and success false')
+          }
+        } catch (e: any) {
+          setRegisterEror('unknown error')
+        }
+      })}>
+       
+        <input {...register('username')} />
+        <input {...register('email')} />
+        <input {...register('phoneNumber')} />
+        <input {...register('password')} />
+        {registerError}
+        <input type="submit" />
+      </form>
+
       <ReactFacebookLogin
           appId={process.env.REACT_APP_FACEBOOK_APP_ID || ''}
           autoLoad={false}
@@ -79,6 +120,6 @@ const fBCallback = async (userInfo: ReactFacebookLoginInfo & { accessToken: stri
           callback={fBCallback}
       />  
 
-    </div>
+</div>
   )
 }
