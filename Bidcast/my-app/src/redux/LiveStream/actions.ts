@@ -67,61 +67,74 @@ export type LiveStreamActions =
 
 export function fetchliveStreamInfo(room: string, token: string) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
-        const res = await axios.get<LiveStreamInfo>(
-            `${process.env.REACT_APP_BACKEND_URL}/liveStream/info?room=${room}&token=${token}`
-        );
-        if (res.data.success) {
-            dispatch(loadliveStreamInfo(res.data));
-        } else {
-            dispatch(
-                loadliveStreamInfo({
-                    id: -1,
-                    title: "Error",
-                    seller: "Error",
-                    sellerImage: "/defaultUser.png",
-                    currentViewers: 0,
-                    thumbnail: "",
-                    description: "",
-                    success: false,
-                })
+        try {
+            const res = await axios.get<LiveStreamInfo>(
+                `${process.env.REACT_APP_BACKEND_URL}/liveStream/info?room=${room}&token=${token}`
             );
+
+            if (res.data.success) {
+                dispatch(loadliveStreamInfo(res.data));
+            } else {
+                dispatch(
+                    loadliveStreamInfo({
+                        id: -1,
+                        title: "Error",
+                        seller: "Error",
+                        sellerImage: "/defaultUser.png",
+                        currentViewers: 0,
+                        thumbnail: "",
+                        description: "",
+                        success: false,
+                    })
+                );
+            }
+        } catch (e) {
+            console.log(e);
         }
     };
 }
 
 export function fetchliveStreamProducts(liveId: number) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
-        const res = await axios.get<{
-            liveStreamProducts: LiveStreamProduct[];
-            success: boolean;
-        }>(
-            `${process.env.REACT_APP_BACKEND_URL}/liveStream/products?liveId=${liveId}`
-        );
-
-        if (res.data.success) {
-            dispatch(
-                loadLiveStreamProducts(
-                    res.data.liveStreamProducts,
-                    res.data.success
-                )
+        try {
+            const res = await axios.get<{
+                liveStreamProducts: LiveStreamProduct[];
+                success: boolean;
+            }>(
+                `${process.env.REACT_APP_BACKEND_URL}/liveStream/products?liveId=${liveId}`
             );
-        } else {
-            dispatch(loadLiveStreamProducts([], false));
+
+            if (res.data.success) {
+                dispatch(
+                    loadLiveStreamProducts(
+                        res.data.liveStreamProducts,
+                        res.data.success
+                    )
+                );
+            } else {
+                dispatch(loadLiveStreamProducts([], false));
+            }
+        } catch (e) {
+            console.log(e);
         }
     };
 }
 
 export function fetchBidIncrement(productId: number) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
-        const res = await axios.put<UpdatePrice>(
-            `${process.env.REACT_APP_BACKEND_URL}/liveStream/products/currentPrice`,
-            {
-                productId,
-            }
-        );
+        try {
+            const res = await axios.put<UpdatePrice>(
+                `${process.env.REACT_APP_BACKEND_URL}/liveStream/products/currentPrice`,
+                {
+                    productId,
+                }
+            );
 
-        if (res.data.success) {
-            dispatch(bidIncrement(productId, res.data.newPrice));
+            if (res.data.success) {
+                dispatch(bidIncrement(productId, res.data.newPrice));
+            }
+        } catch (e) {
+            console.log(e);
         }
     };
 }

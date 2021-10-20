@@ -1,6 +1,22 @@
 import { LiveStreamService } from "../service/liveStreamService";
 import { Request, Response } from "express";
 
+export interface LiveStreamProduct {
+    id: number;
+    productName: string;
+    minPrice: number;
+    currentPrice: number;
+    buyPrice: number;
+    bidIncrement: number;
+    buyer?: string;
+    productImage: string;
+    isSelected: boolean;
+    countdownStartTime?: Date;
+    duration: number;
+    description: string;
+    isEnded: boolean;
+}
+
 export class LiveStreamController {
     constructor(private liveStreamService: LiveStreamService) {}
 
@@ -9,7 +25,6 @@ export class LiveStreamController {
             const token = req.query.token as string;
 
             const room = await this.liveStreamService.getRoom(token);
-            console.log(room);
             res.json({ room });
         } catch (e) {
             console.log(e);
@@ -46,7 +61,7 @@ export class LiveStreamController {
                 currentViewers: result.currentViewers,
                 thumbnail: result.thumbnail,
                 description: result.description,
-                success: true,
+                success: result.id === -1 ? false : true,
             };
 
             res.json(response);
@@ -58,21 +73,6 @@ export class LiveStreamController {
 
     getProducts = async (req: Request, res: Response) => {
         try {
-            interface LiveStreamProduct {
-                id: number;
-                productName: string;
-                minPrice: number;
-                currentPrice: number;
-                buyPrice: number;
-                bidIncrement: number;
-                buyer?: string;
-                productImage: string;
-                isSelected: boolean;
-                countdownStartTime?: Date;
-                duration: number;
-                isEnded: boolean;
-            }
-
             const liveId = parseInt(req.query.liveId as string);
 
             if (liveId < 0) {

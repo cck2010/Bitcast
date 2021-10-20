@@ -1,4 +1,3 @@
-import { formatISODuration } from "date-fns/esm";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -24,41 +23,42 @@ function LiveStreamBiddingInfo() {
             state.liveStream.liveStreamProducts.liveStreamProductsArr
     );
 
-    const [currentProduct, setCurrentProduct] = useState<LiveStreamProduct>({
-        id: -1,
-        productName: "",
-        minPrice: 0,
-        currentPrice: 0,
-        buyPrice: 0,
-        bidIncrement: 0,
-        buyer: "",
-        productImage: "",
-        isSelected: false,
-        countdownStartTime: new Date(1900, 1, 1),
-        duration: 0,
-        isEnded: false,
-        success: true,
-    });
+    const [productId, setProductId] = useState<number>(-1);
+    const [productName, setProductName] = useState<string>("");
+    const [minPrice, setMinPrice] = useState<number>(0);
+    const [currentPrice, setCurrentPrice] = useState<number>(0);
+    const [buyPrice, setBuyPrice] = useState<number>(0);
+    const [bidIncrement, setBidIncrement] = useState<number>(0);
+    const [buyer, setBuyer] = useState<string>("");
+    const [productImage, setProductImage] = useState<string>("");
+    const [countdownStartTime, setCountdownStartTime] = useState<Date>(
+        new Date(1900, 1, 1)
+    );
+    const [duration, setDuration] = useState<number>(0);
+    const [isEnded, setIsEnded] = useState<boolean>(false);
 
     for (let product of products) {
         if (product.isSelected) {
-            setCurrentProduct({ ...product });
-            setInputPrice(currentProduct.currentPrice);
+            setProductId(product.id);
+            setProductName(product.productName);
+            setMinPrice(product.minPrice);
+            setCurrentPrice(product.currentPrice);
+            setBuyPrice(product.buyPrice);
+            setBidIncrement(product.bidIncrement);
+            setProductImage(product.productImage);
+            setDuration(product.duration);
+            setIsEnded(product.isEnded);
+            setInputPrice(currentPrice);
         }
     }
 
     useEffect(() => {
-        if (
-            inputPrice <=
-            currentProduct.currentPrice + currentProduct.bidIncrement - 1
-        ) {
+        if (inputPrice <= currentPrice + bidIncrement - 1) {
             setIsDisabled(true);
         } else {
             setIsDisabled(false);
         }
-    }, [inputPrice, currentProduct]);
-
-    useEffect(() => {}, []);
+    }, [inputPrice, currentPrice, bidIncrement]);
 
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded p-3">
@@ -67,14 +67,13 @@ function LiveStreamBiddingInfo() {
                     <div className="current_price">
                         現在價格:
                         <br /> <i className="fas fa-money-bill-wave"></i>
-                        {"  "}${currentProduct.currentPrice}
+                        {"  "}${currentPrice}
                         <br />
                         <span className="highest_bid_user mb-3">
                             叫價者:{" "}
-                            {currentProduct.buyer != null &&
-                            currentProduct.buyer === ""
+                            {buyer != null && buyer === ""
                                 ? "暫時未有叫價"
-                                : currentProduct.buyer}
+                                : buyer}
                         </span>
                     </div>
                     {remainingTime === 0 ? (
@@ -96,9 +95,7 @@ function LiveStreamBiddingInfo() {
                                         !isBidding && "unavailable_btn"
                                     }`}
                                     onClick={() => {
-                                        dispatch(
-                                            fetchBidIncrement(currentProduct.id)
-                                        );
+                                        dispatch(fetchBidIncrement(productId));
                                     }}
                                 >
                                     <i className="fas fa-gavel"></i> 最低叫價
@@ -113,7 +110,7 @@ function LiveStreamBiddingInfo() {
                                 >
                                     <i className="fas fa-gavel"></i> 自訂叫價
                                     <br />
-                                    (一口叫價為${currentProduct.bidIncrement})
+                                    (一口叫價為${bidIncrement})
                                 </button>
                                 <label className="w-100">
                                     <input
@@ -138,7 +135,7 @@ function LiveStreamBiddingInfo() {
                                 >
                                     <i className="fas fa-gavel"></i> 即買價
                                     <br />
-                                    (${currentProduct.bidIncrement})
+                                    (${bidIncrement})
                                 </button>
                             </div>
                         </div>

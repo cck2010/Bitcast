@@ -38,7 +38,7 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
             className="LiveStreamControlPanel rounded"
             style={props.isDesktop ? {} : liveStreamControlPanelDesktopSetting}
         >
-            <div className="row">
+            <div className="row g-0">
                 <div
                     className={`${
                         props.isDesktop ? "col-5" : "col-12"
