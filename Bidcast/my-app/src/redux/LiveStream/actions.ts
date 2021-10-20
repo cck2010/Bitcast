@@ -28,9 +28,11 @@ export interface LiveStreamProduct {
     success: boolean;
 }
 
-export interface UpdatePrice {
+export interface UpdateProduct {
     id: number;
-    newPrice: number;
+    newPrice?: number;
+    countdownStartTime?: Date;
+    duration?: number;
     success: boolean;
 }
 
@@ -52,6 +54,13 @@ export function loadLiveStreamProducts(
     };
 }
 
+export function selectProduct(id: number) {
+    return {
+        type: "@@liveStream/SELECT_PRODUCT" as const,
+        id,
+    };
+}
+
 export function bidIncrement(id: number, newPrice: number) {
     return {
         type: "@@liveStream/BID_INCREMENT" as const,
@@ -63,7 +72,8 @@ export function bidIncrement(id: number, newPrice: number) {
 export type LiveStreamActions =
     | ReturnType<typeof loadliveStreamInfo>
     | ReturnType<typeof loadLiveStreamProducts>
-    | ReturnType<typeof bidIncrement>;
+    | ReturnType<typeof bidIncrement>
+    | ReturnType<typeof selectProduct>;
 
 export function fetchliveStreamInfo(room: string, token: string) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
@@ -112,6 +122,8 @@ export function fetchliveStreamProducts(liveId: number) {
                     )
                 );
             } else {
+                console.log("fetchliveStreamProducts fai;");
+
                 dispatch(loadLiveStreamProducts([], false));
             }
         } catch (e) {
@@ -123,7 +135,7 @@ export function fetchliveStreamProducts(liveId: number) {
 export function fetchBidIncrement(productId: number) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         try {
-            const res = await axios.put<UpdatePrice>(
+            const res = await axios.put<UpdateProduct>(
                 `${process.env.REACT_APP_BACKEND_URL}/liveStream/products/currentPrice`,
                 {
                     productId,
@@ -131,7 +143,50 @@ export function fetchBidIncrement(productId: number) {
             );
 
             if (res.data.success) {
-                dispatch(bidIncrement(productId, res.data.newPrice));
+                if (res.data.newPrice) {
+                    dispatch(bidIncrement(productId, res.data.newPrice));
+                }
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
+}
+
+export function fetchSelectedProduct(productId: number) {
+    return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
+        try {
+            const res = await axios.put<UpdateProduct>(
+                `${process.env.REACT_APP_BACKEND_URL}/liveStream/products/isSelected`,
+                {
+                    productId,
+                }
+            );
+
+            if (res.data.success) {
+                dispatch(selectProduct(res.data.id));
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
+}
+
+export function fetchProductTime(productId: number, seconds: number) {
+    return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
+        try {
+            console.log(productId);
+
+            const res = await axios.put<UpdateProduct>(
+                `${process.env.REACT_APP_BACKEND_URL}/liveStream/products/productTime`,
+                {
+                    productId,
+                    seconds,
+                }
+            );
+
+            if (res.data.success) {
+                // dispatch()
             }
         } catch (e) {
             console.log(e);

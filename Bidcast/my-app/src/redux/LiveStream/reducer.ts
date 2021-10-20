@@ -36,10 +36,20 @@ export function liveStreamReducer(
             case "@@liveStream/LOAD_LIVE_STREAM_INFO":
                 state.liveStreamInfo = action.liveStreamInfo;
                 break;
-            case "@@liveStream/LOAD_LIVE_STREAM_PRODUCTS":
+            case "@@liveStream/LOAD_LIVE_STREAM_PRODUCTS": {
                 state.liveStreamProducts.liveStreamProductsArr =
                     action.liveStreamProducts;
                 state.liveStreamProducts.success = action.success;
+                break;
+            }
+
+            case "@@liveStream/SELECT_PRODUCT":
+                for (let liveStreamProduct of state.liveStreamProducts
+                    .liveStreamProductsArr) {
+                    if (liveStreamProduct.id === action.id) {
+                        liveStreamProduct.isSelected = true;
+                    }
+                }
                 break;
             case "@@liveStream/BID_INCREMENT":
                 // for (let ind in state.liveStreamProducts

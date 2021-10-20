@@ -14,6 +14,7 @@ import {
 } from "../../redux/LiveStream/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
+import io, { Socket } from "socket.io-client";
 
 function LiveStream() {
     const liveStreamRef = useRef<HTMLDivElement>(null);
@@ -29,7 +30,7 @@ function LiveStream() {
 
     const [page, setPage] = useState<number>(1);
 
-    // fetch-info
+    // fetch info
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -49,6 +50,33 @@ function LiveStream() {
         dispatch(fetchliveStreamProducts(liveId));
     }, [dispatch, liveId]);
 
+    // connect socket.io
+    const [ws, setWs] = useState<Socket | null>(null);
+
+    const connectWebSocket = () => {
+        if (process.env.REACT_APP_BACKEND_URL !== undefined) {
+            setWs(io(process.env.REACT_APP_BACKEND_URL));
+        }
+    };
+
+    if (liveId > 0 && ws === null) {
+        connectWebSocket();
+    }
+
+    useEffect(() => {
+        if (ws) {
+            const initWebSocket = () => {
+                if (ws) {
+                    ws.emit("joinRoom", liveId);
+                    ws.on("joinRoom", (message) => {
+                        console.log(message);
+                    });
+                }
+            };
+            initWebSocket();
+        }
+    }, [ws, liveId]);
+
     return (
         <div className="LiveStream m-3" ref={liveStreamRef}>
             <div className="row">
@@ -60,6 +88,7 @@ function LiveStream() {
                             <LiveStreamControlPanelSeller
                                 isDesktop={isDesktop}
                                 isTablet={isTablet}
+                                ws={ws}
                             />
                             <LiveStreamDescription />
                         </>
@@ -85,6 +114,7 @@ function LiveStream() {
                                     <LiveStreamControlPanelSeller
                                         isDesktop={isDesktop}
                                         isTablet={isTablet}
+                                        ws={ws}
                                     />
                                     <LiveStreamDescription />
                                 </>

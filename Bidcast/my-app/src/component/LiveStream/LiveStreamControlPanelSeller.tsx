@@ -3,15 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import Carousel from "react-tiny-slider";
 import { TinySliderInstance } from "tiny-slider";
 import {
+    fetchSelectedProduct,
     LiveStreamProduct,
     loadLiveStreamProducts,
 } from "../../redux/LiveStream/actions";
 import { RootState } from "../../store";
 import LiveStreamBiddingInfoSeller from "./LiveStreamBiddingInfoSeller";
+import { Socket } from "socket.io-client";
 
 interface LiveStreamControlPanelProps {
     isDesktop: boolean;
     isTablet: boolean;
+    ws: Socket | null;
 }
 
 function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
@@ -29,7 +32,11 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
             state.liveStream.liveStreamProducts.liveStreamProductsArr
     );
 
-    console.log(products);
+    const liveId = useSelector(
+        (state: RootState) => state.liveStream.liveStreamInfo.id
+    );
+
+    console.log("carousel", carousel.current?.getInfo());
 
     return (
         <div
@@ -66,20 +73,29 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
                             newProducts = newProducts.concat(
                                 newProducts.splice(0, info.displayIndex - 1)
                             );
+                            let productId = -1;
                             for (let i = 0; i < newProducts.length; i++) {
                                 if (ind === newProducts[i].id) {
                                     newProducts[i].isSelected = true;
+                                    productId = newProducts[i].id;
                                 } else {
                                     newProducts[i].isSelected = false;
                                 }
                             }
+
                             dispatch(loadLiveStreamProducts(newProducts, true));
+                            dispatch(fetchSelectedProduct(productId));
+                            if (props.ws) {
+                                props.ws.emit("render", [liveId, slideIndex]);
+                            }
                         }}
                     >
                         {products.map((product) => (
                             <div
                                 key={product.id}
-                                className={`carousel_card d-flex align-items-center justify-content-between`}
+                                className={`carousel_card ${
+                                    product.isSelected ? "selected" : ""
+                                } d-flex align-items-center justify-content-between`}
                                 aria-label={`card${product.id}`}
                             >
                                 <img
