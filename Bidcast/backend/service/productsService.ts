@@ -33,4 +33,14 @@ export class ProductsService {
     putBidIncrement = async (productId: number) => {
         return productId + 10;
     };
+
+    searchProductResults = async (searchKeywords: string)=> {
+        const results = await this.knex.raw(/*sql*/ `
+        select * from products where product_name ilike '%${searchKeywords}%';
+        `)
+        return {
+            success: true,
+            data: { msg: "searching products result here", results }
+        }
+    }
 }

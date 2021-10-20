@@ -33,7 +33,9 @@ export function productsReducer(
     action: ProductsActions
 ): ProductsState {
     //fetch ser 拎 categories data
+    
     return produce(state, (state) => {
+        
         switch (action.type) {
             case "@@products/LOAD_CATEGORIES":
                 for (let category of action.categories) {
@@ -41,6 +43,11 @@ export function productsReducer(
                 }
                 break;
             //fetch ser 拎 products data
+            case "@@products/LOAD_PRODUCT_SEARCH_RESULT":
+                for (let product of action.products) {
+                    state.products[product.id] = product
+                  }
+                break;
         }
     });
 }
