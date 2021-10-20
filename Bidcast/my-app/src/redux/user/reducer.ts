@@ -3,13 +3,13 @@ import { UserActions } from "./actions";
 
 export interface UserState {
     isAuthenticate: boolean;
-    userId: string | null;
+    // userId: string | null;
     token: string | null;
 }
 
 const initialState: UserState = {
     isAuthenticate: false,
-    userId: null,
+    // userId: null,
     token: null
 }
 
