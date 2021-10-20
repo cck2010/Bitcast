@@ -95,8 +95,8 @@ export function CreateBids() {
     const products = data.productInput
     // console.log("productData", products);
 
-    // for (let [index,product] of products.entries()) {
-    for (let product of products) {
+    for (let [index,product] of products.entries() as any) {
+    // for (let product of products) {
       // console.log("product", product);
       let productFormData = new FormData();
       productFormData.append('name', product.name);
@@ -110,6 +110,8 @@ export function CreateBids() {
       }
       // console.log("productFormData >>>", productFormData);
       productFormData.append('liveId', liveId)
+      productFormData.append('productIndex',index)
+      console.log("productIndex", index);
 
       const proRes = await fetch(`${process.env.REACT_APP_BACKEND_URL}/createBids/submitBid/submitProduct`, {
         method: "POST",
@@ -138,19 +140,26 @@ export function CreateBids() {
     control,
     name: "productInput"
   });
+  const [selectedImage, setSelectedImage] = useState();
+
+  // This function will be triggered when the file field change
+  const imageChange = (e:any) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedImage(e.target.files[0]);
+    }
+  };
 
 
-
-  const liveInputPicture = watch(`liveInput.liveImage`)
+  // const liveInputPicture = watch("liveInput.liveImage")
   return (
     <div className={"create_bids_container"}>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <h1>直播設置</h1>
         <div className={'input_box'}><label>直播標題: <input className={"input_default"}  {...register('liveInput.liveTitle')} /></label></div>
-        <div className={'input_box'}><label>直播圖片: <input className={"input_default"} type="file" {...register('liveInput.liveImage')} /></label></div>
-        {/* {liveInputPicture != null && <img className={"resize_upload_photo"} src={URL.createObjectURL(liveInputPicture[0] as any)} />} */}
-        {/* <div ><label>開始時間: <DatePicker className={"input_default"} {...register('liveInput.startDate')} showTimeSelect timeClassName={handleColor} selected={startDate} onChange={(date:any) => setStartDate(date)} dateFormat="MM/dd/yyyy hh:mm a" /></label></div> */}
+        <div className={'input_box'}><label>直播圖片: <input className={"input_default"} type="file" {...register('liveInput.liveImage')} onChange={imageChange} /></label></div>
+        {selectedImage && <img className={"resize_upload_photo"} src={URL.createObjectURL(selectedImage)} />}
+
         <div><label>開始時間:
           <Controller
             control={control}
@@ -192,7 +201,6 @@ export function CreateBids() {
                   {...register(`productInput.${index}.productImage`)}
                 />
               </label></p>
-              {console.log(productsPicture)}
               {productsPicture != null && <img className={"resize_upload_photo"} src={URL.createObjectURL(productsPicture[0] as any)} />}
               
               <p className={'input_box'}><label>底價:

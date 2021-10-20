@@ -58,7 +58,9 @@ export class ProductsService {
         categoryId: number,
         liveId: number,
         description: string,
+        productIndex:number
         ) => {
+            console.log("index", productIndex);
             
         // console.log(name,productImage, minimumBid,eachBidAmount,buyPrice,categoryId,description,liveId);
         const res = await this.knex("products").insert({
@@ -71,7 +73,7 @@ export class ProductsService {
             bid_increment: eachBidAmount,
             category_id: categoryId,
             product_image: productImage,
-            is_selected: false,
+            is_selected: productIndex==0? true:false,
             duration: 0,
             is_ended: false,
             created_by: "test",

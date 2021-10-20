@@ -46,7 +46,8 @@ export class ProductsController {
     submitProductInfo = async (req: Request, res: Response) => {
         try {
             const productImage:any= req.file?.filename;
-            const {name, minimumBid,eachBidAmount,buyPrice,categoryId,description,liveId} = req.body
+            const {name, minimumBid,eachBidAmount,buyPrice,categoryId,description,liveId,productIndex} = req.body
+            
 
             const result = await this.productsService.submitProductInfo(
                 name,
@@ -57,6 +58,7 @@ export class ProductsController {
                 parseInt(categoryId),
                 parseInt(liveId),
                 description,
+                productIndex
                 )
             console.log("result", result);
             res.json(result)
