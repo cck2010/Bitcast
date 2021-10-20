@@ -29,7 +29,7 @@ function LiveStreamWindow() {
             if (client == null) {
                 return;
             }
-            client.join(`test room ${room}`, "");
+            client.join(`room ${room}`, "");
         };
         let timerId: NodeJS.Timeout = setInterval(() => {}, 10000);
         setTimeout(() => {

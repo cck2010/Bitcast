@@ -66,7 +66,9 @@ export async function seed(knex: Knex): Promise<void> {
                 .insert({
                     user_id: userId,
                     title: chance.sentence(),
-                    image: "https://i.picsum.photos/id/5/200/200.jpg?hmac=oN9VtXdJYLSFssji8vCr48JaI-e5Zi4eH9GAiYBB_Ig",
+                    image: `https://picsum.photos/200/300?random=${Math.floor(
+                        Math.random() * 100
+                    )}`,
                     starting_time: chance.date({ year: 2021 }),
                     status_id:
                         statusId[Math.floor(Math.random() * statusId.length)],
@@ -94,8 +96,9 @@ export async function seed(knex: Knex): Promise<void> {
                 bid_increment: Math.floor(price / 10) + 1,
                 category_id:
                     categoryId[Math.floor(Math.random() * categoryId.length)],
-                product_image:
-                    "https://i.picsum.photos/id/5/200/200.jpg?hmac=oN9VtXdJYLSFssji8vCr48JaI-e5Zi4eH9GAiYBB_Ig",
+                product_image: `https://picsum.photos/200/300?random=${Math.floor(
+                    Math.random() * 100
+                )}`,
                 is_selected: false,
                 duration: 0,
                 is_ended: false,

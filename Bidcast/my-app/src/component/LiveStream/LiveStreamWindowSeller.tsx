@@ -41,7 +41,7 @@ function LiveStreamWindow() {
                 if (ClientConnection == null) {
                     return;
                 }
-                ClientConnection.join(`test room ${result.data?.room}`, "");
+                ClientConnection.join(`room ${result.data?.room}`, "");
             };
             setClient(ClientConnection);
             // setTimeout(() => {
