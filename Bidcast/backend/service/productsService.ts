@@ -33,4 +33,26 @@ export class ProductsService {
     putBidIncrement = async (productId: number) => {
         return productId + 10;
     };
+
+    startBid = async (productId: number, seconds: number) => {
+        console.log(productId, seconds);
+
+        return productId + 10;
+    };
+
+    selectProduct = async (productId: number) => {
+        const liveId = (
+            await this.knex("products").select("live_id").where("id", productId)
+        )[0].live_id;
+
+        await this.knex("products")
+            .update("is_selected", false)
+            .where("live_id", liveId);
+
+        await this.knex("products")
+            .update("is_selected", true)
+            .where("id", productId);
+
+        return;
+    };
 }

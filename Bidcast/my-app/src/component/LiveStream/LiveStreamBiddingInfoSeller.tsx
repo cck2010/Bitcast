@@ -1,11 +1,27 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { fetchProductTime } from "../../redux/LiveStream/actions";
+import { RootState } from "../../store";
 
 function LiveStreamBiddingInfo() {
     const [inputRemainingTime, setInputRemainingTime] = useState<number>(2);
     const [remainingTime, setRemainingTime] = useState<number>(0);
     const [currentPrice, setCurrentPrice] = useState<number>(100);
-    const [isBidding, setIsBidding] = useState<boolean>(true);
+    const [currentProductId, setCurrentProductId] = useState<number>(-1);
+    const [isBidding, setIsBidding] = useState<boolean>(false);
     const [highestBidUser, setHighestBidUser] = useState<string>("");
+
+    // const products = useSelector(
+    //     (state: RootState) =>
+    //         state.liveStream.liveStreamProducts.liveStreamProductsArr
+    // );
+    // for (let product of products) {
+    //     if (product.isSelected) {
+    //         setCurrentProductId(product.id);
+    //         break;
+    //     }
+    // }
+    // console.log(currentProductId, products);
 
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded p-3">
@@ -41,19 +57,25 @@ function LiveStreamBiddingInfo() {
                                     isBidding && "unavailable_btn"
                                 }`}
                                 onClick={() => {
-                                    setRemainingTime(inputRemainingTime * 60);
+                                    fetchProductTime(
+                                        currentProductId,
+                                        inputRemainingTime
+                                    );
+                                    setRemainingTime(inputRemainingTime);
                                     setIsBidding(true);
                                 }}
                             >
                                 <i className="fas fa-gavel"></i> 開始拍賣
                             </button>
                             <label>
-                                <span className="mt-3">倒數時間(分鐘):</span>
+                                <span className="input_duration mt-3">
+                                    倒數時間(秒):
+                                </span>
                                 <input
                                     type="number"
                                     className="action_duration w-75"
-                                    max={5}
-                                    min={1}
+                                    max={300}
+                                    min={60}
                                     value={inputRemainingTime}
                                     onChange={(e) =>
                                         setInputRemainingTime(

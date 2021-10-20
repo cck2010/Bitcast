@@ -85,6 +85,11 @@ export async function seed(knex: Knex): Promise<void> {
         )[0];
 
         for (let i = 0; i < 5; i++) {
+            let isSelected = false;
+            if (i === 0) {
+                isSelected = true;
+            }
+
             const price = Math.floor(Math.random() * 500);
             await knex("products").insert({
                 product_name: chance.word(),
@@ -99,7 +104,7 @@ export async function seed(knex: Knex): Promise<void> {
                 product_image: `https://picsum.photos/200/300?random=${Math.floor(
                     Math.random() * 100
                 )}`,
-                is_selected: false,
+                is_selected: isSelected,
                 duration: 0,
                 is_ended: false,
                 created_by: "knex seed",

@@ -51,4 +51,32 @@ export class ProductsController {
             res.json(e);
         }
     };
+
+    startBid = async (req: Request, res: Response) => {
+        try {
+            const { productId, seconds } = req.body;
+            const result = await this.productsService.startBid(
+                productId,
+                seconds
+            );
+            const response = { id: productId, newPrice: result, success: true };
+            res.json(response);
+        } catch (e) {
+            console.log(e);
+            res.json(e);
+        }
+    };
+
+    selectProduct = async (req: Request, res: Response) => {
+        try {
+            const { productId } = req.body;
+
+            await this.productsService.selectProduct(productId);
+            const response = { id: productId, success: true };
+            res.json(response);
+        } catch (e) {
+            console.log(e);
+            res.json(e);
+        }
+    };
 }

@@ -4,10 +4,12 @@ import Carousel from "react-tiny-slider";
 import { TinySliderInstance } from "tiny-slider";
 import { RootState } from "../../store";
 import LiveStreamBiddingInfo from "./LiveStreamBiddingInfo";
+import { Socket } from "socket.io-client";
 
 interface LiveStreamControlPanelProps {
     isDesktop: boolean;
     isTablet: boolean;
+    ws: Socket | null;
 }
 
 function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
@@ -22,6 +24,17 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
         (state: RootState) =>
             state.liveStream.liveStreamProducts.liveStreamProductsArr
     );
+
+    if (props.ws) {
+        props.ws.on("render", (slideIndex) => {
+            setTimeout(() => {
+                console.log("carousel", carousel.current?.getInfo());
+
+                carousel.current != null &&
+                    carousel.current.goTo(slideIndex - 1);
+            }, 1000);
+        });
+    }
 
     return (
         <div
@@ -44,7 +57,9 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
                         {products.map((product) => (
                             <div
                                 key={product.id}
-                                className={`carousel_card d-flex align-items-center justify-content-between`}
+                                className={`carousel_card ${
+                                    product.isSelected ? "selected" : ""
+                                } d-flex align-items-center justify-content-between`}
                                 aria-label={`card${product.id}`}
                             >
                                 <img

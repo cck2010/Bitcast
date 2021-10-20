@@ -40,3 +40,11 @@ export default productsRoutes;
 productsRoutes.put("/liveStream/products/currentPrice", (req, res) =>
     productsController.putBidIncrement(req, res)
 );
+
+productsRoutes.put("/liveStream/products/isSelected", (req, res) =>
+    productsController.selectProduct(req, res)
+);
+
+productsRoutes.put("/liveStream/products/productTime", (req, res) =>
+    productsController.startBid(req, res)
+);
