@@ -97,15 +97,9 @@ export function HomePageNavbar() {
               onMouseEnter={showDropdown}
               onMouseLeave={hideDropdown}
             >
-              <Link to="/categoryResult?id=" className="dropdown_items"></Link>
-                商品分類1
-              </Link>
-              <Link to="/categoryResult?id=" className="dropdown_items"></Link>
-                商品分類2
-              </Link>
-              <Link to="/categoryResult?id=" className="dropdown_items"></Link>
-                商品分類3
-              </Link>
+              <Link to="/categoryResult?id=" className="dropdown_items">商品分類1</Link>
+              <Link to="/categoryResult?id=" className="dropdown_items">商品分類2</Link>
+              <Link to="/categoryResult?id=" className="dropdown_items">商品分類3</Link>
             </NavDropdown>
             {!isAuthenticate && (
               <Link to="/login" className="nav_link">
