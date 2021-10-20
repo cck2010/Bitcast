@@ -34,10 +34,10 @@ export function getComingAuctions() {
         console.log(json);
         
 
-        const comingAuctionData = json.data.results;
+        // const comingAuctionData = json.data.results;
 
-        console.log("json", comingAuctionData)
+        // console.log("json", comingAuctionData)
 
-        dispatch(loadComingAuctions(comingAuctionData, true))
+        dispatch(loadComingAuctions(json, true))
     }
 }
