@@ -89,15 +89,15 @@ function LiveStreamBiddingInfo() {
         <div className="LiveStreamBiddingInfo h-100 rounded my-3">
             <div className="info w-100 h-100">
                 <div className="row">
-                    <div className="col-12 d-flex flex-row justify-content-around align-items-center w-100 h-100 mt-3">
+                    <div className="col-12 d-flex flex-row justify-content-center align-items-center w-100 h-100 mt-3">
                         <img
                             key={selectedProduct.id}
-                            className={`selected_img`}
+                            className={`selected_img me-4`}
                             src={selectedProduct.productImage}
                             alt={`pic${selectedProduct.id}`}
                         />
                         <div className="instant_info d-flex flex-column">
-                            <div className="current_price">
+                            <div className="current_price ms-4">
                                 <i className="fas fa-money-bill-wave"></i>{" "}
                                 現在價格:
                                 <br /> ${selectedProductDynamic.currentPrice}
@@ -111,7 +111,7 @@ function LiveStreamBiddingInfo() {
                                 </span>
                             </div>
                             {remainingTime === 0 ? (
-                                <div className="remaining_time mt-2">
+                                <div className="remaining_time mt-2 ms-4">
                                     拍賣尚未開始
                                 </div>
                             ) : (
