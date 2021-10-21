@@ -202,7 +202,7 @@ export class UserService {
             .select("*")
             .where({
                 "email": email,
-                "login_method_id": localLoginId,
+                "login_method_id": localLoginId[0].id,
             });
 
         if (users.length == 0) {
