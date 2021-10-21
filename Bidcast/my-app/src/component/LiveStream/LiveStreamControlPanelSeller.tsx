@@ -28,15 +28,31 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
             state.liveStream.liveStreamProducts.liveStreamProductsArr
     );
 
-    // const productsDynamic = useSelector(
-    //     (state: RootState) =>
-    //         state.liveStream.liveStreamProducts.liveStreamProductsArrDynamic
-    // );
-    // console.log("productsDynamic", productsDynamic, "products", products);
-
     const liveId = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.id
     );
+
+    const carouselOnClickHandler = (
+        slideIndex: number | null,
+        info: any,
+        event: React.MouseEvent<Element, MouseEvent>
+    ) => {
+        if (slideIndex == null) {
+            return;
+        }
+        let ind = parseInt(
+            info.slideItems.item(slideIndex).ariaLabel.split("card").join("")
+        );
+        let productId = -1;
+        for (let i = 0; i < products.length; i++) {
+            if (ind === products[i].id) {
+                productId = products[i].id;
+            }
+        }
+        if (props.ws) {
+            dispatch(fetchSelectedProduct(productId, props.ws, liveId));
+        }
+    };
 
     return (
         <div className="LiveStreamControlPanel rounded my-4">
@@ -55,49 +71,7 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
                         ref={carousel}
                         controls={false}
                         nav={false}
-                        onClick={(slideIndex, info, event) => {
-                            // let newProducts: LiveStreamProductDynamicInfo[] = [];
-                            // for (let product of products) {
-                            //     let newProduct = { ...product };
-                            //     newProducts.push(newProduct);
-                            // }
-                            if (slideIndex == null) {
-                                return;
-                            }
-                            let ind = parseInt(
-                                info.slideItems
-                                    .item(slideIndex)
-                                    .ariaLabel.split("card")
-                                    .join("")
-                            );
-                            // newProducts = newProducts.concat(
-                            //     newProducts.splice(0, info.displayIndex - 1)
-                            // );
-                            let productId = -1;
-                            // for (let i = 0; i < newProducts.length; i++) {
-                            //     if (ind === newProducts[i].id) {
-                            for (let i = 0; i < products.length; i++) {
-                                if (ind === products[i].id) {
-                                    // newProducts[i].isSelected = true;
-                                    productId = products[i].id;
-                                } else {
-                                    // newProducts[i].isSelected = false;
-                                }
-                            }
-                            if (props.ws) {
-                                dispatch(
-                                    fetchSelectedProduct(
-                                        productId,
-                                        props.ws,
-                                        liveId
-                                    )
-                                );
-                            }
-                            // dispatch(loadLiveStreamProducts(newProducts, true));
-                            // if (props.ws) {
-                            //     props.ws.emit("render", [liveId, productId]);
-                            // }
-                        }}
+                        onClick={carouselOnClickHandler}
                     >
                         {products.length !== 0 ? (
                             products.map((product, ind) => (

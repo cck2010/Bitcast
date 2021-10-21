@@ -63,9 +63,6 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
                         ref={carousel}
                         controls={false}
                         nav={false}
-                        onClick={(slideIndex, info, event) => {
-                            console.log(slideIndex);
-                        }}
                     >
                         {products.length !== 0 ? (
                             products.map((product, ind) => (

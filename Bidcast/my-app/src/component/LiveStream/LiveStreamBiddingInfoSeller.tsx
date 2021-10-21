@@ -8,7 +8,7 @@ import {
 import { RootState } from "../../store";
 
 function LiveStreamBiddingInfo() {
-    const [inputRemainingTime, setInputRemainingTime] = useState<number>(2);
+    const [inputRemainingTime, setInputRemainingTime] = useState<number>(60);
     const [remainingTime, setRemainingTime] = useState<number>(0);
     const [currentPrice, setCurrentPrice] = useState<number>(100);
     const [currentProductId, setCurrentProductId] = useState<number>(-1);
