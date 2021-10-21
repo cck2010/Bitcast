@@ -11,18 +11,6 @@ function LiveStreamBiddingInfo() {
     const [isBidding, setIsBidding] = useState<boolean>(false);
     const [highestBidUser, setHighestBidUser] = useState<string>("");
 
-    // const products = useSelector(
-    //     (state: RootState) =>
-    //         state.liveStream.liveStreamProducts.liveStreamProductsArr
-    // );
-    // for (let product of products) {
-    //     if (product.isSelected) {
-    //         setCurrentProductId(product.id);
-    //         break;
-    //     }
-    // }
-    // console.log(currentProductId, products);
-
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded p-3">
             <div className="row h-100">
@@ -48,12 +36,12 @@ function LiveStreamBiddingInfo() {
                         </div>
                     )}
                 </div>
-                <div className="input col-6 d-flex flex-column justify-content-center h-100 px-2">
+                <div className="input col-6 d-flex flex-column justify-content-center h-100 px-3">
                     {
                         <>
                             <button
                                 disabled={isBidding}
-                                className={`start_auction btn btn-primary mb-3 w-75 ${
+                                className={`start_auction btn btn-primary mb-3 me-3 w-100 ${
                                     isBidding && "unavailable_btn"
                                 }`}
                                 onClick={() => {
@@ -68,12 +56,12 @@ function LiveStreamBiddingInfo() {
                                 <i className="fas fa-gavel"></i> 開始拍賣
                             </button>
                             <label>
-                                <span className="input_duration mt-3">
+                                <span className="input_duration mt-3 me-3">
                                     倒數時間(秒):
                                 </span>
                                 <input
                                     type="number"
-                                    className="action_duration w-75"
+                                    className="action_duration w-100"
                                     max={300}
                                     min={60}
                                     value={inputRemainingTime}

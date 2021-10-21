@@ -10,9 +10,9 @@ export function setSocketIO(io: socketIO.Server) {
         });
         socket.on("render", (Arr: number[]) => {
             let room = Arr[0];
-            let slideIndex = Arr[1];
+            let productId = Arr[1];
 
-            socket.to(room.toString()).emit("render", slideIndex);
+            socket.to(room.toString()).emit("render", productId);
         });
     });
 }

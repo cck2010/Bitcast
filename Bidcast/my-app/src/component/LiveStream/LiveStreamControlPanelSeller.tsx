@@ -10,6 +10,7 @@ import {
 import { RootState } from "../../store";
 import LiveStreamBiddingInfoSeller from "./LiveStreamBiddingInfoSeller";
 import { Socket } from "socket.io-client";
+import LiveStreamDescription from "./LiveStreamDescription";
 
 interface LiveStreamControlPanelProps {
     isDesktop: boolean;
@@ -36,18 +37,16 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
         (state: RootState) => state.liveStream.liveStreamInfo.id
     );
 
-    console.log("carousel", carousel.current?.getInfo());
-
     return (
-        <div
-            className="LiveStreamControlPanel rounded"
-            style={props.isDesktop ? {} : liveStreamControlPanelDesktopSetting}
-        >
-            <div className="row g-0">
+        <div className="LiveStreamControlPanel rounded">
+            <div
+                className="row g-0 panel_bar"
+                style={
+                    props.isDesktop ? {} : liveStreamControlPanelDesktopSetting
+                }
+            >
                 <div
-                    className={`${
-                        props.isDesktop ? "col-5" : "col-12"
-                    } d-flex d-col carousel position-relative`}
+                    className={`col-12 d-flex d-col carousel position-relative`}
                 >
                     <Carousel
                         swipeAngle={false}
@@ -83,10 +82,10 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
                                 }
                             }
 
-                            dispatch(loadLiveStreamProducts(newProducts, true));
                             dispatch(fetchSelectedProduct(productId));
+                            dispatch(loadLiveStreamProducts(newProducts, true));
                             if (props.ws) {
-                                props.ws.emit("render", [liveId, slideIndex]);
+                                props.ws.emit("render", [liveId, productId]);
                             }
                         }}
                     >
@@ -104,11 +103,11 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
                                         product.isEnded ? "sold " : ""
                                     } ${
                                         product.isSelected ? "selected" : ""
-                                    } mh-100`}
+                                    } ms-3`}
                                     src={product.productImage}
                                     alt={`pic${product.id}`}
                                 />
-                                <div className="product_info mh-100 w-50 d-flex flex-column justify-content-center align-items-start">
+                                <div className="product_info mh-100 d-flex flex-column justify-content-center align-items-start">
                                     <div className="product_name">
                                         <i className="fas fa-gift"></i>{" "}
                                         競價項目:
@@ -121,6 +120,13 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
                                         <br />${product.minPrice}
                                     </div>
                                 </div>
+                                <LiveStreamDescription
+                                    description={
+                                        product.description
+                                            ? product.description
+                                            : ""
+                                    }
+                                />
                             </div>
                         ))}
                     </Carousel>
@@ -138,7 +144,9 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
                         <i className="fas fa-caret-right"></i>
                     </button>
                 </div>
-                <div className={`${props.isDesktop ? "col-7" : "col-12 mt-3"}`}>
+            </div>
+            <div className="row mt-3 rounded">
+                <div className={`col-12`}>
                     <LiveStreamBiddingInfoSeller />
                 </div>
             </div>
