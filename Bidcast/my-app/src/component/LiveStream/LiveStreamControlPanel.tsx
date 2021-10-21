@@ -4,17 +4,21 @@ import Carousel from "react-tiny-slider";
 import { TinySliderInstance } from "tiny-slider";
 import { RootState } from "../../store";
 import LiveStreamBiddingInfo from "./LiveStreamBiddingInfo";
+import { Socket } from "socket.io-client";
+import LiveStreamDescription from "./LiveStreamDescription";
 
 interface LiveStreamControlPanelProps {
     isDesktop: boolean;
     isTablet: boolean;
+    ws: Socket | null;
 }
 
 function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
     const carousel = useRef<TinySliderInstance>(null);
 
-    const goNextSlide = (dir: "next" | "prev") =>
+    const goNextSlide = (dir: "next" | "prev") => {
         carousel.current != null && carousel.current.goTo(dir);
+    };
 
     const liveStreamControlPanelDesktopSetting = { maxHeight: "600px" };
 
@@ -23,16 +27,41 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
             state.liveStream.liveStreamProducts.liveStreamProductsArr
     );
 
+    if (props.ws) {
+        props.ws.on("render", (productId: number) => {
+            setTimeout(() => {
+                let page: number = 0;
+                let slideCollection = carousel.current?.getInfo().slideItems;
+                if (slideCollection !== undefined) {
+                    let slideItems = Array.from(slideCollection);
+                    for (let slideItem of slideItems) {
+                        if (
+                            slideItem.id &&
+                            productId ===
+                                parseInt(
+                                    slideItem.ariaLabel.split("card").join("")
+                                )
+                        ) {
+                            page = parseInt(slideItem.id.split("item")[1]);
+                        }
+                    }
+                }
+
+                carousel.current != null && carousel.current.goTo(page);
+            }, 600);
+        });
+    }
+
     return (
-        <div
-            className="LiveStreamControlPanel rounded"
-            style={props.isDesktop ? {} : liveStreamControlPanelDesktopSetting}
-        >
-            <div className="row g-0">
+        <div className="LiveStreamControlPanel rounded">
+            <div
+                className="row g-0 panel_bar"
+                style={
+                    props.isDesktop ? {} : liveStreamControlPanelDesktopSetting
+                }
+            >
                 <div
-                    className={`${
-                        props.isDesktop ? "col-5" : "col-12"
-                    } d-flex d-col carousel position-relative`}
+                    className={`col-12 d-flex d-col carousel position-relative`}
                 >
                     <Carousel
                         swipeAngle={false}
@@ -44,7 +73,9 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
                         {products.map((product) => (
                             <div
                                 key={product.id}
-                                className={`carousel_card d-flex align-items-center justify-content-between`}
+                                className={`carousel_card ${
+                                    product.isSelected ? "selected" : ""
+                                } d-flex align-items-center justify-content-between`}
                                 aria-label={`card${product.id}`}
                             >
                                 <img
@@ -53,11 +84,11 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
                                         product.isEnded ? "sold " : ""
                                     } ${
                                         product.isSelected ? "selected" : ""
-                                    } mh-100`}
+                                    } ms-3`}
                                     src={product.productImage}
                                     alt={`pic${product.id}`}
                                 />
-                                <div className="product_info mh-100 w-50 d-flex flex-column justify-content-center align-items-start">
+                                <div className="product_info mh-100 d-flex flex-column justify-content-center align-items-start">
                                     <div className="product_name">
                                         <i className="fas fa-gift"></i>{" "}
                                         競價項目:
@@ -70,6 +101,13 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
                                         <br />${product.minPrice}
                                     </div>
                                 </div>
+                                <LiveStreamDescription
+                                    description={
+                                        product.description
+                                            ? product.description
+                                            : ""
+                                    }
+                                />
                             </div>
                         ))}
                     </Carousel>
@@ -86,7 +124,9 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
                         <i className="fas fa-caret-right"></i>
                     </button>
                 </div>
-                <div className={`${props.isDesktop ? "col-7" : "col-12 mt-3"}`}>
+            </div>
+            <div className="row mt-3 rounded">
+                <div className={`col-12`}>
                     <LiveStreamBiddingInfo />
                 </div>
             </div>

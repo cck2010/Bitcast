@@ -38,7 +38,18 @@ export function loadCategories(categories: Category[]) {
     };
 }
 
-export type ProductsActions = ReturnType<typeof loadCategories>;
+//load product search result
+export function loadProductSearchResult(products: Product[]) {
+    return {
+        type: "@@products/LOAD_PRODUCT_SEARCH_RESULT" as const,
+        products,
+    }
+}
+
+export type ProductsActions = ReturnType<typeof loadCategories> 
+                            | ReturnType<typeof loadProductSearchResult>;
+
+
 
 // Thunk action creator (fetch)
 
@@ -59,4 +70,22 @@ export function fetchCategories() {
         // }
         dispatch(loadCategories(categoriesData));
     };
+}
+
+export function fetchProductSearchResult(searchKeywords: string) {
+    return async (dispatch: RootThunkDispatch, getState: ()=>RootState) =>{
+        try {
+            const res = await fetch(`
+            ${process.env.REACT_APP_BACKEND_URL}/product/search?keywords=${searchKeywords}
+            `)
+            console.log(res);
+            
+            const json = await res.json();
+            console.log(json);
+            
+            dispatch(loadProductSearchResult(json.data.results.rows))
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }

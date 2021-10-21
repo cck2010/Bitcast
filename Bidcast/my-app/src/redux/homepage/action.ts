@@ -3,10 +3,11 @@ import { RootState, RootThunkDispatch } from "../../store";
 
 export interface ComingAuction {
     id: number;
-    productName: string;
-    minPrice: number;
-    productImage: string;
+    product_name: string;
+    min_price: number;
+    product_image: string;
     duration: number;
+    username: string;
     success: boolean;
 }
 
@@ -29,16 +30,14 @@ export function getComingAuctions() {
             `${process.env.REACT_APP_BACKEND_URL}/comingAuction`
         );
 
-        console.log(res);
-
         const json = await res.json();
 
-        console.log(json);
+        if (json.success) {
 
-        // const comingAuctionData = json.data.results;
+            dispatch(loadComingAuctions(json.data.results.rows, true))
+        } else {
+            dispatch(loadComingAuctions([], false))
+        }
 
-        // console.log("json", comingAuctionData)
-
-        dispatch(loadComingAuctions(json, true))
     }
 }

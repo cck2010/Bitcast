@@ -33,7 +33,12 @@ import { ComingAuctionService } from "./service/comingAuctionService";
 /////////////////////  Set up
 export const app = express();
 const server = new http.Server(app);
-const io = new SocketIO(server);
+const io = new SocketIO(server, {
+    cors: {
+        origin: process.env.FRONTEND_URL!,
+        methods: ["GET", "POST", "PUT", "DEL"],
+    },
+});
 
 setSocketIO(io);
 

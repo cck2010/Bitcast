@@ -17,48 +17,53 @@ function LiveStreamBiddingInfo() {
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
     // const [highestBidUser, setHighestBidUser] = useState<string>("");
     const username = "測試員";
-
+    // let products: any = [];
     const products = useSelector(
         (state: RootState) =>
             state.liveStream.liveStreamProducts.liveStreamProductsArr
     );
 
-    const [productId, setProductId] = useState<number>(-1);
-    const [productName, setProductName] = useState<string>("");
-    const [minPrice, setMinPrice] = useState<number>(0);
-    const [currentPrice, setCurrentPrice] = useState<number>(0);
-    const [buyPrice, setBuyPrice] = useState<number>(0);
-    const [bidIncrement, setBidIncrement] = useState<number>(0);
-    const [buyer, setBuyer] = useState<string>("");
-    const [productImage, setProductImage] = useState<string>("");
-    const [countdownStartTime, setCountdownStartTime] = useState<Date>(
-        new Date(1900, 1, 1)
-    );
-    const [duration, setDuration] = useState<number>(0);
-    const [isEnded, setIsEnded] = useState<boolean>(false);
-
-    for (let product of products) {
-        if (product.isSelected) {
-            setProductId(product.id);
-            setProductName(product.productName);
-            setMinPrice(product.minPrice);
-            setCurrentPrice(product.currentPrice);
-            setBuyPrice(product.buyPrice);
-            setBidIncrement(product.bidIncrement);
-            setProductImage(product.productImage);
-            setDuration(product.duration);
-            setIsEnded(product.isEnded);
-            setInputPrice(currentPrice);
-        }
-    }
+    const [selectedProduct, setSelectedProduct] = useState<LiveStreamProduct>({
+        id: 0,
+        productName: "string",
+        minPrice: 0,
+        currentPrice: 0,
+        buyPrice: 0,
+        bidIncrement: 0,
+        buyer: "string",
+        productImage: "string",
+        isSelected: false,
+        countdownStartTime: new Date(),
+        duration: 0,
+        isEnded: false,
+        success: false,
+    });
 
     useEffect(() => {
-        if (inputPrice <= currentPrice + bidIncrement - 1) {
+        if (products.length !== 0) {
+            for (let product of products) {
+                if (product.isSelected && !product.isEnded) {
+                    setSelectedProduct(product);
+                    break;
+                }
+            }
+        }
+    }, [products]);
+
+    useEffect(() => {
+        if (
+            inputPrice <=
+            selectedProduct.currentPrice + selectedProduct.bidIncrement - 1
+        ) {
             setIsDisabled(true);
         } else {
             setIsDisabled(false);
         }
-    }, [inputPrice, currentPrice, bidIncrement]);
+    }, [
+        inputPrice,
+        selectedProduct.currentPrice,
+        selectedProduct.bidIncrement,
+    ]);
 
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded p-3">
@@ -67,13 +72,14 @@ function LiveStreamBiddingInfo() {
                     <div className="current_price">
                         現在價格:
                         <br /> <i className="fas fa-money-bill-wave"></i>
-                        {"  "}${currentPrice}
+                        {"  "}${selectedProduct.currentPrice}
                         <br />
                         <span className="highest_bid_user mb-3">
                             叫價者:{" "}
-                            {buyer != null && buyer === ""
+                            {selectedProduct.buyer != null &&
+                            selectedProduct.buyer === ""
                                 ? "暫時未有叫價"
-                                : buyer}
+                                : selectedProduct.buyer}
                         </span>
                     </div>
                     {remainingTime === 0 ? (
@@ -85,7 +91,7 @@ function LiveStreamBiddingInfo() {
                         </div>
                     )}
                 </div>
-                <div className="input col-8 d-flex flex-column justify-content-center h-100 px-2">
+                <div className="input col-8 d-flex flex-column justify-content-center h-100 px-3">
                     {
                         <div className="row g-0">
                             <div className="col-8">
@@ -95,7 +101,11 @@ function LiveStreamBiddingInfo() {
                                         !isBidding && "unavailable_btn"
                                     }`}
                                     onClick={() => {
-                                        dispatch(fetchBidIncrement(productId));
+                                        dispatch(
+                                            fetchBidIncrement(
+                                                selectedProduct.id
+                                            )
+                                        );
                                     }}
                                 >
                                     <i className="fas fa-gavel"></i> 最低叫價
@@ -110,7 +120,7 @@ function LiveStreamBiddingInfo() {
                                 >
                                     <i className="fas fa-gavel"></i> 自訂叫價
                                     <br />
-                                    (一口叫價為${bidIncrement})
+                                    (一口叫價為${selectedProduct.bidIncrement})
                                 </button>
                                 <label className="w-100">
                                     <input
@@ -128,14 +138,14 @@ function LiveStreamBiddingInfo() {
                             <div className="col-4">
                                 <button
                                     disabled={!isBidding}
-                                    className={`custom_bid btn btn-success mx-1 w-100 h-100 ${
+                                    className={`custom_bid btn btn-success ms-1 w-100 h-100 ${
                                         !isBidding && "unavailable_btn"
                                     }`}
                                     onClick={() => {}}
                                 >
                                     <i className="fas fa-gavel"></i> 即買價
                                     <br />
-                                    (${bidIncrement})
+                                    (${selectedProduct.bidIncrement})
                                 </button>
                             </div>
                         </div>

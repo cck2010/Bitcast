@@ -1,0 +1,27 @@
+@import "~bootstrap/scss/bootstrap";
+
+.image_column {
+    display: flex;
+    justify-content: flex-end;
+}
+.category_page{
+    background-color: #f0f0f0;
+}
+
+.button_group {
+    display: flex;
+    align-items: center;
+}
+.filter_icon{
+    margin-right: 10px;
+}
+.category_items_container{
+    display: flex;
+    padding: 10px 0;
+}
+.description_container{
+    margin-left: 20px;
+}
+.img-fluid {
+    max-height: 200px;
+}
