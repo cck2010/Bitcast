@@ -42,10 +42,12 @@ export function CategoryResults() {
         <hr />
 
         {searchingResults.map((searchingResult) => (
-          <div className="category_items_container">
+          <div className="category_items_container" key={searchingResult.id}>
+            {console.log(searchingResult.product_image)}
+            
             <Image
               key={searchingResult.id}
-              src={searchingResult.product_image}
+              src={`${process.env.REACT_APP_BACKEND_URL}/${searchingResult.product_image}`}
               fluid
             />
             <div className="description_container">

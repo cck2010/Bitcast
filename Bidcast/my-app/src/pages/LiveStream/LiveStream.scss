@@ -3,6 +3,7 @@ $largeFontSize2: 1.2em;
 $smallFontSize: 0.5em;
 
 .LiveStreamHeader {
+    border-top: solid 1px #dcdcdc;
     .mainInfo {
         .title {
             font-size: $largeFontSize;
@@ -43,11 +44,6 @@ $smallFontSize: 0.5em;
 
                 .sold {
                     filter: contrast(20%);
-                }
-
-                img.selected {
-                    border: solid 3px gray;
-                    box-shadow: 5px 5px 20px -4px rgba(0, 0, 0, 0.84);
                 }
 
                 .product_info {
@@ -95,29 +91,50 @@ $smallFontSize: 0.5em;
 
 .LiveStreamBiddingInfo {
     background-color: #fffafa;
-    .current_price {
-        font-size: $largeFontSize;
+    .selected_img {
+        max-width: 40%;
+        max-height: 135px;
+        border: solid 3px gray;
+        box-shadow: 5px 5px 20px -4px rgba(0, 0, 0, 0.84);
     }
-    .remaining_time {
-        font-size: $largeFontSize2;
+    .info {
+        .row {
+            max-height: 200px;
+            .col {
+                max-height: 200px;
+            }
+        }
+    }
+    .instant_info {
+        padding: 0 0 0 20px;
+        .current_price {
+            font-size: $largeFontSize;
+            width: fit-content;
+        }
+        .remaining_time {
+            font-size: $largeFontSize2;
+            width: fit-content;
+        }
+        .highest_bid_user {
+            font-size: $smallFontSize;
+            width: fit-content;
+        }
     }
 
-    .highest_bid_user {
-        font-size: $smallFontSize;
-    }
+    .bid_btn_groups {
+        .input_duration {
+            font-size: 16px;
+        }
 
-    .input_duration {
-        font-size: 16px;
-    }
-
-    .unavailable_btn {
-        background-color: #708090 !important;
-        border-color: #708090 !important;
-        cursor: default !important;
-        user-select: none;
-    }
-    .unavailable_btn:focus {
-        box-shadow: none;
+        .unavailable_btn {
+            background-color: #708090 !important;
+            border-color: #708090 !important;
+            cursor: default !important;
+            user-select: none;
+        }
+        .unavailable_btn:focus {
+            box-shadow: none;
+        }
     }
 }
 

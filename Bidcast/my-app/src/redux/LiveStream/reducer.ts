@@ -2,6 +2,8 @@ import {
     LiveStreamActions,
     LiveStreamInfo,
     LiveStreamProduct,
+    LiveStreamProductDynamicInfo,
+    LiveStreamStatus,
 } from "./actions";
 import produce from "immer";
 
@@ -9,8 +11,10 @@ export interface LiveStreamState {
     liveStreamInfo: LiveStreamInfo;
     liveStreamProducts: {
         liveStreamProductsArr: LiveStreamProduct[];
+        liveStreamProductsArrDynamic: LiveStreamProductDynamicInfo[];
         success: boolean;
     };
+    liveStreamStatus: LiveStreamStatus;
 }
 
 const initialState: LiveStreamState = {
@@ -24,7 +28,14 @@ const initialState: LiveStreamState = {
         description: "description",
         success: true,
     },
-    liveStreamProducts: { liveStreamProductsArr: [], success: true },
+    liveStreamProducts: {
+        liveStreamProductsArr: [],
+        liveStreamProductsArrDynamic: [],
+        success: true,
+    },
+    liveStreamStatus: {
+        isBidding: false,
+    },
 };
 
 export function liveStreamReducer(
@@ -36,16 +47,21 @@ export function liveStreamReducer(
             case "@@liveStream/LOAD_LIVE_STREAM_INFO":
                 state.liveStreamInfo = action.liveStreamInfo;
                 break;
-            case "@@liveStream/LOAD_LIVE_STREAM_PRODUCTS": {
+            case "@@liveStream/LOAD_LIVE_STREAM_PRODUCTS":
                 state.liveStreamProducts.liveStreamProductsArr =
-                    action.liveStreamProducts;
+                    action.liveStreamProducts.sort((a, b) => b.id - a.id);
                 state.liveStreamProducts.success = action.success;
                 break;
-            }
-
+            case "@@liveStream/LOAD_LIVE_STREAM_PRODUCTS_DYNAMIC_INFO":
+                state.liveStreamProducts.liveStreamProductsArrDynamic =
+                    action.liveStreamProductsDynamicInfo.sort(
+                        (a, b) => b.id - a.id
+                    );
+                state.liveStreamProducts.success = action.success;
+                break;
             case "@@liveStream/SELECT_PRODUCT":
                 for (let liveStreamProduct of state.liveStreamProducts
-                    .liveStreamProductsArr) {
+                    .liveStreamProductsArrDynamic) {
                     if (liveStreamProduct.id === action.id) {
                         liveStreamProduct.isSelected = true;
                     }

@@ -76,7 +76,7 @@ export function HomePageNavbar() {
                   if (event.key === "Enter") {
                     event.preventDefault();
                     dispatch(
-                      push(`/categoryResult?keywords=${searchInput}`)
+                      push(`/categoryResult?SearchingKeywords=${searchInput}`)
                     );
                   }
                 }}

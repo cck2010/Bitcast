@@ -106,7 +106,6 @@ export async function seed(knex: Knex): Promise<void> {
                 )}`,
                 is_selected: isSelected,
                 duration: 0,
-                is_ended: false,
                 created_by: "knex seed",
                 updated_by: "knex seed",
                 description: chance.paragraph(),
