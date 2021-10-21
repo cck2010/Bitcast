@@ -85,25 +85,31 @@ export class UserService {
         }
 
         const hashedPassword = await hashPassword(password);
+        const localLoginId = await this.knex("login_methods").select('id').where('login_method', 'local')
+        const statusIdId = await this.knex('status').select('id').where('status', 'active')
+        const roleIdId = await this.knex('roles').select('id').where('role_name', 'user')
+        console.log(localLoginId[0].id, statusIdId[0].id, roleIdId[0].id);
+
         // inserted user
-        const createUserResult /*  = result.rows */ = await this.knex("users")
-            .insert({
-                username: username,
-                status_id: 1,
-                email: email,
-                phone_number: phoneNumber,
-                password: hashedPassword,
-                role_id: 1,
-                created_at: new Date(),
-                updated_at: new Date(),
-                telegram_is_verified: false,
-                profile_pic:
-                    "/backend/img/360_F_391192211_2w5pQpFV1aozYQhcIw3FqA35vuTxJKrB.jpg",
-                login_method_id: 1,
-                created_by: username,
-                updated_by: username,
-            })
-            .returning("id");
+        const createUserResult /*  = result.rows */ =
+            await this.knex("users")
+                .insert({
+                    username: username,
+                    status_id: statusIdId[0].id,
+                    email: email,
+                    phone_number: phoneNumber,
+                    password: hashedPassword,
+                    role_id: roleIdId[0].id,
+                    created_at: new Date(),
+                    updated_at: new Date(),
+                    telegram_is_verified: false,
+                    profile_pic:
+                        "/backend/img/360_F_391192211_2w5pQpFV1aozYQhcIw3FqA35vuTxJKrB.jpg",
+                    login_method_id: localLoginId[0].id,
+                    created_by: username,
+                    updated_by: username,
+                })
+                .returning("id");
 
         //    users is the new input db row
         const users = await this.knex("users")
@@ -113,7 +119,7 @@ export class UserService {
         // check repeat email  ,cannot login if repeat and delete db
         const checkRepeatEmail = await this.knex.raw(`
                         SELECT email,count(*) as count FROM users 
-                        where email = '${email}' and  login_method_id = 1
+                        where email = '${email}' and  login_method_id = '${localLoginId[0].id}'
                         GROUP BY email
                         `);
         const emailCount = parseInt(checkRepeatEmail.rows[0].count);
@@ -191,12 +197,12 @@ export class UserService {
                 error: new Error("Please fill in the blank form"),
             };
         }
-
+        const localLoginId = await this.knex("login_methods").select('id').where('login_method', 'local')
         const users = await this.knex("users")
             .select("*")
             .where({
                 "email": email,
-                "login_method_id": 1,
+                "login_method_id": localLoginId[0].id,
             });
 
         if (users.length == 0) {

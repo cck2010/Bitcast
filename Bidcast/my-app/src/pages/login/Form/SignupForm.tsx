@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux"
 import { login, loadToken } from "../../../redux/user/actions";
 import { useState } from "react";
 import { push } from "connected-react-router";
+import "../Login.scss"
+
 
 
 const { REACT_APP_BACKEND_URL } = process.env
@@ -37,13 +39,50 @@ export function SignupForm() {
       setRegisterError('unknown error')
     }
   })}>
-   
-    username<input {...register('username')} />
-    email<input {...register('email')} />
-    phoneNumber<input {...register('phoneNumber')} />
-    password<input {...register('password')} />
-    {registerError}
-    <input type="submit" />
+        <div className="formField">
+            <label className="formFieldLabel" htmlFor="username">
+            Username:
+            </label>
+
+            <input 
+              className="formFieldInput"
+              placeholder="Enter your username"
+              {...register('username')} /> 
+        </div>
+        <div className="formField">
+          <label className="formFieldLabel" htmlFor="email">
+            Email:
+          </label>
+          <input 
+           className="formFieldInput"
+           placeholder="Enter your email"
+          {...register('email')} /> 
+        </div>
+
+        <div className="formField">
+          <label className="formFieldLabel" htmlFor="phoneNumber">
+          Phone number:
+          </label>
+            <input
+             className="formFieldInput"
+             placeholder="Enter your phone number"
+              {...register('phoneNumber')} />
+          </div>
+
+          <div className="formField">
+          <label className="formFieldLabel" htmlFor="Password">
+          Password:
+          </label>
+            <input
+             className="formFieldInput"
+             placeholder="Enter your password"
+              {...register('password')} />
+          </div>
+          <div className="formField">
+            {registerError}
+          </div>
+            <input className="formFieldButton" type="submit" />
+    
   </form>
   </div>
-  }
+}

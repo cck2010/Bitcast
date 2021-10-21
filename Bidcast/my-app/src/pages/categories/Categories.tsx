@@ -43,7 +43,6 @@ export function CategoryResults() {
 
         {searchingResults.map((searchingResult) => (
           <div className="category_items_container" key={searchingResult.id}>
-            {console.log(searchingResult.product_image)}
             
             <Image
               key={searchingResult.id}

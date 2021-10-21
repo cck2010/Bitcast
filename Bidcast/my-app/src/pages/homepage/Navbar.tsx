@@ -70,7 +70,6 @@ export function HomePageNavbar() {
                 placeholder="search..."
                 onChange={(event) => {
                   setSearchInput(event.target.value);
-                  console.log(event.target.value);
                 }}
                 onKeyPress={(event) => {
                   if (event.key === "Enter") {

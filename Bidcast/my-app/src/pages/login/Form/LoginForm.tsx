@@ -5,6 +5,8 @@ import { login, loadToken } from "../../../redux/user/actions";
 import { useState } from "react";
 import { push } from "connected-react-router";
 import ReactFacebookLogin, { ReactFacebookLoginInfo } from "react-facebook-login";
+import "../Login.scss"
+
 
 const { REACT_APP_BACKEND_URL } = process.env
 
@@ -43,9 +45,9 @@ const fBCallback = async (userInfo: ReactFacebookLoginInfo & { accessToken: stri
     return null;
 }
   return (
-    <div>
+    <div className="formCenter">
       {/* login form */}
-      <form onSubmit={handleSubmit(async data => {
+      <form className="formFields" onSubmit={handleSubmit(async data => {
         try {
           const res = await axios.post<any>(`${REACT_APP_BACKEND_URL}/login`, {
             email: data.loginEmail,
@@ -67,13 +69,34 @@ const fBCallback = async (userInfo: ReactFacebookLoginInfo & { accessToken: stri
           setError('unknown error')
         }
       })}>
-       
-        email<input {...register('loginEmail')} />
-        pw<input {...register('loginPassword')} />
-        
-        <input type="submit" />
+        <div className="formField">
+          <label className="formFieldLabel" htmlFor="email">
+            Email:
+          </label>
+          <input 
+           className="formFieldInput"
+           placeholder="Enter your email"
+          {...register('loginEmail')} /> 
+        </div>
+        <div className="formField">
+          <label className="formFieldLabel" htmlFor="password">
+            Password:
+          </label>
+          <input 
+           className="formFieldInput"
+           placeholder="Enter your password"
+           {...register('loginPassword')} />
+        </div>
+        <div className="formField">
+        {error}
+          </div>
+
+
+        <div className="formField">
+        <input className="formFieldButton" type="submit"/>
+        </div>
       </form>
-      {error}
+      
       
 
 
