@@ -35,20 +35,25 @@ export function logoutThunk() {
 export function checkCurrentUser() {
     return async (dispatch: RootThunkDispatch) => {
         const token = localStorage.getItem('token')
+
         if (token == null) {
+            // console.log("no token")
             return;
         }
 
         try {
-            const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/current`, {
+
+            await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/current`, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
             })
-
+            // console.log("fetched")
             dispatch(login(token))
-        } catch (e) {
 
+            return
+        } catch (e) {
+            console.log(e)
         }
     }
 }
