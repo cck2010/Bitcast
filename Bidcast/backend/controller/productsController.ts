@@ -112,8 +112,8 @@ export class ProductsController {
             );
             const response = {
                 id: productId,
-                countdownEndTime: result,
-                success: true,
+                countdownEndTime: result[0],
+                success: result[1],
             };
             res.json(response);
         } catch (e) {
@@ -126,8 +126,8 @@ export class ProductsController {
         try {
             const { productId } = req.body;
 
-            await this.productsService.selectProduct(productId);
-            const response = { id: productId, success: true };
+            const result = await this.productsService.selectProduct(productId);
+            const response = { id: productId, success: result };
             res.json(response);
         } catch (e) {
             console.log(e);

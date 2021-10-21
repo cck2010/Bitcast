@@ -180,7 +180,6 @@ export function fetchliveStreamProducts(liveId: number, isFull: boolean) {
                         currentPrice: 0,
                         isSelected: false,
                         duration: 0,
-                        countdownEndTime: new Date(2000, 1, 1),
                         success: false,
                     };
 
@@ -291,43 +290,43 @@ export function fetchSelectedProduct(
     };
 }
 
-export function fetchProductTime(productId: number, seconds: number) {
+export function fetchProductTime(
+    productId: number,
+    seconds: number,
+    setTimerId: React.Dispatch<React.SetStateAction<number>>,
+    setRemainingTime: React.Dispatch<React.SetStateAction<number>>
+) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         try {
-            let liveStreamProductsArrDynamic =
-                getState().liveStream.liveStreamProducts
-                    .liveStreamProductsArrDynamic;
-            let now = new Date();
-            let isBidding = false;
-            for (let product of liveStreamProductsArrDynamic) {
-                if (
-                    product.countdownEndTime &&
-                    now <= product.countdownEndTime
-                ) {
-                    isBidding = true;
+            const res = await axios.put<UpdateProduct>(
+                `${process.env.REACT_APP_BACKEND_URL}/liveStream/products/productTime`,
+                {
+                    productId,
+                    seconds,
                 }
-            }
+            );
 
-            if (!isBidding) {
-                const res = await axios.put<UpdateProduct>(
-                    `${process.env.REACT_APP_BACKEND_URL}/liveStream/products/productTime`,
-                    {
-                        productId,
-                        seconds,
-                    }
-                );
-
-                if (res.data.success) {
-                    if (res.data.countdownEndTime) {
-                        console.log(res.data);
-
-                        dispatch(
-                            updateProductTime(
-                                res.data.id,
-                                new Date(Date.parse(res.data.countdownEndTime))
-                            )
-                        );
-                    }
+            if (res.data.success) {
+                if (res.data.countdownEndTime) {
+                    dispatch(
+                        updateProductTime(
+                            res.data.id,
+                            new Date(Date.parse(res.data.countdownEndTime))
+                        )
+                    );
+                    let endTime = new Date(
+                        Date.parse(res.data.countdownEndTime)
+                    );
+                    setTimerId(
+                        window.setInterval(() => {
+                            setRemainingTime(
+                                Math.ceil(
+                                    (endTime.getTime() - new Date().getTime()) /
+                                        1000
+                                )
+                            );
+                        }, 16)
+                    );
                 }
             }
         } catch (e) {

@@ -65,6 +65,16 @@ export class ProductsService {
     };
 
     startBid = async (productId: number, seconds: number) => {
+        const check = (
+            await this.knex("products")
+                .select("countdown_end_time")
+                .where("id", productId)
+        )[0].countdown_end_time;
+
+        if (check !== null) {
+            return [check, false];
+        }
+
         const addSeconds = function (date: Date, sec: number) {
             date.setTime(date.getTime() + sec * 1000);
             return date;
@@ -84,13 +94,27 @@ export class ProductsService {
                 .returning("countdown_end_time")
         )[0];
 
-        return endTime;
+        return [endTime, true];
     };
 
     selectProduct = async (productId: number) => {
         const liveId = (
             await this.knex("products").select("live_id").where("id", productId)
         )[0].live_id;
+
+        const availableCheck = await this.knex("products")
+            .select("countdown_end_time", "duration")
+            .where("live_id", liveId);
+
+        console.log(availableCheck);
+        for (let item of availableCheck) {
+            if (
+                item.countdown_end_time !== null &&
+                item.countdown_end_time.getTime() > new Date().getTime()
+            ) {
+                return false;
+            }
+        }
 
         await this.knex("products")
             .update("is_selected", false)
@@ -100,7 +124,7 @@ export class ProductsService {
             .update("is_selected", true)
             .where("id", productId);
 
-        return;
+        return true;
     };
     searchProductResults = async (searchKeywords: string) => {
         const results = await this.knex.raw(/*sql*/ `

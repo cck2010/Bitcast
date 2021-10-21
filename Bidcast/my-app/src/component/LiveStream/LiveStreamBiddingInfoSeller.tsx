@@ -10,11 +10,9 @@ import { RootState } from "../../store";
 function LiveStreamBiddingInfo() {
     const dispatch = useDispatch();
     const [inputRemainingTime, setInputRemainingTime] = useState<number>(60);
-    const [remainingTime, setRemainingTime] = useState<number>(0);
-    const [currentPrice, setCurrentPrice] = useState<number>(100);
-    const [currentProductId, setCurrentProductId] = useState<number>(-1);
+    const [remainingTime, setRemainingTime] = useState<number>(Infinity);
     const [isBidding, setIsBidding] = useState<boolean>(false);
-    const [highestBidUser, setHighestBidUser] = useState<string>("");
+    const [timerId, setTimerId] = useState<number>(0);
 
     const products = useSelector(
         (state: RootState) =>
@@ -43,8 +41,6 @@ function LiveStreamBiddingInfo() {
             currentPrice: 0,
             isSelected: false,
             buyer: "",
-            countdownStartTime: new Date(),
-            countdownEndTime: new Date(1900),
             duration: 0,
             success: false,
         });
@@ -61,14 +57,56 @@ function LiveStreamBiddingInfo() {
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);
                     setIsBidding(true);
+                    setRemainingTime(
+                        Math.ceil(
+                            (countdownEndTime!.getTime() -
+                                new Date().getTime()) /
+                                1000
+                        )
+                    );
+                    if (timerId === 0) {
+                        setTimerId(
+                            window.setInterval(() => {
+                                setRemainingTime(
+                                    Math.ceil(
+                                        (countdownEndTime!.getTime() -
+                                            new Date().getTime()) /
+                                            1000
+                                    )
+                                );
+                            }, 16)
+                        );
+                    }
                     break;
-                } else if (productsDynamic[ind].isSelected) {
+                } else if (
+                    productsDynamic[ind].isSelected &&
+                    countdownEndTime !== undefined &&
+                    countdownEndTime <= new Date()
+                ) {
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);
+                    setIsBidding(false);
+                } else if (
+                    productsDynamic[ind].isSelected &&
+                    countdownEndTime === undefined
+                ) {
+                    setSelectedProduct(products[ind]);
+                    setSelectedProductDynamic(productsDynamic[ind]);
+                    setIsBidding(false);
                 }
             }
         }
-    }, [products, productsDynamic]);
+    }, [products, productsDynamic, timerId]);
+
+    useEffect(() => {
+        return () => {
+            if (remainingTime <= 0) {
+                clearInterval(timerId);
+                setIsBidding(false);
+                setTimerId(0);
+            }
+        };
+    }, [remainingTime, timerId]);
 
     console.log(selectedProductDynamic);
 
@@ -97,12 +135,20 @@ function LiveStreamBiddingInfo() {
                                         : selectedProductDynamic.buyer}
                                 </span>
                             </div>
-                            {remainingTime === 0 ? (
+                            {!isBidding &&
+                            selectedProductDynamic.countdownEndTime ===
+                                undefined ? (
                                 <div className="remaining_time mt-2 ms-4">
                                     拍賣尚未開始
                                 </div>
+                            ) : !isBidding &&
+                              selectedProductDynamic.countdownEndTime !==
+                                  undefined ? (
+                                <div className="remaining_time mt-2 ms-4">
+                                    拍賣已結束
+                                </div>
                             ) : (
-                                <div className="remaining_time mt-2 text-center">
+                                <div className="remaining_time mt-2 ms-4 text-center">
                                     <i className="fas fa-hourglass-half"></i>
                                     {""}剩餘 {remainingTime} 秒
                                 </div>
@@ -113,19 +159,26 @@ function LiveStreamBiddingInfo() {
                 {
                     <>
                         <button
-                            disabled={isBidding}
+                            disabled={
+                                isBidding ||
+                                (!isBidding &&
+                                    selectedProductDynamic.countdownEndTime !==
+                                        undefined)
+                            }
                             className={`start_auction btn btn-primary my-3 me-3 w-100 ${
                                 isBidding && "unavailable_btn"
                             }`}
                             onClick={() => {
+                                setRemainingTime(inputRemainingTime);
+                                setIsBidding(true);
                                 dispatch(
                                     fetchProductTime(
                                         selectedProduct.id,
-                                        inputRemainingTime
+                                        inputRemainingTime,
+                                        setTimerId,
+                                        setRemainingTime
                                     )
                                 );
-                                setRemainingTime(inputRemainingTime);
-                                setIsBidding(true);
                             }}
                         >
                             <i className="fas fa-gavel"></i> 開始拍賣

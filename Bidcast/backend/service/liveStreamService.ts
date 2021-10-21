@@ -84,12 +84,6 @@ export class LiveStreamService {
             .where("live_id", liveId);
 
         let products: LiveStreamProduct[] = [];
-        const minusSeconds = function (date: Date, sec: number) {
-            date.setTime(date.getTime() - sec * 1000);
-            return date;
-        };
-        let time = new Date();
-        let minusTime = minusSeconds(time, 100);
 
         for (let productResult of productsResult) {
             let product: LiveStreamProduct = {
@@ -102,7 +96,6 @@ export class LiveStreamService {
                 productImage: "",
                 isSelected: false,
                 duration: 0,
-                countdownEndTime: minusTime,
                 description: "",
             };
             product["id"] = productResult.id;
