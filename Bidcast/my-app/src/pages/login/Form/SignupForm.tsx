@@ -38,10 +38,10 @@ export function SignupForm() {
     }
   })}>
    
-    <input {...register('username')} />
-    <input {...register('email')} />
-    <input {...register('phoneNumber')} />
-    <input {...register('password')} />
+    username<input {...register('username')} />
+    email<input {...register('email')} />
+    phoneNumber<input {...register('phoneNumber')} />
+    password<input {...register('password')} />
     {registerError}
     <input type="submit" />
   </form>

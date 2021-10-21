@@ -68,8 +68,8 @@ const fBCallback = async (userInfo: ReactFacebookLoginInfo & { accessToken: stri
         }
       })}>
        
-        <input {...register('loginEmail')} />
-        <input {...register('loginPassword')} />
+        email<input {...register('loginEmail')} />
+        pw<input {...register('loginPassword')} />
         
         <input type="submit" />
       </form>
