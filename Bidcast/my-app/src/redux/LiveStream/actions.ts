@@ -13,10 +13,6 @@ export interface LiveStreamInfo {
     success: boolean;
 }
 
-export interface LiveStreamStatus {
-    isBidding: boolean;
-}
-
 export interface LiveStreamProduct {
     id: number;
     productName: string;
@@ -50,8 +46,8 @@ interface LiveStreamProductAll {
     currentPrice: number;
     isSelected: boolean;
     buyer?: string;
-    countdownStartTime?: Date;
-    countdownEndTime?: Date;
+    countdownStartTime?: string;
+    countdownEndTime?: string;
     duration: number;
     success: boolean;
 }
@@ -59,8 +55,8 @@ interface LiveStreamProductAll {
 export interface UpdateProduct {
     id: number;
     newPrice?: number;
-    countdownStartTime?: Date;
-    countdownEndTime?: Date;
+    countdownStartTime?: string;
+    countdownEndTime?: string;
     duration?: number;
     success: boolean;
 }
@@ -109,12 +105,21 @@ export function bidIncrement(id: number, newPrice: number) {
     };
 }
 
+export function updateProductTime(id: number, endTime: Date) {
+    return {
+        type: "@@liveStream/UPDATE_PRODUCT_TIME" as const,
+        id,
+        endTime,
+    };
+}
+
 export type LiveStreamActions =
     | ReturnType<typeof loadliveStreamInfo>
     | ReturnType<typeof loadLiveStreamProducts>
     | ReturnType<typeof loadLiveStreamProductsDynamicInfo>
     | ReturnType<typeof bidIncrement>
-    | ReturnType<typeof selectProduct>;
+    | ReturnType<typeof selectProduct>
+    | ReturnType<typeof updateProductTime>;
 
 export function fetchliveStreamInfo(room: string, token: string) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
@@ -175,8 +180,10 @@ export function fetchliveStreamProducts(liveId: number, isFull: boolean) {
                         currentPrice: 0,
                         isSelected: false,
                         duration: 0,
+                        countdownEndTime: new Date(2000, 1, 1),
                         success: false,
                     };
+
                     productObj.id = product.id;
                     productObjDynamic.id = product.id;
                     productObj.productName = product.productName;
@@ -187,10 +194,16 @@ export function fetchliveStreamProducts(liveId: number, isFull: boolean) {
                     productObj.productImage = product.productImage;
                     productObjDynamic.isSelected = product.isSelected;
                     productObjDynamic.duration = product.duration;
+                    if (product.countdownEndTime) {
+                        productObjDynamic.countdownEndTime = new Date(
+                            Date.parse(product.countdownEndTime)
+                        );
+                    }
                     productObj.description = product.description;
                     liveStreamProducts.push(productObj);
                     liveStreamProductsDynamicInfo.push(productObjDynamic);
                 }
+
                 if (isFull) {
                     dispatch(
                         loadLiveStreamProducts(
@@ -243,17 +256,33 @@ export function fetchSelectedProduct(
 ) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         try {
-            const res = await axios.put<UpdateProduct>(
-                `${process.env.REACT_APP_BACKEND_URL}/liveStream/products/isSelected`,
-                {
-                    productId,
+            let liveStreamProductsArrDynamic =
+                getState().liveStream.liveStreamProducts
+                    .liveStreamProductsArrDynamic;
+            let now = new Date();
+            let isBidding = false;
+            for (let product of liveStreamProductsArrDynamic) {
+                if (
+                    product.countdownEndTime &&
+                    now <= product.countdownEndTime
+                ) {
+                    isBidding = true;
                 }
-            );
+            }
 
-            if (res.data.success) {
-                dispatch(selectProduct(res.data.id));
-                if (ws) {
-                    ws.emit("render", [liveId, productId]);
+            if (!isBidding) {
+                const res = await axios.put<UpdateProduct>(
+                    `${process.env.REACT_APP_BACKEND_URL}/liveStream/products/isSelected`,
+                    {
+                        productId,
+                    }
+                );
+
+                if (res.data.success) {
+                    dispatch(selectProduct(res.data.id));
+                    if (ws) {
+                        ws.emit("render", [liveId, productId]);
+                    }
                 }
             }
         } catch (e) {
@@ -265,16 +294,41 @@ export function fetchSelectedProduct(
 export function fetchProductTime(productId: number, seconds: number) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         try {
-            const res = await axios.put<UpdateProduct>(
-                `${process.env.REACT_APP_BACKEND_URL}/liveStream/products/productTime`,
-                {
-                    productId,
-                    seconds,
+            let liveStreamProductsArrDynamic =
+                getState().liveStream.liveStreamProducts
+                    .liveStreamProductsArrDynamic;
+            let now = new Date();
+            let isBidding = false;
+            for (let product of liveStreamProductsArrDynamic) {
+                if (
+                    product.countdownEndTime &&
+                    now <= product.countdownEndTime
+                ) {
+                    isBidding = true;
                 }
-            );
+            }
 
-            if (res.data.success) {
-                // dispatch()
+            if (!isBidding) {
+                const res = await axios.put<UpdateProduct>(
+                    `${process.env.REACT_APP_BACKEND_URL}/liveStream/products/productTime`,
+                    {
+                        productId,
+                        seconds,
+                    }
+                );
+
+                if (res.data.success) {
+                    if (res.data.countdownEndTime) {
+                        console.log(res.data);
+
+                        dispatch(
+                            updateProductTime(
+                                res.data.id,
+                                new Date(Date.parse(res.data.countdownEndTime))
+                            )
+                        );
+                    }
+                }
             }
         } catch (e) {
             console.log(e);

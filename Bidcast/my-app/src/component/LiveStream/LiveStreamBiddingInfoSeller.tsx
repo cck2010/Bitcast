@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
     fetchProductTime,
     LiveStreamProduct,
@@ -8,6 +8,7 @@ import {
 import { RootState } from "../../store";
 
 function LiveStreamBiddingInfo() {
+    const dispatch = useDispatch();
     const [inputRemainingTime, setInputRemainingTime] = useState<number>(60);
     const [remainingTime, setRemainingTime] = useState<number>(0);
     const [currentPrice, setCurrentPrice] = useState<number>(100);
@@ -51,14 +52,19 @@ function LiveStreamBiddingInfo() {
     useEffect(() => {
         if (productsDynamic.length !== 0) {
             for (let ind in productsDynamic) {
-                let countdownTime = productsDynamic[ind].countdownEndTime;
+                let countdownEndTime = productsDynamic[ind].countdownEndTime;
                 if (
                     productsDynamic[ind].isSelected &&
-                    (countdownTime === undefined || countdownTime >= new Date())
+                    countdownEndTime !== undefined &&
+                    countdownEndTime > new Date()
                 ) {
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);
+                    setIsBidding(true);
                     break;
+                } else if (productsDynamic[ind].isSelected) {
+                    setSelectedProduct(products[ind]);
+                    setSelectedProductDynamic(productsDynamic[ind]);
                 }
             }
         }
@@ -96,7 +102,7 @@ function LiveStreamBiddingInfo() {
                                     拍賣尚未開始
                                 </div>
                             ) : (
-                                <div className="remaining_time mt-2">
+                                <div className="remaining_time mt-2 text-center">
                                     <i className="fas fa-hourglass-half"></i>
                                     {""}剩餘 {remainingTime} 秒
                                 </div>
@@ -112,9 +118,11 @@ function LiveStreamBiddingInfo() {
                                 isBidding && "unavailable_btn"
                             }`}
                             onClick={() => {
-                                fetchProductTime(
-                                    currentProductId,
-                                    inputRemainingTime
+                                dispatch(
+                                    fetchProductTime(
+                                        selectedProduct.id,
+                                        inputRemainingTime
+                                    )
                                 );
                                 setRemainingTime(inputRemainingTime);
                                 setIsBidding(true);

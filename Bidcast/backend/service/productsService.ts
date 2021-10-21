@@ -17,7 +17,7 @@ export class ProductsService {
         description: string,
         startDate: Date | string,
         liveImage: string | undefined,
-        userId:number,
+        userId: number
     ) => {
         // console.log("liveImage", liveImage);
         // console.log("startDate", startDate);
@@ -26,7 +26,7 @@ export class ProductsService {
 
         const res = await this.knex("live")
             .insert({
-                user_id:  userId,
+                user_id: userId,
                 title: liveTitle,
                 image: liveImage,
                 starting_time: startDate,
@@ -65,9 +65,26 @@ export class ProductsService {
     };
 
     startBid = async (productId: number, seconds: number) => {
-        console.log(productId, seconds);
+        const addSeconds = function (date: Date, sec: number) {
+            date.setTime(date.getTime() + sec * 1000);
+            return date;
+        };
+        const countdownStartTime = new Date();
+        let countdownEndTime = new Date(countdownStartTime.valueOf());
+        countdownEndTime = addSeconds(countdownEndTime, seconds);
 
-        return productId + 10;
+        const endTime = (
+            await this.knex("products")
+                .update({
+                    countdown_start_time: countdownStartTime,
+                    countdown_end_time: countdownEndTime,
+                    duration: seconds,
+                })
+                .where("id", productId)
+                .returning("countdown_end_time")
+        )[0];
+
+        return endTime;
     };
 
     selectProduct = async (productId: number) => {
@@ -105,7 +122,7 @@ export class ProductsService {
         description: string,
         productIndex: number,
         username: string,
-        userId:number,
+        userId: number
     ) => {
         console.log("index", productIndex);
 
