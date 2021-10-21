@@ -39,7 +39,7 @@ export function productsReducer(
         switch (action.type) {
             case "@@products/LOAD_CATEGORIES":
                 for (let category of action.categories) {
-                    state.categories[category.id] = category;
+                    newState.categories[category.id] = category;
                 }
                 break;
             //fetch ser 拎 products data
