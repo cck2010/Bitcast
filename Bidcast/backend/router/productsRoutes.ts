@@ -9,7 +9,7 @@ const productsRoutes = express.Router();
 
 const submitLiveStorage = multer.diskStorage({
     destination: function (req: Request, file: any, cb: any) {
-        cb(null, path.resolve("../my-app/src/assets/submitLivePicture"));
+        cb(null, path.resolve("./submitLivePicture"));
     },
     filename: function (req: Request, file: any, cb: any) {
         cb(
@@ -27,7 +27,7 @@ const submitLiveMulter = submitLiveUpload.single("liveImage");
 
 const submitProductsStorage = multer.diskStorage({
     destination: function (req: Request, file: any, cb: any) {
-        cb(null, path.resolve("../my-app/src/assets/submitProductsPicture"));
+        cb(null, path.resolve("./submitProductsPicture"));
     },
     filename: function (req: Request, file: any, cb: any) {
         cb(

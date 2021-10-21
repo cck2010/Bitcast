@@ -73,6 +73,8 @@ app.get("/profile", (req: express.Request, res: express.Response) => {
 app.use(express.static("public"));
 app.use(express.static("public", { extensions: ["html"] }));
 app.use(express.static("css"));
+app.use(express.static("submitLivePicture"));
+app.use(express.static("submitProductsPicture"));
 app.use(express.static("logos"));
 app.use(express.static("uploads"));
 app.get(
