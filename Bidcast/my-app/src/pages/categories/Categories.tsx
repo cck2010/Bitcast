@@ -47,7 +47,7 @@ export function CategoryResults() {
             
             <Image
               key={searchingResult.id}
-              src={`./assets/submitProductsPicture/${searchingResult.product_image}`}
+              src={`${process.env.REACT_APP_BACKEND_URL}/${searchingResult.product_image}`}
               fluid
             />
             <div className="description_container">

@@ -157,7 +157,7 @@ export function CreateBids() {
       setSelectedImage(e.target.files[0]);
     }
   };
-  const poster1 = require('./poster1.jpg');
+  // const poster1 = require('./poster1.jpg');
   // const liveInputPicture = watch("liveInput.liveImage")
   return (
     
