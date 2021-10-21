@@ -7,7 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./CreateBids.scss"
 import { fetchCategories } from "../../redux/products/actions";
 import { push } from "connected-react-router";
-// import { v4 } from "uuid";
+import { v4 } from "uuid";
 // import axios from "axios";
 // import moment from "moment";
 
@@ -41,7 +41,6 @@ export function CreateBids() {
   const user = useSelector((state: RootState) => state.authState.user);
   const userInfo = JSON.parse(JSON.stringify(user));
   console.log("user", user);
-
 
   const categories = useSelector((state: RootState) => Object.values(state.products.categories))
   const { register,watch, handleSubmit, control } = useForm<Inputs>();
@@ -157,8 +156,14 @@ export function CreateBids() {
       setSelectedImage(e.target.files[0]);
     }
   };
-  const poster1 = require('./poster1.jpg');
   // const liveInputPicture = watch("liveInput.liveImage")
+
+  const filterPassedDate = () => {
+    const currentDate = new Date();
+    const selectedDate = new Date();
+
+    return currentDate < selectedDate;
+  };
   return (
     
     <div className={"create_bids_container"}>
@@ -181,6 +186,7 @@ export function CreateBids() {
                 timeClassName={handleColor}
                 placeholderText="Select date"
                 dateFormat="MM/dd/yyyy hh:mm a"
+                filterDate={filterPassedDate}
               />
             )}
           />
@@ -195,11 +201,13 @@ export function CreateBids() {
         {/*  Dynamic Form */}
         {fields.map(({ id, name }, index) => {
 
-          const productsPicture = watch(`productInput.${index}.productImage`)
           // const watchAllFields = watch();
-
+          
+          
+          let productsPicture = watch(`productInput.${index}.productImage`)
+          console.log("productsPicture", productsPicture);
           return (
-            <div className="item_input_container" key={id}>
+            <div className="item_input_container" key={id} >
               <p className={'input_box'}><label>物品名稱:
                 <input className={"input_default"}
                   {...register(`productInput.${index}.name`)}
@@ -209,9 +217,10 @@ export function CreateBids() {
                 <input className={"input_default"}
                   type="file"
                   {...register(`productInput.${index}.productImage`)}
+                  
                 />
               </label></p>
-              {productsPicture != null && <img className={"resize_upload_photo"} src={URL.createObjectURL(productsPicture[0] as any)} />}
+              {productsPicture?.[0] != null && <img className={"resize_upload_photo"} src={URL.createObjectURL(productsPicture[0] as any)} />}
               
               <p className={'input_box'}><label>底價:
                 <input className={"input_default"} type="number"
@@ -238,7 +247,9 @@ export function CreateBids() {
                 /></label></p>
             </div>
           )
+          
         })}
+        
 
         <input className={"button_default"} type="submit" />
       </form>
