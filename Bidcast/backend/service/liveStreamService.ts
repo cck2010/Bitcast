@@ -95,7 +95,6 @@ export class LiveStreamService {
                 isSelected: false,
                 duration: 0,
                 description: "",
-                isEnded: false,
             };
             product["id"] = productResult.id;
             product["productName"] = productResult.product_name;
