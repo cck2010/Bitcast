@@ -1,7 +1,4 @@
 import {
-  Container,
-  Form,
-  FormControl,
   Nav,
   Navbar,
   Image,
@@ -20,18 +17,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { fetchProductSearchResult } from "../../redux/products/actions";
 import React, { useEffect } from "react";
 import { checkCurrentUser, logoutThunk } from "../../redux/user/actions";
+import { push } from "connected-react-router";
+import { FormGroup, Input } from "reactstrap";
+import { fetchProductSearchResult } from "../../redux/searchResult/action";
 
 export function HomePageNavbar() {
-  const [show, setShow] = useState(false);
-  const showDropdown = () => {
-    setShow(!show);
-  };
-  const hideDropdown = () => {
-    setShow(false);
-  };
+  // const [show, setShow] = useState(false);
+  // const showDropdown = () => {
+  //   setShow(!show);
+  // };
+  // const hideDropdown = () => {
+  //   setShow(false);
+  // };
 
   const dispatch = useDispatch();
   const isAuthenticate = useSelector(
@@ -43,10 +42,7 @@ export function HomePageNavbar() {
   }, []);
 
   const [searchInput, setSearchInput] = useState("");
-  const searchingResults = useSelector((state: RootState) =>
-    Object.values(state.products.products)
-  );
-
+  
   useEffect(() => {
     dispatch(fetchProductSearchResult(searchInput));
   }, [dispatch, searchInput]);
@@ -66,23 +62,26 @@ export function HomePageNavbar() {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto navbar_buttons">
-            <Form className="d-flex">
-              <FormControl
+            <FormGroup>
+              <Input
                 type="search"
-                placeholder="搜尋"
-                className="me-2 search_bar"
-                aria-label="Search"
+                name="search"
+                id="exampleSearch"
+                placeholder="search..."
                 onChange={(event) => {
                   setSearchInput(event.target.value);
                   console.log(event.target.value);
                 }}
-                // onKeyPress={(event) => {
-                //   if (event.key === "Enter") {
-                //     search();
-                //   }
-                // }}
+                onKeyPress={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                    dispatch(
+                      push(`/categoryResult?keywords=${searchInput}`)
+                    );
+                  }
+                }}
               />
-            </Form>
+            </FormGroup>
             <Link to="/" className="nav_link">
               主頁
             </Link>
@@ -93,13 +92,19 @@ export function HomePageNavbar() {
               title="商品分類"
               id="collasible-nav-dropdown"
               className="dropdown"
-              show={show}
-              onMouseEnter={showDropdown}
-              onMouseLeave={hideDropdown}
+              // show={show}
+              // onMouseEnter={showDropdown}
+              // onMouseLeave={hideDropdown}
             >
-              <Link to="/categoryResult?id=" className="dropdown_items">商品分類1</Link>
-              <Link to="/categoryResult?id=" className="dropdown_items">商品分類2</Link>
-              <Link to="/categoryResult?id=" className="dropdown_items">商品分類3</Link>
+              <Link to="/categoryResult?id=" className="dropdown_items">
+                商品分類1
+              </Link>
+              <Link to="/categoryResult?id=" className="dropdown_items">
+                商品分類2
+              </Link>
+              <Link to="/categoryResult?id=" className="dropdown_items">
+                商品分類3
+              </Link>
             </NavDropdown>
             {!isAuthenticate && (
               <Link to="/login" className="nav_link">

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { ProductsService } from "../service/productsService";
 
 export class ProductsController {
-    constructor(private productsService: ProductsService) {}
+    constructor(private productsService: ProductsService) { }
 
     getCategories = async (req: Request, res: Response) => {
         try {
@@ -126,7 +126,7 @@ export class ProductsController {
     };
     searchProductResults = async (req: Request, res: Response) => {
         try {
-            const searchKeywords = req.params.name;
+            const { searchKeywords } = req.body;
             const result = await this.productsService.searchProductResults(
                 searchKeywords
             );
