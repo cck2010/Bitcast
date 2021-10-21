@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import Carousel from "react-tiny-slider";
 import { TinySliderInstance } from "tiny-slider";
 import { RootState } from "../../store";
-import LiveStreamBiddingInfo from "./LiveStreamBiddingInfo";
 import { Socket } from "socket.io-client";
 import LiveStreamDescription from "./LiveStreamDescription";
 
@@ -29,26 +28,21 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
 
     if (props.ws) {
         props.ws.on("render", (productId: number) => {
-            setTimeout(() => {
-                let page: number = 0;
-                let slideCollection = carousel.current?.getInfo().slideItems;
-                if (slideCollection !== undefined) {
-                    let slideItems = Array.from(slideCollection);
-                    for (let slideItem of slideItems) {
-                        if (
-                            slideItem.id &&
-                            productId ===
-                                parseInt(
-                                    slideItem.ariaLabel.split("card").join("")
-                                )
-                        ) {
-                            page = parseInt(slideItem.id.split("item")[1]);
-                        }
+            let page: number = 0;
+            let slideCollection = carousel.current?.getInfo().slideItems;
+            if (slideCollection !== undefined) {
+                let slideItems = Array.from(slideCollection);
+                for (let slideItem of slideItems) {
+                    if (
+                        slideItem.id &&
+                        productId ===
+                            parseInt(slideItem.ariaLabel.split("card").join(""))
+                    ) {
+                        page = parseInt(slideItem.id.split("item")[1]);
                     }
                 }
-
-                carousel.current != null && carousel.current.goTo(page);
-            }, 600);
+            }
+            carousel.current != null && carousel.current.goTo(page);
         });
     }
 
@@ -69,47 +63,48 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
                         ref={carousel}
                         controls={false}
                         nav={false}
+                        onClick={(slideIndex, info, event) => {
+                            console.log(slideIndex);
+                        }}
                     >
-                        {products.map((product) => (
-                            <div
-                                key={product.id}
-                                className={`carousel_card ${
-                                    product.isSelected ? "selected" : ""
-                                } d-flex align-items-center justify-content-between`}
-                                aria-label={`card${product.id}`}
-                            >
-                                <img
+                        {products.length !== 0 ? (
+                            products.map((product, ind) => (
+                                <div
                                     key={product.id}
-                                    className={`carousel_img ${
-                                        product.isEnded ? "sold " : ""
-                                    } ${
-                                        product.isSelected ? "selected" : ""
-                                    } ms-3`}
-                                    src={product.productImage}
-                                    alt={`pic${product.id}`}
-                                />
-                                <div className="product_info mh-100 d-flex flex-column justify-content-center align-items-start">
-                                    <div className="product_name">
-                                        <i className="fas fa-gift"></i>{" "}
-                                        競價項目:
-                                        <br />
-                                        {product.productName}
+                                    className={`carousel_card d-flex align-items-center justify-content-between`}
+                                    aria-label={`card${product.id}`}
+                                >
+                                    <img
+                                        key={product.id}
+                                        className={`carousel_img ms-3`}
+                                        src={product.productImage}
+                                        alt={`pic${product.id}`}
+                                    />
+                                    <div className="product_info mh-100 d-flex flex-column justify-content-center align-items-start">
+                                        <div className="product_name">
+                                            <i className="fas fa-gift"></i>{" "}
+                                            競價項目:
+                                            <br />
+                                            {product.productName}
+                                        </div>
+                                        <div className="product_price">
+                                            <i className="fas fa-chart-line"></i>{" "}
+                                            起標價:
+                                            <br />${product.minPrice}
+                                        </div>
                                     </div>
-                                    <div className="product_price">
-                                        <i className="fas fa-chart-line"></i>{" "}
-                                        起標價:
-                                        <br />${product.minPrice}
-                                    </div>
+                                    <LiveStreamDescription
+                                        description={
+                                            product.description
+                                                ? product.description
+                                                : ""
+                                        }
+                                    />
                                 </div>
-                                <LiveStreamDescription
-                                    description={
-                                        product.description
-                                            ? product.description
-                                            : ""
-                                    }
-                                />
-                            </div>
-                        ))}
+                            ))
+                        ) : (
+                            <></>
+                        )}
                     </Carousel>
                     <button
                         className="btn btn-secondary carousel_btn carousel_btn_left"
@@ -123,11 +118,6 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
                     >
                         <i className="fas fa-caret-right"></i>
                     </button>
-                </div>
-            </div>
-            <div className="row mt-3 rounded">
-                <div className={`col-12`}>
-                    <LiveStreamBiddingInfo />
                 </div>
             </div>
         </div>

@@ -12,7 +12,7 @@ export function setSocketIO(io: socketIO.Server) {
             let room = Arr[0];
             let productId = Arr[1];
 
-            socket.to(room.toString()).emit("render", productId);
+            io.sockets.in(room.toString()).emit("render", productId);
         });
     });
 }
