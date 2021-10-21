@@ -86,7 +86,7 @@ function LiveStreamBiddingInfo() {
     ]);
 
     return (
-        <div className="LiveStreamBiddingInfo h-100 rounded">
+        <div className="LiveStreamBiddingInfo h-100 rounded my-3">
             <div className="info w-100 h-100">
                 <div className="row">
                     <div className="col-12 d-flex flex-row justify-content-around align-items-center w-100 h-100 mt-3">

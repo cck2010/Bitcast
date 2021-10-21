@@ -39,7 +39,7 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
     );
 
     return (
-        <div className="LiveStreamControlPanel rounded">
+        <div className="LiveStreamControlPanel rounded my-4">
             <div
                 className="row g-0 panel_bar"
                 style={

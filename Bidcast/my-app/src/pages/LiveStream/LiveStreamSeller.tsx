@@ -89,17 +89,17 @@ function LiveStream() {
                     <LiveStreamWindowSeller />
                     {isTablet ? (
                         <>
-                            <LiveStreamHeader />
-                            <LiveStreamControlPanelSeller
-                                isDesktop={isDesktop}
-                                isTablet={isTablet}
-                                ws={ws}
-                            />
                             <div className="row mt-3 rounded">
                                 <div className={`col-12`}>
                                     <LiveStreamBiddingInfoSeller />
                                 </div>
                             </div>
+                            <LiveStreamControlPanelSeller
+                                isDesktop={isDesktop}
+                                isTablet={isTablet}
+                                ws={ws}
+                            />
+                            <LiveStreamHeader />
                         </>
                     ) : (
                         <>
@@ -120,16 +120,16 @@ function LiveStream() {
                             {page === 1 && <LiveStreamHeader />}
                             {page === 2 && (
                                 <>
-                                    <LiveStreamControlPanelSeller
-                                        isDesktop={isDesktop}
-                                        isTablet={isTablet}
-                                        ws={ws}
-                                    />
                                     <div className="row mt-3 rounded">
                                         <div className={`col-12`}>
                                             <LiveStreamBiddingInfoSeller />
                                         </div>
                                     </div>
+                                    <LiveStreamControlPanelSeller
+                                        isDesktop={isDesktop}
+                                        isTablet={isTablet}
+                                        ws={ws}
+                                    />
                                 </>
                             )}
                             {page === 3 && (

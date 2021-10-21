@@ -3,6 +3,7 @@ $largeFontSize2: 1.2em;
 $smallFontSize: 0.5em;
 
 .LiveStreamHeader {
+    border-top: solid 1px #dcdcdc;
     .mainInfo {
         .title {
             font-size: $largeFontSize;
