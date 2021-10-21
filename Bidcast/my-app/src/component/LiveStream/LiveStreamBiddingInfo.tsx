@@ -168,7 +168,7 @@ function LiveStreamBiddingInfo() {
                         >
                             <i className="fas fa-gavel"></i> 即買價
                             <br />
-                            (${selectedProduct.bidIncrement})
+                            (${selectedProduct.buyPrice})
                         </button>
                     </div>
                 </div>

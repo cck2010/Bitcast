@@ -3,6 +3,7 @@ import {
     LiveStreamInfo,
     LiveStreamProduct,
     LiveStreamProductDynamicInfo,
+    LiveStreamStatus,
 } from "./actions";
 import produce from "immer";
 
@@ -13,6 +14,7 @@ export interface LiveStreamState {
         liveStreamProductsArrDynamic: LiveStreamProductDynamicInfo[];
         success: boolean;
     };
+    liveStreamStatus: LiveStreamStatus;
 }
 
 const initialState: LiveStreamState = {
@@ -30,6 +32,9 @@ const initialState: LiveStreamState = {
         liveStreamProductsArr: [],
         liveStreamProductsArrDynamic: [],
         success: true,
+    },
+    liveStreamStatus: {
+        isBidding: false,
     },
 };
 

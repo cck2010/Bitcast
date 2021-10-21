@@ -13,6 +13,10 @@ export interface LiveStreamInfo {
     success: boolean;
 }
 
+export interface LiveStreamStatus {
+    isBidding: boolean;
+}
+
 export interface LiveStreamProduct {
     id: number;
     productName: string;
@@ -262,8 +266,6 @@ export function fetchSelectedProduct(
 export function fetchProductTime(productId: number, seconds: number) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         try {
-            console.log(productId);
-
             const res = await axios.put<UpdateProduct>(
                 `${process.env.REACT_APP_BACKEND_URL}/liveStream/products/productTime`,
                 {
