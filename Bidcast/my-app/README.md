@@ -44,3 +44,7 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+REACT_APP_BACKEND_URL=http://localhost:8080
+
+REACT_APP_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlxNmHQcOFQpgT/w9HF6oPoqmfpwzwJlP6MK0Y3jtv7Jxg0/Vbil8t8r9VImp3i63VJ/sUEDlAdKyQUYrA1jOBSMMNgKSnw8mG+5gnWcU1NJ3BA116XmKEHCT4OI7SWE0NYCkHLdDAmQvvKMF049N7HiaCPCdhiBQoR2yJ6QsN4PtSyHin9PPCWizqkVdlGe/kvyYRnhzdqGhkvK71i0y9Z5EOpqpqDAxvRDzChcSBzUsWDqK2z0OFVtwP0108emd2oStpoAjmnu9B9b5LWC0zlVygBzEFfjeYyGwRwrFIs3ayET37ErJM6Kt7p6Gnym03r/MyVSXKEee2WtHI0dPUwIDAQAB\n-----END PUBLIC KEY-----\n

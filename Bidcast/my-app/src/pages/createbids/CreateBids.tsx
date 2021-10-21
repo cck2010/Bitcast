@@ -3,11 +3,12 @@ import { SubmitHandler, useForm, Controller, useFieldArray, useWatch } from "rea
 import { useDispatch, useSelector } from "react-redux"
 import { RootState, RootThunkDispatch } from "../../store"
 import DatePicker from "react-datepicker";
-import { v4 } from "uuid";
 import "react-datepicker/dist/react-datepicker.css";
 import "./CreateBids.scss"
 import { fetchCategories } from "../../redux/products/actions";
-import axios from "axios";
+import { push } from "connected-react-router";
+// import { v4 } from "uuid";
+// import axios from "axios";
 // import moment from "moment";
 
 interface liveInput {
@@ -36,9 +37,13 @@ type Inputs = {
 
 
 export function CreateBids() {
-  // const [productsList, setProductsList] = useState<any>([]);
+  // get current
+  const user = useSelector((state: RootState) => state.authState.user);
+  const userInfo = JSON.parse(JSON.stringify(user));
+  console.log("user", user);
+
+
   const categories = useSelector((state: RootState) => Object.values(state.products.categories))
-  // const [startDate, setStartDate] = useState(new Date());
   const { register,watch, handleSubmit, control } = useForm<Inputs>();
   
 
@@ -70,7 +75,9 @@ export function CreateBids() {
     if (data.liveInput.startDate) {
       liveFormData.append('startDate', data.liveInput.startDate.toString())
     }
-
+    if (userInfo!=null){
+      liveFormData.append('userId', userInfo.id);
+    }
     console.log("data.liveInput.description", data.liveInput.description);
     console.log("data.liveInput.startDate", data.liveInput.startDate);
     console.log("liveInput.liveImage[0]", data.liveInput.liveImage[0]);
@@ -108,10 +115,12 @@ export function CreateBids() {
       if (product.description) {
         productFormData.append('description', product.description);
       }
-      // console.log("productFormData >>>", productFormData);
       productFormData.append('liveId', liveId)
       productFormData.append('productIndex',index)
-      console.log("productIndex", index);
+      if (userInfo!=null){
+        productFormData.append('username', userInfo.username);
+        productFormData.append('userId', userInfo.id);
+      }
 
       const proRes = await fetch(`${process.env.REACT_APP_BACKEND_URL}/createBids/submitBid/submitProduct`, {
         method: "POST",
@@ -126,7 +135,7 @@ export function CreateBids() {
 
 
     // dispatch to reducer
-
+    dispatch(push("/"))
 
 
     // ajax/fetch here
@@ -148,12 +157,12 @@ export function CreateBids() {
       setSelectedImage(e.target.files[0]);
     }
   };
-
-
+  // const poster1 = require('./poster1.jpg');
   // const liveInputPicture = watch("liveInput.liveImage")
   return (
+    
     <div className={"create_bids_container"}>
-
+      <header className={"test_user"}>Username:{userInfo.username}</header>
       <form onSubmit={handleSubmit(onSubmit)}>
         <h1>直播設置</h1>
         <div className={'input_box'}><label>直播標題: <input className={"input_default"}  {...register('liveInput.liveTitle')} /></label></div>
@@ -187,6 +196,7 @@ export function CreateBids() {
         {fields.map(({ id, name }, index) => {
 
           const productsPicture = watch(`productInput.${index}.productImage`)
+          // const watchAllFields = watch();
 
           return (
             <div className="item_input_container" key={id}>

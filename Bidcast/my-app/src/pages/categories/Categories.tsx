@@ -1,19 +1,23 @@
 import {
-  Button,
   ButtonGroup,
-  Card,
-  Col,
   Container,
   Dropdown,
   DropdownButton,
-  Row,
   Image,
 } from "react-bootstrap";
 import "./CategoryResult.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSlidersH } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { useEffect, useState } from "react";
+import { fetchProductSearchResult } from "../../redux/searchResult/action";
 
 export function CategoryResults() {
+  const searchingResults = useSelector(
+    (state: RootState) => state.searchProduct.productList
+  )
+
   return (
     <div className="category_page">
       <Container>
@@ -37,18 +41,23 @@ export function CategoryResults() {
         </ButtonGroup>
         <hr />
 
-        <div className="category_items_container">
-          <Image
-            src="https://i.picsum.photos/id/5/200/200.jpg?hmac=oN9VtXdJYLSFssji8vCr48JaI-e5Zi4eH9GAiYBB_Ig"
-            fluid
-          />
-          <div className="description_container">
-            <h3>Name</h3>
-            <h6>Auction date</h6>
-            <h6>posted by</h6>
-            <p>description</p>
+        {searchingResults.map((searchingResult) => (
+          <div className="category_items_container" key={searchingResult.id}>
+            {console.log(searchingResult.product_image)}
+            
+            <Image
+              key={searchingResult.id}
+              src={`${process.env.REACT_APP_BACKEND_URL}/${searchingResult.product_image}`}
+              fluid
+            />
+            <div className="description_container">
+              <h3>{searchingResult.product_name}</h3>
+              <h6>{searchingResult.countdown_start_time}</h6>
+              <h6>posted by {searchingResult.seller_id}</h6>
+              <p>description</p>
+            </div>
           </div>
-        </div>
+        ))}
         <div className="category_items_container">
           <Image
             src="https://i.picsum.photos/id/5/200/200.jpg?hmac=oN9VtXdJYLSFssji8vCr48JaI-e5Zi4eH9GAiYBB_Ig"
@@ -63,5 +72,5 @@ export function CategoryResults() {
         </div>
       </Container>
     </div>
-  );
+  )
 }

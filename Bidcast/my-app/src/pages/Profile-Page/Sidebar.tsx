@@ -37,6 +37,10 @@ export function Sidebar() {
               <MenuItem>我的拍賣商品</MenuItem>
             </SubMenu>
             <MenuItem>收藏的直播</MenuItem>
+            <SubMenu title="訂閱">
+              <MenuItem>訂閱的人</MenuItem>
+              <MenuItem>我的粉絲</MenuItem>
+            </SubMenu>
             <MenuItem>帳戶資料</MenuItem>
           </Menu>
         </SidebarContent>

@@ -16,16 +16,17 @@ export class ProductsService {
         liveTitle: string,
         description: string,
         startDate: Date | string,
-        liveImage: string | undefined
+        liveImage: string | undefined,
+        userId:number,
     ) => {
-        console.log("liveImage", liveImage);
-        console.log("startDate", startDate);
-        console.log("liveIntro", description);
-        console.log("liveTitle", liveTitle);
+        // console.log("liveImage", liveImage);
+        // console.log("startDate", startDate);
+        // console.log("liveIntro", description);
+        // console.log("liveTitle", liveTitle);
 
         const res = await this.knex("live")
             .insert({
-                user_id: 1,
+                user_id:  userId,
                 title: liveTitle,
                 image: liveImage,
                 starting_time: startDate,
@@ -102,7 +103,9 @@ export class ProductsService {
         categoryId: number,
         liveId: number,
         description: string,
-        productIndex: number
+        productIndex: number,
+        username: string,
+        userId:number,
     ) => {
         console.log("index", productIndex);
 
@@ -111,7 +114,7 @@ export class ProductsService {
             .insert({
                 product_name: name,
                 live_id: liveId,
-                seller_id: 1,
+                seller_id: userId,
                 min_price: minimumBid,
                 current_price: minimumBid,
                 buy_price: buyPrice,
@@ -121,8 +124,8 @@ export class ProductsService {
                 is_selected: productIndex == 0 ? true : false,
                 duration: 0,
                 is_ended: false,
-                created_by: "test",
-                updated_by: "test",
+                created_by: username,
+                updated_by: username,
                 created_at: new Date(),
                 updated_at: new Date(),
                 description: description,

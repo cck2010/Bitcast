@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { ProductsService } from "../service/productsService";
 
 export class ProductsController {
-    constructor(private productsService: ProductsService) {}
+    constructor(private productsService: ProductsService) { }
 
     getCategories = async (req: Request, res: Response) => {
         try {
@@ -24,7 +24,7 @@ export class ProductsController {
             // console.log("liveImage", liveImage);
             // console.log("req.body", req.body);
             // console.table(req.body);
-            const { liveTitle, description, startDate } = req.body;
+            const { liveTitle, description, startDate,userId } = req.body;
             // console.log("startDate >>>>", startDate);
             const ms = Date.parse(startDate);
             // console.log("ms >>>>", ms);
@@ -35,7 +35,9 @@ export class ProductsController {
                 liveTitle,
                 description,
                 startDateFormat,
-                liveImage
+                liveImage,
+                parseInt(userId)
+
             );
             console.log("submitted live result (controller side)", result);
             res.json(result);
@@ -59,6 +61,8 @@ export class ProductsController {
                 description,
                 liveId,
                 productIndex,
+                username,
+                userId
             } = req.body;
 
             const result = await this.productsService.submitProductInfo(
@@ -70,7 +74,9 @@ export class ProductsController {
                 parseInt(categoryId),
                 parseInt(liveId),
                 description,
-                productIndex
+                productIndex,
+                username,
+                parseInt(userId)
             );
             console.log("result", result);
             res.json(result);
@@ -126,7 +132,7 @@ export class ProductsController {
     };
     searchProductResults = async (req: Request, res: Response) => {
         try {
-            const searchKeywords = req.params.name;
+            const { searchKeywords } = req.body;
             const result = await this.productsService.searchProductResults(
                 searchKeywords
             );

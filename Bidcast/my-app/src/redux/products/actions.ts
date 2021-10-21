@@ -4,7 +4,7 @@ export interface Product {
     id: number;
     product_name: string;
     live_id: number;
-    seller_od: number;
+    seller_id: number;
     min_price: number;
     current_price: number;
     buy_price: number;
@@ -38,16 +38,9 @@ export function loadCategories(categories: Category[]) {
     };
 }
 
-//load product search result
-export function loadProductSearchResult(products: Product[]) {
-    return {
-        type: "@@products/LOAD_PRODUCT_SEARCH_RESULT" as const,
-        products,
-    }
-}
+
 
 export type ProductsActions = ReturnType<typeof loadCategories> 
-                            | ReturnType<typeof loadProductSearchResult>;
 
 
 
@@ -72,20 +65,3 @@ export function fetchCategories() {
     };
 }
 
-export function fetchProductSearchResult(searchKeywords: string) {
-    return async (dispatch: RootThunkDispatch, getState: ()=>RootState) =>{
-        try {
-            const res = await fetch(`
-            ${process.env.REACT_APP_BACKEND_URL}/product/search?keywords=${searchKeywords}
-            `)
-            console.log(res);
-            
-            const json = await res.json();
-            console.log(json);
-            
-            dispatch(loadProductSearchResult(json.data.results.rows))
-        } catch (error) {
-            console.log(error);
-        }
-    }
-}
