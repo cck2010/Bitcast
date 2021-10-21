@@ -41,9 +41,9 @@ function LiveStreamBiddingInfo() {
             id: 0,
             currentPrice: 0,
             isSelected: false,
-            isEnded: false,
             buyer: "",
             countdownStartTime: new Date(),
+            countdownEndTime: new Date(1900),
             duration: 0,
             success: false,
         });
@@ -51,9 +51,10 @@ function LiveStreamBiddingInfo() {
     useEffect(() => {
         if (productsDynamic.length !== 0) {
             for (let ind in productsDynamic) {
+                let countdownTime = productsDynamic[ind].countdownEndTime;
                 if (
                     productsDynamic[ind].isSelected &&
-                    !productsDynamic[ind].isEnded
+                    (countdownTime === undefined || countdownTime >= new Date())
                 ) {
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);

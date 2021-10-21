@@ -32,9 +32,9 @@ export interface LiveStreamProductDynamicInfo {
     id: number;
     currentPrice: number;
     isSelected: boolean;
-    isEnded: boolean;
     buyer?: string;
     countdownStartTime?: Date;
+    countdownEndTime?: Date;
     duration: number;
     success: boolean;
 }
@@ -49,9 +49,9 @@ interface LiveStreamProductAll {
     description?: string;
     currentPrice: number;
     isSelected: boolean;
-    isEnded: boolean;
     buyer?: string;
     countdownStartTime?: Date;
+    countdownEndTime?: Date;
     duration: number;
     success: boolean;
 }
@@ -60,6 +60,7 @@ export interface UpdateProduct {
     id: number;
     newPrice?: number;
     countdownStartTime?: Date;
+    countdownEndTime?: Date;
     duration?: number;
     success: boolean;
 }
@@ -173,7 +174,6 @@ export function fetchliveStreamProducts(liveId: number, isFull: boolean) {
                         id: 0,
                         currentPrice: 0,
                         isSelected: false,
-                        isEnded: false,
                         duration: 0,
                         success: false,
                     };
@@ -188,7 +188,6 @@ export function fetchliveStreamProducts(liveId: number, isFull: boolean) {
                     productObjDynamic.isSelected = product.isSelected;
                     productObjDynamic.duration = product.duration;
                     productObj.description = product.description;
-                    productObjDynamic.isEnded = product.isEnded;
                     liveStreamProducts.push(productObj);
                     liveStreamProductsDynamicInfo.push(productObjDynamic);
                 }

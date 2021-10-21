@@ -78,7 +78,6 @@ export class LiveStreamService {
                 "product_image",
                 "is_selected",
                 "duration",
-                "is_ended",
                 "description"
             )
             .where("live_id", liveId);
@@ -108,7 +107,6 @@ export class LiveStreamService {
             product["isSelected"] = productResult.is_selected;
             product["duration"] = productResult.duration;
             product["description"] = productResult.description;
-            product["isEnded"] = productResult.is_ended;
             products.push(product);
         }
         return products;
