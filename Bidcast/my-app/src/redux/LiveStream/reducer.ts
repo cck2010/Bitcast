@@ -45,9 +45,6 @@ export function liveStreamReducer(
             case "@@liveStream/LOAD_LIVE_STREAM_PRODUCTS":
                 state.liveStreamProducts.liveStreamProductsArr =
                     action.liveStreamProducts.sort((a, b) => b.id - a.id);
-                console.log(
-                    action.liveStreamProducts.sort((a, b) => b.id - a.id)
-                );
                 state.liveStreamProducts.success = action.success;
                 break;
             case "@@liveStream/LOAD_LIVE_STREAM_PRODUCTS_DYNAMIC_INFO":
