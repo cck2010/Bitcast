@@ -89,7 +89,7 @@ export function HomePageNavbar() {
                     商品分類3
                   </Link>
                 </NavDropdown>
-                { !isAuthenticate && <Link to="/login" className="nav_link">
+                { !isAuthenticate && <Link to="/loginPage" className="nav_link">
                   登入 ／ 註冊
                 </Link>}
                 { isAuthenticate && <a href="#" onClick={e=>{

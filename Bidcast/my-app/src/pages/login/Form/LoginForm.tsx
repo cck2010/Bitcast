@@ -1,26 +1,22 @@
 import { useForm } from "react-hook-form"
 import axios from 'axios'
 import { useDispatch } from "react-redux"
-import { login, loadToken } from "../../redux/user/actions";
+import { login, loadToken } from "../../../redux/user/actions";
 import { useState } from "react";
 import { push } from "connected-react-router";
 import ReactFacebookLogin, { ReactFacebookLoginInfo } from "react-facebook-login";
-import {  useSelector } from 'react-redux';
-import { RootState } from '../../store';
-
 
 const { REACT_APP_BACKEND_URL } = process.env
-export function Login() {
+
+
+export function LoginForm() {
   const { register, handleSubmit } = useForm()
   const dispatch = useDispatch();
   const [error, setError] = useState('')
-  const [registerError, setRegisterEror]=useState('')
-  const userInfo = useSelector((state: RootState) => state.user.isAuthenticate)
-
+ 
   const fBOnCLick = ()=> {
     return null;
 }
-
 const fBCallback = async (userInfo: ReactFacebookLoginInfo & { accessToken: string }) => {
     if (userInfo.accessToken) {
       try {
@@ -79,40 +75,7 @@ const fBCallback = async (userInfo: ReactFacebookLoginInfo & { accessToken: stri
       </form>
       {error}
       
-{/* register form */}
-      <form onSubmit={handleSubmit(async data => {
-        try {
-          
 
-          const res = await axios.post<any>(`${REACT_APP_BACKEND_URL}/register`, {
-            username:data.username,
-            email: data.email,
-            password: data.password,
-            phoneNumber:data.phoneNumber,
-          })
-          console.log(res.data)
-          if (res.data.token != null) {
-            
-            localStorage.setItem('token', res.data.token)
-            dispatch(login(res.data.token))
-            dispatch(loadToken(res.data.token))
-            dispatch(push('/'))
-          }
-          else {
-            setRegisterEror(`${res.data.data.msg}`)
-          }
-        } catch (e: any) {
-          setRegisterEror('unknown error')
-        }
-      })}>
-       
-        <input {...register('username')} />
-        <input {...register('email')} />
-        <input {...register('phoneNumber')} />
-        <input {...register('password')} />
-        {registerError}
-        <input type="submit" />
-      </form>
 
       <ReactFacebookLogin
           appId={process.env.REACT_APP_FACEBOOK_APP_ID || ''}
@@ -125,3 +88,6 @@ const fBCallback = async (userInfo: ReactFacebookLoginInfo & { accessToken: stri
 </div>
   )
 }
+
+
+

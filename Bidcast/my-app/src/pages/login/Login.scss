@@ -1,0 +1,16 @@
+.pageSwitcherItem {
+    background-color: #40434e;
+    color: #9da6b1;
+    padding: 10px 25px;
+    cursor: pointer;
+    font-size: 0.9em;
+    border: none;
+    outline: none;
+    display: inline-block;
+    text-decoration: none;
+  }
+
+  .pageSwitcherItem-active {
+    background-color: #6b5b95;
+    color: white;
+  }
