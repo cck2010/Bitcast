@@ -102,7 +102,7 @@ export function HomePageNavbar() {
               <Link to="/categoryResult?id=" className="dropdown_items">商品分類3</Link>
             </NavDropdown>
             {!isAuthenticate && (
-              <Link to="/login" className="nav_link">
+              <Link to="/loginPage" className="nav_link">
                 登入 ／ 註冊
               </Link>
             )}
