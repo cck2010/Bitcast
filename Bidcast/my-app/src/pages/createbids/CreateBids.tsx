@@ -7,7 +7,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./CreateBids.scss"
 import { fetchCategories } from "../../redux/products/actions";
 import { push } from "connected-react-router";
-import pic from "../../assets/submitProductsPicture/productImage-1634789314358.png"
 // import { v4 } from "uuid";
 // import axios from "axios";
 // import moment from "moment";
@@ -158,13 +157,12 @@ export function CreateBids() {
       setSelectedImage(e.target.files[0]);
     }
   };
-
+  const poster1 = require('./poster1.jpg');
   // const liveInputPicture = watch("liveInput.liveImage")
   return (
     
     <div className={"create_bids_container"}>
       <header className={"test_user"}>Username:{userInfo.username}</header>
-      <img className={"resize_upload_photo"} src={require(`../../assets/submitProductsPicture/productImage-1634789314358.png`)} />
       <form onSubmit={handleSubmit(onSubmit)}>
         <h1>直播設置</h1>
         <div className={'input_box'}><label>直播標題: <input className={"input_default"}  {...register('liveInput.liveTitle')} /></label></div>
