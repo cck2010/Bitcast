@@ -7,6 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./CreateBids.scss"
 import { fetchCategories } from "../../redux/products/actions";
 import { push } from "connected-react-router";
+
 // import { v4 } from "uuid";
 // import axios from "axios";
 // import moment from "moment";
