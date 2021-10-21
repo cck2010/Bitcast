@@ -1,54 +1,34 @@
 @import "~react-pro-sidebar/dist/scss/styles.scss";
 
-.sidebar_logo {
-  display: flex;
-  justify-content: center;
-  padding: 0.8em;
-}
-.logout_button {
-  padding: 0.8em;
-}
-.pro-sidebar > .pro-sidebar-inner > .pro-sidebar-layout {
-  min-height: 100vh;
-}
-.profile_container {
-  display: flex;
-}
-.pro-sidebar > .pro-sidebar-inner {
-  background: #1e2833 !important;
-}
+// .pro-sidebar > .pro-sidebar-inner > .pro-sidebar-layout {
+//   height: 100vh;
+// }
 
-.profilePage {
-  height: 100%;
-  display: flex;
-  position: relative;
-
-  .btn_toggle {
+.sidebar{
+  width: 220px;
+  .pro-sidebar{
+    height: 100vh;
+    .pro-sidebar-inner{
+      background-color: #1e2833;
+    }
+  }
+  .close_menu {
+    font-size: 30px;
     cursor: pointer;
-    width: 35px;
-    height: 35px;
-    background: #353535;
-    color: #fff;
-    text-align: center;
-    // border-radius: 50%;
     display: flex;
-    align-items: center;
     justify-content: center;
-    font-size: 15px;
-    display: none;
   }
-  @media (max-width: 767.98px) {
-    overflow-x: hidden;
+  .sidebar_username {
+    text-align: center;
   }
-  @media (max-width: 767.98px) {
-    .btn_toggle {
-      display: flex;
-    }
+}
 
-    &.rtl {
-      .btn_toggle {
-        margin-left: auto;
-      }
-    }
+.profile_page{
+  display: flex;
+}
+
+@media (max-width: 720px) {
+  html {
+    overflow: hidden;
   }
 }
