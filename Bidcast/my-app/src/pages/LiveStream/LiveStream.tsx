@@ -14,6 +14,7 @@ import {
 } from "../../redux/LiveStream/actions";
 import { RootState } from "../../store";
 import io, { Socket } from "socket.io-client";
+import LiveStreamBiddingInfo from "../../component/LiveStream/LiveStreamBiddingInfo";
 
 function LiveStream() {
     const liveStreamRef = useRef<HTMLDivElement>(null);
@@ -46,7 +47,9 @@ function LiveStream() {
     );
 
     useEffect(() => {
-        dispatch(fetchliveStreamProducts(liveId));
+        if (liveId !== 0) {
+            dispatch(fetchliveStreamProducts(liveId, true));
+        }
     }, [dispatch, liveId]);
 
     // connect socket.io
@@ -70,11 +73,8 @@ function LiveStream() {
                     ws.on("joinRoom", (message) => {
                         console.log(message);
                     });
-                    ws.on("render", (slideIndex) => {
-                        setTimeout(
-                            () => dispatch(fetchliveStreamProducts(liveId)),
-                            500
-                        );
+                    ws.on("render", () => {
+                        dispatch(fetchliveStreamProducts(liveId, false));
                     });
                 }
             };
@@ -89,12 +89,17 @@ function LiveStream() {
                     <LiveStreamWindow />
                     {isTablet ? (
                         <>
-                            <LiveStreamHeader />
+                            <div className="row mt-3 rounded">
+                                <div className={`col-12`}>
+                                    <LiveStreamBiddingInfo />
+                                </div>
+                            </div>
                             <LiveStreamControlPanel
                                 isDesktop={isDesktop}
                                 isTablet={isTablet}
                                 ws={ws}
                             />
+                            <LiveStreamHeader />
                         </>
                     ) : (
                         <>
@@ -115,6 +120,11 @@ function LiveStream() {
                             {page === 1 && <LiveStreamHeader />}
                             {page === 2 && (
                                 <>
+                                    <div className="row mt-3 rounded">
+                                        <div className={`col-12`}>
+                                            <LiveStreamBiddingInfo />
+                                        </div>
+                                    </div>
                                     <LiveStreamControlPanel
                                         isDesktop={isDesktop}
                                         isTablet={isTablet}

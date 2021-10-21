@@ -14,7 +14,6 @@ export interface LiveStreamProduct {
     countdownStartTime?: Date;
     duration: number;
     description: string;
-    isEnded: boolean;
 }
 
 export class LiveStreamController {
