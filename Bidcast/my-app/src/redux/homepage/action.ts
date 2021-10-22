@@ -1,4 +1,3 @@
-import axios from "axios";
 import { RootState, RootThunkDispatch } from "../../store";
 
 export interface ComingAuction {
@@ -6,7 +5,7 @@ export interface ComingAuction {
     product_name: string;
     min_price: number;
     product_image: string;
-    duration: number;
+    starting_time: number;
     username: string;
     success: boolean;
 }
@@ -32,6 +31,9 @@ export function getComingAuctions() {
             );
 
             const json = await res.json();
+
+            console.log(json);
+            
 
             if (json.success) {
 
