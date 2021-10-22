@@ -32,7 +32,7 @@ export function Sidebar() {
 
   const user = useSelector((state: RootState) => state.authState.user);
   const userInfo = JSON.parse(JSON.stringify(user));
-
+  
   return (
     <div className="sidebar">
       <ProSidebar collapsed={menuCollapse} width="220px">

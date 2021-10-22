@@ -17,6 +17,8 @@ import { CategoryResults } from "./pages/categories/Categories";
 import { useDispatch, useSelector } from 'react-redux';
 import { checkCurrentUser } from "./redux/user/actions";
 import { RootState } from "./store";
+
+
 // import { CreateBids } from "./pages/createbids/CreateBids";
 
 function App() {
@@ -31,6 +33,7 @@ function App() {
   // );
 
   return (
+    
     <div className="App">
       <HomePageNavbar />
       {/* <LiveStream /> */}
@@ -61,6 +64,7 @@ function App() {
       </Switch>
       <Footer />
     </div>
+    
   );
 }
 
