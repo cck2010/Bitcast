@@ -72,6 +72,7 @@ app.use(userRoutes);
 app.use(liveStreamRoutes);
 app.use(productsRoutes);
 app.use(comingAuctionRoutes);
+app.use(express.static("img"));
 app.use(myLiveRoutes);
 app.get("/profile", (req: express.Request, res: express.Response) => {
     res.sendFile(path.join(__dirname, "public", "404.html"));
@@ -100,7 +101,5 @@ const PORT = env.PORT;
 server.listen(PORT, () => {
     logger.info(`Server準備好喇： http://localhost:${PORT}/`);
 });
-function myLiveRoutes(myLiveRoutes: any) {
-    throw new Error("Function not implemented.");
-}
+
 
