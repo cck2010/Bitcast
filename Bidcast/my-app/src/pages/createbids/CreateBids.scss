@@ -137,13 +137,15 @@ label{
   box-shadow: 0 2px 5px #666;
   transform: translateY(4px);
   background-color:#1F2833;
-    animation: buttonActiveBG ease-out 0.3s;
+    animation: buttonActiveBG ease-in 0.3s;
     animation-fill-mode: forwards;
     @keyframes buttonActiveBG {
         0% {
+            color:white;
             background-color:#1F2833;
         }
         100% {
+            color:black;
             background-color:#ffffff;
         }
     }
