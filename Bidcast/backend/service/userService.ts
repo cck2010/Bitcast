@@ -101,7 +101,7 @@ export class UserService {
                     updated_at: new Date(),
                     telegram_is_verified: false,
                     profile_pic:
-                        "/backend/img/360_F_391192211_2w5pQpFV1aozYQhcIw3FqA35vuTxJKrB.jpg",
+                        "360_F_391192211_2w5pQpFV1aozYQhcIw3FqA35vuTxJKrB.jpg",
                     login_method_id: localLoginId[0].id,
                     created_by: username,
                     updated_by: username,
@@ -120,7 +120,7 @@ export class UserService {
                         GROUP BY email
                         `);
         const emailCount = parseInt(checkRepeatEmail.rows[0].count);
-        console.log("emailCount=", emailCount);
+        // console.log("emailCount=", emailCount);
 
         if (emailCount != 1) {
             await this.knex("users")
@@ -285,20 +285,23 @@ export class UserService {
     };
 
     FacebookLogin = async (email: string, username: string, picture: string): Promise<ResponseJson> => {
-
+        const fbLoginId = await this.knex("login_methods").select('id').where('login_method', 'facebook')
+        const statusIdId = await this.knex('status').select('id').where('status', 'active')
+        const roleIdId = await this.knex('roles').select('id').where('role_name', 'user')
+        let hashedPassword = await hashPassword(
+            (Math.random() + 1).toString(36)
+        );
 
         const users = await this.knex("users")
             .select()
-            .where("email", email)
+            .where({
+                "email": email,
+                "login_method_id": fbLoginId[0].id
+            })
 
         if (users.length == 0) {
             // insert
-            const localLoginId = await this.knex("login_methods").select('id').where('login_method', 'local')
-            const statusIdId = await this.knex('status').select('id').where('status', 'active')
-            const roleIdId = await this.knex('roles').select('id').where('role_name', 'user')
-            let hashedPassword = await hashPassword(
-                (Math.random() + 1).toString(36)
-            );
+
             const users /*  = result.rows */ =
                 await this.knex("users")
                     .insert({
@@ -311,9 +314,8 @@ export class UserService {
                         created_at: new Date(),
                         updated_at: new Date(),
                         telegram_is_verified: false,
-                        profile_pic:
-                            "/backend/img/360_F_391192211_2w5pQpFV1aozYQhcIw3FqA35vuTxJKrB.jpg",
-                        login_method_id: localLoginId[0].id,
+                        profile_pic: picture,
+                        login_method_id: fbLoginId[0].id,
                         created_by: username,
                         updated_by: username,
                     })

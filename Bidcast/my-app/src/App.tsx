@@ -17,6 +17,8 @@ import { CategoryResults } from "./pages/categories/Categories";
 import { useDispatch, useSelector } from "react-redux";
 import { checkCurrentUser } from "./redux/user/actions";
 import { RootState } from "./store";
+
+
 // import { CreateBids } from "./pages/createbids/CreateBids";
 import { useAdBlockDetector } from "adblock-detector-hook";
 
@@ -25,7 +27,7 @@ function App() {
 
     useEffect(() => {
         dispatch(checkCurrentUser());
-    }, []);
+    }, [dispatch]);
 
     // const isAuthenticate = useSelector(
     //   (state: RootState) => state.user.isAuthenticate
