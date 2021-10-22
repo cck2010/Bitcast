@@ -1,9 +1,5 @@
 @import "~react-pro-sidebar/dist/scss/styles.scss";
 
-// .pro-sidebar > .pro-sidebar-inner > .pro-sidebar-layout {
-//   height: 100vh;
-// }
-
 .sidebar{
   width: 220px;
   .pro-sidebar{
@@ -25,4 +21,20 @@
 
 .profile_page{
   display: flex;
+}
+
+.card_body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.card_bg_color{
+  background-color:#2f4154;
+  width: 100%;
+  height: 80px;
+}
+.profile_logo {
+  border-radius: 50% !important;
+  margin-top: -15%;
+  border: 2px solid #ffffff;
 }

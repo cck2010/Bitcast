@@ -20,6 +20,7 @@ import { BsBroadcastPin } from "react-icons/bs";
 import { MdAccountBox } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { Link } from "react-router-dom";
 
 export function Sidebar() {
   const [menuCollapse, setMenuCollapse] = useState(false);
@@ -34,7 +35,7 @@ export function Sidebar() {
 
   return (
     <div className="sidebar">
-      <ProSidebar collapsed={menuCollapse} width='220px'>
+      <ProSidebar collapsed={menuCollapse} width="220px">
         <SidebarHeader>
           <h3 className="sidebar_username pt-3">{userInfo.username}</h3>
           <div className="close_menu" onClick={menuIconClick}>
@@ -49,10 +50,16 @@ export function Sidebar() {
             </SubMenu>
             <MenuItem icon={<BsBroadcastPin />}>收藏的直播</MenuItem>
             <SubMenu title="訂閱" icon={<FaRegHeart />}>
-              <MenuItem>訂閱的人</MenuItem>
+              <MenuItem>
+                <Link to="/profilePage/following">訂閱的人</Link>
+              </MenuItem>
               <MenuItem>我的粉絲</MenuItem>
             </SubMenu>
-            <MenuItem icon={<MdAccountBox />}>帳戶資料</MenuItem>
+            <MenuItem icon={<MdAccountBox />}>
+              帳戶資料
+              <Link to="/profilePage/accountDetails" />
+              {/* <Link to="/accountDetails">帳戶資料</Link> */}
+            </MenuItem>
           </Menu>
         </SidebarContent>
         <SidebarFooter>

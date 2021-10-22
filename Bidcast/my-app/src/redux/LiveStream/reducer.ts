@@ -3,7 +3,6 @@ import {
     LiveStreamInfo,
     LiveStreamProduct,
     LiveStreamProductDynamicInfo,
-    LiveStreamStatus,
 } from "./actions";
 import produce from "immer";
 
@@ -14,7 +13,6 @@ export interface LiveStreamState {
         liveStreamProductsArrDynamic: LiveStreamProductDynamicInfo[];
         success: boolean;
     };
-    liveStreamStatus: LiveStreamStatus;
 }
 
 const initialState: LiveStreamState = {
@@ -33,38 +31,52 @@ const initialState: LiveStreamState = {
         liveStreamProductsArrDynamic: [],
         success: true,
     },
-    liveStreamStatus: {
-        isBidding: false,
-    },
 };
 
 export function liveStreamReducer(
     state: LiveStreamState = initialState,
     action: LiveStreamActions
 ): LiveStreamState {
-    return produce(state, (state) => {
+    return produce(state, (newState) => {
         switch (action.type) {
             case "@@liveStream/LOAD_LIVE_STREAM_INFO":
-                state.liveStreamInfo = action.liveStreamInfo;
+                newState.liveStreamInfo = action.liveStreamInfo;
                 break;
             case "@@liveStream/LOAD_LIVE_STREAM_PRODUCTS":
-                state.liveStreamProducts.liveStreamProductsArr =
+                newState.liveStreamProducts.liveStreamProductsArr =
                     action.liveStreamProducts.sort((a, b) => b.id - a.id);
-                state.liveStreamProducts.success = action.success;
+                newState.liveStreamProducts.success = action.success;
                 break;
             case "@@liveStream/LOAD_LIVE_STREAM_PRODUCTS_DYNAMIC_INFO":
-                state.liveStreamProducts.liveStreamProductsArrDynamic =
+                newState.liveStreamProducts.liveStreamProductsArrDynamic =
                     action.liveStreamProductsDynamicInfo.sort(
                         (a, b) => b.id - a.id
                     );
-                state.liveStreamProducts.success = action.success;
+                newState.liveStreamProducts.success = action.success;
                 break;
             case "@@liveStream/SELECT_PRODUCT":
-                for (let liveStreamProduct of state.liveStreamProducts
+                let indSelectProduct = 0;
+                for (let liveStreamProduct of newState.liveStreamProducts
                     .liveStreamProductsArrDynamic) {
                     if (liveStreamProduct.id === action.id) {
-                        liveStreamProduct.isSelected = true;
+                        newState.liveStreamProducts.liveStreamProductsArrDynamic[
+                            indSelectProduct
+                        ].isSelected = true;
                     }
+                    indSelectProduct++;
+                }
+
+                break;
+            case "@@liveStream/UPDATE_PRODUCT_TIME":
+                let indUpdateProductTime = 0;
+                for (let liveStreamProduct of newState.liveStreamProducts
+                    .liveStreamProductsArrDynamic) {
+                    if (liveStreamProduct.id === action.id) {
+                        newState.liveStreamProducts.liveStreamProductsArrDynamic[
+                            indUpdateProductTime
+                        ].countdownEndTime = action.endTime;
+                    }
+                    indUpdateProductTime++;
                 }
                 break;
             case "@@liveStream/BID_INCREMENT":
