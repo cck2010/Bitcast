@@ -85,36 +85,62 @@
   margin-right: 0.5rem;
 }
 
-.item-enter {
+.my-node-enter {
   opacity: 0;
 }
-.item-enter-active {
+.my-node-enter-active {
   opacity: 1;
-  transition: opacity 500ms ease-in;
+  transition: opacity 2000ms;
 }
-.item-exit {
-  opacity: 1;
-}
-.item-exit-active {
-  opacity: 0;
-  transition: opacity 500ms ease-in;
-}
-.fade-enter,
-.fade-exit {
+.my-node-exit {
   opacity: 0;
 }
-
-
-.fade-enter-active {
-  opacity: 1;
-  transition: opacity 200ms;
-}
-
-.fade-exit {
-  opacity: 1;
-}
-
-.fade-exit-active {
+.my-node-exit-active {
   opacity: 0;
-  transition: opacity 200ms;
+  transition: opacity 0ms;
+}
+
+.fade-enter{
+  opacity: 0;
+  transform: translateX(-100%);
+}
+.fade-enter-active{
+  opacity: 1;
+  transform: translateX(0%);
+}
+.fade-exit{
+  opacity: 1;
+  transform: translateX(0%);
+}
+.fade-exit-active{
+  opacity: 0;
+  transform: translateX(100%);
+}
+.fade-enter-active
+.fade-exit-active{
+  transition: opacity 2000ms, transform 2000ms;
+}
+.slide-enter,
+.slide-exit {
+  transition: transform 1000ms ease-out;
+}
+
+.slide-enter {
+  transform: translateX(10%);
+}
+
+.slide-enter.slide-enter-active {
+  transform: translateX(0%);
+}
+
+.slide-exit {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform: translateX(0%);
+}
+
+.slide-exit-active {
+  transform: translateX(-100%);
 }
