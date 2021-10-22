@@ -1,10 +1,10 @@
 @import "~react-pro-sidebar/dist/scss/styles.scss";
 
-.sidebar{
+.sidebar {
   width: 220px;
-  .pro-sidebar{
-    height: 100vh;
-    .pro-sidebar-inner{
+  .pro-sidebar {
+    min-height: 100vh;
+    .pro-sidebar-inner {
       background-color: #1e2833;
     }
   }
@@ -19,7 +19,7 @@
   }
 }
 
-.profile_page{
+.profile_page {
   display: flex;
 }
 
@@ -27,9 +27,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 5px;
 }
-.card_bg_color{
-  background-color:#2f4154;
+.card_bg_color {
+  background-color: #2f4154;
   width: 100%;
   height: 80px;
 }
@@ -37,4 +38,11 @@
   border-radius: 50% !important;
   margin-top: -15%;
   border: 2px solid #ffffff;
+}
+.my_live_container {
+  display: flex;
+  flex-wrap: wrap;
+  .my_live_products {
+    max-height: 100px !important;
+  }
 }
