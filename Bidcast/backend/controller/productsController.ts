@@ -24,7 +24,10 @@ export class ProductsController {
             // console.log("liveImage", liveImage);
             // console.log("req.body", req.body);
             // console.table(req.body);
-            const { liveTitle, description, startDate,userId } = req.body;
+            const { liveTitle, description, startDate,userId,sellerLink,buyerLink } = req.body;
+            console.log("liveTitle", liveTitle);
+            console.log("buyerLink", buyerLink);
+            console.log("sellerLink", sellerLink);
             // console.log("startDate >>>>", startDate);
             const ms = Date.parse(startDate);
             // console.log("ms >>>>", ms);
@@ -36,7 +39,10 @@ export class ProductsController {
                 description,
                 startDateFormat,
                 liveImage,
-                parseInt(userId)
+                parseInt(userId),
+                sellerLink,
+                buyerLink
+
 
             );
             console.log("submitted live result (controller side)", result);

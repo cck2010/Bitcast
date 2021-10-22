@@ -18,6 +18,8 @@ export class ProductsService {
         startDate: Date | string,
         liveImage: string | undefined,
         userId:number,
+        sellerLink:string,
+        buyerLink:string
     ) => {
         // console.log("liveImage", liveImage);
         // console.log("startDate", startDate);
@@ -33,8 +35,8 @@ export class ProductsService {
                 status_id: 1,
                 max_viewers: 0,
                 current_viewers: 0,
-                seller_link: "abc",
-                buyer_link: "123",
+                seller_link: sellerLink,
+                buyer_link: buyerLink,
                 is_live: false,
                 is_ended: false,
                 is_banned: false,
@@ -123,7 +125,6 @@ export class ProductsService {
                 product_image: productImage,
                 is_selected: productIndex == 0 ? true : false,
                 duration: 0,
-                is_ended: false,
                 created_by: username,
                 updated_by: username,
                 created_at: new Date(),
