@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
 import {
     fetchBidIncrement,
+    fetchliveStreamProducts,
     LiveStreamProduct,
     LiveStreamProductDynamicInfo,
 } from "../../redux/LiveStream/actions";
@@ -104,7 +105,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                 }
             }
         }
-    }, [products, productsDynamic, timerId]);
+    }, [products, productsDynamic, timerId, selectedProductDynamic]);
 
     useEffect(() => {
         return () => {
@@ -118,13 +119,12 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
 
     useEffect(() => {
         if (props.ws) {
-            props.ws.on("startBid", () => {
-                if (timerId === 0) {
-                    setTimerId(0);
-                }
+            props.ws.on("startBid", (liveId: number) => {
+                console.log(liveId);
+                dispatch(fetchliveStreamProducts(liveId, false));
             });
         }
-    }, [props.ws, timerId]);
+    }, [dispatch, props.ws]);
 
     useEffect(() => {
         if (

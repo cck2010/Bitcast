@@ -211,6 +211,7 @@ export function fetchliveStreamProducts(liveId: number, isFull: boolean) {
                         )
                     );
                 }
+
                 dispatch(
                     loadLiveStreamProductsDynamicInfo(
                         liveStreamProductsDynamicInfo,
