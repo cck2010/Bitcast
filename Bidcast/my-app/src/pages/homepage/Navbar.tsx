@@ -24,6 +24,7 @@ import { checkCurrentUser, logoutThunk } from "../../redux/user/actions";
 import { push } from "connected-react-router";
 import { FormGroup, Input } from "reactstrap";
 import { fetchProductSearchResult } from "../../redux/searchResult/action";
+import { fetchCategories } from "../../redux/products/actions";
 
 export function HomePageNavbar() {
   // const [show, setShow] = useState(false);
@@ -54,6 +55,15 @@ export function HomePageNavbar() {
       <Popover.Header as="h3">請先登入</Popover.Header>
     </Popover>
   );
+
+  const categories = useSelector((state: RootState) =>
+    Object.values(state.products.categories)
+  );
+
+  useEffect(() => {
+    // fetch ser 拎 categories data
+    dispatch(fetchCategories());
+  }, [dispatch])
 
   return (
     <div>
@@ -100,12 +110,12 @@ export function HomePageNavbar() {
                 overlay={popover}
               >
                 <Link to="#" className="nav_link">
-                  拍賣
+                  舉辦拍賣
                 </Link>
               </OverlayTrigger>
             ) : (
               <Link to="/createBids" className="nav_link">
-                拍賣
+                舉辦拍賣
               </Link>
             )}
 
@@ -117,15 +127,15 @@ export function HomePageNavbar() {
               // onMouseEnter={showDropdown}
               // onMouseLeave={hideDropdown}
             >
-              <Link to="/categoryResult?id=" className="dropdown_items">
-                商品分類1
-              </Link>
-              <Link to="/categoryResult?id=" className="dropdown_items">
-                商品分類2
-              </Link>
-              <Link to="/categoryResult?id=" className="dropdown_items">
-                商品分類3
-              </Link>
+              {categories.map((category) => (
+                <Link
+                  to="/categoryResult?id="
+                  className="dropdown_items"
+                  key={category.id}
+                >
+                  {category.category}
+                </Link>
+              ))}
             </NavDropdown>
             {!isAuthenticate && (
               <Link to="/loginPage" className="nav_link">
@@ -138,6 +148,7 @@ export function HomePageNavbar() {
                 onClick={(e) => {
                   e.preventDefault();
                   dispatch(logoutThunk());
+                  dispatch(push('/'))
                 }}
                 className="nav_link"
               >
