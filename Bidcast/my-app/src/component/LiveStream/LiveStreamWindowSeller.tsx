@@ -32,11 +32,9 @@ function LiveStreamWindow() {
 
     useEffect(() => {
         if (!result.isLoading && !client) {
-            // signal = new IonSFUJSONRPCSignal(webSocketIPBackUp);
             // eslint-disable-next-line react-hooks/exhaustive-deps
             signal = new IonSFUJSONRPCSignal(webSocketIP);
             let ClientConnection = new Client(signal, config);
-            // eslint-disable-next-line react-hooks/exhaustive-deps
             signal.onopen = () => {
                 if (ClientConnection == null) {
                     return;
@@ -44,16 +42,12 @@ function LiveStreamWindow() {
                 ClientConnection.join(`room ${result.data?.room}`, "");
             };
             setClient(ClientConnection);
-            // setTimeout(() => {
-            // eslint-disable-next-line react-hooks/exhaustive-deps
             setTimerId(
                 setInterval(
                     () => signal != null && signal.notify("method", "params"),
                     45000
                 )
             );
-
-            // }, 10000);
         }
     }, [result]);
 

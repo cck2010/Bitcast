@@ -9691,7 +9691,7 @@ react-bootstrap@^2.0.0-rc.0:
 
 react-custom-scroll@^4.3.0:
   version "4.3.0"
-  resolved "https://registry.npmjs.org/react-custom-scroll/-/react-custom-scroll-4.3.0.tgz"
+  resolved "https://registry.yarnpkg.com/react-custom-scroll/-/react-custom-scroll-4.3.0.tgz#8473ee2c78c5c48fb174941961f65345179a888f"
   integrity sha512-JHNWBAzyw3MgsCNcG6uXJQkCoVPmWxeEW01ABmUz4HsWxw3EQJ2GzrUa5y4ISI85V3q6O4zwCIZAVn10aM3clQ==
 
 react-datepicker@^4.2.1:
