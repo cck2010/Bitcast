@@ -294,8 +294,8 @@ export function fetchProductTime(
     productId: number,
     seconds: number,
     setTimerId: React.Dispatch<React.SetStateAction<number>>,
-    setRemainingTime: React.Dispatch<React.SetStateAction<number>>,
-    setIsBidding: React.Dispatch<React.SetStateAction<boolean>>
+    ws: Socket,
+    liveId: number
 ) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         try {
@@ -315,20 +315,10 @@ export function fetchProductTime(
                             new Date(Date.parse(res.data.countdownEndTime))
                         )
                     );
-                    let endTime = new Date(
-                        Date.parse(res.data.countdownEndTime)
-                    );
-                    setTimerId(
-                        window.setInterval(() => {
-                            setRemainingTime(
-                                Math.ceil(
-                                    (endTime.getTime() - new Date().getTime()) /
-                                        1000
-                                )
-                            );
-                        }, 16)
-                    );
-                    setIsBidding(true);
+                    setTimerId(0);
+                    if (ws) {
+                        ws.emit("startBid", liveId);
+                    }
                 }
             }
         } catch (e) {

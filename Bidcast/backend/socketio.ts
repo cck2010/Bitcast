@@ -11,8 +11,12 @@ export function setSocketIO(io: socketIO.Server) {
         socket.on("render", (Arr: number[]) => {
             let room = Arr[0];
             let productId = Arr[1];
-
             io.sockets.in(room.toString()).emit("render", productId);
+        });
+        socket.on("startBid", (room: number) => {
+            console.log(socket.id, room);
+
+            socket.to(room.toString()).emit("startBid");
         });
     });
 }

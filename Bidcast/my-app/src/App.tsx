@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 import "./App.scss";
 import LiveStream from "./pages/LiveStream/LiveStream";
-import { Link, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { LoginPage } from "./pages/login/LoginPage";
 import { HomePageNavbar } from "./pages/homepage/Navbar";
 import { Footer } from "./pages/homepage/Footer";
@@ -14,11 +14,8 @@ import { Homepage } from "./pages/homepage/Homepage";
 import { profile } from "console";
 import { ProfilePage } from "./pages/Profile-Page/Profilepage";
 import { CategoryResults } from "./pages/categories/Categories";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { checkCurrentUser } from "./redux/user/actions";
-import { RootState } from "./store";
-
-
 // import { CreateBids } from "./pages/createbids/CreateBids";
 import { useAdBlockDetector } from "adblock-detector-hook";
 
@@ -29,9 +26,6 @@ function App() {
         dispatch(checkCurrentUser());
     }, [dispatch]);
 
-    // const isAuthenticate = useSelector(
-    //   (state: RootState) => state.user.isAuthenticate
-    // );
     const { detected } = useAdBlockDetector();
     <div>AdBlocker Detected: {JSON.stringify(detected)}</div>;
 
@@ -44,7 +38,6 @@ function App() {
             ) : (
                 <>
                     <HomePageNavbar />
-
                     {/* <LiveStream /> */}
                     {/* <CreateBids /> */}
                     <Switch>

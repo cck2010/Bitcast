@@ -14,10 +14,14 @@ interface LiveStreamBiddingInfoProps {
 
 function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     const dispatch = useDispatch();
-    const [inputRemainingTime, setInputRemainingTime] = useState<number>(60);
+    const [inputRemainingTime, setInputRemainingTime] = useState<number>(10);
     const [remainingTime, setRemainingTime] = useState<number>(Infinity);
     const [isBidding, setIsBidding] = useState<boolean>(false);
     const [timerId, setTimerId] = useState<number>(0);
+
+    const liveId = useSelector(
+        (state: RootState) => state.liveStream.liveStreamInfo.id
+    );
 
     const products = useSelector(
         (state: RootState) =>
@@ -108,7 +112,6 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
             if (remainingTime <= 0) {
                 clearInterval(timerId);
                 setIsBidding(false);
-                setTimerId(0);
             }
         };
     }, [remainingTime, timerId]);
@@ -161,52 +164,46 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                         </div>
                     </div>
                 </div>
-                {
-                    <>
-                        <button
-                            disabled={
-                                isBidding ||
-                                (!isBidding &&
-                                    selectedProductDynamic.countdownEndTime !==
-                                        undefined)
-                            }
-                            className={`start_auction btn btn-primary my-3 me-3 w-100 ${
-                                isBidding && "unavailable_btn"
-                            }`}
-                            onClick={() => {
-                                setRemainingTime(inputRemainingTime);
-                                dispatch(
-                                    fetchProductTime(
-                                        selectedProduct.id,
-                                        inputRemainingTime,
-                                        setTimerId,
-                                        setRemainingTime,
-                                        setIsBidding
-                                    )
-                                );
-                            }}
-                        >
-                            <i className="fas fa-gavel"></i> 開始拍賣
-                        </button>
-                        <label className="w-100 d-flex justify-content-between align-items-center">
-                            <span className="input_duration ">
-                                倒數時間(秒):
-                            </span>
-                            <input
-                                type="number"
-                                className="action_duration w-75"
-                                max={300}
-                                min={60}
-                                value={inputRemainingTime}
-                                onChange={(e) =>
-                                    setInputRemainingTime(
-                                        parseInt(e.target.value)
-                                    )
-                                }
-                            />
-                        </label>
-                    </>
-                }
+                <button
+                    disabled={
+                        isBidding ||
+                        (!isBidding &&
+                            selectedProductDynamic.countdownEndTime !==
+                                undefined)
+                    }
+                    className={`start_auction btn btn-primary my-3 me-3 w-100 ${
+                        isBidding && "unavailable_btn"
+                    }`}
+                    onClick={() => {
+                        setRemainingTime(inputRemainingTime);
+                        if (props.ws) {
+                            dispatch(
+                                fetchProductTime(
+                                    selectedProduct.id,
+                                    inputRemainingTime,
+                                    setTimerId,
+                                    props.ws,
+                                    liveId
+                                )
+                            );
+                        }
+                    }}
+                >
+                    <i className="fas fa-gavel"></i> 開始拍賣
+                </button>
+                <label className="w-100 d-flex justify-content-between align-items-center">
+                    <span className="input_duration ">倒數時間(秒):</span>
+                    <input
+                        type="number"
+                        className="action_duration w-75"
+                        max={300}
+                        min={10}
+                        value={inputRemainingTime}
+                        onChange={(e) =>
+                            setInputRemainingTime(parseInt(e.target.value))
+                        }
+                    />
+                </label>
             </div>
         </div>
     );
