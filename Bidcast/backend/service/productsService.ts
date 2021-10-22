@@ -106,7 +106,6 @@ export class ProductsService {
             .select("countdown_end_time", "duration")
             .where("live_id", liveId);
 
-        console.log(availableCheck);
         for (let item of availableCheck) {
             if (
                 item.countdown_end_time !== null &&

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Socket } from "socket.io-client";
 import {
     fetchProductTime,
     LiveStreamProduct,
@@ -7,7 +8,11 @@ import {
 } from "../../redux/LiveStream/actions";
 import { RootState } from "../../store";
 
-function LiveStreamBiddingInfo() {
+interface LiveStreamBiddingInfoProps {
+    ws: Socket | null;
+}
+
+function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     const dispatch = useDispatch();
     const [inputRemainingTime, setInputRemainingTime] = useState<number>(60);
     const [remainingTime, setRemainingTime] = useState<number>(Infinity);
@@ -108,7 +113,7 @@ function LiveStreamBiddingInfo() {
         };
     }, [remainingTime, timerId]);
 
-    console.log(selectedProductDynamic);
+    // console.log(selectedProductDynamic);
 
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded my-3">
@@ -170,13 +175,13 @@ function LiveStreamBiddingInfo() {
                             }`}
                             onClick={() => {
                                 setRemainingTime(inputRemainingTime);
-                                setIsBidding(true);
                                 dispatch(
                                     fetchProductTime(
                                         selectedProduct.id,
                                         inputRemainingTime,
                                         setTimerId,
-                                        setRemainingTime
+                                        setRemainingTime,
+                                        setIsBidding
                                     )
                                 );
                             }}
