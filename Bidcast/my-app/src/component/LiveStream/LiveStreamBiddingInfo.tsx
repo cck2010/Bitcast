@@ -10,13 +10,10 @@ import { RootState } from "../../store";
 function LiveStreamBiddingInfo() {
     const dispatch = useDispatch();
 
-    const [remainingTime, setRemainingTime] = useState<number>(0);
-    // const [increment, setIncrement] = useState<number>(10);
-    // const [currentPrice, setCurrentPrice] = useState<number>(100);
+    const [remainingTime, setRemainingTime] = useState<number>(Infinity);
     const [inputPrice, setInputPrice] = useState<number>(0);
     const [isBidding, setIsBidding] = useState<boolean>(true);
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
-    // const [highestBidUser, setHighestBidUser] = useState<string>("");
     const username = "測試員";
     // let products: any = [];
 
@@ -56,14 +53,38 @@ function LiveStreamBiddingInfo() {
     useEffect(() => {
         if (productsDynamic.length !== 0) {
             for (let ind in productsDynamic) {
-                let countdownTime = productsDynamic[ind].countdownEndTime;
+                let countdownEndTime = productsDynamic[ind].countdownEndTime;
                 if (
                     productsDynamic[ind].isSelected &&
-                    (countdownTime === undefined || countdownTime >= new Date())
+                    countdownEndTime !== undefined &&
+                    countdownEndTime > new Date()
                 ) {
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);
+                    setIsBidding(true);
+                    setRemainingTime(
+                        Math.ceil(
+                            (countdownEndTime!.getTime() -
+                                new Date().getTime()) /
+                                1000
+                        )
+                    );
                     break;
+                } else if (
+                    productsDynamic[ind].isSelected &&
+                    countdownEndTime !== undefined &&
+                    countdownEndTime <= new Date()
+                ) {
+                    setSelectedProduct(products[ind]);
+                    setSelectedProductDynamic(productsDynamic[ind]);
+                    setIsBidding(false);
+                } else if (
+                    productsDynamic[ind].isSelected &&
+                    countdownEndTime === undefined
+                ) {
+                    setSelectedProduct(products[ind]);
+                    setSelectedProductDynamic(productsDynamic[ind]);
+                    setIsBidding(false);
                 }
             }
         }
@@ -111,12 +132,20 @@ function LiveStreamBiddingInfo() {
                                         : selectedProductDynamic.buyer}
                                 </span>
                             </div>
-                            {remainingTime === 0 ? (
+                            {!isBidding &&
+                            selectedProductDynamic.countdownEndTime ===
+                                undefined ? (
                                 <div className="remaining_time mt-2 ms-4">
                                     拍賣尚未開始
                                 </div>
+                            ) : !isBidding &&
+                              selectedProductDynamic.countdownEndTime !==
+                                  undefined ? (
+                                <div className="remaining_time mt-2 ms-4">
+                                    拍賣已結束
+                                </div>
                             ) : (
-                                <div className="remaining_time mt-2">
+                                <div className="remaining_time mt-2 ms-4 text-center">
                                     <i className="fas fa-hourglass-half"></i>
                                     {""}剩餘 {remainingTime} 秒
                                 </div>
