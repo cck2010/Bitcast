@@ -97,8 +97,8 @@ func load() bool {
 
 func parse() bool {
 	flag.StringVar(&file, "c", "config.toml", "config file")
-	flag.StringVar(&cert, "cert", "/etc/letsencrypt/live/ws.ctosan.xyz/fullchain.pem", "cert file")
-	flag.StringVar(&key, "key", "/etc/letsencrypt/live/ws.ctosan.xyz/privkey.pem", "key file")
+	flag.StringVar(&cert, "cert", "", "cert file")
+	flag.StringVar(&key, "key", "", "key file")
 	flag.StringVar(&addr, "a", ":7000", "address to use")
 	flag.StringVar(&metricsAddr, "m", ":8100", "merics to use")
 	flag.IntVar(&verbosityLevel, "v", -1, "verbosity level, higher value - more logs")
