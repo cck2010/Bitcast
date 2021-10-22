@@ -138,6 +138,7 @@ export function HomePageNavbar() {
                 onClick={(e) => {
                   e.preventDefault();
                   dispatch(logoutThunk());
+                  dispatch(push('/'))
                 }}
                 className="nav_link"
               >

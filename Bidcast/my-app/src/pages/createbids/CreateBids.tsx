@@ -48,7 +48,7 @@ export function CreateBids() {
   const user = useSelector((state: RootState) => state.authState.user);
   console.log("user", user);
   const userInfo = JSON.parse(JSON.stringify(user));
-  console.log("userInfo", userInfo);
+  // console.log("userInfo", userInfo);
 
   //get category
   const categories = useSelector((state: RootState) => Object.values(state.products.categories))
