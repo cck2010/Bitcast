@@ -107,6 +107,7 @@ export function AccountDetails() {
               <Card.Title>Name</Card.Title>
               <Card.Text>phone no</Card.Text>
               <Card.Text>email</Card.Text>
+              <Card.Text>telegram_account</Card.Text>
             </Card.Body>
           </Card>
         </Col>

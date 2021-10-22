@@ -3,6 +3,7 @@ import "./Profilepage.scss";
 import { AccountDetails } from "./AccountDetails";
 import { Following } from "./Following";
 import { Route, Switch } from "react-router-dom";
+import { MyLiveProducts } from "./MyLiveProducts";
 
 // import { useState } from "react";
 // import { Col, Container, Row } from "react-bootstrap";
@@ -17,6 +18,9 @@ export function ProfilePage() {
         </Route>
         <Route path="/profilePage/accountDetails">
           <AccountDetails />
+        </Route>
+        <Route path="/profilePage/my-live-products">
+          <MyLiveProducts />
         </Route>
       </Switch>
     </div>
