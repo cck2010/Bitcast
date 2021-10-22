@@ -101,7 +101,7 @@ export function Broadcasting() {
                       dispatch(push(`/liveStreaming?room=`));
                     }}
                   >
-                    馬上出價
+                    觀看直播
                   </Button>
 
                   <RWebShare

@@ -19,6 +19,6 @@ export const config: Configuration = {
     codec: "h264",
 };
 
-export const webSocketIP = "ws://54.251.210.79/ws";
+export const webSocketIP = "wss://54.251.210.79/ws";
 
-export const webSocketIPBackUp = "ws://54.251.68.107/ws";
+export const webSocketIPBackUp = "wss://54.251.68.107/ws";
