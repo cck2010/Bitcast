@@ -32,7 +32,7 @@ export function Sidebar() {
 
   const user = useSelector((state: RootState) => state.authState.user);
   const userInfo = JSON.parse(JSON.stringify(user));
-
+  
   return (
     <div className="sidebar">
       <ProSidebar collapsed={menuCollapse} width="220px">
@@ -45,9 +45,13 @@ export function Sidebar() {
         <SidebarContent>
           <Menu iconShape="square">
             <SubMenu title="拍賣資訊" icon={<FaList />}>
-              <MenuItem>我的拍賣出價</MenuItem>
-              <MenuItem>我的拍賣商品
-              <Link to="/profilePage/my-live-products" />
+              <MenuItem>
+                我的拍賣出價
+                <Link to="/profilePage/my-bids" />
+              </MenuItem>
+              <MenuItem>
+                我的拍賣商品
+                <Link to="/profilePage/my-live-products" />
               </MenuItem>
             </SubMenu>
             <MenuItem icon={<BsBroadcastPin />}>收藏的直播</MenuItem>

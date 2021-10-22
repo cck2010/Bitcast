@@ -60,7 +60,7 @@ export async function isLoggedIn(
             algorithm: "RS512"
         };
         const User = jwt.verify(token, jwtKey.publicKEY, verifyOptions as {});
-        // console.log(User)
+        console.log(User)
         // database check
         if (typeof User != "string") {
             const id = User.id

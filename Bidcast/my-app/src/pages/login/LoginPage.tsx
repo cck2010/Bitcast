@@ -8,7 +8,7 @@ import hammer from "./hammer.png"
 import { SignupForm } from "./Form/SignupForm";
 import { LoginForm } from "./Form/LoginForm";
 import { useDispatch } from "react-redux"
-import { login } from "../../redux/user/actions";
+import { loadToken, login } from "../../redux/user/actions";
 import { useState } from "react";
 import axios from 'axios'
 import ReactFacebookLogin, { ReactFacebookLoginInfo } from "react-facebook-login";
@@ -20,7 +20,7 @@ const AnimatedSwitch = withRouter(({ location }) => (
     <CSSTransition 
     key={location.key} 
     classNames="my-node" 
-    timeout={500}
+    timeout={300}
     addEndListener={(node, done) => node.addEventListener("transitionend", done, false)}
     unmountOnExit
     >
@@ -48,11 +48,12 @@ const fBCallback = async (userInfo: ReactFacebookLoginInfo & { accessToken: stri
         const res = await axios.post<any>(`${process.env.REACT_APP_BACKEND_URL}/login/facebook`, {
           accessToken: userInfo.accessToken
         })
-        console.log(res.data)
+        // console.log(res.data)
         
         if (res.data.token != null) {
           localStorage.setItem('token', res.data.token)
           dispatch(login(res.data.token))
+          dispatch(loadToken(res.data.token))
           dispatch(push('/'))
         } else {
           setError('email or password wrong')

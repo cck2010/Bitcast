@@ -7,6 +7,9 @@ import { Provider } from "react-redux";
 import {store,history} from './store'
 import { ConnectedRouter } from "connected-react-router";
 
+
+
+
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>

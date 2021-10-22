@@ -2,6 +2,7 @@ import { UserService } from "../service/userService";
 import { Request, Response } from "express";
 import jwtKey from "../jwt/jwt"
 import jwt from "jsonwebtoken"
+import axios from 'axios'
 // import fetch from "node-fetch";
 // import { ResponseJson } from "../response";
 // import passport from 'passport';
@@ -34,7 +35,7 @@ export class UserController {
     register = async (req: Request, res: Response) => {
         try {
             const { username, email, password, phoneNumber } = req.body;
-            console.log(username, email, password, phoneNumber);
+            // console.log(username, email, password, phoneNumber);
 
             const result: any = await this.userService.register(
                 username,
@@ -42,7 +43,7 @@ export class UserController {
                 password,
                 phoneNumber
             );
-            console.log(result);
+            // console.log(result);
 
             if (!(result.success)) {
                 // console.log('not success');
@@ -167,22 +168,24 @@ export class UserController {
     loginFacebook = async (req: Request, res: Response) => {
         try {
             const accessToken = req.body.accessToken
-            console.log(accessToken);
+
 
             // @ts-ignore
-            const facebookRes = await axios.get(`https://graph.facebook.com/me?access_token=${accessToken}&fields=id,name,email,picture`)
-            const Fbresult = facebookRes.json();
-            if (Fbresult.error) {
-                res.json({
+
+            const facebookRes: any = await axios.get(`https://graph.facebook.com/me?access_token=${accessToken}&fields=id,name,email,picture`)
+            // console.log(facebookRes.data.picture.data.url);
+
+            if (facebookRes.error) {
+                return res.json({
                     success: false,
                     error: 'loginFacebook controller failure',
                     data: {
                         msg: "loginFacebook controller failure",
                     },
                 });
-                return;
+                ;
             }
-            let result = await this.userService.FacebookLogin(Fbresult.email, Fbresult.name, Fbresult.picture);
+            let result = await this.userService.FacebookLogin(facebookRes.data.email, facebookRes.data.name, facebookRes.data.picture.data.url);
             if (result.error) {
 
                 return res.json({
@@ -193,19 +196,29 @@ export class UserController {
                     },
                 });
             }
-            const payload = result.data
+            const payload = result.data.user
+            // console.log(payload);
+
+
             const signOptions: {} = {
 
                 expiresIn: "12h",
                 algorithm: "RS512" 			// RSASSA options[ "RS256", "RS384", "RS512" ]
             };
 
-            const token = jwt.sign(payload, jwtKey.privateKEY, signOptions);
+            if (payload) {
+                const token = jwt.sign(payload, jwtKey.privateKEY, signOptions);
 
-            return res.json({
-                token: token,
+                return res.json({
+                    token: token,
 
-            });
+                });
+            } else {
+                return res.status(401).json({
+                    token: null,
+                    message: 'Incorrect token'
+                })
+            }
 
         } catch (e) {
             console.error(e)

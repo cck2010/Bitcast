@@ -29,7 +29,7 @@ export function logoutThunk() {
     return (dispatch: RootThunkDispatch) => {
         localStorage.removeItem('token')
         dispatch(logout())
-        
+
     }
 }
 
@@ -51,6 +51,7 @@ export function checkCurrentUser() {
             })
             // console.log("fetched")
             dispatch(login(token))
+
             dispatch(loadToken(token))
 
             return
