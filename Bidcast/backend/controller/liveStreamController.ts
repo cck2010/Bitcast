@@ -12,9 +12,9 @@ export interface LiveStreamProduct {
     productImage: string;
     isSelected: boolean;
     countdownStartTime?: Date;
+    countdownEndTime?: Date;
     duration: number;
     description: string;
-    isEnded: boolean;
 }
 
 export class LiveStreamController {

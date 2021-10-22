@@ -164,5 +164,56 @@ export class UserController {
             });
         }
     }
+    loginFacebook = async (req: Request, res: Response) => {
+        try {
+            const accessToken = req.body.accessToken
+            console.log(accessToken);
+
+            // @ts-ignore
+            const facebookRes = await axios.get(`https://graph.facebook.com/me?access_token=${accessToken}&fields=id,name,email,picture`)
+            const Fbresult = facebookRes.json();
+            if (Fbresult.error) {
+                res.json({
+                    success: false,
+                    error: 'loginFacebook controller failure',
+                    data: {
+                        msg: "loginFacebook controller failure",
+                    },
+                });
+                return;
+            }
+            let result = await this.userService.FacebookLogin(Fbresult.email, Fbresult.name, Fbresult.picture);
+            if (result.error) {
+
+                return res.json({
+                    success: false,
+                    error: 'loginFacebook controller failure after service',
+                    data: {
+                        msg: "loginFacebook controller failure after service",
+                    },
+                });
+            }
+            const payload = result.data
+            const signOptions: {} = {
+
+                expiresIn: "12h",
+                algorithm: "RS512" 			// RSASSA options[ "RS256", "RS384", "RS512" ]
+            };
+
+            const token = jwt.sign(payload, jwtKey.privateKEY, signOptions);
+
+            return res.json({
+                token: token,
+
+            });
+
+        } catch (e) {
+            console.error(e)
+            return res.status(401).json({
+                token: null,
+                message: 'Incorrect token'
+            })
+        }
+    }
 
 }

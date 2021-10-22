@@ -26,18 +26,22 @@ export type ComingAuctionActions = ReturnType<typeof loadComingAuctions>;
 
 export function getComingAuctions() {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
-        const res = await fetch(
-            `${process.env.REACT_APP_BACKEND_URL}/comingAuction`
-        );
+        try {
+            const res = await fetch(
+                `${process.env.REACT_APP_BACKEND_URL}/comingAuction`
+            );
 
-        const json = await res.json();
+            const json = await res.json();
 
-        if (json.success) {
+            if (json.success) {
 
-            dispatch(loadComingAuctions(json.data.results.rows, true))
-        } else {
-            dispatch(loadComingAuctions([], false))
+                dispatch(loadComingAuctions(json.data.results.rows, true))
+            } else {
+                dispatch(loadComingAuctions([], false))
+            }
+
+        } catch (error) {
+            console.log(error);
         }
-
     }
 }

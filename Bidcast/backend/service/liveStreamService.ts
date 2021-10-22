@@ -78,12 +78,13 @@ export class LiveStreamService {
                 "product_image",
                 "is_selected",
                 "duration",
-                "is_ended",
+                "countdown_end_time",
                 "description"
             )
             .where("live_id", liveId);
 
         let products: LiveStreamProduct[] = [];
+
         for (let productResult of productsResult) {
             let product: LiveStreamProduct = {
                 id: -1,
@@ -96,7 +97,6 @@ export class LiveStreamService {
                 isSelected: false,
                 duration: 0,
                 description: "",
-                isEnded: false,
             };
             product["id"] = productResult.id;
             product["productName"] = productResult.product_name;
@@ -107,8 +107,8 @@ export class LiveStreamService {
             product["productImage"] = productResult.product_image;
             product["isSelected"] = productResult.is_selected;
             product["duration"] = productResult.duration;
+            product["countdownEndTime"] = productResult.countdown_end_time;
             product["description"] = productResult.description;
-            product["isEnded"] = productResult.is_ended;
             products.push(product);
         }
         return products;

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { ProductsService } from "../service/productsService";
 
 export class ProductsController {
-    constructor(private productsService: ProductsService) { }
+    constructor(private productsService: ProductsService) {}
 
     getCategories = async (req: Request, res: Response) => {
         try {
@@ -68,7 +68,7 @@ export class ProductsController {
                 liveId,
                 productIndex,
                 username,
-                userId
+                userId,
             } = req.body;
 
             const result = await this.productsService.submitProductInfo(
@@ -112,11 +112,16 @@ export class ProductsController {
     startBid = async (req: Request, res: Response) => {
         try {
             const { productId, seconds } = req.body;
+
             const result = await this.productsService.startBid(
                 productId,
                 seconds
             );
-            const response = { id: productId, newPrice: result, success: true };
+            const response = {
+                id: productId,
+                countdownEndTime: result[0],
+                success: result[1],
+            };
             res.json(response);
         } catch (e) {
             console.log(e);
@@ -128,8 +133,8 @@ export class ProductsController {
         try {
             const { productId } = req.body;
 
-            await this.productsService.selectProduct(productId);
-            const response = { id: productId, success: true };
+            const result = await this.productsService.selectProduct(productId);
+            const response = { id: productId, success: result };
             res.json(response);
         } catch (e) {
             console.log(e);

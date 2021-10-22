@@ -27,10 +27,8 @@ export function fetchProductSearchResult(searchKeywords: string) {
                 },
                 body: JSON.stringify({searchKeywords})
             })
-            console.log(res);
 
             const json = await res.json();
-            console.log(json);
 
             dispatch(loadProductSearchResult(json.data.results.rows))
         } catch (error) {

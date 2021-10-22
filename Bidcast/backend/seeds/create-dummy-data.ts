@@ -111,5 +111,61 @@ export async function seed(knex: Knex): Promise<void> {
                 description: chance.paragraph(),
             });
         }
+
+        if (i === 0) {
+            const liveId2 = (
+                await knex("live")
+                    .insert({
+                        user_id: userId,
+                        title: chance.sentence(),
+                        image: `https://picsum.photos/200/300?random=${Math.floor(
+                            Math.random() * 100
+                        )}`,
+                        starting_time: chance.date({ year: 2021 }),
+                        status_id:
+                            statusId[
+                                Math.floor(Math.random() * statusId.length)
+                            ],
+                        max_viewers: Math.floor(Math.random() * 1000) + 500,
+                        current_viewers: 0,
+                        seller_link: 123,
+                        buyer_link: "abc",
+                        is_live: true,
+                        is_ended: false,
+                        is_banned: false,
+                        description: chance.paragraph(),
+                    })
+                    .returning("id")
+            )[0];
+            for (let i = 0; i < 5; i++) {
+                let isSelected = false;
+                if (i === 0) {
+                    isSelected = true;
+                }
+
+                const price = Math.floor(Math.random() * 500);
+                await knex("products").insert({
+                    product_name: chance.word(),
+                    live_id: liveId2,
+                    seller_id: userId,
+                    min_price: price,
+                    current_price: price,
+                    buy_price: price * 10,
+                    bid_increment: Math.floor(price / 10) + 1,
+                    category_id:
+                        categoryId[
+                            Math.floor(Math.random() * categoryId.length)
+                        ],
+                    product_image: `https://picsum.photos/200/300?random=${Math.floor(
+                        Math.random() * 100
+                    )}`,
+                    is_selected: isSelected,
+                    duration: 0,
+                    created_by: "knex seed",
+                    updated_by: "knex seed",
+                    description: chance.paragraph(),
+                });
+            }
+        }
     }
 }

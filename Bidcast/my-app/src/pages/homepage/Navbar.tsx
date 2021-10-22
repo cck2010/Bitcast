@@ -3,6 +3,8 @@ import {
   Navbar,
   Image,
   NavDropdown,
+  Popover,
+  OverlayTrigger,
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Homepage.scss";
@@ -39,13 +41,19 @@ export function HomePageNavbar() {
 
   useEffect(() => {
     dispatch(checkCurrentUser());
-  }, []);
+  }, [dispatch]);
 
   const [searchInput, setSearchInput] = useState("");
-  
+
   useEffect(() => {
     dispatch(fetchProductSearchResult(searchInput));
   }, [dispatch, searchInput]);
+
+  const popover = (
+    <Popover id="popover-basic">
+      <Popover.Header as="h3">請先登入</Popover.Header>
+    </Popover>
+  );
 
   return (
     <div>
@@ -70,7 +78,6 @@ export function HomePageNavbar() {
                 placeholder="search..."
                 onChange={(event) => {
                   setSearchInput(event.target.value);
-                  console.log(event.target.value);
                 }}
                 onKeyPress={(event) => {
                   if (event.key === "Enter") {
@@ -85,9 +92,23 @@ export function HomePageNavbar() {
             <Link to="/" className="nav_link">
               主頁
             </Link>
-            <Link to="/createBids" className="nav_link">
-              拍賣
-            </Link>
+
+            {!isAuthenticate ? (
+              <OverlayTrigger
+                trigger="click"
+                placement="bottom"
+                overlay={popover}
+              >
+                <Link to="#" className="nav_link">
+                  拍賣
+                </Link>
+              </OverlayTrigger>
+            ) : (
+              <Link to="/createBids" className="nav_link">
+                拍賣
+              </Link>
+            )}
+
             <NavDropdown
               title="商品分類"
               id="collasible-nav-dropdown"
@@ -112,8 +133,8 @@ export function HomePageNavbar() {
               </Link>
             )}
             {isAuthenticate && (
-              <a
-                href="#"
+              <Link
+                to="#"
                 onClick={(e) => {
                   e.preventDefault();
                   dispatch(logoutThunk());
@@ -121,7 +142,7 @@ export function HomePageNavbar() {
                 className="nav_link"
               >
                 登出
-              </a>
+              </Link>
             )}
             <Link to="/" className="nav_link">
               <FontAwesomeIcon icon={faBell} />
