@@ -1,7 +1,7 @@
 import express from "express";
 import { myLiveController } from "../server";
 
-const myLiveRoutes = express.Router()
+export const myLiveRoutes = express.Router()
 
 // for getting live show in profile page
 
