@@ -17,7 +17,7 @@ export class ProductsService {
         description: string,
         startDate: Date | string,
         liveImage: string | undefined,
-        userId:number,
+        userId: number
     ) => {
         // console.log("liveImage", liveImage);
         // console.log("startDate", startDate);
@@ -26,7 +26,7 @@ export class ProductsService {
 
         const res = await this.knex("live")
             .insert({
-                user_id:  userId,
+                user_id: userId,
                 title: liveTitle,
                 image: liveImage,
                 starting_time: startDate,
@@ -65,15 +65,56 @@ export class ProductsService {
     };
 
     startBid = async (productId: number, seconds: number) => {
-        console.log(productId, seconds);
+        const check = (
+            await this.knex("products")
+                .select("countdown_end_time")
+                .where("id", productId)
+        )[0].countdown_end_time;
 
-        return productId + 10;
+        if (check !== null) {
+            return [check, false];
+        }
+
+        const addSeconds = function (date: Date, sec: number) {
+            date.setTime(date.getTime() + sec * 1000);
+            return date;
+        };
+        const countdownStartTime = new Date();
+        let countdownEndTime = new Date(countdownStartTime.valueOf());
+        countdownEndTime = addSeconds(countdownEndTime, seconds);
+
+        const endTime = (
+            await this.knex("products")
+                .update({
+                    countdown_start_time: countdownStartTime,
+                    countdown_end_time: countdownEndTime,
+                    duration: seconds,
+                })
+                .where("id", productId)
+                .returning("countdown_end_time")
+        )[0];
+
+        return [endTime, true];
     };
 
     selectProduct = async (productId: number) => {
         const liveId = (
             await this.knex("products").select("live_id").where("id", productId)
         )[0].live_id;
+
+        const availableCheck = await this.knex("products")
+            .select("countdown_end_time", "duration")
+            .where("live_id", liveId);
+
+        console.log(availableCheck);
+        for (let item of availableCheck) {
+            if (
+                item.countdown_end_time !== null &&
+                item.countdown_end_time.getTime() > new Date().getTime()
+            ) {
+                return false;
+            }
+        }
 
         await this.knex("products")
             .update("is_selected", false)
@@ -83,7 +124,7 @@ export class ProductsService {
             .update("is_selected", true)
             .where("id", productId);
 
-        return;
+        return true;
     };
     searchProductResults = async (searchKeywords: string) => {
         const results = await this.knex.raw(/*sql*/ `
@@ -105,7 +146,7 @@ export class ProductsService {
         description: string,
         productIndex: number,
         username: string,
-        userId:number,
+        userId: number
     ) => {
         console.log("index", productIndex);
 

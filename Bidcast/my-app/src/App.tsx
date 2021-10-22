@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "react-custom-scroll/dist/customScroll.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.css";
@@ -14,11 +14,17 @@ import { Homepage } from "./pages/homepage/Homepage";
 import { profile } from "console";
 import { ProfilePage } from "./pages/Profile-Page/Profilepage";
 import { CategoryResults } from "./pages/categories/Categories";
-import { Following } from "./pages/Profile-Page/Following";
-import { AccountDetails } from "./pages/Profile-Page/AccountDetails";
+import { useDispatch } from 'react-redux';
+import { checkCurrentUser } from "./redux/user/actions";
 // import { CreateBids } from "./pages/createbids/CreateBids";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(checkCurrentUser());
+  }, [])
+
   return (
     <div className="App">
       <HomePageNavbar />
