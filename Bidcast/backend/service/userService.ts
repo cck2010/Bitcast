@@ -1,6 +1,5 @@
 import { Knex } from "knex";
-import { hashPassword, } from "../hash";
-// checkPassword 
+import { hashPassword, checkPassword } from "../hash";
 import PasswordValidator from "password-validator";
 import { ResponseJson } from "../response";
 import validator from "email-validator"
@@ -88,8 +87,6 @@ export class UserService {
         const localLoginId = await this.knex("login_methods").select('id').where('login_method', 'local')
         const statusIdId = await this.knex('status').select('id').where('status', 'active')
         const roleIdId = await this.knex('roles').select('id').where('role_name', 'user')
-        console.log(localLoginId[0].id, statusIdId[0].id, roleIdId[0].id);
-
         // inserted user
         const createUserResult /*  = result.rows */ =
             await this.knex("users")
@@ -217,17 +214,17 @@ export class UserService {
             };
         }
 
-        // if (!(await checkPassword(password, users[0].password))) {
+        if (!(await checkPassword(password, users[0].password))) {
 
-        //     return {
-        //         success: false,
-        //         data: {
-        //             msg: "密碼錯誤",
-        //             user: {},
-        //         },
-        //         error: new Error("Wrong password"),
-        //     };
-        // }
+            return {
+                success: false,
+                data: {
+                    msg: "密碼錯誤",
+                    user: {},
+                },
+                error: new Error("Wrong password"),
+            };
+        }
 
         return {
             data: {
@@ -282,12 +279,92 @@ export class UserService {
                     login_method_id: users[0].login_method_id,
                     created_at: users[0].created_at,
                     updated_at: users[0].updated_at,
-
-
                 },
             },
         } as ResponseJson;
     };
 
+    FacebookLogin = async (email: string, username: string, picture: string): Promise<ResponseJson> => {
 
+
+        const users = await this.knex("users")
+            .select()
+            .where("email", email)
+
+        if (users.length == 0) {
+            // insert
+            const localLoginId = await this.knex("login_methods").select('id').where('login_method', 'local')
+            const statusIdId = await this.knex('status').select('id').where('status', 'active')
+            const roleIdId = await this.knex('roles').select('id').where('role_name', 'user')
+            let hashedPassword = await hashPassword(
+                (Math.random() + 1).toString(36)
+            );
+            const users /*  = result.rows */ =
+                await this.knex("users")
+                    .insert({
+                        username: username,
+                        status_id: statusIdId[0].id,
+                        email: email,
+                        phone_number: 11111111,
+                        password: hashedPassword,
+                        role_id: roleIdId[0].id,
+                        created_at: new Date(),
+                        updated_at: new Date(),
+                        telegram_is_verified: false,
+                        profile_pic:
+                            "/backend/img/360_F_391192211_2w5pQpFV1aozYQhcIw3FqA35vuTxJKrB.jpg",
+                        login_method_id: localLoginId[0].id,
+                        created_by: username,
+                        updated_by: username,
+                    })
+                    .returning(["id", 'status_id', 'email', 'phone_number', 'role_id', 'created_at', 'updated_at', 'telegram_is_verified', 'profile_pic',
+                        'login_method_id', 'created_by', 'updated_by']);
+
+            return {
+                success: true,
+                data: {
+                    msg: "inserted facebook user",
+                    user: {
+                        id: users[0].id,
+                        username: users[0].username,
+                        status_id: users[0].status_id,
+                        profile_pic: users[0].profile_pic,
+                        email: users[0].email,
+                        phone_number: users[0].phone_number,
+                        role_id: users[0].role_id,
+                        telegram_acct: users[0].telegram_acct,
+                        telegram_is_verified: users[0].telegram_is_verified,
+                        telegram_chat_id: users[0].telegram_chat_id,
+                        login_method_id: users[0].login_method_id,
+                        created_at: users[0].created_at,
+                        updated_at: users[0].updated_at,
+                    },
+                },
+            } as ResponseJson;
+
+        } else {
+            return {
+                success: true,
+                data: {
+                    msg: "facebook user login",
+                    user: {
+                        id: users[0].id,
+                        username: users[0].username,
+                        status_id: users[0].status_id,
+                        profile_pic: users[0].profile_pic,
+                        email: users[0].email,
+                        phone_number: users[0].phone_number,
+                        role_id: users[0].role_id,
+                        telegram_acct: users[0].telegram_acct,
+                        telegram_is_verified: users[0].telegram_is_verified,
+                        telegram_chat_id: users[0].telegram_chat_id,
+                        login_method_id: users[0].login_method_id,
+                        created_at: users[0].created_at,
+                        updated_at: users[0].updated_at,
+                    },
+                },
+            } as ResponseJson;
+        }
+
+    };
 }

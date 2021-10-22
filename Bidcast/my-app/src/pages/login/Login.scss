@@ -20,6 +20,8 @@
   
   color: black;
   border-bottom: 1px solid #6b5b95;
+  transition:transform 300ms;
+  transform: translateY(-20%)
 }
 .fakeapp {
   height: 60vh;
@@ -96,4 +98,23 @@
 .item-exit-active {
   opacity: 0;
   transition: opacity 500ms ease-in;
+}
+.fade-enter,
+.fade-exit {
+  opacity: 0;
+}
+
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 200ms;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 200ms;
 }

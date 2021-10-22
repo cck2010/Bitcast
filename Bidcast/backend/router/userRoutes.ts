@@ -9,5 +9,7 @@ userRoutes.get("/user", (req, res) => userController.getUser(req, res));
 userRoutes.get("/logout", (req, res) => userController.logout(req, res));
 userRoutes.post("/login", (req, res) => userController.login(req, res));
 userRoutes.get("/user/current", isLoggedIn, (req, res) => userController.getCurrentUser(req, res));
+userRoutes.post("/login/facebook", (req, res) => userController.loginFacebook(req, res));
+
 
 export default userRoutes;
