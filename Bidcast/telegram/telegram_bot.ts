@@ -3,6 +3,7 @@ import { Telegraf, Context } from "telegraf";
 dotenv.config();
 
 const TOKEN: string = process.env.TOKEN || "";
+console.log(TOKEN);
 
 const bot = new Telegraf(TOKEN);
 
@@ -19,6 +20,8 @@ bot.help((ctx: Context) => {
 });
 
 bot.hears(/^hi*/i, (ctx) => {
+    console.log(ctx.message);
+
     let query = ctx.message.text.trim();
     query = query.split("").slice("hi".split("").length).join("");
     if (query == "") {
