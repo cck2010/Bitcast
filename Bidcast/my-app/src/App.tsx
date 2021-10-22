@@ -14,6 +14,8 @@ import { Homepage } from "./pages/homepage/Homepage";
 import { profile } from "console";
 import { ProfilePage } from "./pages/Profile-Page/Profilepage";
 import { CategoryResults } from "./pages/categories/Categories";
+import { Following } from "./pages/Profile-Page/Following";
+import { AccountDetails } from "./pages/Profile-Page/AccountDetails";
 // import { CreateBids } from "./pages/createbids/CreateBids";
 
 function App() {
