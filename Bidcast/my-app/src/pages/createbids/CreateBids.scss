@@ -57,6 +57,7 @@ form{
     margin-top: 5vh;
     margin-bottom: 5vh;
     margin-left: 10px;
+    margin-right: 10px;
     height: auto;
 
 }
@@ -106,6 +107,7 @@ label{
     cursor: pointer;
     margin-top: 20px;
     margin-bottom: 20px;
+    // margin-right: 10px;
     background-color:#41546b;
     color: #fff;
     border: 0;
@@ -134,6 +136,17 @@ label{
 
   box-shadow: 0 2px 5px #666;
   transform: translateY(4px);
+  background-color:#1F2833;
+    animation: buttonActiveBG ease-out 0.3s;
+    animation-fill-mode: forwards;
+    @keyframes buttonActiveBG {
+        0% {
+            background-color:#1F2833;
+        }
+        100% {
+            background-color:#ffffff;
+        }
+    }
   }
 
 

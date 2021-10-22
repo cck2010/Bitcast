@@ -20,11 +20,14 @@ export class ProductsService {
         userId:number,
         sellerLink:string,
         buyerLink:string
-    ) => {
-        // console.log("liveImage", liveImage);
-        // console.log("startDate", startDate);
-        // console.log("liveIntro", description);
-        // console.log("liveTitle", liveTitle);
+        ) => {
+            console.log("liveTitle", liveTitle);
+            console.log("description", description);
+            console.log("startDate", startDate);
+            console.log("liveImage", liveImage);
+            console.log("userId", userId);
+            console.log("buyerLink", buyerLink);
+            
 
         const res = await this.knex("live")
             .insert({
@@ -53,14 +56,14 @@ export class ProductsService {
             data: { msg: "submit liveInfo success", res },
         };
     };
-    submitBid = async (liveInput: Object, productInput: [Object]) => {
-        console.table(liveInput);
-        console.table(productInput);
-        try {
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    // submitBid = async (liveInput: Object, productInput: [Object]) => {
+    //     console.table(liveInput);
+    //     console.table(productInput);
+    //     try {
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
     putBidIncrement = async (productId: number) => {
         return productId + 10;

@@ -46,7 +46,9 @@ export function CreateBids() {
 
   // get current
   const user = useSelector((state: RootState) => state.authState.user);
+  console.log("user", user);
   const userInfo = JSON.parse(JSON.stringify(user));
+  console.log("userInfo", userInfo);
 
   //get category
   const categories = useSelector((state: RootState) => Object.values(state.products.categories))
@@ -69,8 +71,8 @@ export function CreateBids() {
     // ** live Inputs FormData Field **
     // FormData Append
     let liveFormData = new FormData();
-    let sellerLink = v4();
-    let buyerLink = v4();
+    // let sellerLink = v4().substring(0,13);
+    // let buyerLink = v4().substring(0,13);
 
     liveFormData.append('liveTitle', data.liveInput.liveTitle)
     console.log("data.liveInput.liveTitle", data.liveInput.liveTitle);
@@ -86,8 +88,8 @@ export function CreateBids() {
       liveFormData.append('userId', userInfo.id);
     }
   
-    liveFormData.append('sellerLink',sellerLink)
-    liveFormData.append('buyerLink', buyerLink)
+    // liveFormData.append('sellerLink',sellerLink)
+    // liveFormData.append('buyerLink', buyerLink)
 
     // console.log("data.liveInput.description", data.liveInput.description);
     // console.log("data.liveInput.startDate", data.liveInput.startDate);
@@ -194,7 +196,7 @@ export function CreateBids() {
     <div className={"create_bids_container form_shown"}>
       <div className={"outline"}>
       <div className={"header_border"}></div>
-      {/* <header className={"test_user"}>Username:{userInfo.username}</header> */}
+      <header className={"test_user"}>For Dev ref Username:{userInfo.username}</header>
       <form onSubmit={handleSubmit(onSubmit)}>
         <h1>拍賣登記</h1>
         <div className={'input_box'}><label>直播標題:</label> <input className={"input_default"} {...register('liveInput.liveTitle')} required/></div>

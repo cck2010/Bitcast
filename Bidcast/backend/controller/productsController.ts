@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { v4 } from "uuid";
 import { ProductsService } from "../service/productsService";
 
 export class ProductsController {
@@ -19,20 +20,23 @@ export class ProductsController {
     };
     submitBidLiveInfo = async (req: Request, res: Response) => {
         try {
-            // console.log("req.body", req.body);
+           
             const liveImage: string | undefined = req.file?.filename;
-            // console.log("liveImage", liveImage);
-            // console.log("req.body", req.body);
-            // console.table(req.body);
-            const { liveTitle, description, startDate,userId,sellerLink,buyerLink } = req.body;
-            console.log("liveTitle", liveTitle);
+        
+            const { liveTitle, description, startDate,userId} = req.body;
+            
+            const ms = Date.parse(startDate);
+            const startDateFormat = new Date(ms + 28800000);
+
+
+            // let sellerLink = "1123";
+            // let buyerLink = "232323";
+            // let sellerLink = await v4().substring(0,8);
+            // let buyerLink = await v4().substring(0,8);
+            let sellerLink = await v4();
+            let buyerLink = await v4();
             console.log("buyerLink", buyerLink);
             console.log("sellerLink", sellerLink);
-            // console.log("startDate >>>>", startDate);
-            const ms = Date.parse(startDate);
-            // console.log("ms >>>>", ms);
-            const startDateFormat = new Date(ms + 28800000);
-            // console.log("startDateFormat >>>", startDateFormat);
 
             const result = await this.productsService.submitBidLiveInfo(
                 liveTitle,
