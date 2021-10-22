@@ -12,18 +12,24 @@ import { login } from "../../redux/user/actions";
 import { useState } from "react";
 import axios from 'axios'
 import ReactFacebookLogin, { ReactFacebookLoginInfo } from "react-facebook-login";
-import {TransitionGroup, CSSTransition} from 'react-transition-group'
+import {SwitchTransition, CSSTransition} from 'react-transition-group'
 
 
 const AnimatedSwitch = withRouter(({ location }) => (
-  <TransitionGroup>
-    <CSSTransition key={location.key} classNames="fade" timeout={4000}>
+  <SwitchTransition>
+    <CSSTransition 
+    key={location.key} 
+    classNames="my-node" 
+    timeout={500}
+    addEndListener={(node, done) => node.addEventListener("transitionend", done, false)}
+    unmountOnExit
+    >
       <Switch>
       <Route exact path="/loginPage/SignupForm"  component={SignupForm}/>
               <Route exact path="/loginPage" component={LoginForm}/>
       </Switch>
     </CSSTransition>
-  </TransitionGroup>
+  </SwitchTransition>
 ));
 
 export function LoginPage() {

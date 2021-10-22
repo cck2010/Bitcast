@@ -17,12 +17,17 @@ export class ProductsService {
         description: string,
         startDate: Date | string,
         liveImage: string | undefined,
-        userId: number
-    ) => {
-        // console.log("liveImage", liveImage);
-        // console.log("startDate", startDate);
-        // console.log("liveIntro", description);
-        // console.log("liveTitle", liveTitle);
+        userId:number,
+        sellerLink:string,
+        buyerLink:string
+        ) => {
+            console.log("liveTitle", liveTitle);
+            console.log("description", description);
+            console.log("startDate", startDate);
+            console.log("liveImage", liveImage);
+            console.log("userId", userId);
+            console.log("buyerLink", buyerLink);
+            
 
         const res = await this.knex("live")
             .insert({
@@ -33,8 +38,8 @@ export class ProductsService {
                 status_id: 1,
                 max_viewers: 0,
                 current_viewers: 0,
-                seller_link: "abc",
-                buyer_link: "123",
+                seller_link: sellerLink,
+                buyer_link: buyerLink,
                 is_live: false,
                 is_ended: false,
                 is_banned: false,
@@ -51,14 +56,14 @@ export class ProductsService {
             data: { msg: "submit liveInfo success", res },
         };
     };
-    submitBid = async (liveInput: Object, productInput: [Object]) => {
-        console.table(liveInput);
-        console.table(productInput);
-        try {
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    // submitBid = async (liveInput: Object, productInput: [Object]) => {
+    //     console.table(liveInput);
+    //     console.table(productInput);
+    //     try {
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
     putBidIncrement = async (productId: number) => {
         return productId + 10;
@@ -163,7 +168,6 @@ export class ProductsService {
                 product_image: productImage,
                 is_selected: productIndex == 0 ? true : false,
                 duration: 0,
-                is_ended: false,
                 created_by: username,
                 updated_by: username,
                 created_at: new Date(),

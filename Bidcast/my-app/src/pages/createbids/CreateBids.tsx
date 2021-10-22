@@ -7,7 +7,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./CreateBids.scss"
 import { fetchCategories } from "../../redux/products/actions";
 import { push } from "connected-react-router";
-// import { v4 } from "uuid";
+import { DatePickerIcon } from "./components/Fontawsome";
+import { AnySet } from "immer/dist/internal";
+import { v4 } from "uuid";
 // import axios from "axios";
 // import moment from "moment";
 
@@ -34,29 +36,32 @@ type Inputs = {
 
 };
 
+  //fontAwesome component
+
 
 
 export function CreateBids() {
-  // get current
-  const user = useSelector((state: RootState) => state.authState.user);
-  const userInfo = JSON.parse(JSON.stringify(user));
-  console.log("user", user);
-
-
-  const categories = useSelector((state: RootState) => Object.values(state.products.categories))
-  const { register,watch, handleSubmit, control } = useForm<Inputs>();
-  
-
-
+  //config
   const dispatch = useDispatch();
 
+  // get current
+  const user = useSelector((state: RootState) => state.authState.user);
+  console.log("user", user);
+  const userInfo = JSON.parse(JSON.stringify(user));
+  console.log("userInfo", userInfo);
+
+  //get category
+  const categories = useSelector((state: RootState) => Object.values(state.products.categories))
+  const { register,watch, handleSubmit, control } = useForm<Inputs>();
   useEffect(() => {
     // fetch ser 拎 categories data
     dispatch(fetchCategories());
   }, [dispatch])
 
 
-  //
+
+
+  // onsubmit
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const live = data.liveInput
     // console.log("liveData", live);
@@ -66,7 +71,11 @@ export function CreateBids() {
     // ** live Inputs FormData Field **
     // FormData Append
     let liveFormData = new FormData();
+    // let sellerLink = v4().substring(0,13);
+    // let buyerLink = v4().substring(0,13);
+
     liveFormData.append('liveTitle', data.liveInput.liveTitle)
+    console.log("data.liveInput.liveTitle", data.liveInput.liveTitle);
     liveFormData.append('liveImage', data.liveInput.liveImage[0])
     if (data.liveInput.description) {
       liveFormData.append('description', data.liveInput.description)
@@ -78,9 +87,13 @@ export function CreateBids() {
     if (userInfo!=null){
       liveFormData.append('userId', userInfo.id);
     }
-    console.log("data.liveInput.description", data.liveInput.description);
-    console.log("data.liveInput.startDate", data.liveInput.startDate);
-    console.log("liveInput.liveImage[0]", data.liveInput.liveImage[0]);
+  
+    // liveFormData.append('sellerLink',sellerLink)
+    // liveFormData.append('buyerLink', buyerLink)
+
+    // console.log("data.liveInput.description", data.liveInput.description);
+    // console.log("data.liveInput.startDate", data.liveInput.startDate);
+    // console.log("liveInput.liveImage[0]", data.liveInput.liveImage[0]);
 
     //fetch live Input liveFormData 
     const liveRes = await fetch(`${process.env.REACT_APP_BACKEND_URL}/createBids/submitBid/submitLive`, {
@@ -141,107 +154,172 @@ export function CreateBids() {
     // ajax/fetch here
   }
 
-  let handleColor = (time: any) => {
-    return time.getHours() > 12 ? "text-success" : "text-error";
-  };
+
 
   const { fields, append, remove } = useFieldArray({
     control,
     name: "productInput"
   });
-  const [selectedImage, setSelectedImage] = useState();
 
-  // This function will be triggered when the file field change
+
+  // live streaming photo shown setup
+  const [selectedImage, setSelectedImage] = useState<any>();
   const imageChange = (e:any) => {
     if (e.target.files && e.target.files.length > 0) {
       setSelectedImage(e.target.files[0]);
     }
   };
-  // const poster1 = require('./poster1.jpg');
-  // const liveInputPicture = watch("liveInput.liveImage")
+
+  // DatePicker filter
+  const filterPassedTime = (time:any) => {
+    const currentDate = new Date();
+    const selectedDate = new Date(time);
+
+    return currentDate.getTime() < selectedDate.getTime();
+  };
+  // DatePicker className switch 
+  let handleColor = (time: any) => {
+    return time.getHours() > 12 ? "" : "text-error";
+  };
+
+  // products index
+  const [proNum,setProNum]=useState<number>(1)
+  const accProNum = () =>{
+    // console.log("test");
+    append({})
+    setProNum(proNum+1)
+  }
+
+
   return (
     
-    <div className={"create_bids_container"}>
-      <header className={"test_user"}>Username:{userInfo.username}</header>
+    <div className={"create_bids_container form_shown"}>
+      <div className={"outline"}>
+      <div className={"header_border"}></div>
+      <header className={"test_user"}>For Dev ref Username:{userInfo.username}</header>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <h1>直播設置</h1>
-        <div className={'input_box'}><label>直播標題: <input className={"input_default"}  {...register('liveInput.liveTitle')} /></label></div>
-        <div className={'input_box'}><label>直播圖片: <input className={"input_default"} type="file" {...register('liveInput.liveImage')} onChange={imageChange} /></label></div>
-        {selectedImage && <img className={"resize_upload_photo"} src={URL.createObjectURL(selectedImage)} />}
-
-        <div><label>開始時間:
+        <h1>拍賣登記</h1>
+        <div className={'input_box'}><label>直播標題:</label> <input className={"input_default"} {...register('liveInput.liveTitle')} required/></div>
+        <div className={'input_box'}><label>直播圖片:</label> <div className={"files"}><input  type="file" {...register('liveInput.liveImage')} onChange={imageChange} required/></div></div>
+        {/* {selectedImage && <img className={"resize_upload_photo photo_shown"} src={URL.createObjectURL(selectedImage)} />} */}
+        {selectedImage && 
+              <div className={"img_container"}>
+                <img className={"resize_upload_photo photo_shown"} src={URL.createObjectURL(selectedImage as any)} />
+                <div className={"file_Info_container"}>
+                  <div>{selectedImage.name as any}</div>
+                  <div>{selectedImage.type as any}</div>
+                  <div>{`${(((selectedImage.size as any)/1000000).toString().match(/^\d+(?:\.\d{0,2})?/))+" MB"}`}</div>
+                </div>
+              </div>
+              }
+        <div className={'input_box'}><label>開始時間:</label>
           <Controller
             control={control}
             name="liveInput.startDate"
             render={({ field }) => (
+              <div>
               <DatePicker
-                onChange={(e) => field.onChange(e)}
+                className={"Datepicker"}
+                onChange={(e) => field.onChange(e) }
                 selected={field.value}
                 showTimeSelect
-                timeClassName={handleColor}
-                placeholderText="Select date"
+                // timeClassName={handleColor}
+                placeholderText="選擇時間"
                 dateFormat="MM/dd/yyyy hh:mm a"
-              />
-            )}
+                filterTime={filterPassedTime}
+                required
+                // customInput={<DatePickerIcon />}
+                />
+                {/* <DatePickerIcon /> */}
+                
+                </div>
+                )}
           />
-        </label></div>
-        <div className={'input_box'}><label>直播簡介: <textarea className={"input_textarea"}   {...register('liveInput.description')} /></label></div>
+          
+          {/* <DatePickerIcon /> */}
+        </div>
+        <div className={'input_box'}><label>直播簡介:</label> <textarea className={"input_textarea"}   {...register('liveInput.description')} /></div>
 
-        <h1>拍賣物品</h1>
+        {/* <h1>拍賣物品</h1> */}
         {/*  Append Dynamic Form */}
-        <button className={"button_default"} type="button" onClick={() => append({})}>
+        <button className={"button_default"} type="button" onClick={accProNum}>
           + 增加拍賣品
-        </button>
+        </button >
         {/*  Dynamic Form */}
         {fields.map(({ id, name }, index) => {
 
-          const productsPicture = watch(`productInput.${index}.productImage`)
           // const watchAllFields = watch();
-
+      
+          let productsPicture:any = watch(`productInput.${index}.productImage`)
           return (
-            <div className="item_input_container" key={id}>
-              <p className={'input_box'}><label>物品名稱:
+            <div className="item_input_container form_shown" key={id}  >
+              <div className={"products_index"}>商品 {index+1}</div>
+              
+              <p className={'input_box'}><label>物品名稱:</label>
                 <input className={"input_default"}
                   {...register(`productInput.${index}.name`)}
                   defaultValue={name}
-                /></label></p>
-              <p className={'input_box'}><label>物品圖片:
-                <input className={"input_default"}
+                  required/></p>
+
+              <div className={'input_box'}><label>物品圖片:</label>
+                <div className={"files"}>
+                <input 
                   type="file"
                   {...register(`productInput.${index}.productImage`)}
-                />
-              </label></p>
-              {productsPicture != null && <img className={"resize_upload_photo"} src={URL.createObjectURL(productsPicture[0] as any)} />}
+                  required />
+                  </div>
+              </div>
+
+              {productsPicture?.[0] != null && 
+              <div className={"img_container"}>
+                {console.log(productsPicture[0])}
+                <img className={"resize_upload_photo photo_shown"} src={URL.createObjectURL(productsPicture[0] as any)} />
+                <div className={"file_Info_container"}>
+                  <div>{productsPicture[0].name as any}</div>
+                  <div>{productsPicture[0].type as any}</div>
+                  <div>{`${(((productsPicture[0].size as any)/1000000).toString().match(/^\d+(?:\.\d{0,2})?/))+" MB"}`}</div>
+                </div>
+              </div>
+              }
               
-              <p className={'input_box'}><label>底價:
+              <p className={'input_box'}><label>底價:</label>
                 <input className={"input_default"} type="number"
                   {...register(`productInput.${index}.minimumBid`)}
-                /></label></p>
-              <p className={'input_box'}><label>每口價:
+                  required/></p>
+
+              <p className={'input_box'}><label>每口價:</label>
                 <input className={"input_default"} type="number"
                   {...register(`productInput.${index}.eachBidAmount`)}
-                /></label></p>
-              <p className={'input_box'}><label>即買價:
+                  required/></p>
+
+              <p className={'input_box'}><label>即買價:</label>
                 <input className={"input_default"} type="number"
                   {...register(`productInput.${index}.buyPrice`)}
-                /></label></p>
-              <p className={'input_box'}><label>分類: <select {...register(`productInput.${index}.categoryId`)} >
+                  required/></p>
+                  
+              <p className={'input_box'}><label>分類:</label> <select className={"category_container"} {...register(`productInput.${index}.categoryId`)} >
                 {categories.map(category => (
                   <option key={category.id}
                     value={category.id}
                   >{category.category}</option>
                 ))}
-              </select></label></p>
-              <p className={'input_box'}><label>拍賣品簡介:
+              </select></p>
+              <p className={'input_box'}><label>拍賣品簡介:</label>
                 <textarea className={"input_textarea"}
                   {...register(`productInput.${index}.description`)}
-                /></label></p>
+                /></p>
+                
             </div>
           )
+          
+          
         })}
+        
+        
 
         <input className={"button_default"} type="submit" />
       </form>
+      </div>
     </div>
   )
 }
