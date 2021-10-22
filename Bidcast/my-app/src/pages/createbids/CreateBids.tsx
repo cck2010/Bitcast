@@ -48,7 +48,7 @@ export function CreateBids() {
   const user = useSelector((state: RootState) => state.authState.user);
   console.log("user", user);
   const userInfo = JSON.parse(JSON.stringify(user));
-  console.log("userInfo", userInfo);
+  // console.log("userInfo", userInfo);
 
   //get category
   const categories = useSelector((state: RootState) => Object.values(state.products.categories))
@@ -196,7 +196,7 @@ export function CreateBids() {
     <div className={"create_bids_container form_shown"}>
       <div className={"outline"}>
       <div className={"header_border"}></div>
-      <header className={"test_user"}>For Dev ref Username:{userInfo.username}</header>
+      {/* <header className={"test_user"}>For Dev ref Username:{userInfo.username}</header> */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <h1>拍賣登記</h1>
         <div className={'input_box'}><label>直播標題:</label> <input className={"input_default"} {...register('liveInput.liveTitle')} required/></div>

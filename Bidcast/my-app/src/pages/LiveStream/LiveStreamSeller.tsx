@@ -91,7 +91,7 @@ function LiveStream() {
                         <>
                             <div className="row mt-3 rounded">
                                 <div className={`col-12`}>
-                                    <LiveStreamBiddingInfoSeller />
+                                    <LiveStreamBiddingInfoSeller ws={ws} />
                                 </div>
                             </div>
                             <LiveStreamControlPanelSeller
@@ -122,7 +122,9 @@ function LiveStream() {
                                 <>
                                     <div className="row mt-3 rounded">
                                         <div className={`col-12`}>
-                                            <LiveStreamBiddingInfoSeller />
+                                            <LiveStreamBiddingInfoSeller
+                                                ws={ws}
+                                            />
                                         </div>
                                     </div>
                                     <LiveStreamControlPanelSeller

@@ -294,7 +294,8 @@ export function fetchProductTime(
     productId: number,
     seconds: number,
     setTimerId: React.Dispatch<React.SetStateAction<number>>,
-    setRemainingTime: React.Dispatch<React.SetStateAction<number>>
+    setRemainingTime: React.Dispatch<React.SetStateAction<number>>,
+    setIsBidding: React.Dispatch<React.SetStateAction<boolean>>
 ) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         try {
@@ -327,6 +328,7 @@ export function fetchProductTime(
                             );
                         }, 16)
                     );
+                    setIsBidding(true);
                 }
             }
         } catch (e) {
