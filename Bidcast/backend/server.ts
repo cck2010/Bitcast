@@ -29,6 +29,7 @@ import { ComingAuctionController } from "./controller/comingAuctionController";
 import { ComingAuctionService } from "./service/comingAuctionService";
 import { MyLiveController } from "./controller/myLiveController";
 import { MyLiveService } from "./service/myLiveService";
+import { myLiveRoutes } from "./router/myLiveRoutes";
 
 // import { hashPassword, } from './hash';
 
