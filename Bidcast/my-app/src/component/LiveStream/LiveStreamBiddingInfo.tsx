@@ -1,21 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Socket } from "socket.io-client";
 import {
     fetchBidIncrement,
+    fetchliveStreamProducts,
     LiveStreamProduct,
     LiveStreamProductDynamicInfo,
 } from "../../redux/LiveStream/actions";
 import { RootState } from "../../store";
 
-function LiveStreamBiddingInfo() {
+interface LiveStreamBiddingInfoProps {
+    ws: Socket | null;
+}
+
+function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     const dispatch = useDispatch();
 
     const [remainingTime, setRemainingTime] = useState<number>(Infinity);
     const [inputPrice, setInputPrice] = useState<number>(0);
     const [isBidding, setIsBidding] = useState<boolean>(true);
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
+    const [timerId, setTimerId] = useState<number>(0);
     const username = "測試員";
-    // let products: any = [];
 
     const products = useSelector(
         (state: RootState) =>
@@ -44,8 +50,6 @@ function LiveStreamBiddingInfo() {
             currentPrice: 0,
             isSelected: false,
             buyer: "",
-            countdownStartTime: new Date(),
-            countdownEndTime: new Date(1900),
             duration: 0,
             success: false,
         });
@@ -69,6 +73,19 @@ function LiveStreamBiddingInfo() {
                                 1000
                         )
                     );
+                    if (timerId === 0) {
+                        setTimerId(
+                            window.setInterval(() => {
+                                setRemainingTime(
+                                    Math.ceil(
+                                        (countdownEndTime!.getTime() -
+                                            new Date().getTime()) /
+                                            1000
+                                    )
+                                );
+                            }, 16)
+                        );
+                    }
                     break;
                 } else if (
                     productsDynamic[ind].isSelected &&
@@ -88,7 +105,26 @@ function LiveStreamBiddingInfo() {
                 }
             }
         }
-    }, [products, productsDynamic]);
+    }, [products, productsDynamic, timerId, selectedProductDynamic]);
+
+    useEffect(() => {
+        return () => {
+            if (remainingTime <= 0) {
+                clearInterval(timerId);
+                setIsBidding(false);
+                setTimerId(0);
+            }
+        };
+    }, [remainingTime, timerId]);
+
+    useEffect(() => {
+        if (props.ws) {
+            props.ws.on("startBid", (liveId: number) => {
+                console.log(liveId);
+                dispatch(fetchliveStreamProducts(liveId, false));
+            });
+        }
+    }, [dispatch, props.ws]);
 
     useEffect(() => {
         if (

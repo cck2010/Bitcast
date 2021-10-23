@@ -32,9 +32,6 @@ export function getComingAuctions() {
 
             const json = await res.json();
 
-            console.log(json);
-            
-
             if (json.success) {
 
                 dispatch(loadComingAuctions(json.data.results.rows, true))

@@ -70,7 +70,7 @@ function LiveStream() {
             const initWebSocket = () => {
                 if (ws) {
                     ws.emit("joinRoom", liveId);
-                    ws.on("joinRoom", (message) => {
+                    ws.on("joinRoom", (message: string) => {
                         console.log(message);
                     });
                     ws.on("render", () => {
@@ -91,7 +91,7 @@ function LiveStream() {
                         <>
                             <div className="row mt-3 rounded">
                                 <div className={`col-12`}>
-                                    <LiveStreamBiddingInfo />
+                                    <LiveStreamBiddingInfo ws={ws} />
                                 </div>
                             </div>
                             <LiveStreamControlPanel
@@ -122,7 +122,7 @@ function LiveStream() {
                                 <>
                                     <div className="row mt-3 rounded">
                                         <div className={`col-12`}>
-                                            <LiveStreamBiddingInfo />
+                                            <LiveStreamBiddingInfo ws={ws} />
                                         </div>
                                     </div>
                                     <LiveStreamControlPanel

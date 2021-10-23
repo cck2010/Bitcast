@@ -123,7 +123,7 @@ export function CreateBids() {
         body: liveFormData,
       })
       const liveJson = await liveRes.json();
-      // console.log("liveJson.data.res", liveJson.data.res[0]);
+      console.log("liveJson.data.res", liveJson.data.res[0]);
       const liveId = liveJson.data.res[0].id;
 
       // ** live Inputs FormData Field **

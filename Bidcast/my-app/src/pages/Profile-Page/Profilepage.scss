@@ -1,4 +1,6 @@
 @import "~react-pro-sidebar/dist/scss/styles.scss";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap');
+
 
 .sidebar {
   width: 220px;
@@ -23,17 +25,6 @@
   display: flex;
 }
 
-.card_body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 5px;
-}
-.card_bg_color {
-  background-color: #2f4154;
-  width: 100%;
-  height: 80px;
-}
 .profile_logo {
   border-radius: 50% !important;
   margin-top: -15%;
@@ -45,4 +36,7 @@
   .my_live_products {
     max-height: 100px !important;
   }
+}
+.my_bid_card_container{
+  width: 100%;
 }
