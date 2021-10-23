@@ -1,16 +1,15 @@
-import jwtKey from './jwt/jwt'
-import jwt from 'jsonwebtoken'
-import { Bearer } from 'permit'
-import express from 'express'
-import { UserService } from './service/userService'
+import jwtKey from "./jwt/jwt";
+import jwt from "jsonwebtoken";
+import { Bearer } from "permit";
+import express from "express";
+import { UserService } from "./service/userService";
 
-import { knex } from "./db"
+import { knex } from "./db";
 
 const permit = new Bearer({
-    query: 'access_token'
-})
+    query: "access_token",
+});
 const userService = new UserService(knex);
-
 
 declare global {
     namespace Express {
@@ -39,46 +38,39 @@ interface verifyOptions {
     algorithm: string;
 }
 
-
-
 export async function isLoggedIn(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
 ) {
     try {
-
         const token = permit.check(req);
         if (!token) {
-            return res.status(401).json("Unauthorized")
+            return res.status(401).json("Unauthorized");
         }
 
-
         const verifyOptions: verifyOptions = {
-
             expiresIn: "12h",
-            algorithm: "RS512"
+            algorithm: "RS512",
         };
         const User = jwt.verify(token, jwtKey.publicKEY, verifyOptions as {});
         // console.log(User)
         // database check
         if (typeof User != "string") {
-            const id = User.id
-            const result = await userService.getCurrentUser(id)
+            const id = User.id;
+            const result = await userService.getCurrentUser(id);
             if (result.success === true) {
-                req.user = result.data.user
+                req.user = result.data.user;
                 return next();
             } else {
-                return res.status(401).json("請先登入")
+                return res.status(401).json("請先登入");
             }
         } else {
-            return res.status(401).json("請先登入")
+            return res.status(401).json("請先登入");
         }
-
-
     } catch (e) {
         console.error(e);
 
-        return res.status(401).json("Incorrect token")
+        return res.status(401).json("Incorrect token");
     }
 }

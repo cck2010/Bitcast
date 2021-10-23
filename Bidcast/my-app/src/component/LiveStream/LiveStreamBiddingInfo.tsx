@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
 import {
     fetchBidIncrement,
+    fetchliveStreamProducts,
     LiveStreamProduct,
     LiveStreamProductDynamicInfo,
 } from "../../redux/LiveStream/actions";
@@ -20,7 +21,25 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     const [isBidding, setIsBidding] = useState<boolean>(true);
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
     const [timerId, setTimerId] = useState<number>(0);
-    const username = "測試員";
+    // const [timerIdSet,setTimerId]= useState<number[]>([]);
+    const [username, setUsername] = useState<string>("");
+    const user = useSelector((state: RootState) => state.authState.user);
+    const isAuthenticate = useSelector(
+        (state: RootState) => state.user.isAuthenticate
+    );
+
+    const liveId = useSelector(
+        (state: RootState) => state.liveStream.liveStreamInfo.id
+    );
+
+    useEffect(() => {
+        if (
+            typeof user === "object" &&
+            (username === "" || username === undefined)
+        ) {
+            setUsername(user.username);
+        }
+    }, [user, username]);
 
     const products = useSelector(
         (state: RootState) =>
@@ -52,6 +71,16 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
             duration: 0,
             success: false,
         });
+
+    useEffect(() => {
+        return () => {
+            if (remainingTime <= 0) {
+                clearInterval(timerId);
+                setIsBidding(false);
+                setTimerId(0);
+            }
+        };
+    }, [remainingTime, timerId]);
 
     useEffect(() => {
         if (productsDynamic.length !== 0) {
@@ -91,6 +120,8 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     countdownEndTime !== undefined &&
                     countdownEndTime <= new Date()
                 ) {
+                    clearInterval(timerId);
+                    setTimerId(0);
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);
                     setIsBidding(false);
@@ -98,6 +129,8 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     productsDynamic[ind].isSelected &&
                     countdownEndTime === undefined
                 ) {
+                    clearInterval(timerId);
+                    setTimerId(0);
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);
                     setIsBidding(false);
@@ -107,24 +140,21 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     }, [products, productsDynamic, timerId]);
 
     useEffect(() => {
-        return () => {
-            if (remainingTime <= 0) {
-                clearInterval(timerId);
-                setIsBidding(false);
-                setTimerId(0);
-            }
-        };
-    }, [remainingTime, timerId]);
-
-    useEffect(() => {
         if (props.ws) {
-            props.ws.on("startBid", () => {
-                if (timerId === 0) {
-                    setTimerId(0);
-                }
+            props.ws.on("startBid", (liveId: number) => {
+                dispatch(fetchliveStreamProducts(liveId, false));
             });
+            props.ws.on(
+                "updateCurrentPrice",
+                (liveId: number, isEnded: boolean) => {
+                    dispatch(fetchliveStreamProducts(liveId, false));
+                    if (isEnded) {
+                        setRemainingTime(-100);
+                    }
+                }
+            );
         }
-    }, [props.ws, timerId]);
+    }, [dispatch, props.ws]);
 
     useEffect(() => {
         if (
@@ -145,7 +175,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
 
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded my-3">
-            <div className="info w-100 h-100">
+            <div className="info w-100 h-100 d-flex justify-contens-center align-items-center flex-column">
                 <div className="row">
                     <div className="col-12 d-flex flex-row justify-content-center align-items-center w-100 h-100 mt-3">
                         <img
@@ -161,7 +191,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                                 <br /> ${selectedProductDynamic.currentPrice}
                                 <br />
                                 <span className="highest_bid_user mb-3">
-                                    叫價者:{" "}
+                                    最高出價者:{" "}
                                     {selectedProductDynamic.buyer == null ||
                                     selectedProductDynamic.buyer === ""
                                         ? "暫時未有叫價"
@@ -192,31 +222,53 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                 <div className="bid_btn_groups row g-0 w-100 my-3">
                     <div className="col-8">
                         <button
-                            disabled={!isBidding}
+                            disabled={!isBidding || remainingTime <= 10}
                             className={`min_bid btn btn-danger mb-1 w-100 ${
                                 !isBidding && "unavailable_btn"
                             }`}
                             onClick={() => {
-                                dispatch(fetchBidIncrement(selectedProduct.id));
+                                if (props.ws) {
+                                    dispatch(
+                                        fetchBidIncrement(
+                                            selectedProduct.id,
+                                            selectedProduct.bidIncrement,
+                                            props.ws,
+                                            liveId,
+                                            true
+                                        )
+                                    );
+                                }
                             }}
                         >
                             <i className="fas fa-gavel"></i> 最低叫價
+                            <br />
+                            (一口叫價為${selectedProduct.bidIncrement})
                         </button>
                         <button
                             disabled={!isBidding || isDisabled}
                             className={`custom_bid btn btn-primary mb-1 w-100 ${
                                 (!isBidding || isDisabled) && "unavailable_btn"
                             }`}
-                            onClick={() => {}}
+                            onClick={() => {
+                                if (props.ws) {
+                                    dispatch(
+                                        fetchBidIncrement(
+                                            selectedProduct.id,
+                                            inputPrice,
+                                            props.ws,
+                                            liveId,
+                                            false
+                                        )
+                                    );
+                                }
+                            }}
                         >
                             <i className="fas fa-gavel"></i> 自訂叫價
-                            <br />
-                            (一口叫價為${selectedProduct.bidIncrement})
                         </button>
                         <label className="w-100">
                             <input
                                 type="number"
-                                className="action_duration w-100"
+                                className="action_duration w-100 text-end"
                                 value={inputPrice}
                                 onChange={(e) => {
                                     setInputPrice(parseInt(e.target.value));
@@ -230,7 +282,19 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                             className={`custom_bid btn btn-success ms-1 w-100 h-100 ${
                                 !isBidding && "unavailable_btn"
                             }`}
-                            onClick={() => {}}
+                            onClick={() => {
+                                if (props.ws) {
+                                    dispatch(
+                                        fetchBidIncrement(
+                                            selectedProduct.id,
+                                            1000000000000000000000000,
+                                            props.ws,
+                                            liveId,
+                                            false
+                                        )
+                                    );
+                                }
+                            }}
                         >
                             <i className="fas fa-gavel"></i> 即買價
                             <br />

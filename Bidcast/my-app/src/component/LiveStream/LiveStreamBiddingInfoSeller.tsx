@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
 import {
+    fetchliveStreamProducts,
     fetchProductTime,
     LiveStreamProduct,
     LiveStreamProductDynamicInfo,
@@ -14,7 +15,7 @@ interface LiveStreamBiddingInfoProps {
 
 function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     const dispatch = useDispatch();
-    const [inputRemainingTime, setInputRemainingTime] = useState<number>(10);
+    const [inputRemainingTime, setInputRemainingTime] = useState<number>(60);
     const [remainingTime, setRemainingTime] = useState<number>(Infinity);
     const [isBidding, setIsBidding] = useState<boolean>(false);
     const [timerId, setTimerId] = useState<number>(0);
@@ -55,6 +56,15 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
         });
 
     useEffect(() => {
+        return () => {
+            if (remainingTime <= 0) {
+                clearInterval(timerId);
+                setIsBidding(false);
+            }
+        };
+    }, [remainingTime, timerId]);
+
+    useEffect(() => {
         if (productsDynamic.length !== 0) {
             for (let ind in productsDynamic) {
                 let countdownEndTime = productsDynamic[ind].countdownEndTime;
@@ -92,6 +102,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     countdownEndTime !== undefined &&
                     countdownEndTime <= new Date()
                 ) {
+                    clearInterval(timerId);
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);
                     setIsBidding(false);
@@ -99,6 +110,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     productsDynamic[ind].isSelected &&
                     countdownEndTime === undefined
                 ) {
+                    clearInterval(timerId);
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);
                     setIsBidding(false);
@@ -108,19 +120,22 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     }, [products, productsDynamic, timerId]);
 
     useEffect(() => {
-        return () => {
-            if (remainingTime <= 0) {
-                clearInterval(timerId);
-                setIsBidding(false);
-            }
-        };
-    }, [remainingTime, timerId]);
-
-    // console.log(selectedProductDynamic);
+        if (props.ws) {
+            props.ws.on(
+                "updateCurrentPrice",
+                (liveId: number, isEnded: boolean) => {
+                    dispatch(fetchliveStreamProducts(liveId, false));
+                    if (isEnded) {
+                        setRemainingTime(-100);
+                    }
+                }
+            );
+        }
+    }, [dispatch, props.ws]);
 
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded my-3">
-            <div className="info w-100 h-100">
+            <div className="info w-100 h-100 d-flex justify-contens-center align-items-center flex-column">
                 <div className="row">
                     <div className="col-12 d-flex flex-row justify-content-center align-items-center w-100 h-100 mt-3">
                         <img
@@ -136,7 +151,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                                 <br /> ${selectedProductDynamic.currentPrice}
                                 <br />
                                 <span className="highest_bid_user mb-3">
-                                    叫價者:{" "}
+                                    最高出價者:{" "}
                                     {selectedProductDynamic.buyer == null ||
                                     selectedProductDynamic.buyer === ""
                                         ? "暫時未有叫價"
@@ -171,7 +186,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                             selectedProductDynamic.countdownEndTime !==
                                 undefined)
                     }
-                    className={`start_auction btn btn-primary my-3 me-3 w-100 ${
+                    className={`start_auction btn btn-primary my-3 w-100 ${
                         isBidding && "unavailable_btn"
                     }`}
                     onClick={() => {
@@ -195,9 +210,9 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     <span className="input_duration ">倒數時間(秒):</span>
                     <input
                         type="number"
-                        className="action_duration w-75"
+                        className="action_duration w-75 text-end"
                         max={300}
-                        min={10}
+                        min={60}
                         value={inputRemainingTime}
                         onChange={(e) =>
                             setInputRemainingTime(parseInt(e.target.value))

@@ -1,14 +1,8 @@
 import { UserService } from "../service/userService";
 import { Request, Response } from "express";
-import jwtKey from "../jwt/jwt"
-import jwt from "jsonwebtoken"
-import axios from 'axios'
-// import fetch from "node-fetch";
-// import { ResponseJson } from "../response";
-// import passport from 'passport';
+import jwtKey from "../jwt/jwt";
+import jwt from "jsonwebtoken";
 
-// import passport from 'passport';
-// import { env } from "../env";
 declare global {
     namespace Express {
         interface Request {
@@ -31,7 +25,7 @@ declare global {
     }
 }
 export class UserController {
-    constructor(private userService: UserService) { }
+    constructor(private userService: UserService) {}
     register = async (req: Request, res: Response) => {
         try {
             const { username, email, password, phoneNumber } = req.body;
@@ -45,24 +39,22 @@ export class UserController {
             );
             // console.log(result);
 
-            if (!(result.success)) {
+            if (!result.success) {
                 // console.log('not success');
 
                 return res.json(result);
             }
 
-            const payload = result.data.user
+            const payload = result.data.user;
             const signOptions: {} = {
-
                 expiresIn: "12h",
-                algorithm: "RS512" 			// RSASSA options[ "RS256", "RS384", "RS512" ]
+                algorithm: "RS512", // RSASSA options[ "RS256", "RS384", "RS512" ]
             };
 
             const token = jwt.sign(payload, jwtKey.privateKEY, signOptions);
 
             return res.json({
                 token: token,
-
             });
             // req.session["user"] = result.data.user;
         } catch (err) {
@@ -124,22 +116,19 @@ export class UserController {
             //     req.session["user"] = result.data.user;
             // }
             if (result.success === true) {
-                const payload = result.data.user
+                const payload = result.data.user;
                 const signOptions: {} = {
-
                     expiresIn: "12h",
-                    algorithm: "RS512" 			// RSASSA options[ "RS256", "RS384", "RS512" ]
+                    algorithm: "RS512", // RSASSA options[ "RS256", "RS384", "RS512" ]
                 };
 
                 const token = jwt.sign(payload, jwtKey.privateKEY, signOptions);
 
                 return res.json({
                     token: token,
-
                 });
             }
             return res.json(result);
-
         } catch (err) {
             console.log(err);
             return res.json({
@@ -153,7 +142,9 @@ export class UserController {
     };
     getCurrentUser = async (req: Request, res: Response) => {
         try {
-            res.json(req.user)
+            console.log("getCurrentUser", req.user);
+
+            res.json(req.user);
         } catch (err) {
             console.log(err);
             res.json({
@@ -164,46 +155,19 @@ export class UserController {
                 },
             });
         }
-    }
+    };
     loginFacebook = async (req: Request, res: Response) => {
         try {
-            const accessToken = req.body.accessToken
-
-
-            // @ts-ignore
-
-            const facebookRes: any = await axios.get(`https://graph.facebook.com/me?access_token=${accessToken}&fields=id,name,email,picture`)
-            // console.log(facebookRes.data.picture.data.url);
-
-            if (facebookRes.error) {
-                return res.json({
-                    success: false,
-                    error: 'loginFacebook controller failure',
-                    data: {
-                        msg: "loginFacebook controller failure",
-                    },
-                });
-                ;
-            }
-            let result = await this.userService.FacebookLogin(facebookRes.data.email, facebookRes.data.name, facebookRes.data.picture.data.url);
-            if (result.error) {
-
-                return res.json({
-                    success: false,
-                    error: 'loginFacebook controller failure after service',
-                    data: {
-                        msg: "loginFacebook controller failure after service",
-                    },
-                });
-            }
-            const payload = result.data.user
-            // console.log(payload);
-
-
+            const facebookInfo = req.body;
+            const result = await this.userService.FacebookLogin(
+                facebookInfo.email,
+                facebookInfo.name,
+                facebookInfo.image
+            );
+            const payload = result.data.user;
             const signOptions: {} = {
-
                 expiresIn: "12h",
-                algorithm: "RS512" 			// RSASSA options[ "RS256", "RS384", "RS512" ]
+                algorithm: "RS512", // RSASSA options[ "RS256", "RS384", "RS512" ]
             };
 
             if (payload) {
@@ -211,22 +175,55 @@ export class UserController {
 
                 return res.json({
                     token: token,
-
                 });
             } else {
                 return res.status(401).json({
                     token: null,
-                    message: 'Incorrect token'
-                })
+                    message: "Incorrect token",
+                });
             }
-
         } catch (e) {
-            console.error(e)
-            return res.status(401).json({
-                token: null,
-                message: 'Incorrect token'
-            })
-        }
-    }
+            console.log(e);
 
+            return res.json({
+                token: null,
+                message: "loginGoole unknow error",
+            });
+        }
+    };
+    loginGoogle = async (req: Request, res: Response) => {
+        try {
+            const googleInfo = req.body;
+            const result = await this.userService.googleLogin(
+                googleInfo.name,
+                googleInfo.email,
+                googleInfo.image
+            );
+            const payload = result.data.user;
+            const signOptions: {} = {
+                expiresIn: "12h",
+                algorithm: "RS512", // RSASSA options[ "RS256", "RS384", "RS512" ]
+            };
+
+            if (payload) {
+                const token = jwt.sign(payload, jwtKey.privateKEY, signOptions);
+
+                return res.json({
+                    token: token,
+                });
+            } else {
+                return res.status(401).json({
+                    token: null,
+                    message: "Incorrect token",
+                });
+            }
+        } catch (e) {
+            console.log(e);
+
+            return res.json({
+                token: null,
+                message: "loginGoole unknow error",
+            });
+        }
+    };
 }

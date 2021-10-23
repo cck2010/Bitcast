@@ -2,6 +2,10 @@ $largeFontSize: 1.5em;
 $largeFontSize2: 1.2em;
 $smallFontSize: 0.5em;
 
+.LiveStream {
+    max-width: 1920px;
+}
+
 .LiveStreamHeader {
     border-top: solid 1px #dcdcdc;
     .mainInfo {
@@ -104,6 +108,12 @@ $smallFontSize: 0.5em;
                 max-height: 200px;
             }
         }
+        .start_auction {
+            max-width: 500px;
+        }
+        label {
+            max-width: 500px;
+        }
     }
     .instant_info {
         padding: 0 0 0 20px;
@@ -122,6 +132,7 @@ $smallFontSize: 0.5em;
     }
 
     .bid_btn_groups {
+        max-width: 450px;
         .input_duration {
             font-size: 16px;
         }

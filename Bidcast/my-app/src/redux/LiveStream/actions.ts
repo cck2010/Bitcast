@@ -58,6 +58,8 @@ export interface UpdateProduct {
     countdownStartTime?: string;
     countdownEndTime?: string;
     duration?: number;
+    buyer?: string;
+    isEnded?: boolean;
     success: boolean;
 }
 
@@ -97,11 +99,12 @@ export function selectProduct(id: number) {
     };
 }
 
-export function bidIncrement(id: number, newPrice: number) {
+export function bidIncrement(id: number, newPrice: number, buyer: string) {
     return {
         type: "@@liveStream/BID_INCREMENT" as const,
         id,
         newPrice,
+        buyer,
     };
 }
 
@@ -211,6 +214,7 @@ export function fetchliveStreamProducts(liveId: number, isFull: boolean) {
                         )
                     );
                 }
+
                 dispatch(
                     loadLiveStreamProductsDynamicInfo(
                         liveStreamProductsDynamicInfo,
@@ -227,19 +231,47 @@ export function fetchliveStreamProducts(liveId: number, isFull: boolean) {
     };
 }
 
-export function fetchBidIncrement(productId: number) {
+export function fetchBidIncrement(
+    productId: number,
+    bidAmount: number,
+    ws: Socket,
+    liveId: number,
+    addCurrentPrice: boolean
+) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         try {
+            const token = localStorage.getItem("token");
+
+            if (token == null) {
+                return;
+            }
+
             const res = await axios.put<UpdateProduct>(
                 `${process.env.REACT_APP_BACKEND_URL}/liveStream/products/currentPrice`,
                 {
                     productId,
+                    bidAmount,
+                    addCurrentPrice,
+                },
+                {
+                    headers: {
+                        Authorization: "Bearer " + token,
+                    },
                 }
             );
 
             if (res.data.success) {
-                if (res.data.newPrice) {
-                    dispatch(bidIncrement(productId, res.data.newPrice));
+                if (res.data.newPrice && res.data.buyer) {
+                    dispatch(
+                        bidIncrement(
+                            productId,
+                            res.data.newPrice,
+                            res.data.buyer
+                        )
+                    );
+                    if (ws) {
+                        ws.emit("updateCurrentPrice", liveId, res.data.isEnded);
+                    }
                 }
             }
         } catch (e) {
@@ -255,6 +287,12 @@ export function fetchSelectedProduct(
 ) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         try {
+            const token = localStorage.getItem("token");
+
+            if (token == null) {
+                return;
+            }
+
             let liveStreamProductsArrDynamic =
                 getState().liveStream.liveStreamProducts
                     .liveStreamProductsArrDynamic;
@@ -274,6 +312,11 @@ export function fetchSelectedProduct(
                     `${process.env.REACT_APP_BACKEND_URL}/liveStream/products/isSelected`,
                     {
                         productId,
+                    },
+                    {
+                        headers: {
+                            Authorization: "Bearer " + token,
+                        },
                     }
                 );
 
@@ -299,11 +342,22 @@ export function fetchProductTime(
 ) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         try {
+            const token = localStorage.getItem("token");
+
+            if (token == null) {
+                return;
+            }
+
             const res = await axios.put<UpdateProduct>(
                 `${process.env.REACT_APP_BACKEND_URL}/liveStream/products/productTime`,
                 {
                     productId,
                     seconds,
+                },
+                {
+                    headers: {
+                        Authorization: "Bearer " + token,
+                    },
                 }
             );
 
