@@ -17,17 +17,16 @@ export class ProductsService {
         description: string,
         startDate: Date | string,
         liveImage: string | undefined,
-        userId:number,
-        sellerLink:string,
-        buyerLink:string
-        ) => {
-            console.log("liveTitle", liveTitle);
-            console.log("description", description);
-            console.log("startDate", startDate);
-            console.log("liveImage", liveImage);
-            console.log("userId", userId);
-            console.log("buyerLink", buyerLink);
-            
+        userId: number,
+        sellerLink: string,
+        buyerLink: string
+    ) => {
+        console.log("liveTitle", liveTitle);
+        console.log("description", description);
+        console.log("startDate", startDate);
+        console.log("liveImage", liveImage);
+        console.log("userId", userId);
+        console.log("buyerLink", buyerLink);
 
         const res = await this.knex("live")
             .insert({
@@ -65,8 +64,75 @@ export class ProductsService {
     //     }
     // };
 
-    putBidIncrement = async (productId: number) => {
-        return productId + 10;
+    putcurrentPrice = async (
+        productId: number,
+        bidAmount: number,
+        addCurrentPrice: boolean,
+        userId: number
+    ) => {
+        const txn = await this.knex.transaction();
+        try {
+            const result = (
+                await txn("products")
+                    .select(
+                        "bid_increment",
+                        "current_price",
+                        "buy_price",
+                        "buyer_id",
+                        "countdown_end_time"
+                    )
+                    .where("id", productId)
+            )[0];
+
+            const currentPrice = result.current_price;
+            const buyPrice = result.buy_price;
+            const buyerId = result.buyer_id;
+            const countdownEndTime = result.countdown_end_time;
+            let newPrice: number = 0;
+            if (addCurrentPrice) {
+                if (currentPrice + bidAmount < buyPrice) {
+                    newPrice = currentPrice + bidAmount;
+                } else {
+                    newPrice = buyPrice;
+                }
+            } else {
+                if (bidAmount < buyPrice) {
+                    newPrice = bidAmount;
+                } else {
+                    newPrice = buyPrice;
+                }
+            }
+
+            if (userId === parseInt(buyerId) || newPrice <= currentPrice) {
+                return {
+                    currentPrice: 0,
+                    success: false,
+                };
+            }
+
+            await txn("products")
+                .update({
+                    current_price: newPrice,
+                    countdown_end_time:
+                        newPrice === buyPrice ? new Date() : countdownEndTime,
+                    buyer_id: userId,
+                })
+                .where("id", productId);
+
+            await txn.commit();
+            return {
+                currentPrice: newPrice,
+                isEnded: newPrice === buyPrice ? true : false,
+                success: true,
+            };
+        } catch (e) {
+            await txn.rollback();
+            return {
+                currentPrice: 0,
+                isEnded: false,
+                success: false,
+            };
+        }
     };
 
     startBid = async (productId: number, seconds: number) => {

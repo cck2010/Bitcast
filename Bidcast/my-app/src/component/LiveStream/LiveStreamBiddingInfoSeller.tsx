@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
 import {
+    fetchliveStreamProducts,
     fetchProductTime,
     LiveStreamProduct,
     LiveStreamProductDynamicInfo,
@@ -14,7 +15,7 @@ interface LiveStreamBiddingInfoProps {
 
 function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     const dispatch = useDispatch();
-    const [inputRemainingTime, setInputRemainingTime] = useState<number>(10);
+    const [inputRemainingTime, setInputRemainingTime] = useState<number>(60);
     const [remainingTime, setRemainingTime] = useState<number>(Infinity);
     const [isBidding, setIsBidding] = useState<boolean>(false);
     const [timerId, setTimerId] = useState<number>(0);
@@ -55,6 +56,15 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
         });
 
     useEffect(() => {
+        return () => {
+            if (remainingTime <= 0) {
+                clearInterval(timerId);
+                setIsBidding(false);
+            }
+        };
+    }, [remainingTime, timerId]);
+
+    useEffect(() => {
         if (productsDynamic.length !== 0) {
             for (let ind in productsDynamic) {
                 let countdownEndTime = productsDynamic[ind].countdownEndTime;
@@ -92,6 +102,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     countdownEndTime !== undefined &&
                     countdownEndTime <= new Date()
                 ) {
+                    clearInterval(timerId);
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);
                     setIsBidding(false);
@@ -99,6 +110,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     productsDynamic[ind].isSelected &&
                     countdownEndTime === undefined
                 ) {
+                    clearInterval(timerId);
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);
                     setIsBidding(false);
@@ -108,15 +120,18 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     }, [products, productsDynamic, timerId]);
 
     useEffect(() => {
-        return () => {
-            if (remainingTime <= 0) {
-                clearInterval(timerId);
-                setIsBidding(false);
-            }
-        };
-    }, [remainingTime, timerId]);
-
-    // console.log(selectedProductDynamic);
+        if (props.ws) {
+            props.ws.on(
+                "updateCurrentPrice",
+                (liveId: number, isEnded: boolean) => {
+                    dispatch(fetchliveStreamProducts(liveId, false));
+                    if (isEnded) {
+                        setRemainingTime(-100);
+                    }
+                }
+            );
+        }
+    }, [dispatch, props.ws]);
 
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded my-3">
@@ -136,7 +151,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                                 <br /> ${selectedProductDynamic.currentPrice}
                                 <br />
                                 <span className="highest_bid_user mb-3">
-                                    叫價者:{" "}
+                                    最高出價者:{" "}
                                     {selectedProductDynamic.buyer == null ||
                                     selectedProductDynamic.buyer === ""
                                         ? "暫時未有叫價"
@@ -197,7 +212,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                         type="number"
                         className="action_duration w-75"
                         max={300}
-                        min={10}
+                        min={60}
                         value={inputRemainingTime}
                         onChange={(e) =>
                             setInputRemainingTime(parseInt(e.target.value))

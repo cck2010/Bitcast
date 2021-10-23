@@ -14,7 +14,12 @@ export function setSocketIO(io: socketIO.Server) {
             io.sockets.in(room.toString()).emit("render", productId);
         });
         socket.on("startBid", (room: number) => {
-            socket.to(room.toString()).emit("startBid", room);
+            io.sockets.in(room.toString()).emit("startBid", room);
+        });
+        socket.on("updateCurrentPrice", (room: number, isEnded: boolean) => {
+            io.sockets
+                .in(room.toString())
+                .emit("updateCurrentPrice", room, isEnded);
         });
     });
 }

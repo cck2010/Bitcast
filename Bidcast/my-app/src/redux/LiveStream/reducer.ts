@@ -80,17 +80,19 @@ export function liveStreamReducer(
                 }
                 break;
             case "@@liveStream/BID_INCREMENT":
-                // for (let ind in state.liveStreamProducts
-                //     .liveStreamProductsArr) {
-                //     if (
-                //         state.liveStreamProducts.liveStreamProductsArr[ind]
-                //             .id === action.id
-                //     ) {
-                //         state.liveStreamProducts.liveStreamProductsArr[
-                //             ind
-                //         ].currentPrice = action.newPrice;
-                //     }
-                // }
+                let indUpdateBidIncrement = 0;
+                for (let liveStreamProduct of newState.liveStreamProducts
+                    .liveStreamProductsArrDynamic) {
+                    if (liveStreamProduct.id === action.id) {
+                        newState.liveStreamProducts.liveStreamProductsArrDynamic[
+                            indUpdateBidIncrement
+                        ].currentPrice = action.newPrice;
+                        newState.liveStreamProducts.liveStreamProductsArrDynamic[
+                            indUpdateBidIncrement
+                        ].buyer = action.buyer;
+                    }
+                    indUpdateBidIncrement++;
+                }
                 break;
         }
     });

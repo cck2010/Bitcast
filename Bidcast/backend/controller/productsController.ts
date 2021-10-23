@@ -20,14 +20,12 @@ export class ProductsController {
     };
     submitBidLiveInfo = async (req: Request, res: Response) => {
         try {
-           
             const liveImage: string | undefined = req.file?.filename;
-        
-            const { liveTitle, description, startDate,userId} = req.body;
-            
+
+            const { liveTitle, description, startDate, userId } = req.body;
+
             const ms = Date.parse(startDate);
             const startDateFormat = new Date(ms + 28800000);
-
 
             // let sellerLink = "1123";
             // let buyerLink = "232323";
@@ -46,8 +44,6 @@ export class ProductsController {
                 parseInt(userId),
                 sellerLink,
                 buyerLink
-
-
             );
             console.log("submitted live result (controller side)", result);
             res.json(result);
@@ -99,13 +95,26 @@ export class ProductsController {
         }
     };
 
-    putBidIncrement = async (req: Request, res: Response) => {
+    putcurrentPrice = async (req: Request, res: Response) => {
         try {
-            const { productId } = req.body;
-            const result = await this.productsService.putBidIncrement(
-                productId
+            const { productId, bidAmount, addCurrentPrice } = req.body;
+            const userId = req.user && req.user.id ? req.user.id : 0;
+            const username =
+                req.user && req.user.username ? req.user.username : "";
+
+            const result = await this.productsService.putcurrentPrice(
+                productId,
+                bidAmount,
+                addCurrentPrice,
+                userId
             );
-            const response = { id: productId, newPrice: result, success: true };
+            const response = {
+                id: productId,
+                newPrice: result.currentPrice,
+                buyer: username,
+                isEnded: result.isEnded,
+                success: result.success,
+            };
             res.json(response);
         } catch (e) {
             console.log(e);
