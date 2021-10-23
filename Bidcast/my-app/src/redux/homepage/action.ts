@@ -29,7 +29,7 @@ export function getComingAuctions() {
             const res = await fetch(
                 `${process.env.REACT_APP_BACKEND_URL}/comingAuction`
             );
-
+                
             const json = await res.json();
 
             if (json.success) {

@@ -19,6 +19,8 @@ import { ComingAuctionActions } from "./redux/homepage/action";
 import { comingAuctionReducer, ComingAuctionState } from "./redux/homepage/reducer";
 import { SearchProductsActions } from "./redux/searchResult/action";
 import { productSearchReducer, ProductSearchState } from "./redux/searchResult/reducer";
+import { LoadMyLiveProductsActions } from "./redux/myLiveProducts/action";
+import { myLiveProductsReducer, MyLiveProductsState } from "./redux/myLiveProducts/reducer";
 
 export const history = createBrowserHistory();
 
@@ -30,7 +32,9 @@ export type RootAction =
     | createBidsActions
     | ComingAuctionActions
     | LoadToken
-    |SearchProductsActions
+    | SearchProductsActions
+    | LoadMyLiveProductsActions
+
 export type RootThunkDispatch = ThunkDispatch<RootState, null, RootAction>;
 
 export interface RootState {
@@ -41,7 +45,8 @@ export interface RootState {
     liveStream: LiveStreamState;
     comingAuction: ComingAuctionState;
     authState: AuthState;
-    searchProduct: ProductSearchState
+    searchProduct: ProductSearchState;
+    myLiveProduct: MyLiveProductsState;
 }
 
 const reducer = combineReducers<RootState>({
@@ -53,6 +58,7 @@ const reducer = combineReducers<RootState>({
     comingAuction: comingAuctionReducer,
     authState: authReducer,
     searchProduct: productSearchReducer,
+    myLiveProduct: myLiveProductsReducer,
 });
 
 declare global {

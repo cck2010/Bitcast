@@ -44,12 +44,12 @@ export function checkCurrentUser() {
 
         try {
 
-            await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/current`, {
+           await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/current`, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
             })
-            // console.log("fetched")
+            // console.log(user.data)
             dispatch(login(token))
 
             dispatch(loadToken(token))

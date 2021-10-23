@@ -8,7 +8,7 @@ export class ProductsController {
     getCategories = async (req: Request, res: Response) => {
         try {
             const result = await this.productsService.getCategories();
-            console.log("result", result);
+            // console.log("result", result);
             res.json(result);
         } catch (error) {
             res.json({
@@ -35,8 +35,8 @@ export class ProductsController {
             // let buyerLink = await v4().substring(0,8);
             let sellerLink = await v4();
             let buyerLink = await v4();
-            console.log("buyerLink", buyerLink);
-            console.log("sellerLink", sellerLink);
+            // console.log("buyerLink", buyerLink);
+            // console.log("sellerLink", sellerLink);
 
             const result = await this.productsService.submitBidLiveInfo(
                 liveTitle,
@@ -49,7 +49,7 @@ export class ProductsController {
 
 
             );
-            console.log("submitted live result (controller side)", result);
+            // console.log("submitted live result (controller side)", result);
             res.json(result);
         } catch (error) {
             res.json({
@@ -88,7 +88,7 @@ export class ProductsController {
                 username,
                 parseInt(userId)
             );
-            console.log("result", result);
+            // console.log("result", result);
             res.json(result);
         } catch (error) {
             res.json({

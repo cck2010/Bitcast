@@ -50,7 +50,7 @@ export class ProductsService {
             .returning("*");
         // const resultData = await this.knex("live").select("*")
         // console.log("resultData", resultData);
-        console.log("Submitted live_id :", res);
+        // console.log("Submitted live_id :", res);
         return {
             success: true,
             data: { msg: "submit liveInfo success", res },
@@ -176,7 +176,7 @@ export class ProductsService {
             })
             .returning("*");
 
-        console.log("Submitted products :", res);
+        // console.log("Submitted products :", res);
         return {
             success: true,
             data: { msg: "submit product success", res },

@@ -34,6 +34,7 @@ export function ComingAuction() {
   );
 
   const dispatch = useDispatch();
+  
   useEffect(() => {
     dispatch(getComingAuctions());
   }, [dispatch]);
