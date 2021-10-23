@@ -137,12 +137,11 @@ export function HomePageNavbar() {
                 </Link>
               ))}
             </NavDropdown>
-            {!isAuthenticate && (
+            {!isAuthenticate ?(
               <Link to="/loginPage" className="nav_link">
                 登入 ／ 註冊
               </Link>
-            )}
-            {isAuthenticate && (
+            ):(
               <Link
                 to="#"
                 onClick={(e) => {
@@ -154,7 +153,8 @@ export function HomePageNavbar() {
               >
                 登出
               </Link>
-            )}
+              )
+                }
             <Link to="/" className="nav_link">
               <FontAwesomeIcon icon={faBell} />
             </Link>
