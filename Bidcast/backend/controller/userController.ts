@@ -162,7 +162,7 @@ export class UserController {
     loginFacebook = async (req: Request, res: Response) => {
         try {
             const facebookInfo = req.body;
-            const result = await this.userService.FacebookLogin(facebookInfo.name, facebookInfo.email, facebookInfo.image)
+            const result = await this.userService.FacebookLogin(facebookInfo.email, facebookInfo.name, facebookInfo.image)
             const payload = result.data.user
             const signOptions: {} = {
 
