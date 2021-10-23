@@ -2,13 +2,7 @@ import { UserService } from "../service/userService";
 import { Request, Response } from "express";
 import jwtKey from "../jwt/jwt"
 import jwt from "jsonwebtoken"
-import axios from 'axios'
-// import fetch from "node-fetch";
-// import { ResponseJson } from "../response";
-// import passport from 'passport';
 
-// import passport from 'passport';
-// import { env } from "../env";
 declare global {
     namespace Express {
         interface Request {
@@ -167,39 +161,9 @@ export class UserController {
     }
     loginFacebook = async (req: Request, res: Response) => {
         try {
-            const accessToken = req.body.accessToken
-
-
-            // @ts-ignore
-
-            const facebookRes: any = await axios.get(`https://graph.facebook.com/me?access_token=${accessToken}&fields=id,name,email,picture`)
-            // console.log(facebookRes.data.picture.data.url);
-
-            if (facebookRes.error) {
-                return res.json({
-                    success: false,
-                    error: 'loginFacebook controller failure',
-                    data: {
-                        msg: "loginFacebook controller failure",
-                    },
-                });
-                ;
-            }
-            let result = await this.userService.FacebookLogin(facebookRes.data.email, facebookRes.data.name, facebookRes.data.picture.data.url);
-            if (result.error) {
-
-                return res.json({
-                    success: false,
-                    error: 'loginFacebook controller failure after service',
-                    data: {
-                        msg: "loginFacebook controller failure after service",
-                    },
-                });
-            }
+            const facebookInfo = req.body;
+            const result = await this.userService.FacebookLogin(facebookInfo.name, facebookInfo.email, facebookInfo.image)
             const payload = result.data.user
-            // console.log(payload);
-
-
             const signOptions: {} = {
 
                 expiresIn: "12h",
@@ -219,14 +183,49 @@ export class UserController {
                     message: 'Incorrect token'
                 })
             }
-
         } catch (e) {
-            console.error(e)
-            return res.status(401).json({
+            console.log(e);
+
+            return res.json({
                 token: null,
-                message: 'Incorrect token'
+                message: 'loginGoole unknow error'
+
             })
         }
     }
+    loginGoogle = async (req: Request, res: Response) => {
+        try {
+            const googleInfo = req.body;
+            const result = await this.userService.googleLogin(googleInfo.name, googleInfo.email, googleInfo.image)
+            const payload = result.data.user
+            const signOptions: {} = {
 
+                expiresIn: "12h",
+                algorithm: "RS512" 			// RSASSA options[ "RS256", "RS384", "RS512" ]
+            };
+
+            if (payload) {
+                const token = jwt.sign(payload, jwtKey.privateKEY, signOptions);
+
+                return res.json({
+                    token: token,
+
+                });
+            } else {
+                return res.status(401).json({
+                    token: null,
+                    message: 'Incorrect token'
+                })
+            }
+        } catch (e) {
+            console.log(e);
+
+            return res.json({
+                token: null,
+                message: 'loginGoole unknow error'
+
+            })
+        }
+
+    }
 }

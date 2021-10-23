@@ -67,7 +67,7 @@ export let authReducer = (
 
                 let a = process.env.REACT_APP_PUBLIC_KEY!.replace(/\\n/g, '\n')
                 let payload: string | JwtPayload | any = jwt.verify(action.token, a, verifyOptions)
-                console.log('payload= ', payload)
+                // console.log('payload= ', payload)
                 const user: JWTPayload = {
                     id: payload.id,
                     username: payload.username,
