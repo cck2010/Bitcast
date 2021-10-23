@@ -175,7 +175,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
 
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded my-3">
-            <div className="info w-100 h-100">
+            <div className="info w-100 h-100 d-flex justify-contens-center align-items-center flex-column">
                 <div className="row">
                     <div className="col-12 d-flex flex-row justify-content-center align-items-center w-100 h-100 mt-3">
                         <img
@@ -268,7 +268,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                         <label className="w-100">
                             <input
                                 type="number"
-                                className="action_duration w-100"
+                                className="action_duration w-100 text-end"
                                 value={inputPrice}
                                 onChange={(e) => {
                                     setInputPrice(parseInt(e.target.value));
