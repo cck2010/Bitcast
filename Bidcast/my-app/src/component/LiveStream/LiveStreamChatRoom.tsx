@@ -140,7 +140,7 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
                 className="LiveStreamChatRoomMainBody p-3"
                 style={
                     props.isTablet
-                        ? { height: `${658 + size}px` }
+                        ? { height: `${658 + size}px`, minHeight: "200px" }
                         : {
                               height: `${
                                   windowDimensions.height -
@@ -161,7 +161,10 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
                             className="messages"
                             style={
                                 props.isTablet
-                                    ? { height: `${535 + size}px` }
+                                    ? {
+                                          height: `${535 + size}px`,
+                                          minHeight: "77px",
+                                      }
                                     : {
                                           height: `${
                                               windowDimensions.height -
