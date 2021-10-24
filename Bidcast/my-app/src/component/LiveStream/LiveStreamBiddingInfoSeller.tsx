@@ -14,6 +14,7 @@ interface LiveStreamBiddingInfoProps {
 }
 
 function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
+    //Get States
     const dispatch = useDispatch();
     const [inputRemainingTime, setInputRemainingTime] = useState<number>(60);
     const [remainingTime, setRemainingTime] = useState<number>(Infinity);
@@ -54,7 +55,9 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
             duration: 0,
             success: false,
         });
+    //Get States
 
+    //Countdown End Handler
     useEffect(() => {
         return () => {
             if (remainingTime <= 0) {
@@ -63,7 +66,9 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
             }
         };
     }, [remainingTime, timerId]);
+    //Countdown End Handler
 
+    //Countdown Start Handler
     useEffect(() => {
         if (productsDynamic.length !== 0) {
             for (let ind in productsDynamic) {
@@ -118,7 +123,9 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
             }
         }
     }, [products, productsDynamic, timerId]);
+    //Countdown Start Handler
 
+    //WebSocket Signal Handler
     useEffect(() => {
         if (props.ws) {
             props.ws.on(
@@ -132,7 +139,24 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
             );
         }
     }, [dispatch, props.ws]);
+    //WebSocket Signal Handler
 
+    //Button On Click Handler
+    const startBid = () => {
+        setRemainingTime(inputRemainingTime);
+        if (props.ws) {
+            dispatch(
+                fetchProductTime(
+                    selectedProduct.id,
+                    inputRemainingTime,
+                    setTimerId,
+                    props.ws,
+                    liveId
+                )
+            );
+        }
+    };
+    //Button On Click Handler
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded my-3">
             <div className="info w-100 h-100 d-flex justify-contens-center align-items-center flex-column">
@@ -189,20 +213,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     className={`start_auction btn btn-primary my-3 w-100 ${
                         isBidding && "unavailable_btn"
                     }`}
-                    onClick={() => {
-                        setRemainingTime(inputRemainingTime);
-                        if (props.ws) {
-                            dispatch(
-                                fetchProductTime(
-                                    selectedProduct.id,
-                                    inputRemainingTime,
-                                    setTimerId,
-                                    props.ws,
-                                    liveId
-                                )
-                            );
-                        }
-                    }}
+                    onClick={startBid}
                 >
                     <i className="fas fa-gavel"></i> 開始拍賣
                 </button>

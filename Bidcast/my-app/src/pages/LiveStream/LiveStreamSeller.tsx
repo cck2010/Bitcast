@@ -17,21 +17,9 @@ import io, { Socket } from "socket.io-client";
 import LiveStreamBiddingInfoSeller from "../../component/LiveStream/LiveStreamBiddingInfoSeller";
 
 function LiveStream() {
-    const liveStreamRef = useRef<HTMLDivElement>(null);
-
-    // react-responsive
-    const isDesktop = useMediaQuery({
-        query: "(min-width: 1200px)",
-    });
-
-    const isTablet = useMediaQuery({
-        query: "(min-width: 768px)",
-    });
-
-    const [page, setPage] = useState<number>(1);
-
-    // fetch info
+    //Get States
     const dispatch = useDispatch();
+    const liveStreamRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         let room = new URLSearchParams(window.location.search).get("room");
@@ -51,8 +39,19 @@ function LiveStream() {
             dispatch(fetchliveStreamProducts(liveId, true));
         }
     }, [dispatch, liveId]);
+    //Get States
 
-    // connect socket.io
+    //React-responsive
+    const isDesktop = useMediaQuery({
+        query: "(min-width: 1200px)",
+    });
+    const isTablet = useMediaQuery({
+        query: "(min-width: 768px)",
+    });
+    const [page, setPage] = useState<number>(1);
+    //React-responsive
+
+    //Websocket Setup
     const [ws, setWs] = useState<Socket | null>(null);
 
     const connectWebSocket = () => {
@@ -81,6 +80,7 @@ function LiveStream() {
             initWebSocket();
         }
     }, [dispatch, ws, liveId]);
+    //Websocket Setup
 
     return (
         <div className="LiveStream m-3" ref={liveStreamRef}>

@@ -14,23 +14,22 @@ interface LiveStreamControlPanelProps {
 }
 
 function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
-    const carousel = useRef<TinySliderInstance>(null);
-
-    const goNextSlide = (dir: "next" | "prev") =>
-        carousel.current != null && carousel.current.goTo(dir);
-
-    const liveStreamControlPanelDesktopSetting = { maxHeight: "600px" };
-
+    //Get States
     const dispatch = useDispatch();
-
+    const carousel = useRef<TinySliderInstance>(null);
+    const liveStreamControlPanelDesktopSetting = { maxHeight: "600px" };
     const products = useSelector(
         (state: RootState) =>
             state.liveStream.liveStreamProducts.liveStreamProductsArr
     );
-
     const liveId = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.id
     );
+    //Get States
+
+    //Carousel Next Page Handler
+    const goNextSlide = (dir: "next" | "prev") =>
+        carousel.current != null && carousel.current.goTo(dir);
 
     const carouselOnClickHandler = (
         slideIndex: number | null,
@@ -53,6 +52,7 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
             dispatch(fetchSelectedProduct(productId, props.ws, liveId));
         }
     };
+    //Carousel Next Page Handler
 
     return (
         <div className="LiveStreamControlPanel rounded my-4">

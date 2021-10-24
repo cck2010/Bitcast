@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 
 function LiveStreamHeader() {
+    //Get States
     const title = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.title
     );
@@ -18,6 +19,7 @@ function LiveStreamHeader() {
     const description = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.description
     );
+    //Get States
 
     return (
         <div className="LiveStreamHeader px-3">
