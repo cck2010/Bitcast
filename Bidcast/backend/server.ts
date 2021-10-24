@@ -64,9 +64,7 @@ export const productsController = new ProductsController(
 export const comingAuctionController = new ComingAuctionController(
     new ComingAuctionService(knex)
 );
-export const myLiveController = new MyLiveController(
-    new MyLiveService(knex)
-);
+export const myLiveController = new MyLiveController(new MyLiveService(knex));
 
 // app.use(requestLogger, dummyCounter);
 app.use(userRoutes);
@@ -81,6 +79,7 @@ app.get("/profile", (req: express.Request, res: express.Response) => {
 app.use(express.static("public"));
 app.use(express.static("public", { extensions: ["html"] }));
 app.use(express.static("css"));
+app.use(express.static("img"));
 app.use(express.static("submitLivePicture"));
 app.use(express.static("submitProductsPicture"));
 app.use(express.static("logos"));
@@ -102,5 +101,3 @@ const PORT = env.PORT;
 server.listen(PORT, () => {
     logger.info(`Server準備好喇： http://localhost:${PORT}/`);
 });
-
-

@@ -8,6 +8,7 @@ import { Button, ButtonGroup } from "reactstrap";
 import LiveStreamWindowSeller from "../../component/LiveStream/LiveStreamWindowSeller";
 import LiveStreamControlPanelSeller from "../../component/LiveStream/LiveStreamControlPanelSeller";
 import {
+    fetchInitialChatMessages,
     fetchliveStreamInfo,
     fetchliveStreamProducts,
 } from "../../redux/LiveStream/actions";
@@ -37,6 +38,7 @@ function LiveStream() {
     useEffect(() => {
         if (liveId !== 0) {
             dispatch(fetchliveStreamProducts(liveId, true));
+            dispatch(fetchInitialChatMessages(liveId));
         }
     }, [dispatch, liveId]);
     //Get States
@@ -138,6 +140,7 @@ function LiveStream() {
                                 <LiveStreamChatRoom
                                     liveStreamRef={liveStreamRef}
                                     isTablet={isTablet}
+                                    ws={ws}
                                 />
                             )}
                             {page === 4 && <LiveStreamRecommend />}
@@ -151,6 +154,7 @@ function LiveStream() {
                                 <LiveStreamChatRoom
                                     liveStreamRef={liveStreamRef}
                                     isTablet={isTablet}
+                                    ws={ws}
                                 />
                             </div>
                         </div>

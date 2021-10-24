@@ -113,4 +113,42 @@ export class LiveStreamService {
         }
         return products;
     };
+
+    getMessages = async (liveId: number) => {
+        return await this.knex("chat")
+            .leftJoin("users", "chat.user_id", "users.id")
+            .select(
+                "chat.id",
+                "users.username",
+                "users.profile_pic",
+                "chat.message",
+                "chat.created_at"
+            )
+            .where("live_id", liveId);
+    };
+
+    postMessage = async (liveId: number, userId: number, message: string) => {
+        const messageId = (
+            await this.knex("chat")
+                .insert({
+                    live_id: liveId,
+                    message,
+                    user_id: userId,
+                })
+                .returning("id")
+        )[0];
+
+        return (
+            await this.knex("chat")
+                .leftJoin("users", "chat.user_id", "users.id")
+                .select(
+                    "chat.id",
+                    "users.username",
+                    "users.profile_pic",
+                    "chat.message",
+                    "chat.created_at"
+                )
+                .where("chat.id", messageId)
+        )[0];
+    };
 }

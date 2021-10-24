@@ -1,16 +1,50 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import CustomScroll from "react-custom-scroll";
+import { useDispatch, useSelector } from "react-redux";
+import { Socket } from "socket.io-client";
+import {
+    fetchChatMessages,
+    sendChatMessages,
+    UpdateMessage,
+} from "../../redux/LiveStream/actions";
+import { RootState } from "../../store";
 
 interface LiveStreamChatRoomProps {
     liveStreamRef: React.RefObject<HTMLDivElement>;
     isTablet: boolean;
+    ws: Socket | null;
+}
+
+function getRandomColor() {
+    var letters = "456789ABCDEF".split("");
+    var color = "#";
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * letters.length)];
+    }
+    return color;
 }
 
 function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
-    const [messages, setMessages] = useState<string[]>([]);
+    //Get States
+    const dispatch = useDispatch();
     const [inputMessage, setInputMessage] = useState<string>("");
+    const liveId = useSelector(
+        (state: RootState) => state.liveStream.liveStreamInfo.id
+    );
+    const messages = useSelector(
+        (state: RootState) => state.liveStream.chat.chatMessages
+    );
+    const [color, setColor] = useState<string[]>(["#000000"]);
+    useEffect(() => {
+        let colorArr = [];
+        for (let ind = 0; ind < 10; ind++) {
+            colorArr.push(getRandomColor());
+        }
+        setColor(colorArr);
+    }, []);
+    //Get States
 
-    //scroll button
+    //Scroll button
     const messagesRef = useRef<HTMLDivElement>(null);
     const [isVisible, setIsVisible] = useState<boolean>(false);
 
@@ -27,9 +61,13 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
             top: messagesRef.current?.scrollHeight,
         });
     };
-    //scroll button
 
-    //drag function
+    useEffect(() => {
+        scrollToBottom();
+    }, []);
+    //Scroll button
+
+    //Drag function
     const [size, setSize] = useState<number>(0);
     const dragRef = useRef<HTMLDivElement>(null);
 
@@ -53,9 +91,9 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
         );
         props.liveStreamRef?.current?.addEventListener("mouseup", onMouseUp);
     }, [props.liveStreamRef]);
-    //drag function
+    //Drag function
 
-    //chatroom mobile mode resize
+    //Chatroom mobile mode resize
     function getWindowDimensions() {
         const { innerWidth: width, innerHeight: height } = window;
         return {
@@ -76,7 +114,25 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
-    //chatroom mobile mode resize
+    //Chatroom mobile mode resize
+
+    //Send Message Handler
+    const sendMessageHandler = (inputMessage: string) => {
+        if (props.ws) {
+            dispatch(fetchChatMessages(props.ws, liveId, inputMessage));
+        }
+    };
+    //Send Message Handler
+
+    //WebSocket Signal Handler
+    useEffect(() => {
+        if (props.ws) {
+            props.ws.on("sendMessage", (message: UpdateMessage) => {
+                dispatch(sendChatMessages(message));
+            });
+        }
+    }, [dispatch, props.ws]);
+    //WebSocket Signal Handler
 
     return (
         <div className="LiveStreamChatRoom">
@@ -121,9 +177,36 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
                                     key={i}
                                     className={`msg${
                                         i % 2 !== 0 ? " dark" : ""
-                                    } pe-3`}
+                                    } pe-3 mt-1 mx-1 d-flex`}
                                 >
-                                    {m}
+                                    <img
+                                        className="chat_propic rounded-circle me-1"
+                                        src={`${
+                                            m.profile_pic.search(
+                                                /(https:\/\/)|(http:\/\/)/i
+                                            ) < 0
+                                                ? process.env
+                                                      .REACT_APP_BACKEND_URL +
+                                                  "/" +
+                                                  m.profile_pic
+                                                : m.profile_pic
+                                        }`}
+                                        alt={`profile pic ${m.username}`}
+                                    />
+                                    <div>
+                                        <span
+                                            className="chat_username me-2"
+                                            style={{
+                                                color: color[
+                                                    m.username.length %
+                                                        color.length
+                                                ],
+                                            }}
+                                        >
+                                            {m.username}
+                                        </span>
+                                        {m.message}
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -152,7 +235,7 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
                                 e: React.KeyboardEvent<HTMLInputElement>
                             ) => {
                                 if (e.key === "Enter") {
-                                    setMessages([...messages, inputMessage]);
+                                    sendMessageHandler(inputMessage);
                                     setInputMessage("");
                                 }
                             }}
@@ -160,7 +243,7 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
                         <button
                             className="sendBtn"
                             onClick={() => {
-                                setMessages([...messages, inputMessage]);
+                                sendMessageHandler(inputMessage);
                                 setInputMessage("");
                             }}
                         >

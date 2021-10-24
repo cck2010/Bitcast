@@ -189,6 +189,14 @@ $smallFontSize: 0.5em;
                         cubic-bezier(0.39, 0.575, 0.565, 1) both;
                 }
             }
+            .chat_username {
+                font-weight: bold;
+                height: fit-content;
+            }
+            .chat_propic {
+                width: 20px;
+                height: 20px;
+            }
 
             .footer {
                 margin: 10px 0 0 0;

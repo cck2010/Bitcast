@@ -1,4 +1,5 @@
 import {
+    ChatMessage,
     LiveStreamActions,
     LiveStreamInfo,
     LiveStreamProduct,
@@ -11,6 +12,10 @@ export interface LiveStreamState {
     liveStreamProducts: {
         liveStreamProductsArr: LiveStreamProduct[];
         liveStreamProductsArrDynamic: LiveStreamProductDynamicInfo[];
+        success: boolean;
+    };
+    chat: {
+        chatMessages: ChatMessage[];
         success: boolean;
     };
 }
@@ -30,6 +35,10 @@ const initialState: LiveStreamState = {
         liveStreamProductsArr: [],
         liveStreamProductsArrDynamic: [],
         success: true,
+    },
+    chat: {
+        chatMessages: [],
+        success: false,
     },
 };
 
@@ -92,6 +101,27 @@ export function liveStreamReducer(
                         ].buyer = action.buyer;
                     }
                     indUpdateBidIncrement++;
+                }
+                break;
+            case "@@liveStream/LOAD_CHAT_MESSAGES":
+                newState.chat.chatMessages = action.chatMessages.sort(
+                    (a, b) => a.id - b.id
+                );
+                newState.chat.success = action.success;
+                break;
+            case "@@liveStream/SEND_CHAT_MESSAGE":
+                let created_at = new Date(
+                    Date.parse(action.chatMessage.created_at)
+                );
+                let tempMessage = {
+                    id: action.chatMessage.id,
+                    username: action.chatMessage.username,
+                    profile_pic: action.chatMessage.profile_pic,
+                    message: action.chatMessage.message,
+                    created_at,
+                };
+                if (newState.chat.success && action.chatMessage.success) {
+                    newState.chat.chatMessages.push(tempMessage);
                 }
                 break;
         }
