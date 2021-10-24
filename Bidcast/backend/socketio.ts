@@ -28,5 +28,16 @@ export function setSocketIO(io: socketIO.Server) {
                 io.sockets.in(room.toString()).emit("sendMessage", message);
             }
         );
+        socket.on("checkOnlineUsers", (room: number) => {
+            let clientsInRoom = 0;
+            if (io.sockets.adapter.rooms.has(room.toString())) {
+                clientsInRoom = io.sockets.adapter.rooms.get(
+                    room.toString()
+                )!.size;
+            }
+            socket.emit("checkOnlineUsers", clientsInRoom);
+        });
+
+        socket.on("disconnect", () => {});
     });
 }

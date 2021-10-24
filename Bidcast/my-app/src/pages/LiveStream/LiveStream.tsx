@@ -80,6 +80,9 @@ function LiveStream() {
             };
             initWebSocket();
         }
+        return () => {
+            ws?.close();
+        };
     }, [dispatch, ws, liveId]);
     //Websocket Setup
 
@@ -100,7 +103,7 @@ function LiveStream() {
                                 isTablet={isTablet}
                                 ws={ws}
                             />
-                            <LiveStreamHeader />
+                            <LiveStreamHeader ws={ws} />
                         </>
                     ) : (
                         <>
@@ -118,7 +121,7 @@ function LiveStream() {
                                     其他拍賣直播
                                 </Button>
                             </ButtonGroup>
-                            {page === 1 && <LiveStreamHeader />}
+                            {page === 1 && <LiveStreamHeader ws={ws} />}
                             {page === 2 && (
                                 <>
                                     <div className="row mt-3 rounded">
