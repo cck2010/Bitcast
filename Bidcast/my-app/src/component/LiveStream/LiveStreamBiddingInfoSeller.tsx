@@ -228,6 +228,13 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                         onChange={(e) =>
                             setInputRemainingTime(parseInt(e.target.value))
                         }
+                        onKeyDown={(
+                            e: React.KeyboardEvent<HTMLInputElement>
+                        ) => {
+                            if (e.key === "Enter") {
+                                startBid();
+                            }
+                        }}
                     />
                 </label>
             </div>

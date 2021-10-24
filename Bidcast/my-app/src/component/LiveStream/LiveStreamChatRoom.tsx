@@ -161,6 +161,7 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
                             className="sendBtn"
                             onClick={() => {
                                 setMessages([...messages, inputMessage]);
+                                setInputMessage("");
                             }}
                         >
                             <i className="fas fa-paper-plane"></i>
