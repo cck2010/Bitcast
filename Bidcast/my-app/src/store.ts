@@ -21,6 +21,8 @@ import { SearchProductsActions } from "./redux/searchResult/action";
 import { productSearchReducer, ProductSearchState } from "./redux/searchResult/reducer";
 import { LoadMyLiveProductsActions } from "./redux/myLiveProducts/action";
 import { myLiveProductsReducer, MyLiveProductsState } from "./redux/myLiveProducts/reducer";
+import { BroadcastingProductActions } from "./redux/broadcastingProducts/actions";
+import { broadcastingProductReducer, BroadcastProductState } from "./redux/broadcastingProducts/reducer";
 
 export const history = createBrowserHistory();
 
@@ -34,6 +36,7 @@ export type RootAction =
     | LoadToken
     | SearchProductsActions
     | LoadMyLiveProductsActions
+    | BroadcastingProductActions
 
 export type RootThunkDispatch = ThunkDispatch<RootState, null, RootAction>;
 
@@ -47,6 +50,7 @@ export interface RootState {
     authState: AuthState;
     searchProduct: ProductSearchState;
     myLiveProduct: MyLiveProductsState;
+    broadcastingProducts: BroadcastProductState;
 }
 
 const reducer = combineReducers<RootState>({
@@ -59,6 +63,7 @@ const reducer = combineReducers<RootState>({
     authState: authReducer,
     searchProduct: productSearchReducer,
     myLiveProduct: myLiveProductsReducer,
+    broadcastingProducts: broadcastingProductReducer,
 });
 
 declare global {

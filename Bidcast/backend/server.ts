@@ -24,7 +24,7 @@ import liveStreamRoutes from "./router/liveStreamRoutes";
 import productsRoutes from "./router/productsRoutes";
 import { ProductsService } from "./service/productsService";
 import { ProductsController } from "./controller/productsController";
-import { comingAuctionRoutes } from "./router/comingAuction";
+import { comingAuctionRoutes } from "./router/comingAuctionRoutes";
 import { ComingAuctionController } from "./controller/comingAuctionController";
 import { ComingAuctionService } from "./service/comingAuctionService";
 import { MyLiveController } from "./controller/myLiveController";
