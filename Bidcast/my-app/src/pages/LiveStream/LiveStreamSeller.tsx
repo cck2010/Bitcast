@@ -71,9 +71,6 @@ function LiveStream() {
             const initWebSocket = () => {
                 if (ws) {
                     ws.emit("joinRoom", liveId);
-                    ws.on("joinRoom", (message: string) => {
-                        console.log(message);
-                    });
                     ws.on("render", () => {
                         dispatch(fetchliveStreamProducts(liveId, false));
                     });
