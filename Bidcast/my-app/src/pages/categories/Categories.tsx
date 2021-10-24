@@ -4,6 +4,8 @@ import {
   Dropdown,
   DropdownButton,
   Image,
+  Row,
+  Col,
 } from "react-bootstrap";
 import "./CategoryResult.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -43,18 +45,23 @@ export function CategoryResults() {
 
         {searchingResults.map((searchingResult) => (
           <div className="category_items_container" key={searchingResult.id}>
-            
+            {/* <Row> */}
+              <Col xs={6} md={4}>
             <Image
               key={searchingResult.id}
               src={`${process.env.REACT_APP_BACKEND_URL}/${searchingResult.product_image}`}
               fluid
             />
+            </Col>
             <div className="description_container">
+              <Col xs={12} md={8}>
               <h3>{searchingResult.product_name}</h3>
               <h6>{searchingResult.countdown_start_time}</h6>
               <h6>posted by {searchingResult.seller_id}</h6>
               <p>description</p>
+              </Col>
             </div>
+            {/* </Row> */}
           </div>
         ))}
         <div className="category_items_container">

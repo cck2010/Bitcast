@@ -1,9 +1,7 @@
 import { Button, Card, Container, Image } from "react-bootstrap";
-import lihkg_logo from "../homepage/lihkg_logo.png";
 import { push } from "connected-react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { checkCurrentUser } from "../../redux/user/actions";
 import { useEffect } from "react";
 import { fetchMyLiveProducts } from "../../redux/myLiveProducts/action";
 
@@ -14,16 +12,12 @@ export function MyLiveProducts() {
     Object.values(state.myLiveProduct.myLiveProducts)
   );
 
-  console.log(liveProducts);
+  const user = useSelector((state: RootState) => state.authState.user);
+  const userInfo = JSON.parse(JSON.stringify(user));
 
   useEffect(() => {
     dispatch(fetchMyLiveProducts());
   }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(checkCurrentUser());
-  }, [dispatch]);
-  
 
   return (
     <div>
@@ -31,22 +25,36 @@ export function MyLiveProducts() {
         <h2 className="pt-3">我的直播</h2>
       </Container>
       <Container className="my_live_container pt-3">
-        <Card className="my_live_product_card_body" style={{ width: "16rem" }}>
-          <Image className="my_live_products" src={lihkg_logo} fluid />
-          <Card.Body className="my_bid_card_container">
-            <Card.Title>Name</Card.Title>
-            <Card.Text>Live starting time</Card.Text>
-            <Button
-              variant="outline-dark"
-              className="bid_button"
-              onClick={() => {
-                dispatch(push(`/liveStreamingSeller?token=`));
-              }}
+        {liveProducts.map((liveProduct) =>
+          liveProduct.user_id === userInfo.id ? (
+            <Card
+              key={liveProduct.id}
+              className="my_live_product_card_body"
+              style={{ width: "16rem" }}
             >
-              開始直播
-            </Button>
-          </Card.Body>
-        </Card>
+              <Image
+                className="my_live_products"
+                src={`${process.env.REACT_APP_BACKEND_URL}/${liveProduct.image}`}
+                fluid
+              />
+              <Card.Body className="my_bid_card_container">
+                <Card.Title>{liveProduct.title}</Card.Title>
+                <Card.Text>{liveProduct.starting_time}</Card.Text>
+                <Button
+                  variant="outline-dark"
+                  className="bid_button"
+                  onClick={() => {
+                    dispatch(push(`/liveStreamingSeller?token=`));
+                  }}
+                >
+                  開始直播
+                </Button>
+              </Card.Body>
+            </Card>
+          ) : (
+            " "
+          )
+        )}
 
         <Card className="my_live_product_card_body" style={{ width: "16rem" }}>
           <Image

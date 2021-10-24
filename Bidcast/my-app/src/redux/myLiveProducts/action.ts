@@ -4,8 +4,9 @@ import axios from 'axios';
 
 export interface MyLiveProducts {
     id: number;
-    live_title: string;
-    live_image: string;
+    user_id:number;
+    title: string;
+    image: string;
     starting_time: number;
     max_viewer?: number;
     is_ended?: boolean;
@@ -29,16 +30,6 @@ export function fetchMyLiveProducts() {
             const res = await fetch(
                 `${process.env.REACT_APP_BACKEND_URL}/profilePage/myLive`
             );
-            const token = localStorage.getItem('token')
-
-            const user = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/current`, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            })
-            
-            console.log(user);
-            
 
             const json = await res.json();  
 
