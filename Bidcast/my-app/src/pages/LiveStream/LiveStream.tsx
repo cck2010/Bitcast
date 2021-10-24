@@ -9,6 +9,7 @@ import { useMediaQuery } from "react-responsive";
 import { Button, ButtonGroup } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
+    fetchInitialChatMessages,
     fetchliveStreamInfo,
     fetchliveStreamProducts,
 } from "../../redux/LiveStream/actions";
@@ -17,22 +18,9 @@ import io, { Socket } from "socket.io-client";
 import LiveStreamBiddingInfo from "../../component/LiveStream/LiveStreamBiddingInfo";
 
 function LiveStream() {
-    const liveStreamRef = useRef<HTMLDivElement>(null);
-
-    // react-responsive
-    const isDesktop = useMediaQuery({
-        query: "(min-width: 1200px)",
-    });
-
-    const isTablet = useMediaQuery({
-        query: "(min-width: 768px)",
-    });
-
-    const [page, setPage] = useState<number>(1);
-
-    // fetch info
+    //Get States
     const dispatch = useDispatch();
-
+    const liveStreamRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         let room = new URLSearchParams(window.location.search).get("room");
         room = room != null ? room : "";
@@ -49,10 +37,22 @@ function LiveStream() {
     useEffect(() => {
         if (liveId !== 0) {
             dispatch(fetchliveStreamProducts(liveId, true));
+            dispatch(fetchInitialChatMessages(liveId));
         }
     }, [dispatch, liveId]);
+    //Get States
 
-    // connect socket.io
+    //React-responsive
+    const isDesktop = useMediaQuery({
+        query: "(min-width: 1200px)",
+    });
+    const isTablet = useMediaQuery({
+        query: "(min-width: 768px)",
+    });
+    const [page, setPage] = useState<number>(1);
+    //React-responsive
+
+    //Websocket Setup
     const [ws, setWs] = useState<Socket | null>(null);
 
     const connectWebSocket = () => {
@@ -80,7 +80,11 @@ function LiveStream() {
             };
             initWebSocket();
         }
+        return () => {
+            ws?.close();
+        };
     }, [dispatch, ws, liveId]);
+    //Websocket Setup
 
     return (
         <div className="LiveStream m-3" ref={liveStreamRef}>
@@ -99,7 +103,7 @@ function LiveStream() {
                                 isTablet={isTablet}
                                 ws={ws}
                             />
-                            <LiveStreamHeader />
+                            <LiveStreamHeader ws={ws} />
                         </>
                     ) : (
                         <>
@@ -117,7 +121,7 @@ function LiveStream() {
                                     其他拍賣直播
                                 </Button>
                             </ButtonGroup>
-                            {page === 1 && <LiveStreamHeader />}
+                            {page === 1 && <LiveStreamHeader ws={ws} />}
                             {page === 2 && (
                                 <>
                                     <div className="row mt-3 rounded">
@@ -136,6 +140,7 @@ function LiveStream() {
                                 <LiveStreamChatRoom
                                     liveStreamRef={liveStreamRef}
                                     isTablet={isTablet}
+                                    ws={ws}
                                 />
                             )}
                             {page === 4 && <LiveStreamRecommend />}
@@ -149,6 +154,7 @@ function LiveStream() {
                                 <LiveStreamChatRoom
                                     liveStreamRef={liveStreamRef}
                                     isTablet={isTablet}
+                                    ws={ws}
                                 />
                             </div>
                         </div>

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import Carousel from "react-tiny-slider";
 import { TinySliderInstance } from "tiny-slider";
@@ -13,38 +13,46 @@ interface LiveStreamControlPanelProps {
 }
 
 function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
+    //Get States
     const carousel = useRef<TinySliderInstance>(null);
-
-    const goNextSlide = (dir: "next" | "prev") => {
-        carousel.current != null && carousel.current.goTo(dir);
-    };
-
-    const liveStreamControlPanelDesktopSetting = { maxHeight: "600px" };
-
     const products = useSelector(
         (state: RootState) =>
             state.liveStream.liveStreamProducts.liveStreamProductsArr
     );
+    const liveStreamControlPanelDesktopSetting = { maxHeight: "600px" };
+    //Get States
 
-    if (props.ws) {
-        props.ws.on("render", (productId: number) => {
-            let page: number = 0;
-            let slideCollection = carousel.current?.getInfo().slideItems;
-            if (slideCollection !== undefined) {
-                let slideItems = Array.from(slideCollection);
-                for (let slideItem of slideItems) {
-                    if (
-                        slideItem.id &&
-                        productId ===
-                            parseInt(slideItem.ariaLabel.split("card").join(""))
-                    ) {
-                        page = parseInt(slideItem.id.split("item")[1]);
+    //Carousel Next Page Handler
+    const goNextSlide = (dir: "next" | "prev") => {
+        carousel.current != null && carousel.current.goTo(dir);
+    };
+    //Carousel Next Page Handler
+
+    //WebSocket Signal Handler
+    useEffect(() => {
+        if (props.ws) {
+            props.ws.on("render", (productId: number) => {
+                let page: number = 0;
+                let slideCollection = carousel.current?.getInfo().slideItems;
+                if (slideCollection !== undefined) {
+                    let slideItems = Array.from(slideCollection);
+                    for (let slideItem of slideItems) {
+                        if (
+                            slideItem.id &&
+                            productId ===
+                                parseInt(
+                                    slideItem.ariaLabel.split("card").join("")
+                                )
+                        ) {
+                            page = parseInt(slideItem.id.split("item")[1]);
+                        }
                     }
                 }
-            }
-            carousel.current != null && carousel.current.goTo(page);
-        });
-    }
+                carousel.current != null && carousel.current.goTo(page);
+            });
+        }
+    }, [props.ws]);
+    //WebSocket Signal Handler
 
     return (
         <div className="LiveStreamControlPanel rounded my-4">

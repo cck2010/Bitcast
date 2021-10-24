@@ -17,6 +17,23 @@ export interface LiveStreamProduct {
     description: string;
 }
 
+export interface ChatMessage {
+    id: number;
+    username: string;
+    profilePic: string;
+    message: string;
+    created_at: Date;
+}
+
+export interface ChatMessageWithSuccess {
+    id: number;
+    username: string;
+    profilePic: string;
+    message: string;
+    created_at: Date;
+    success: boolean;
+}
+
 export class LiveStreamController {
     constructor(private liveStreamService: LiveStreamService) {}
 
@@ -90,6 +107,64 @@ export class LiveStreamController {
                 liveStreamProducts: LiveStreamProduct[];
                 success: boolean;
             } = { liveStreamProducts: results, success: true };
+
+            res.json(response);
+        } catch (e) {
+            console.log(e);
+            res.json(e);
+        }
+    };
+
+    getMessages = async (req: Request, res: Response) => {
+        try {
+            const liveId = parseInt(req.query.liveId as string);
+
+            if (liveId < 0) {
+                const response: {
+                    chatMessages: ChatMessage[];
+                    success: boolean;
+                } = { chatMessages: [], success: false };
+                res.json(response);
+                return;
+            }
+
+            const results = await this.liveStreamService.getMessages(liveId);
+
+            const response: {
+                chatMessages: ChatMessage[];
+                success: boolean;
+            } = { chatMessages: results, success: true };
+
+            res.json(response);
+        } catch (e) {
+            console.log(e);
+            res.json(e);
+        }
+    };
+
+    postMessage = async (req: Request, res: Response) => {
+        try {
+            const { liveId, message } = req.body;
+            const userId = req.user && req.user.id ? req.user.id : 0;
+            if (liveId < 0) {
+                const response: {
+                    chatMessages: ChatMessage[];
+                    success: boolean;
+                } = { chatMessages: [], success: false };
+                res.json(response);
+                return;
+            }
+
+            const results = await this.liveStreamService.postMessage(
+                liveId,
+                userId,
+                message
+            );
+
+            const response: ChatMessageWithSuccess = {
+                ...results,
+                success: true,
+            };
 
             res.json(response);
         } catch (e) {

@@ -142,8 +142,6 @@ export class UserController {
     };
     getCurrentUser = async (req: Request, res: Response) => {
         try {
-            console.log("getCurrentUser", req.user);
-
             res.json(req.user);
         } catch (err) {
             console.log(err);

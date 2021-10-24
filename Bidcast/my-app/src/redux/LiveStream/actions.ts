@@ -63,6 +63,28 @@ export interface UpdateProduct {
     success: boolean;
 }
 
+export interface ChatMessage {
+    id: number;
+    username: string;
+    profile_pic: string;
+    message: string;
+    created_at: Date;
+}
+
+export interface UpdateMessage {
+    id: number;
+    username: string;
+    profile_pic: string;
+    message: string;
+    created_at: string;
+    success: boolean;
+}
+
+export interface ChatMessagesResponse {
+    chatMessages: ChatMessage[];
+    success: boolean;
+}
+
 export function loadliveStreamInfo(liveStreamInfo: LiveStreamInfo) {
     return {
         type: "@@liveStream/LOAD_LIVE_STREAM_INFO" as const,
@@ -116,13 +138,33 @@ export function updateProductTime(id: number, endTime: Date) {
     };
 }
 
+export function loadChatMessages(
+    chatMessages: ChatMessage[],
+    success: boolean
+) {
+    return {
+        type: "@@liveStream/LOAD_CHAT_MESSAGES" as const,
+        chatMessages,
+        success,
+    };
+}
+
+export function sendChatMessages(chatMessage: UpdateMessage) {
+    return {
+        type: "@@liveStream/SEND_CHAT_MESSAGE" as const,
+        chatMessage,
+    };
+}
+
 export type LiveStreamActions =
     | ReturnType<typeof loadliveStreamInfo>
     | ReturnType<typeof loadLiveStreamProducts>
     | ReturnType<typeof loadLiveStreamProductsDynamicInfo>
     | ReturnType<typeof bidIncrement>
     | ReturnType<typeof selectProduct>
-    | ReturnType<typeof updateProductTime>;
+    | ReturnType<typeof updateProductTime>
+    | ReturnType<typeof loadChatMessages>
+    | ReturnType<typeof sendChatMessages>;
 
 export function fetchliveStreamInfo(room: string, token: string) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
@@ -373,6 +415,60 @@ export function fetchProductTime(
                     if (ws) {
                         ws.emit("startBid", liveId);
                     }
+                }
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
+}
+
+export function fetchInitialChatMessages(liveId: number) {
+    return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
+        try {
+            const res = await axios.get<ChatMessagesResponse>(
+                `${process.env.REACT_APP_BACKEND_URL}/liveStream/chatMessage?liveId=${liveId}`
+            );
+            if (res.data.success) {
+                dispatch(
+                    loadChatMessages(res.data.chatMessages, res.data.success)
+                );
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
+}
+
+export function fetchChatMessages(
+    ws: Socket,
+    liveId: number,
+    message: string = ""
+) {
+    return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
+        try {
+            if (message === "") {
+                return;
+            }
+            const token = localStorage.getItem("token");
+
+            if (token == null) {
+                return;
+            }
+
+            const res = await axios.post<UpdateMessage>(
+                `${process.env.REACT_APP_BACKEND_URL}/liveStream/chatMessage`,
+                { liveId, message },
+                {
+                    headers: {
+                        Authorization: "Bearer " + token,
+                    },
+                }
+            );
+
+            if (res.data.success) {
+                if (ws) {
+                    ws.emit("sendMessage", liveId, res.data);
                 }
             }
         } catch (e) {

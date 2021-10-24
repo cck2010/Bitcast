@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { Socket } from "socket.io-client";
 import { RootState } from "../../store";
 
-function LiveStreamHeader() {
+interface LiveStreamHeaderProps {
+    ws: Socket | null;
+}
+
+function LiveStreamHeader(props: LiveStreamHeaderProps) {
+    //Get States
     const title = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.title
     );
@@ -12,12 +18,38 @@ function LiveStreamHeader() {
     const sellerImage = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.sellerImage
     );
-    const currentViewers = useSelector(
-        (state: RootState) => state.liveStream.liveStreamInfo.currentViewers
-    );
     const description = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.description
     );
+    const liveId = useSelector(
+        (state: RootState) => state.liveStream.liveStreamInfo.id
+    );
+    const [onlineUsers, setOnlineUsers] = useState<number>(0);
+    const [timerId, setTimerId] = useState<number>(0);
+    //Get States
+
+    //WebSocket Signal Handler
+    useEffect(() => {
+        if (timerId === 0) {
+            if (props.ws) {
+                setTimerId(
+                    window.setInterval(() => {
+                        if (props.ws) {
+                            props.ws.emit("checkOnlineUsers", liveId);
+                        }
+                    }, 10000)
+                );
+                props.ws.on("checkOnlineUsers", (clientsInRoom: number) => {
+                    setOnlineUsers(clientsInRoom);
+                });
+            }
+        }
+
+        return () => {
+            clearInterval(timerId);
+        };
+    }, [props.ws, timerId, liveId]);
+    //WebSocket Signal Handler
 
     return (
         <div className="LiveStreamHeader px-3">
@@ -31,7 +63,7 @@ function LiveStreamHeader() {
                     />
                     <div className="username mx-3">{seller}</div>
                     <div className="viewers">
-                        正在觀看人數: {currentViewers}{" "}
+                        正在觀看人數: {onlineUsers}{" "}
                         <i className="fas fa-user-friends"></i>
                     </div>
                 </div>

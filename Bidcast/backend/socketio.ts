@@ -1,4 +1,5 @@
 import socketIO, { Socket } from "socket.io";
+import { ChatMessageWithSuccess } from "./controller/liveStreamController";
 
 export let io: socketIO.Server;
 
@@ -21,5 +22,22 @@ export function setSocketIO(io: socketIO.Server) {
                 .in(room.toString())
                 .emit("updateCurrentPrice", room, isEnded);
         });
+        socket.on(
+            "sendMessage",
+            (room: number, message: ChatMessageWithSuccess) => {
+                io.sockets.in(room.toString()).emit("sendMessage", message);
+            }
+        );
+        socket.on("checkOnlineUsers", (room: number) => {
+            let clientsInRoom = 0;
+            if (io.sockets.adapter.rooms.has(room.toString())) {
+                clientsInRoom = io.sockets.adapter.rooms.get(
+                    room.toString()
+                )!.size;
+            }
+            socket.emit("checkOnlineUsers", clientsInRoom);
+        });
+
+        socket.on("disconnect", () => {});
     });
 }
