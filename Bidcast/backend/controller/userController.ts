@@ -26,6 +26,7 @@ declare global {
                 telegram_is_verified?: boolean;
                 telegram_chat_id?: number;
                 login_method_id?: number;
+                description?: string;
             };
         }
     }
@@ -228,5 +229,38 @@ export class UserController {
             })
         }
     }
+    editProfile = async (req: Request, res: Response)=>{
+        try {
+            const profilePic: any = req.file?.filename;
+        // console.log("profilePic", profilePic);
+        // console.log(req.body)
+        const {
+            username,
+            phoneNumber,
+            telegramAccount,
+            aboutMe,
+            userId
+        } = req.body;
 
+        const result = await this.userService.editProfile(
+            parseInt(userId),
+            username,
+            phoneNumber,
+            telegramAccount,
+            aboutMe,
+            profilePic,
+            )
+
+            console.log("result", result);
+            res.json(result);
+
+        } catch (error) {
+            res.json({
+                success: false,
+                data: { msg: "controller user edit profile fail" },
+                error: new Error("controller user edit profile fail"),
+            });
+        }
+        
+    }
 }

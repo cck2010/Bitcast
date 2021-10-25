@@ -66,17 +66,17 @@ export function CreateBids() {
   // Alert
   const [alert, setAlert] = useState<any>([])
 
-  const removeAlert = (e:any)=>{
+  const removeAlert = (e: any) => {
     setAlert([])
   }
   function AlertListAppend() {
-    
+
     return (
       <div>
         {/* <Alert color="info" >
           請先登記最少一樣商品
         </Alert> */}
-        <Alert className={"Alert_container"}  color="info" >
+        <Alert className={"Alert_container"} color="info" >
           請先登記最少一樣商品
           <div className={"close-alert"} onClick={removeAlert}><CloseCross /></div>
         </Alert>
@@ -123,7 +123,6 @@ export function CreateBids() {
         body: liveFormData,
       })
       const liveJson = await liveRes.json();
-      // console.log("liveJson.data.res", liveJson.data.res[0]);
       const liveId = liveJson.data.res[0].id;
 
       // ** live Inputs FormData Field **
@@ -135,11 +134,9 @@ export function CreateBids() {
       // ** Products Inputs FormData Field **
 
       const products = data.productInput
-      // console.log("productData", products);
 
       for (let [index, product] of products.entries() as any) {
-        // for (let product of products) {
-        // console.log("product", product);
+
         let productFormData = new FormData();
         productFormData.append('name', product.name);
         productFormData.append('productImage', product.productImage[0]);
@@ -172,7 +169,7 @@ export function CreateBids() {
       // dispatch to reducer
       dispatch(push("/"))
     } else {
-      if(alert.length == 0){
+      if (alert.length == 0) {
         setAlert(alert.concat(<AlertListAppend />))
 
       }
@@ -275,7 +272,7 @@ export function CreateBids() {
           <button className={"button_default"} type="button" onClick={accProNum}>
             + 增加拍賣品
           </button >
-          {alert.map((e:any)=>(
+          {alert.map((e: any) => (
             <div key={v4()}>{e}</div>
           ))}
           {/*  Dynamic Form */}
@@ -349,6 +346,7 @@ export function CreateBids() {
                   <textarea className={"input_textarea"}
                     {...register(`productInput.${index}.description`)}
                   /></p>
+                <button className={"button_default"} onClick={() => remove(index)}>刪除商品</button>
 
               </div>
             )
