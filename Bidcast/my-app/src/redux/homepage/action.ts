@@ -10,6 +10,7 @@ export interface ComingAuction {
     category: string;
     buy_price: number;
     description: string;
+    title: string;
 }
 
 export function loadComingAuctions(
@@ -33,7 +34,7 @@ export function getComingAuctions() {
             const json = await res.json();
 
             if (json) {
-
+                
                 dispatch(loadComingAuctions(json.data.results.rows))
             } else {
                 dispatch(loadComingAuctions([]))
