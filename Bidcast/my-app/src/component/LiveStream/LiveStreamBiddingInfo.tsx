@@ -58,6 +58,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
         bidIncrement: 0,
         productImage: "",
         description: "",
+        categoryId: 0,
         success: false,
     });
 

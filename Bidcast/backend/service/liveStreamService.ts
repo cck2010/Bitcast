@@ -79,7 +79,8 @@ export class LiveStreamService {
                 "is_selected",
                 "duration",
                 "countdown_end_time",
-                "description"
+                "description",
+                "category_id"
             )
             .where("live_id", liveId);
 
@@ -109,6 +110,7 @@ export class LiveStreamService {
             product["duration"] = productResult.duration;
             product["countdownEndTime"] = productResult.countdown_end_time;
             product["description"] = productResult.description;
+            product["categoryId"] = productResult.category_id;
             products.push(product);
         }
         return products;
@@ -150,5 +152,15 @@ export class LiveStreamService {
                 )
                 .where("chat.id", messageId)
         )[0];
+    };
+
+    getOtherLives = async (categoryIdArr: number[]) => {
+        const recommendLists = await this.knex("products")
+            .leftJoin("live", "products.live_id", "live.id")
+            .select("live.buyer_link")
+            .whereIn("products.category_id", categoryIdArr)
+            .andWhere("is_live", true);
+
+        return recommendLists;
     };
 }

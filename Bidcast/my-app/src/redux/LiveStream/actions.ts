@@ -21,6 +21,7 @@ export interface LiveStreamProduct {
     bidIncrement: number;
     productImage: string;
     description?: string;
+    categoryId: number;
     success: boolean;
 }
 
@@ -43,6 +44,7 @@ interface LiveStreamProductAll {
     bidIncrement: number;
     productImage: string;
     description?: string;
+    categoryId: number;
     currentPrice: number;
     isSelected: boolean;
     buyer?: string;
@@ -218,6 +220,7 @@ export function fetchliveStreamProducts(liveId: number, isFull: boolean) {
                         bidIncrement: 0,
                         productImage: "",
                         description: "",
+                        categoryId: 0,
                         success: false,
                     };
                     let productObjDynamic: LiveStreamProductDynamicInfo = {
@@ -244,6 +247,7 @@ export function fetchliveStreamProducts(liveId: number, isFull: boolean) {
                         );
                     }
                     productObj.description = product.description;
+                    productObj.categoryId = product.categoryId;
                     liveStreamProducts.push(productObj);
                     liveStreamProductsDynamicInfo.push(productObjDynamic);
                 }
@@ -470,6 +474,26 @@ export function fetchChatMessages(
                 if (ws) {
                     ws.emit("sendMessage", liveId, res.data);
                 }
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
+}
+
+export function fetchSameCategoryLive(categoryIdSet: Set<number>) {
+    return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
+        try {
+            const categoryIdArr = Array.from(categoryIdSet);
+            let categoryId = categoryIdArr.join(",");
+            if (categoryId === "") {
+                return;
+            }
+            const res = await axios.get<UpdateMessage>(
+                `${process.env.REACT_APP_BACKEND_URL}/liveStream/otherLives?category=${categoryId}`
+            );
+
+            if (res.data.success) {
             }
         } catch (e) {
             console.log(e);

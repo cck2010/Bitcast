@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchSameCategoryLive } from "../../redux/LiveStream/actions";
+import { RootState } from "../../store";
 
 function LiveStreamRecommend() {
     interface Recommendation {
@@ -6,6 +9,20 @@ function LiveStreamRecommend() {
         title: string;
         thumbnail: string;
     }
+    const dispatch = useDispatch();
+
+    const products = useSelector(
+        (state: RootState) =>
+            state.liveStream.liveStreamProducts.liveStreamProductsArr
+    );
+
+    useEffect(() => {
+        let categoryIdSet = new Set<number>();
+        for (let product of products) {
+            categoryIdSet.add(product.categoryId);
+        }
+        dispatch(fetchSameCategoryLive(categoryIdSet));
+    }, [dispatch, products]);
 
     const recommendation: Recommendation[] = [
         {

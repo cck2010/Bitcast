@@ -172,4 +172,29 @@ export class LiveStreamController {
             res.json(e);
         }
     };
+
+    getOtherLives = async (req: Request, res: Response) => {
+        try {
+            const query = req.query;
+            const categoryIds = String(query.category);
+            const categoryIdArr = categoryIds
+                .split(",")
+                .map((item) => parseInt(item));
+
+            const results = await this.liveStreamService.getOtherLives(
+                categoryIdArr
+            );
+
+            let resultsSet = new Set();
+            for (let result of results) {
+                resultsSet.add(result.buyer_link);
+            }
+            console.log(resultsSet);
+
+            res.json();
+        } catch (e) {
+            console.log(e);
+            res.json(e);
+        }
+    };
 }

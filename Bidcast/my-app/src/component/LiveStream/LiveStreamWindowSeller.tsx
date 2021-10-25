@@ -143,17 +143,18 @@ function LiveStreamWindow() {
                         </button>
                     </ButtonGroup>
                 )}
-
-                <video
-                    id="pubVideo"
-                    poster="transparent.png"
-                    className="w-100 h-100"
-                    controls
-                    ref={pubVideo}
-                    style={{
-                        backgroundImage: `url("${thumbnail}")`,
-                    }}
-                ></video>
+                {thumbnail && (
+                    <video
+                        id="pubVideo"
+                        poster="transparent.png"
+                        className="w-100 h-100"
+                        controls
+                        ref={pubVideo}
+                        style={{
+                            backgroundImage: `url("${process.env.REACT_APP_BACKEND_URL}/${thumbnail}")`,
+                        }}
+                    ></video>
+                )}
             </div>
         </div>
     );
