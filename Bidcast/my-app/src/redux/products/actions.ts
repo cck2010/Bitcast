@@ -20,6 +20,7 @@ export interface Product {
     updated_by: string;
     created_at: Date;
     updated_at: Date;
+    username:string;
 }
 
 export interface Category {

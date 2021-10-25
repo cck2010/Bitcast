@@ -1,4 +1,4 @@
-import { Button, Card, Container, Image } from "react-bootstrap";
+import { Button, Card, Container, Image, Modal } from "react-bootstrap";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { SvgBorder } from "./SvgBorder";
@@ -7,7 +7,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { RootState } from "../../store";
 import { useDispatch, useSelector } from "react-redux";
-import { getComingAuctions } from "../../redux/homepage/action";
+import {
+  getComingAuctions,
+} from "../../redux/homepage/action";
 import { useEffect, useState } from "react";
 import { ProductDetails } from "./ProductDetails";
 
@@ -40,7 +42,8 @@ export function ComingAuction() {
     dispatch(getComingAuctions());
   }, [dispatch]);
 
-  const [modalShow, setModalShow] = useState(false);
+  const [modalShow, setModalShow] = useState(-1);
+
 
   return (
     <div>
@@ -68,11 +71,15 @@ export function ComingAuction() {
           showDots={false}
           sliderClass=""
           slidesToSlide={1}
-          swipeable={false}
+          swipeable
         >
           {auctions.map((auction) => (
             <Card key={auction.id} className="product_card">
-              <Image className="img_fluid" src={auction.image} fluid />
+              <Image
+                className="img_fluid"
+                src={`${process.env.REACT_APP_BACKEND_URL}/${auction.image}`}
+                fluid
+              />
               <Card.Body>
                 <div className="counter">
                   <div className="countdown_time">
@@ -92,26 +99,25 @@ export function ComingAuction() {
                     <div className="time_label">秒</div>
                   </div>
                 </div>
-                <Card.Title>{auction.product_name}</Card.Title>
-                <Card.Text>
-                  底價:{" "}
-                  <span className="biding_price">HKD {auction.min_price}</span>
-                </Card.Text>
+                <Card.Title>{auction.title}</Card.Title>
                 <Card.Text>由{auction.username}主辦</Card.Text>
                 <div className="bid_share_container">
                   <Button
                     variant="outline-dark"
                     className="bid_button"
-                    onClick={() => setModalShow(true)}
+                    onClick={() => setModalShow(auction.id)}
                   >
                     更多資料
                   </Button>
 
-                  <ProductDetails
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
-                  />
-
+                  
+                    <ProductDetails
+                      show={modalShow === auction.id}
+                      id= {auction.id}
+                      onHide={() => setModalShow(-1)}
+                    />
+                
+                
                   <RWebShare
                     data={{
                       text: "",

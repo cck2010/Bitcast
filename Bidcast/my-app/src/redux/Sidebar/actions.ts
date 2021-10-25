@@ -4,7 +4,7 @@ export function menuIconClick (
 isCollapse:boolean
 ) {
     return {
-        type: "@@SIDEBAR/MENU_ONCLICK" as const,
+        type: "@@sidebar/MENU_ONCLICK" as const,
         isCollapse
     }
 }
