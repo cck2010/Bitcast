@@ -91,8 +91,6 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     }, [remainingTime, timerId]);
     //Countdown End Handler
 
-    console.log(selectedProduct);
-
     //Countdown Start Handler
     useEffect(() => {
         if (

@@ -69,8 +69,6 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     }, [remainingTime, timerId]);
     //Countdown End Handler
 
-    console.log(selectedProduct);
-
     //Countdown Start Handler
     useEffect(() => {
         if (
@@ -85,7 +83,6 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     countdownEndTime !== undefined &&
                     countdownEndTime > new Date()
                 ) {
-                    console.log("pass?1");
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);
                     setIsBidding(true);
@@ -114,7 +111,6 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     countdownEndTime !== undefined &&
                     countdownEndTime <= new Date()
                 ) {
-                    console.log("pass?2");
                     clearInterval(timerId);
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);
@@ -123,7 +119,6 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     productsDynamic[ind].isSelected &&
                     countdownEndTime === undefined
                 ) {
-                    console.log("pass?3", products, ind);
                     clearInterval(timerId);
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);
