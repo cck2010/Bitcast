@@ -186,6 +186,7 @@ export function changeDummy() {
         type: "@@liveStream/CHANGE_DUMMY" as const,
     };
 }
+
 export type LiveStreamActions =
     | ReturnType<typeof loadliveStreamInfo>
     | ReturnType<typeof loadLiveStreamProducts>
@@ -230,8 +231,6 @@ export function fetchliveStreamInfo(room: string, token: string) {
 export function fetchliveStreamProducts(liveId: number, isFull: boolean) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         try {
-            console.log(liveId, isFull);
-
             const res = await axios.get<{
                 liveStreamProducts: LiveStreamProductAll[];
                 success: boolean;
@@ -285,11 +284,6 @@ export function fetchliveStreamProducts(liveId: number, isFull: boolean) {
                     liveStreamProducts.push(productObj);
                     liveStreamProductsDynamicInfo.push(productObjDynamic);
                 }
-                console.log(
-                    "res",
-                    liveStreamProducts,
-                    liveStreamProductsDynamicInfo
-                );
 
                 if (isFull) {
                     dispatch(

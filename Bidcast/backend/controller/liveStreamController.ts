@@ -186,7 +186,6 @@ export class LiveStreamController {
                 parseInt(liveId),
                 categoryIdArr
             );
-            console.log(results);
 
             res.json({ results, success: true });
         } catch (e) {

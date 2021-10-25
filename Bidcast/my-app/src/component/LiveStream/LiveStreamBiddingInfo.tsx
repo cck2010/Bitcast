@@ -62,8 +62,6 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
         });
 
     useEffect(() => {
-        console.log(selectedProduct);
-
         if (
             inputPrice <=
             selectedProductDynamic.currentPrice +
@@ -97,12 +95,6 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     //Countdown Start Handler
     useEffect(() => {
         if (productsDynamic.length !== 0) {
-            console.log(
-                "11 products = ",
-                selectedProduct,
-                selectedProductDynamic
-            );
-
             for (let ind in productsDynamic) {
                 let countdownEndTime = productsDynamic[ind].countdownEndTime;
                 if (
@@ -110,11 +102,6 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     countdownEndTime !== undefined &&
                     countdownEndTime > new Date()
                 ) {
-                    console.log(
-                        "22 products = ",
-                        selectedProduct,
-                        selectedProductDynamic
-                    );
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);
                     setIsBidding(true);
@@ -144,11 +131,6 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     countdownEndTime !== undefined &&
                     countdownEndTime <= new Date()
                 ) {
-                    console.log(
-                        "33 products = ",
-                        selectedProduct,
-                        selectedProductDynamic
-                    );
                     clearInterval(timerId);
                     setTimerId(0);
                     setSelectedProduct(products[ind]);
@@ -158,11 +140,6 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     productsDynamic[ind].isSelected &&
                     countdownEndTime === undefined
                 ) {
-                    console.log(
-                        "44 products = ",
-                        products,
-                        selectedProductDynamic
-                    );
                     clearInterval(timerId);
                     setTimerId(0);
                     setSelectedProduct(products[ind]);
