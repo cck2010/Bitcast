@@ -189,7 +189,6 @@ export class UserController {
             return res.json({
                 token: null,
                 message: 'loginGoole unknow error'
-
             })
         }
     }

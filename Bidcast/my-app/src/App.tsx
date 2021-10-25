@@ -15,21 +15,36 @@ import { profile } from "console";
 import { ProfilePage } from "./pages/Profile-Page/Profilepage";
 import { CategoryResults } from "./pages/categories/Categories";
 import { useDispatch } from "react-redux";
-import { checkCurrentUser } from "./redux/user/actions";
+import { checkCurrentUser,} from "./redux/user/actions";
 // import { CreateBids } from "./pages/createbids/CreateBids";
 import { useAdBlockDetector } from "adblock-detector-hook";
+// import{CheckUserPhoneNumber,} from "./redux/user/actions"
+
+import { ToastProvider } from 'react-toast-notifications';
 
 function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(checkCurrentUser());
-    }, [dispatch]);
+        
+        // dispatch(CheckUserPhoneNumber())
+        // ?
+        // dispatch(Toasts())
+        // (dispatch(push('/profilePage/accountDetails')))
+        
+        // //    ( alert(`請到個人頁面更改電話號碼`))
+        
+        // :
+        // (console.log('vaild phoneNumber'))
+        
+    }, [dispatch,]);
 
     const { detected } = useAdBlockDetector();
     <div>AdBlocker Detected: {JSON.stringify(detected)}</div>;
 
     return (
+        <ToastProvider>
         <div className="App">
             {detected ? (
                 <div className="turn_off_adblock">
@@ -68,6 +83,7 @@ function App() {
                 </>
             )}
         </div>
+        </ToastProvider>
     );
 }
 

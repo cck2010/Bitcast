@@ -4,11 +4,11 @@ import { ConnectedRouter, push } from 'connected-react-router';
 import { history,store } from '../../store';
 import { Provider } from "react-redux";
 import './Login.scss';
-import image from "./img1.jpeg"
+import image from "./img2.jpg"
 import { SignupForm } from "./Form/SignupForm";
 import { LoginForm } from "./Form/LoginForm";
 import { useDispatch } from "react-redux"
-import { loadToken, login } from "../../redux/user/actions";
+import { CheckUserPhoneNumber, loadToken, login, Toasts } from "../../redux/user/actions";
 import { useState } from "react";
 import axios from 'axios'
 import FacebookLogin from "react-facebook-login";
@@ -48,12 +48,14 @@ console.log(response.profileObj);
           email:response.profileObj.email,
           image:response.profileObj.imageUrl
         })
-        console.log(res.data)
+        
         
         if (res.data.token != null) {
           localStorage.setItem('token', res.data.token)
           dispatch(login(res.data.token))
           dispatch(loadToken(res.data.token))
+          // dispatch(checkUserPhoneNumber())?
+          // dispatch((Toasts())):
           dispatch(push('/'))
         } else {
           setError('email or password wrong')
@@ -89,7 +91,10 @@ console.log(response.profileObj);
               localStorage.setItem('token', res.data.token)
               dispatch(login(res.data.token))
               dispatch(loadToken(res.data.token))
+              // dispatch(checkUserPhoneNumber())?
+              // dispatch((PhoneNumberMessageBox())):
               dispatch(push('/'))
+              
             } else {
               setError('email or password wrong')
             }

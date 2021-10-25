@@ -1,5 +1,5 @@
 import produce from "immer"
-import { UserActions, LoadToken } from "./actions";
+import { UserActions, AuthActions } from "./actions";
 import jwt, { JwtPayload, VerifyOptions } from "jsonwebtoken";
 
 
@@ -55,18 +55,18 @@ export function userReducer(state: UserState = initialState, action: UserActions
 
 export let authReducer = (
     state: AuthState = loadTokenInitalState,
-    action: LoadToken,
+    action: AuthActions,
 ): AuthState => {
     switch (action.type) {
-        case '@Auth/load_token': {
+        case '@@Auth/load_token': {
             try {
                 const verifyOptions: VerifyOptions = {
                     maxAge: "12h",
                     algorithms: ["RS512"]
                 }
 
-                let a = process.env.REACT_APP_PUBLIC_KEY!.replace(/\\n/g, '\n')
-                let payload: string | JwtPayload | any = jwt.verify(action.token, a, verifyOptions)
+                let key = process.env.REACT_APP_PUBLIC_KEY!.replace(/\\n/g, '\n')
+                let payload: string | JwtPayload | any = jwt.verify(action.token, key, verifyOptions)
                 // console.log('payload= ', payload)
                 const user: JWTPayload = {
                     id: payload.id,
@@ -96,6 +96,7 @@ export let authReducer = (
                 }
             }
         }
+
         default:
             return state
     }
