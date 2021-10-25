@@ -66,18 +66,20 @@ function LiveStreamWindow() {
         <div className="LiveStreamWindow">
             <div className="flex flex-col h-screen relative">
                 <header className="flex h-16 justify-center items-center text-xl bg-black text-white"></header>
-                {thumbnail && (
-                    <video
-                        id="subVideo"
-                        poster="transparent.png"
-                        className="w-100 h-100"
-                        controls
-                        ref={subVideo}
-                        style={{
-                            backgroundImage: `url("${process.env.REACT_APP_BACKEND_URL}/${thumbnail}")`,
-                        }}
-                    ></video>
-                )}
+                <video
+                    id="subVideo"
+                    poster="transparent.png"
+                    className="w-100 h-100"
+                    controls
+                    ref={subVideo}
+                    style={{
+                        backgroundImage: `${
+                            thumbnail
+                                ? `url("${process.env.REACT_APP_BACKEND_URL}/${thumbnail}")`
+                                : ""
+                        }`,
+                    }}
+                ></video>
             </div>
         </div>
     );
