@@ -21,8 +21,6 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     const [isBidding, setIsBidding] = useState<boolean>(true);
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
     const [timerId, setTimerId] = useState<number>(0);
-    const [username, setUsername] = useState<string>("");
-    const user = useSelector((state: RootState) => state.authState.user);
     const isAuthenticate = useSelector(
         (state: RootState) => state.user.isAuthenticate
     );
@@ -30,15 +28,6 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     const liveId = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.id
     );
-
-    useEffect(() => {
-        if (
-            typeof user === "object" &&
-            (username === "" || username === undefined)
-        ) {
-            setUsername(user.username);
-        }
-    }, [user, username]);
 
     const products = useSelector(
         (state: RootState) =>
@@ -73,6 +62,8 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
         });
 
     useEffect(() => {
+        console.log(selectedProduct);
+
         if (
             inputPrice <=
             selectedProductDynamic.currentPrice +
@@ -87,6 +78,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
         inputPrice,
         selectedProductDynamic.currentPrice,
         selectedProduct.bidIncrement,
+        selectedProduct,
     ]);
     //Get States
 
@@ -105,6 +97,12 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     //Countdown Start Handler
     useEffect(() => {
         if (productsDynamic.length !== 0) {
+            console.log(
+                "11 products = ",
+                selectedProduct,
+                selectedProductDynamic
+            );
+
             for (let ind in productsDynamic) {
                 let countdownEndTime = productsDynamic[ind].countdownEndTime;
                 if (
@@ -112,6 +110,11 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     countdownEndTime !== undefined &&
                     countdownEndTime > new Date()
                 ) {
+                    console.log(
+                        "22 products = ",
+                        selectedProduct,
+                        selectedProductDynamic
+                    );
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);
                     setIsBidding(true);
@@ -141,6 +144,11 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     countdownEndTime !== undefined &&
                     countdownEndTime <= new Date()
                 ) {
+                    console.log(
+                        "33 products = ",
+                        selectedProduct,
+                        selectedProductDynamic
+                    );
                     clearInterval(timerId);
                     setTimerId(0);
                     setSelectedProduct(products[ind]);
@@ -150,6 +158,11 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     productsDynamic[ind].isSelected &&
                     countdownEndTime === undefined
                 ) {
+                    console.log(
+                        "44 products = ",
+                        products,
+                        selectedProductDynamic
+                    );
                     clearInterval(timerId);
                     setTimerId(0);
                     setSelectedProduct(products[ind]);
@@ -195,7 +208,12 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
         }
     };
     const customBidIncrement = () => {
-        if (props.ws) {
+        if (
+            props.ws &&
+            inputPrice >=
+                selectedProductDynamic.currentPrice +
+                    selectedProduct.bidIncrement
+        ) {
             dispatch(
                 fetchBidIncrement(
                     selectedProduct.id,
@@ -221,6 +239,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
         }
     };
     //Button On Click Handler
+
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded my-3">
             <div className="info w-100 h-100 d-flex justify-contens-center align-items-center flex-column">

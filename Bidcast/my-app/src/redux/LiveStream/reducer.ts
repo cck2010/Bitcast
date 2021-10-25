@@ -4,6 +4,7 @@ import {
     LiveStreamInfo,
     LiveStreamProduct,
     LiveStreamProductDynamicInfo,
+    Recommend,
 } from "./actions";
 import produce from "immer";
 
@@ -18,6 +19,11 @@ export interface LiveStreamState {
         chatMessages: ChatMessage[];
         success: boolean;
     };
+    recommendList: {
+        results: Recommend[];
+        success: boolean;
+    };
+    dummy: number;
 }
 
 const initialState: LiveStreamState = {
@@ -40,6 +46,11 @@ const initialState: LiveStreamState = {
         chatMessages: [],
         success: false,
     },
+    recommendList: {
+        results: [],
+        success: false,
+    },
+    dummy: 0,
 };
 
 export function liveStreamReducer(
@@ -123,6 +134,13 @@ export function liveStreamReducer(
                 if (newState.chat.success && action.chatMessage.success) {
                     newState.chat.chatMessages.push(tempMessage);
                 }
+                break;
+            case "@@liveStream/LOAD_RECOMMEND_LISTS":
+                newState.recommendList.results = action.recommendList;
+                newState.chat.success = action.success;
+                break;
+            case "@@liveStream/CHANGE_DUMMY":
+                newState.dummy = Math.floor(Math.random() * 10000);
                 break;
         }
     });

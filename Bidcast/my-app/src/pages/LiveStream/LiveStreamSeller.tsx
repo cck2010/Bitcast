@@ -27,6 +27,7 @@ function LiveStream() {
         room = room != null ? room : "";
         let token = new URLSearchParams(window.location.search).get("token");
         token = token != null ? token : "";
+        console.log(room, token, "room token2");
 
         dispatch(fetchliveStreamInfo(room, token));
     }, [dispatch]);
@@ -140,7 +141,6 @@ function LiveStream() {
                                 <LiveStreamChatRoom
                                     liveStreamRef={liveStreamRef}
                                     isTablet={isTablet}
-                                    ws={ws}
                                 />
                             )}
                             {page === 4 && <LiveStreamRecommend />}
@@ -154,7 +154,6 @@ function LiveStream() {
                                 <LiveStreamChatRoom
                                     liveStreamRef={liveStreamRef}
                                     isTablet={isTablet}
-                                    ws={ws}
                                 />
                             </div>
                         </div>

@@ -84,6 +84,7 @@ export class ProductsService {
                     .where("id", productId)
             )[0];
 
+            const bidIncrement = result.bid_increment;
             const currentPrice = result.current_price;
             const buyPrice = result.buy_price;
             const buyerId = result.buyer_id;
@@ -97,6 +98,12 @@ export class ProductsService {
                 }
             } else {
                 if (bidAmount < buyPrice) {
+                    if (bidAmount < currentPrice + bidIncrement) {
+                        return {
+                            currentPrice: 0,
+                            success: false,
+                        };
+                    }
                     newPrice = bidAmount;
                 } else {
                     newPrice = buyPrice;
