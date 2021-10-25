@@ -69,7 +69,7 @@ export function Broadcasting() {
           showDots={false}
           sliderClass=""
           slidesToSlide={1}
-          swipeable={false}
+          swipeable
         >
           {broadcastings.map((broadcasting) => (
             <div key={broadcasting.id}>

@@ -30,4 +30,16 @@ export class ComingAuctionController {
             })
         }
     }
+
+    getProductDetails = async (req: Request, res: Response)=> {
+        try {
+            const result = await this.comingAuctionService.getProductDetails()
+            
+            // console.log(result.data.results.rows[0]);
+            
+            res.json(result)
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }

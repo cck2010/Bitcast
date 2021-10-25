@@ -282,3 +282,9 @@ footer {
 .products_detailed_info{
   margin-left: 1em;
 }
+.modal-backdrop.show {
+  opacity: 0.1 !important;
+}
+.modal-backdrop {
+  background-color: #4e4e4e !important;
+}
