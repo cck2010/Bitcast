@@ -5,4 +5,4 @@ export const myLiveRoutes = express.Router()
 
 // for getting live show in profile page
 
-myLiveRoutes.get("/profile-page/my-live", (req, res) => myLiveController.getMyLive(req, res))
+myLiveRoutes.get("/profilePage/myLive", (req, res) => myLiveController.getMyLive(req, res))

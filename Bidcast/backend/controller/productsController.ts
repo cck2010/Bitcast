@@ -8,7 +8,7 @@ export class ProductsController {
     getCategories = async (req: Request, res: Response) => {
         try {
             const result = await this.productsService.getCategories();
-            console.log("result", result);
+            // console.log("result", result);
             res.json(result);
         } catch (error) {
             res.json({
@@ -20,14 +20,12 @@ export class ProductsController {
     };
     submitBidLiveInfo = async (req: Request, res: Response) => {
         try {
-           
             const liveImage: string | undefined = req.file?.filename;
-        
-            const { liveTitle, description, startDate,userId} = req.body;
-            
+
+            const { liveTitle, description, startDate, userId } = req.body;
+
             const ms = Date.parse(startDate);
             const startDateFormat = new Date(ms + 28800000);
-
 
             // let sellerLink = "1123";
             // let buyerLink = "232323";
@@ -35,8 +33,8 @@ export class ProductsController {
             // let buyerLink = await v4().substring(0,8);
             let sellerLink = await v4();
             let buyerLink = await v4();
-            console.log("buyerLink", buyerLink);
-            console.log("sellerLink", sellerLink);
+            // console.log("buyerLink", buyerLink);
+            // console.log("sellerLink", sellerLink);
 
             const result = await this.productsService.submitBidLiveInfo(
                 liveTitle,
@@ -46,10 +44,8 @@ export class ProductsController {
                 parseInt(userId),
                 sellerLink,
                 buyerLink
-
-
             );
-            console.log("submitted live result (controller side)", result);
+            // console.log("submitted live result (controller side)", result);
             res.json(result);
         } catch (error) {
             res.json({
@@ -88,7 +84,7 @@ export class ProductsController {
                 username,
                 parseInt(userId)
             );
-            console.log("result", result);
+            // console.log("result", result);
             res.json(result);
         } catch (error) {
             res.json({
@@ -99,13 +95,26 @@ export class ProductsController {
         }
     };
 
-    putBidIncrement = async (req: Request, res: Response) => {
+    putcurrentPrice = async (req: Request, res: Response) => {
         try {
-            const { productId } = req.body;
-            const result = await this.productsService.putBidIncrement(
-                productId
+            const { productId, bidAmount, addCurrentPrice } = req.body;
+            const userId = req.user && req.user.id ? req.user.id : 0;
+            const username =
+                req.user && req.user.username ? req.user.username : "";
+
+            const result = await this.productsService.putcurrentPrice(
+                productId,
+                bidAmount,
+                addCurrentPrice,
+                userId
             );
-            const response = { id: productId, newPrice: result, success: true };
+            const response = {
+                id: productId,
+                newPrice: result.currentPrice,
+                buyer: username,
+                isEnded: result.isEnded,
+                success: result.success,
+            };
             res.json(response);
         } catch (e) {
             console.log(e);

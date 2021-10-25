@@ -24,7 +24,7 @@ export function SignupForm() {
         password: data.password,
         phoneNumber:data.phoneNumber,
       })
-      console.log(res.data)
+      // console.log(res.data)
       if (res.data.token != null) {
         
         localStorage.setItem('token', res.data.token)

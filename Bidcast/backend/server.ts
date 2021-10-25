@@ -24,7 +24,7 @@ import liveStreamRoutes from "./router/liveStreamRoutes";
 import productsRoutes from "./router/productsRoutes";
 import { ProductsService } from "./service/productsService";
 import { ProductsController } from "./controller/productsController";
-import { comingAuctionRoutes } from "./router/comingAuction";
+import { comingAuctionRoutes } from "./router/comingAuctionRoutes";
 import { ComingAuctionController } from "./controller/comingAuctionController";
 import { ComingAuctionService } from "./service/comingAuctionService";
 import { MyLiveController } from "./controller/myLiveController";
@@ -64,9 +64,7 @@ export const productsController = new ProductsController(
 export const comingAuctionController = new ComingAuctionController(
     new ComingAuctionService(knex)
 );
-export const myLiveController = new MyLiveController(
-    new MyLiveService(knex)
-);
+export const myLiveController = new MyLiveController(new MyLiveService(knex));
 
 // app.use(requestLogger, dummyCounter);
 app.use(userRoutes);
@@ -103,5 +101,3 @@ const PORT = env.PORT;
 server.listen(PORT, () => {
     logger.info(`Server準備好喇： http://localhost:${PORT}/`);
 });
-
-

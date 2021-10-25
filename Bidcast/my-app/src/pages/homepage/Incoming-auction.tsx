@@ -34,6 +34,7 @@ export function ComingAuction() {
   );
 
   const dispatch = useDispatch();
+  
   useEffect(() => {
     dispatch(getComingAuctions());
   }, [dispatch]);
@@ -71,7 +72,7 @@ export function ComingAuction() {
               <Image
                 key={auction.id}
                 className="img_fluid"
-                src={auction.product_image}
+                src={auction.image}
                 fluid
               />
               <Card.Body>

@@ -4,7 +4,7 @@ export interface ComingAuction {
     id: number;
     product_name: string;
     min_price: number;
-    product_image: string;
+    image: string;
     starting_time: number;
     username: string;
     success: boolean;
@@ -29,11 +29,8 @@ export function getComingAuctions() {
             const res = await fetch(
                 `${process.env.REACT_APP_BACKEND_URL}/comingAuction`
             );
-
+                
             const json = await res.json();
-
-            console.log(json);
-            
 
             if (json.success) {
 
