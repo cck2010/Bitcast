@@ -6,9 +6,10 @@ export class ComingAuctionService {
     getComingAuction = async () => {
         const results = await this.knex.raw(
             /*sql*/
-            `select * from live 
-            left outer join users on live.user_id = users.id 
-            limit 6;`
+            `select * from products
+            left outer join live on products.live_id = live.id
+            left outer join users on live.user_id = users.id
+            limit 10`
         )
         return {
             success: true,

@@ -2,22 +2,18 @@ import { ComingAuction, ComingAuctionActions } from "./action";
 import produce from "immer";
 
 export interface ComingAuctionState {
-    comingAuctions: {
-        comingAuctionsArr: ComingAuction[];
-        success: boolean;
-    }
+    comingAuctions: ComingAuction[];
 }
 
 const initialState: ComingAuctionState = {
-    comingAuctions: { comingAuctionsArr: [], success: true }
+    comingAuctions: []
 }
 
 export function comingAuctionReducer(state: ComingAuctionState = initialState, action: ComingAuctionActions): ComingAuctionState {
-    return produce(state, (state) => {
+    return produce(state, (newState) => {
         switch (action.type) {
             case "@@comingAuction/LOAD_COMING_AUCTION":
-                state.comingAuctions.comingAuctionsArr = action.comingAuctions;
-                state.comingAuctions.success = action.success;
+                newState.comingAuctions = action.comingAuctions;
                 break;
         }
     })

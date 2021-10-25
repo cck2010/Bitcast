@@ -25,6 +25,7 @@ import { push } from "connected-react-router";
 import { FormGroup, Input } from "reactstrap";
 import { fetchProductSearchResult } from "../../redux/searchResult/action";
 import { fetchCategories } from "../../redux/products/actions";
+import { menuIconClick } from "../../redux/Sidebar/actions";
 
 export function HomePageNavbar() {
   // const [show, setShow] = useState(false);
@@ -65,6 +66,10 @@ export function HomePageNavbar() {
     dispatch(fetchCategories());
   }, [dispatch])
 
+  const menuIconOnclickHandler = ()=>{
+    dispatch(menuIconClick(true))
+  }
+
   return (
     <div>
       <Navbar collapseOnSelect expand="md" className="navbar py-0">
@@ -77,7 +82,7 @@ export function HomePageNavbar() {
             className="d-inline-block align-top"
           />
         </Link>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Toggle aria-controls="responsive-navbar-nav"  onClick={menuIconOnclickHandler}/>
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto navbar_buttons">
             <FormGroup>

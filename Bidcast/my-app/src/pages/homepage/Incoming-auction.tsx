@@ -8,7 +8,8 @@ import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { RootState } from "../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { getComingAuctions } from "../../redux/homepage/action";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { ProductDetails } from "./ProductDetails";
 
 const responsive = {
   desktop: {
@@ -30,14 +31,16 @@ const responsive = {
 
 export function ComingAuction() {
   const auctions = useSelector((state: RootState) =>
-    Object.values(state.comingAuction.comingAuctions.comingAuctionsArr)
+    Object.values(state.comingAuction.comingAuctions)
   );
 
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     dispatch(getComingAuctions());
   }, [dispatch]);
+
+  const [modalShow, setModalShow] = useState(false);
 
   return (
     <div>
@@ -46,9 +49,9 @@ export function ComingAuction() {
         <SvgBorder />
         <Carousel
           additionalTransfrom={0}
-          autoPlay
+          autoPlay={false}
           arrows={false}
-          autoPlaySpeed={5000}
+          // autoPlaySpeed={5000}
           centerMode={false}
           className=""
           containerClass="container-with-dots"
@@ -69,12 +72,7 @@ export function ComingAuction() {
         >
           {auctions.map((auction) => (
             <Card key={auction.id} className="product_card">
-              <Image
-                key={auction.id}
-                className="img_fluid"
-                src={auction.image}
-                fluid
-              />
+              <Image className="img_fluid" src={auction.image} fluid />
               <Card.Body>
                 <div className="counter">
                   <div className="countdown_time">
@@ -101,9 +99,18 @@ export function ComingAuction() {
                 </Card.Text>
                 <Card.Text>由{auction.username}主辦</Card.Text>
                 <div className="bid_share_container">
-                  <Button variant="outline-dark" className="bid_button">
-                    收藏
+                  <Button
+                    variant="outline-dark"
+                    className="bid_button"
+                    onClick={() => setModalShow(true)}
+                  >
+                    更多資料
                   </Button>
+
+                  <ProductDetails
+                    show={modalShow}
+                    onHide={() => setModalShow(false)}
+                  />
 
                   <RWebShare
                     data={{
@@ -122,42 +129,6 @@ export function ComingAuction() {
               </Card.Body>
             </Card>
           ))}
-
-          <Card className="product_card">
-            <Image
-              className="img_fluid"
-              src="https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/MX3Y2?wid=2104&hei=2980&fmt=jpeg&qlt=95&.v=1580420157712"
-              fluid
-            />
-            <Card.Body>
-              <div className="counter">
-                <div className="countdown_time">
-                  <div className="time_value">00</div>
-                  <div className="time_label">日</div>
-                </div>
-                <div className="countdown_time">
-                  <div className="time_value">00</div>
-                  <div className="time_label">時</div>
-                </div>
-                <div className="countdown_time">
-                  <div className="time_value">00</div>
-                  <div className="time_label">分</div>
-                </div>
-                <div className="countdown_time">
-                  <div className="time_value">00</div>
-                  <div className="time_label">秒</div>
-                </div>
-              </div>
-              <Card.Title>產品名</Card.Title>
-              <Card.Text>
-                底價: <span className="biding_price">HKD 100</span>
-              </Card.Text>
-              <Card.Text>由xxx主辦</Card.Text>
-              <Button variant="outline-dark" className="bid_button">
-                收藏
-              </Button>
-            </Card.Body>
-          </Card>
         </Carousel>
       </Container>
     </div>

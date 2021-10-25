@@ -7,17 +7,17 @@ export interface ComingAuction {
     image: string;
     starting_time: number;
     username: string;
-    success: boolean;
+    category: string;
+    buy_price: number;
+    description: string;
 }
 
 export function loadComingAuctions(
     comingAuctions: ComingAuction[],
-    success: boolean
 ) {
     return {
         type: "@@comingAuction/LOAD_COMING_AUCTION" as const,
         comingAuctions,
-        success,
     };
 }
 
@@ -32,11 +32,11 @@ export function getComingAuctions() {
                 
             const json = await res.json();
 
-            if (json.success) {
+            if (json) {
 
-                dispatch(loadComingAuctions(json.data.results.rows, true))
+                dispatch(loadComingAuctions(json.data.results.rows))
             } else {
-                dispatch(loadComingAuctions([], false))
+                dispatch(loadComingAuctions([]))
             }
 
         } catch (error) {
