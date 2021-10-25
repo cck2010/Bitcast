@@ -21,8 +21,6 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     const [isBidding, setIsBidding] = useState<boolean>(true);
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
     const [timerId, setTimerId] = useState<number>(0);
-    const [username, setUsername] = useState<string>("");
-    const user = useSelector((state: RootState) => state.authState.user);
     const isAuthenticate = useSelector(
         (state: RootState) => state.user.isAuthenticate
     );
@@ -30,15 +28,6 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     const liveId = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.id
     );
-
-    useEffect(() => {
-        if (
-            typeof user === "object" &&
-            (username === "" || username === undefined)
-        ) {
-            setUsername(user.username);
-        }
-    }, [user, username]);
 
     const products = useSelector(
         (state: RootState) =>
@@ -87,6 +76,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
         inputPrice,
         selectedProductDynamic.currentPrice,
         selectedProduct.bidIncrement,
+        selectedProduct,
     ]);
     //Get States
 
@@ -195,7 +185,12 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
         }
     };
     const customBidIncrement = () => {
-        if (props.ws) {
+        if (
+            props.ws &&
+            inputPrice >=
+                selectedProductDynamic.currentPrice +
+                    selectedProduct.bidIncrement
+        ) {
             dispatch(
                 fetchBidIncrement(
                     selectedProduct.id,
@@ -221,6 +216,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
         }
     };
     //Button On Click Handler
+
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded my-3">
             <div className="info w-100 h-100 d-flex justify-contens-center align-items-center flex-column">

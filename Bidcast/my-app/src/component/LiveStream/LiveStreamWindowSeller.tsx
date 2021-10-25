@@ -54,6 +54,18 @@ function LiveStreamWindow() {
 
     useEffect(() => {
         return () => {
+            if (localStream) {
+                let tracks = localStream.getTracks();
+                tracks.forEach(function (track) {
+                    track.stop();
+                });
+                localStream.unpublish();
+            }
+        };
+    }, [localStream]);
+
+    useEffect(() => {
+        return () => {
             clearInterval(timerId);
             client?.close();
             signal?.close();

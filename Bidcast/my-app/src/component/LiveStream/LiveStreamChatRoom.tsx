@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import CustomScroll from "react-custom-scroll";
 import { useDispatch, useSelector } from "react-redux";
-import { Socket } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 import {
     fetchChatMessages,
     sendChatMessages,
@@ -12,7 +12,6 @@ import { RootState } from "../../store";
 interface LiveStreamChatRoomProps {
     liveStreamRef: React.RefObject<HTMLDivElement>;
     isTablet: boolean;
-    ws: Socket | null;
 }
 
 function getRandomColor() {
@@ -118,21 +117,41 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
 
     //Send Message Handler
     const sendMessageHandler = (inputMessage: string) => {
-        if (props.ws) {
-            dispatch(fetchChatMessages(props.ws, liveId, inputMessage));
+        if (ws) {
+            dispatch(fetchChatMessages(ws, liveId, inputMessage));
         }
     };
     //Send Message Handler
 
     //WebSocket Signal Handler
-    useEffect(() => {
-        if (props.ws) {
-            props.ws.on("sendMessage", (message: UpdateMessage) => {
-                dispatch(sendChatMessages(message));
-            });
+    const [ws, setWs] = useState<Socket | null>(null);
+
+    const connectWebSocket = () => {
+        if (process.env.REACT_APP_BACKEND_URL !== undefined) {
+            setWs(io(process.env.REACT_APP_BACKEND_URL));
         }
-    }, [dispatch, props.ws]);
-    //WebSocket Signal Handler
+    };
+
+    if (liveId > 0 && ws === null) {
+        connectWebSocket();
+    }
+
+    useEffect(() => {
+        if (ws) {
+            const initWebSocket = () => {
+                if (ws) {
+                    ws.emit("joinRoom", liveId.toString() + "chatroom");
+                    ws.on("sendMessage", (message: UpdateMessage) => {
+                        dispatch(sendChatMessages(message));
+                    });
+                }
+            };
+            initWebSocket();
+        }
+        return () => {
+            ws?.close();
+        };
+    }, [dispatch, ws, liveId]);
 
     return (
         <div className="LiveStreamChatRoom">

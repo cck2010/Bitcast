@@ -8,7 +8,7 @@ export interface LiveStreamProduct {
     currentPrice: number;
     buyPrice: number;
     bidIncrement: number;
-    buyer?: string;
+    buyer: string;
     productImage: string;
     isSelected: boolean;
     countdownStartTime?: Date;
@@ -175,23 +175,19 @@ export class LiveStreamController {
 
     getOtherLives = async (req: Request, res: Response) => {
         try {
-            const query = req.query;
-            const categoryIds = String(query.category);
+            const category = req.query.category as string;
+            const liveId = req.query.liveId as string;
+            const categoryIds = String(category);
             const categoryIdArr = categoryIds
                 .split(",")
                 .map((item) => parseInt(item));
 
             const results = await this.liveStreamService.getOtherLives(
+                parseInt(liveId),
                 categoryIdArr
             );
 
-            let resultsSet = new Set();
-            for (let result of results) {
-                resultsSet.add(result.buyer_link);
-            }
-            console.log(resultsSet);
-
-            res.json();
+            res.json({ results, success: true });
         } catch (e) {
             console.log(e);
             res.json(e);

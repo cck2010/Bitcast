@@ -29,7 +29,7 @@ export interface LiveStreamProductDynamicInfo {
     id: number;
     currentPrice: number;
     isSelected: boolean;
-    buyer?: string;
+    buyer: string;
     countdownStartTime?: Date;
     countdownEndTime?: Date;
     duration: number;
@@ -47,7 +47,7 @@ interface LiveStreamProductAll {
     categoryId: number;
     currentPrice: number;
     isSelected: boolean;
-    buyer?: string;
+    buyer: string;
     countdownStartTime?: string;
     countdownEndTime?: string;
     duration: number;
@@ -84,6 +84,18 @@ export interface UpdateMessage {
 
 export interface ChatMessagesResponse {
     chatMessages: ChatMessage[];
+    success: boolean;
+}
+
+export interface Recommend {
+    title: string;
+    image: string;
+    buyer_link: string;
+    username: string;
+}
+
+export interface RecommendList {
+    results: Recommend[];
     success: boolean;
 }
 
@@ -158,6 +170,23 @@ export function sendChatMessages(chatMessage: UpdateMessage) {
     };
 }
 
+export function loadRecommendList(
+    recommendList: Recommend[],
+    success: boolean
+) {
+    return {
+        type: "@@liveStream/LOAD_RECOMMEND_LISTS" as const,
+        recommendList,
+        success,
+    };
+}
+
+export function changeDummy() {
+    return {
+        type: "@@liveStream/CHANGE_DUMMY" as const,
+    };
+}
+
 export type LiveStreamActions =
     | ReturnType<typeof loadliveStreamInfo>
     | ReturnType<typeof loadLiveStreamProducts>
@@ -166,7 +195,9 @@ export type LiveStreamActions =
     | ReturnType<typeof selectProduct>
     | ReturnType<typeof updateProductTime>
     | ReturnType<typeof loadChatMessages>
-    | ReturnType<typeof sendChatMessages>;
+    | ReturnType<typeof sendChatMessages>
+    | ReturnType<typeof loadRecommendList>
+    | ReturnType<typeof changeDummy>;
 
 export function fetchliveStreamInfo(room: string, token: string) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
@@ -227,6 +258,7 @@ export function fetchliveStreamProducts(liveId: number, isFull: boolean) {
                         id: 0,
                         currentPrice: 0,
                         isSelected: false,
+                        buyer: "",
                         duration: 0,
                         success: false,
                     };
@@ -248,6 +280,7 @@ export function fetchliveStreamProducts(liveId: number, isFull: boolean) {
                     }
                     productObj.description = product.description;
                     productObj.categoryId = product.categoryId;
+                    productObjDynamic.buyer = product.buyer;
                     liveStreamProducts.push(productObj);
                     liveStreamProductsDynamicInfo.push(productObjDynamic);
                 }
@@ -305,7 +338,6 @@ export function fetchBidIncrement(
                     },
                 }
             );
-
             if (res.data.success) {
                 if (res.data.newPrice && res.data.buyer) {
                     dispatch(
@@ -472,7 +504,11 @@ export function fetchChatMessages(
 
             if (res.data.success) {
                 if (ws) {
-                    ws.emit("sendMessage", liveId, res.data);
+                    ws.emit(
+                        "sendMessage",
+                        liveId.toString() + "chatroom",
+                        res.data
+                    );
                 }
             }
         } catch (e) {
@@ -481,7 +517,10 @@ export function fetchChatMessages(
     };
 }
 
-export function fetchSameCategoryLive(categoryIdSet: Set<number>) {
+export function fetchSameCategoryLive(
+    liveId: number,
+    categoryIdSet: Set<number>
+) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         try {
             const categoryIdArr = Array.from(categoryIdSet);
@@ -489,11 +528,11 @@ export function fetchSameCategoryLive(categoryIdSet: Set<number>) {
             if (categoryId === "") {
                 return;
             }
-            const res = await axios.get<UpdateMessage>(
-                `${process.env.REACT_APP_BACKEND_URL}/liveStream/otherLives?category=${categoryId}`
+            const res = await axios.get<RecommendList>(
+                `${process.env.REACT_APP_BACKEND_URL}/liveStream/otherLives?category=${categoryId}&liveId=${liveId}`
             );
-
             if (res.data.success) {
+                dispatch(loadRecommendList(res.data.results, res.data.success));
             }
         } catch (e) {
             console.log(e);

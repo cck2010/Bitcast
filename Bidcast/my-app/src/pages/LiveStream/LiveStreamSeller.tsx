@@ -140,7 +140,6 @@ function LiveStream() {
                                 <LiveStreamChatRoom
                                     liveStreamRef={liveStreamRef}
                                     isTablet={isTablet}
-                                    ws={ws}
                                 />
                             )}
                             {page === 4 && <LiveStreamRecommend />}
@@ -154,7 +153,6 @@ function LiveStream() {
                                 <LiveStreamChatRoom
                                     liveStreamRef={liveStreamRef}
                                     isTablet={isTablet}
-                                    ws={ws}
                                 />
                             </div>
                         </div>
