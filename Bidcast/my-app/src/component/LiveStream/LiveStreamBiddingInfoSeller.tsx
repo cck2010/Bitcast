@@ -69,9 +69,15 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     }, [remainingTime, timerId]);
     //Countdown End Handler
 
+    console.log(selectedProduct);
+
     //Countdown Start Handler
     useEffect(() => {
-        if (productsDynamic.length !== 0) {
+        if (
+            productsDynamic.length !== 0 &&
+            products.length !== 0 &&
+            productsDynamic.length === products.length
+        ) {
             for (let ind in productsDynamic) {
                 let countdownEndTime = productsDynamic[ind].countdownEndTime;
                 if (
@@ -79,6 +85,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     countdownEndTime !== undefined &&
                     countdownEndTime > new Date()
                 ) {
+                    console.log("pass?1");
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);
                     setIsBidding(true);
@@ -102,12 +109,12 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                             }, 16)
                         );
                     }
-                    break;
                 } else if (
                     productsDynamic[ind].isSelected &&
                     countdownEndTime !== undefined &&
                     countdownEndTime <= new Date()
                 ) {
+                    console.log("pass?2");
                     clearInterval(timerId);
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);
@@ -116,6 +123,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     productsDynamic[ind].isSelected &&
                     countdownEndTime === undefined
                 ) {
+                    console.log("pass?3", products, ind);
                     clearInterval(timerId);
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);
