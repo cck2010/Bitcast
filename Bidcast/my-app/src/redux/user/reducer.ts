@@ -1,5 +1,5 @@
 import produce from "immer"
-import { UserActions, LoadToken } from "./actions";
+import { UserActions, AuthActions } from "./actions";
 import jwt, { JwtPayload, VerifyOptions } from "jsonwebtoken";
 
 
@@ -15,13 +15,14 @@ const initialState: UserState = {
     token: null
 }
 
+
 const loadTokenInitalState: AuthState = {
     user: {},
     error: ""
 }
 
 export type AuthState = {
-    user?: JwtPayload | string
+    user?: JWTPayload | string
     error?: string
 }
 
@@ -34,7 +35,7 @@ export type JWTPayload = {
     updated_at?: Date;
     profile_pic?: string;
     status_id?: number;
-    phone_number?: number;
+    phone_number?: string;
     telegram_acct?: string;
     telegram_is_verified?: boolean;
     telegram_chat_id?: number;
@@ -54,51 +55,56 @@ export function userReducer(state: UserState = initialState, action: UserActions
     });
 }
 
-export let authReducer = (
-    state: AuthState = loadTokenInitalState,
-    action: LoadToken,
-): AuthState => {
-    switch (action.type) {
-        case '@Auth/load_token': {
-            try {
-                const verifyOptions: VerifyOptions = {
-                    maxAge: "12h",
-                    algorithms: ["RS512"]
-                }
+export let authReducer = (state: AuthState = loadTokenInitalState, action: AuthActions,): AuthState => {
+    return produce(state, state => {
+        switch (action.type) {
+            case '@@Auth/load_token': {
+                try {
+                    const verifyOptions: VerifyOptions = {
+                        maxAge: "12h",
+                        algorithms: ["RS512"]
+                    }
 
-                let a = process.env.REACT_APP_PUBLIC_KEY!.replace(/\\n/g, '\n')
-                let payload: string | JwtPayload | any = jwt.verify(action.token, a, verifyOptions)
-                // console.log('payload= ', payload)
-                const user: JWTPayload = {
-                    id: payload.id,
-                    username: payload.username,
-                    email: payload.email,
-                    created_at: payload.created_at,
-                    login_method_id: payload.login_method_id,
-                    phone_number: payload.phone_number,
-                    profile_pic: payload.profile_pic,
-                    role_id: payload.role_id,
-                    status_id: payload.status_id,
-                    telegram_acct: payload.telegram_acct,
-                    telegram_chat_id: payload.telegram_chat_id,
-                    telegram_is_verified: payload.telegram_is_verified,
-                    updated_at: payload.updated_at,
-                    description: payload.description,
+                    let a = process.env.REACT_APP_PUBLIC_KEY!.replace(/\\n/g, '\n')
+                    let payload: string | JwtPayload | any = jwt.verify(action.token, a, verifyOptions)
+                    // console.log('payload= ', payload)
+                    const user: JWTPayload = {
+                        id: payload.id,
+                        username: payload.username,
+                        email: payload.email,
+                        created_at: payload.created_at,
+                        login_method_id: payload.login_method_id,
+                        phone_number: payload.phone_number,
+                        profile_pic: payload.profile_pic,
+                        role_id: payload.role_id,
+                        status_id: payload.status_id,
+                        telegram_acct: payload.telegram_acct,
+                        telegram_chat_id: payload.telegram_chat_id,
+                        telegram_is_verified: payload.telegram_is_verified,
+                        updated_at: payload.updated_at,
+                        description: payload.description,
 
 
-                }
-                return {
-                    user,
-                    error: undefined
-                }
-            } catch (error) {
-                return {
-                    error: 'invalid JWT Token',
-                    user: undefined,
+                    }
+                    return {
+                        user,
+                        error: undefined
+                    }
+                } catch (error) {
+                    return {
+                        error: 'invalid JWT Token',
+                        user: undefined,
+                    }
                 }
             }
+
+
+            default:
+                return state
         }
-        default:
-            return state
-    }
+    })
 }
+
+
+
+

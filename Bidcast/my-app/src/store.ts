@@ -6,9 +6,9 @@ import {
 } from "connected-react-router";
 import { createBrowserHistory } from "history";
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
-import { userReducer, UserState, AuthState, authReducer } from "./redux/user/reducer";
+import { userReducer, UserState, AuthState, authReducer, } from "./redux/user/reducer";
 import thunk, { ThunkDispatch } from "redux-thunk";
-import { UserActions, LoadToken } from "./redux/user/actions";
+import { UserActions, AuthActions } from "./redux/user/actions";
 import { createBidsReducer } from "./redux/createbid/reducer";
 import { productsReducer, ProductsState } from "./redux/products/reducer";
 import { liveStreamReducer, LiveStreamState } from "./redux/LiveStream/reducer";
@@ -35,11 +35,11 @@ export type RootAction =
     | LiveStreamActions
     | createBidsActions
     | ComingAuctionActions
-    | LoadToken
     | SearchProductsActions
     | LoadMyLiveProductsActions
     | BroadcastingProductActions
     | SidebarActions
+    | AuthActions
 
 export type RootThunkDispatch = ThunkDispatch<RootState, null, RootAction>;
 
@@ -55,6 +55,7 @@ export interface RootState {
     myLiveProduct: MyLiveProductsState;
     broadcastingProducts: BroadcastProductState;
     sideBar: SidebarState;
+    loadToken: AuthState
 }
 
 const reducer = combineReducers<RootState>({
@@ -68,7 +69,8 @@ const reducer = combineReducers<RootState>({
     searchProduct: productSearchReducer,
     myLiveProduct: myLiveProductsReducer,
     broadcastingProducts: broadcastingProductReducer,
-    sideBar: sidebarReducer
+    sideBar: sidebarReducer,
+    loadToken: authReducer
 });
 
 declare global {

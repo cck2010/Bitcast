@@ -1,5 +1,10 @@
-import { RootThunkDispatch } from "../../store";
+import { RootState, RootThunkDispatch } from "../../store";
 import axios from 'axios';
+// import jwt, { JwtPayload, VerifyOptions } from "jsonwebtoken";
+// import { push } from "connected-react-router";
+// import { JWTPayload } from "./reducer";
+
+
 
 export function login(token: string) {
     return {
@@ -16,12 +21,15 @@ export function logout() {
 
 export function loadToken(token: string) {
     return {
-        type: '@Auth/load_token' as const,
+        type: '@@Auth/load_token' as const,
         token,
     }
 }
 
-export type LoadToken = ReturnType<typeof loadToken>
+
+
+
+export type AuthActions = ReturnType<typeof loadToken>
 
 export type UserActions = ReturnType<typeof login> | ReturnType<typeof logout>;
 
@@ -34,27 +42,28 @@ export function logoutThunk() {
 }
 
 export function checkCurrentUser() {
-    return async (dispatch: RootThunkDispatch) => {
+
+    return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         const token = localStorage.getItem('token')
 
         if (token == null) {
-            // console.log("no token")
+            console.log("no token")
             return;
         }
 
         try {
-
-           const user = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/current`, {
+            const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/current`, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
             })
+            // console.log("fetched")
+            const newToken: any = res.data
 
-            // console.log(user)
+            dispatch(login(newToken))
 
-            dispatch(login(token))
 
-            dispatch(loadToken(token))
+            dispatch(loadToken(newToken))
 
             return
         } catch (e) {
@@ -62,3 +71,4 @@ export function checkCurrentUser() {
         }
     }
 }
+

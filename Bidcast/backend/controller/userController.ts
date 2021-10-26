@@ -26,7 +26,7 @@ declare global {
     }
 }
 export class UserController {
-    constructor(private userService: UserService) {}
+    constructor(private userService: UserService) { }
     register = async (req: Request, res: Response) => {
         try {
             const { username, email, password, phoneNumber } = req.body;
@@ -143,10 +143,28 @@ export class UserController {
     };
     getCurrentUser = async (req: Request, res: Response) => {
         try {
-            res.json(req.user);
+            const payload = req.user
+            const signOptions: {} = {
+
+                expiresIn: "12h",
+                algorithm: "RS512" 			// RSASSA options[ "RS256", "RS384", "RS512" ]
+            };
+
+            if (payload) {
+                const token = jwt.sign(payload, jwtKey.privateKEY, signOptions);
+
+                return res.json(token);
+            } else {
+                return res.status(401).json({
+                    token: null,
+                    message: 'Incorrect token'
+                })
+            }
+
+
         } catch (err) {
             console.log(err);
-            res.json({
+            return res.json({
                 success: false,
                 error: err,
                 data: {
@@ -186,8 +204,8 @@ export class UserController {
 
             return res.json({
                 token: null,
-                message: "loginGoole unknow error",
-            });
+                message: 'loginGoole unknow error'
+            })
         }
     };
     loginGoogle = async (req: Request, res: Response) => {
@@ -225,29 +243,29 @@ export class UserController {
             });
         }
     }
-    editProfile = async (req: Request, res: Response)=>{
+    editProfile = async (req: Request, res: Response) => {
         try {
-            console.log("test req.user>>>>>>>>>>>>>>>>>>",req.user)
+            console.log("test req.user>>>>>>>>>>>>>>>>>>", req.user)
             const profilePic: any = req.file?.filename;
-        // console.log("profilePic", profilePic);
-        // console.log(req.body)
-        const {
-            username,
-            phoneNumber,
-            telegramAccount,
-            telegramChatId,
-            aboutMe,
-            userId
-        } = req.body;
+            // console.log("profilePic", profilePic);
+            // console.log(req.body)
+            const {
+                username,
+                phoneNumber,
+                telegramAccount,
+                telegramChatId,
+                aboutMe,
+                userId
+            } = req.body;
 
-        const result = await this.userService.editProfile(
-            parseInt(userId),
-            username,
-            phoneNumber,
-            telegramAccount,
-            telegramChatId,
-            aboutMe,
-            profilePic,
+            const result = await this.userService.editProfile(
+                parseInt(userId),
+                username,
+                phoneNumber,
+                telegramAccount,
+                telegramChatId,
+                aboutMe,
+                profilePic,
             )
 
             console.log("result", result);
@@ -260,6 +278,6 @@ export class UserController {
                 error: new Error("controller user edit profile fail"),
             });
         }
-        
+
     }
 }
