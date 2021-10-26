@@ -50,9 +50,12 @@
             display: flex;
             justify-content: start;
             flex-wrap: wrap;
+            margin-right: 20px;
             .input_editProfile{
                 max-height: 30px;
-                width:180px;
+                min-height: 27px;
+                width:220px;
+                font-size: 13px;
                 font-family: 'Noto Sans TC', sans-serif;
                 font-weight: 200;
                 border: 1px solid rgb(167, 167, 167);
@@ -75,11 +78,11 @@
                             border: 1px solid rgb(70, 70, 70);
                         }
                     }
-             
             }
             .input_editProfile_ro{
                 cursor:default;
-                width:180px;
+                width:220px;
+                font-size: 13px;
                 border: 1px solid rgb(167, 167, 167);
                 border-radius: 3px;
                 background-color: rgb(224, 224, 224);
@@ -92,11 +95,81 @@
             
             
         }
+        .input_box_chatId{
+            // width:200px;
+            display: flex;
+            justify-content: start;
+            flex-wrap: wrap;
+            margin-right: 20px;
+            margin-top: 10px;
+            label{
+                width: 100%;
+                padding-right: 50px;
+                margin-right: 0px;
+                margin-top: 7px;
+                margin-bottom: 7px;
+                font-size: 15px;
+                font-family: 'Noto Sans TC', sans-serif;
+                font-weight: 300;
+            }
+            .input_editProfile{
+                max-height: 30px;
+                min-height: 27px;
+                margin-right: 10px;
+                width:220px;
+                font-size: 13px;
+                font-family: 'Noto Sans TC', sans-serif;
+                font-weight: 200;
+                border: 1px solid rgb(167, 167, 167);
+                border-radius: 3px;
+            }
+            .input_editProfile:focus {
+                // border-bottom: 3px solid #1F2833;
+                outline-width: 0;
+                animation: input_editProfile_Fo ease-out 0.5s;
+                animation-fill-mode: forwards;
+                    // animation-delay: 0.3s;
+                    @keyframes input_editProfile_Fo {
+                        0%{
+                            border: 1px solid rgb(167, 167, 167);
+                        }
+                        100%{
+                            border: 1px solid rgb(70, 70, 70);
+                        }
+                    }
+            }
+            .chatId_verified:after{
+                content:"已確認";
+                color:green;
+                font-size: 13px;
+                font-family: 'Noto Sans TC', sans-serif;
+                font-weight: 200;
+                text-shadow: 2px grey;
+                
+            }
+            .chatId_unverified:after{
+                content:"待確認";
+                color:red;
+                font-size: 13px;
+                font-family: 'Noto Sans TC', sans-serif;
+                font-weight: 200;
+                text-shadow: 2px grey;
+            }
+            .chatId_empty:after{
+                content:"未輸入";
+                color:black;
+                font-size: 13px;
+                font-family: 'Noto Sans TC', sans-serif;
+                font-weight: 200;
+                text-shadow: 2px grey;
+            }
+        }
         .input_textarea{
             width: 100%;
             font-family: 'Noto Sans TC', sans-serif;
             font-weight: 200;
             .input_about_me{
+                
                 font-family: 'Noto Sans TC', sans-serif;
                 font-weight: 200;
             }
@@ -113,7 +186,7 @@
         textarea{
             width:98%;
             height:200px;
-            font-size: 16px;
+            font-size: 14px;
             font-family: 'Noto Sans TC', sans-serif;
             font-weight: 200;
             // font-family: ‘Noto Sans TC’, sans-serif;
@@ -121,11 +194,13 @@
         textarea:focus{
             outline-width: 0;
         }
+        
     }
     .import_box{
         width: 100% !important;
 
     }
+    
 }
 
 

@@ -384,33 +384,52 @@ export class UserService {
         username?: string,
         phoneNumber?: number,
         telegramAccount?: string,
+        telegramChatId?:string,
         aboutMe?: string,
         profilePic?: string,
 
     ) => {
-        console.log("userId", userId);
-        console.log("username", username);
-        console.log("phoneNumber", phoneNumber);
+        // console.log("userId", userId);
+        // console.log("username", username);
+        // console.log("phoneNumber", phoneNumber);
         console.log("telegramAccount", telegramAccount);
-        console.log("aboutMe", aboutMe);
-        console.log("profilePic", profilePic);
+        // console.log("aboutMe", aboutMe);
+        // console.log("profilePic", profilePic);
 
-        console.log("edit_service_mark")
-        const result = await this.knex("users").update({
-            username: username,
-            phone_number: phoneNumber,
-            telegram_acct: telegramAccount,
-            description: aboutMe,
-            profile_pic: profilePic,
-            updated_at: new Date(),
-        }).where("id", userId).returning("*")
-
-        console.log("edit profile result >>>>> ", result);
-
-        return {
-            success: true,
-            data: { msg: "edit profile success", result },
-
+        // console.log("edit_service_mark")
+        if(telegramAccount != undefined){
+            const result = await this.knex("users").update({
+                username: username,
+                phone_number: phoneNumber,
+                telegram_acct: telegramAccount,
+                telegram_chat_id: telegramChatId,
+                telegram_is_verified:false,
+                description: aboutMe,
+                profile_pic: profilePic,
+                updated_at: new Date(),
+            }).where("id", userId).returning("*")
+            console.log("edit profile result >>>>> ", result);
+            return {
+                success: true,
+                data: { msg: "edit profile success", result },
+    
+            }
+        }else{
+            const result = await this.knex("users").update({
+                username: username,
+                phone_number: phoneNumber,
+                telegram_acct: telegramAccount,
+                telegram_chat_id: telegramChatId,
+                description: aboutMe,
+                profile_pic: profilePic,
+                updated_at: new Date(),
+            }).where("id", userId).returning("*")
+            console.log("edit profile result >>>>> ", result);
+            return {
+                success: true,
+                data: { msg: "edit profile success", result },
+    
+            }
         }
     }
     googleLogin = async (username: string, email: string, pic: string) => {
