@@ -35,15 +35,15 @@ const dispatch = useDispatch()
     
   };
 
-  const user = useSelector((state: RootState) => state.authState.user);
-  const userInfo = JSON.parse(JSON.stringify(user));
+  // const user = useSelector((state: RootState) => state.authState.user);
+  // const userInfo = JSON.parse(JSON.stringify(user));
   // const ref = useRef(null)
   return (
     <div className="sidebar">
       <ProSidebar collapsed={menuCollapse} width="220px">
         <SidebarHeader>
-          <h3 className="sidebar_username pt-3">{userInfo.username}</h3>
-          <div className="close_menu" onClick={menuIconOnclickHandler}>
+          {/* <h3 className="sidebar_username pt-3">{userInfo.username}</h3> */}
+          <div className="close_menu pb-3" onClick={menuIconOnclickHandler}>
             {menuCollapse ? <FiArrowRightCircle /> : <FiArrowLeftCircle />}
           </div>
         </SidebarHeader>

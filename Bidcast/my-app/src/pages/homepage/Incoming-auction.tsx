@@ -40,10 +40,6 @@ export function ComingAuction() {
     dispatch(getComingAuctions());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log(auctions);
-  }, [auctions]);
-
   const [modalShow, setModalShow] = useState(-1);
 
   return (
