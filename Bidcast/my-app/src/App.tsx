@@ -11,7 +11,6 @@ import { Footer } from "./pages/homepage/Footer";
 import { CreateBids } from "./pages/createbids/CreateBids";
 import LiveStreamSeller from "./pages/LiveStream/LiveStreamSeller";
 import { Homepage } from "./pages/homepage/Homepage";
-import { profile } from "console";
 import { ProfilePage } from "./pages/Profile-Page/Profilepage";
 import { CategoryResults } from "./pages/categories/Categories";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,6 +28,8 @@ function App() {
 
     const { detected } = useAdBlockDetector();
     <div>AdBlocker Detected: {JSON.stringify(detected)}</div>;
+
+    const dummy = useSelector((state: RootState) => state.liveStream.dummy);
 
     return (
         <div className="App">
@@ -50,7 +51,7 @@ function App() {
                             <CreateBids />
                         </Route>
                         <Route path="/liveStreaming">
-                            <LiveStream />
+                            <LiveStream key={dummy} />
                         </Route>
                         <Route path="/liveStreamingSeller">
                             <LiveStreamSeller />

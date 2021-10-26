@@ -142,6 +142,9 @@ export function liveStreamReducer(
             case "@@liveStream/CHANGE_DUMMY":
                 newState.dummy = Math.floor(Math.random() * 10000);
                 break;
+            case "@@liveStream/RESET_LIVE_ID":
+                newState.liveStreamInfo.id = 0;
+                break;
         }
     });
 }

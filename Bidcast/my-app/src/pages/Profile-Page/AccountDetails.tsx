@@ -13,7 +13,7 @@ type editInput = {
   profilePic?: string,
   phoneNumber?: number,
   telegramAccount?: string,
-  telegramChatId?:string,
+  // telegramChatId?:string,
   aboutMe?: string
 }
 
@@ -23,7 +23,7 @@ export function AccountDetails() {
   const user = useSelector((state: RootState) => state.authState.user);
   const userInfo = JSON.parse(JSON.stringify(user));
   console.log("userInfo", userInfo);
-  console.log("userInfo.chatId", userInfo.telegram_chat_id );
+
 
   const dispatch = useDispatch();
 
@@ -51,6 +51,7 @@ export function AccountDetails() {
     selectedImage? editProFormData.append('profilePic',selectedImage):n=n;
     data.phoneNumber? editProFormData.append('phoneNumber',(data.phoneNumber).toString()):n=n;
     data.telegramAccount? editProFormData.append('telegramAccount',data.telegramAccount):n=n;
+    // data.telegramChatId? editProFormData.append('telegramChatId',data.telegramChatId):n=n;
     data.aboutMe? editProFormData.append('aboutMe',data.aboutMe):n=n;
     editProFormData.append("userId",userInfo.id);
 
@@ -91,8 +92,9 @@ export function AccountDetails() {
               <div className={'input_box'}><label>帳戶名稱:</label> <input className={"input_editProfile"} {...register('username')} placeholder={userInfo.username} /></div>
               <div className={'input_box'}><label>電郵地址:</label> <input className={"input_editProfile_ro"}  placeholder={userInfo.email} readOnly /></div>
               <div className={'input_box'}><label>電話號碼:</label> <input type="number"  className={"input_editProfile"} {...register('phoneNumber')} placeholder={userInfo.phone_number?userInfo.phone_number:"沒有"} /></div>
-              <div className={'input_box'}><label>Telegram 帳戶:</label> <input className={"input_editProfile"} {...register('telegramAccount')} placeholder={userInfo.telegram_acct?userInfo.telegram_acct:"沒有"} /></div>
-              <div className={'input_box'}><label>Telegram Chat ID:</label> <input className={"input_editProfile"} {...register('telegramChatId')} placeholder={userInfo.telegram_chat_id? userInfo.telegram_chat_id:"沒有"} /></div>
+              <div className={'input_box_chatId'}><label>Telegram 帳戶:</label> <input className={"input_editProfile"} {...register('telegramAccount')} placeholder={userInfo.telegram_acct?userInfo.telegram_acct:"沒有"} />
+              <div className={userInfo.telegram_acct? userInfo.telegram_is_verified?"chatId_verified":"chatId_unverified":"chatId_empty"}></div></div>
+              
               {/* <div className={'input_box'}><label>telegram chat id:</label> <input className={"input_editProfile"} {...register('telegramChatId')}  /></div> */}
               <div className={'input_textarea'}><label>關於我 :</label> <textarea className={"input_editProfile"} {...register('aboutMe')} placeholder={userInfo.description?userInfo.description:"自我介紹..."} /></div>
               <div className={'import_box'}><label>更換頭像:</label> <div className={"profileImport"}><input type="file" {...register('profilePic')} onChange={imageChange} /></div></div>

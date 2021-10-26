@@ -9,9 +9,11 @@ import { useMediaQuery } from "react-responsive";
 import { Button, ButtonGroup } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
+    changeDummy,
     fetchInitialChatMessages,
     fetchliveStreamInfo,
     fetchliveStreamProducts,
+    resetLiveId,
 } from "../../redux/LiveStream/actions";
 import { RootState } from "../../store";
 import io, { Socket } from "socket.io-client";
@@ -26,9 +28,11 @@ function LiveStream() {
         room = room != null ? room : "";
         let token = new URLSearchParams(window.location.search).get("token");
         token = token != null ? token : "";
-        console.log(room, token, "room token");
 
         dispatch(fetchliveStreamInfo(room, token));
+        return () => {
+            dispatch(resetLiveId());
+        };
     }, [dispatch]);
 
     const liveId = useSelector(
@@ -78,11 +82,26 @@ function LiveStream() {
             };
             initWebSocket();
         }
+    }, [dispatch, ws, liveId]);
+
+    useEffect(() => {
         return () => {
             ws?.close();
         };
-    }, [dispatch, ws, liveId]);
+    }, [ws]);
     //Websocket Setup
+
+    //Add event listener
+    useEffect(() => {
+        const popstaeHandler = () => {
+            dispatch(changeDummy());
+        };
+        window.addEventListener("popstate", popstaeHandler);
+        return () => {
+            window.removeEventListener("popstate", popstaeHandler);
+        };
+    }, [dispatch]);
+    //Add event listener
 
     return (
         <div className="LiveStream m-3" ref={liveStreamRef}>
