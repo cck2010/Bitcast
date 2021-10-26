@@ -1,5 +1,7 @@
+import axios from "axios";
 import { Request, Response } from "express";
 import { v4 } from "uuid";
+import { env } from "../env";
 import { ProductsService } from "../service/productsService";
 
 export class ProductsController {
@@ -131,8 +133,49 @@ export class ProductsController {
                 seconds
             );
             if (result[1]) {
-                setTimeout(() => {
-                    this.productsService.telegramBidResult(productId);
+                setTimeout(async () => {
+                    const bidResult =
+                        await this.productsService.telegramBidResult(productId);
+                    let sellerText = `${bidResult.productName}的拍賣已結束, `;
+                    if (bidResult.buyerId) {
+                        if (
+                            bidResult.buyerTelegramAcct &&
+                            bidResult.buyerTelegramAcct
+                        ) {
+                            sellerText += `恭喜你! 拍賣品已由觀眾${bidResult.buyerUsername}以$${bidResult.productFinalPrice}投得, 請按此 @${bidResult.buyerTelegramAcct} 與買家安排交收詳情`;
+                        } else {
+                            sellerText += `恭喜你! 拍賣品已由觀眾${bidResult.buyerUsername}以$${bidResult.productFinalPrice}投得, 唯買家並未有使用Telegram, 或Telegram帳戶尚未完成認證, 請到個人頁面查看買家的其他聯絡方式, 以便安排交收詳情`;
+                        }
+                    } else {
+                        sellerText += `此拍賣品在本次拍賣未能售出, 特此通知`;
+                    }
+                    let buyerText = `${bidResult.productName}的拍賣已結束, `;
+                    if (
+                        bidResult.sellerTelegramAcct &&
+                        bidResult.sellerTelegramChatId
+                    ) {
+                        buyerText += `恭喜你! 你已成功以$${bidResult.productFinalPrice}投得拍賣品, 請按此 @${bidResult.sellerTelegramAcct} 與賣家${bidResult.sellerUsername}安排交收詳情`;
+                    } else {
+                        buyerText += `恭喜你! 你已成功以$${bidResult.productFinalPrice}投得拍賣品, 唯賣家並未有使用Telegram, 或Telegram帳戶尚未完成認證, 請到個人頁面查看買家的其他聯絡方式, 以便安排交收詳情`;
+                    }
+                    if (bidResult.sellerTelegramChatId) {
+                        await axios.post(
+                            `https://api.telegram.org/bot${env.TOKEN}/sendMessage`,
+                            {
+                                chat_id: bidResult.sellerTelegramChatId,
+                                text: sellerText,
+                            }
+                        );
+                    }
+                    if (bidResult.buyerId && bidResult.buyerTelegramChatId) {
+                        await axios.post(
+                            `https://api.telegram.org/bot${env.TOKEN}/sendMessage`,
+                            {
+                                chat_id: bidResult.buyerTelegramChatId,
+                                text: buyerText,
+                            }
+                        );
+                    }
                 }, (seconds + 10) * 1000);
                 // }, 1000);
             }

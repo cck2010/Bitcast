@@ -268,11 +268,43 @@ export class ProductsService {
     };
 
     telegramBidResult = async (productId: number) => {
-        const result = (
+        const productInfo = (
             await this.knex("products")
-                .select("current_price", "buyer_id", "seller_id")
+                .select(
+                    "current_price",
+                    "buyer_id",
+                    "seller_id",
+                    "product_name"
+                )
                 .where("id", productId)
         )[0];
-        console.log(result);
+        const sellerTelegramInfo = (
+            await this.knex("users")
+                .select("username", "telegram_acct", "telegram_chat_id")
+                .where("id", productInfo.seller_id)
+        )[0];
+        let buyerTelegramInfo = {
+            username: null,
+            telegram_acct: null,
+            telegram_chat_id: null,
+        };
+        if (productInfo.buyer_id !== null) {
+            buyerTelegramInfo = (
+                await this.knex("users")
+                    .select("username", "telegram_acct", "telegram_chat_id")
+                    .where("id", productInfo.buyer_id)
+            )[0];
+        }
+        return {
+            productName: productInfo.product_name,
+            productFinalPrice: productInfo.current_price,
+            sellerUsername: sellerTelegramInfo.username,
+            sellerTelegramAcct: sellerTelegramInfo.telegram_acct,
+            sellerTelegramChatId: sellerTelegramInfo.telegram_chat_id,
+            buyerId: productInfo.buyer_id,
+            buyerUsername: buyerTelegramInfo.username,
+            buyerTelegramAcct: buyerTelegramInfo.telegram_acct,
+            buyerTelegramChatId: buyerTelegramInfo.telegram_chat_id,
+        };
     };
 }
