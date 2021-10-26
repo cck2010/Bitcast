@@ -227,6 +227,7 @@ export class UserController {
     }
     editProfile = async (req: Request, res: Response)=>{
         try {
+            console.log("test req.user>>>>>>>>>>>>>>>>>>",req.user)
             const profilePic: any = req.file?.filename;
         // console.log("profilePic", profilePic);
         // console.log(req.body)
@@ -234,6 +235,7 @@ export class UserController {
             username,
             phoneNumber,
             telegramAccount,
+            telegramChatId,
             aboutMe,
             userId
         } = req.body;
@@ -243,6 +245,7 @@ export class UserController {
             username,
             phoneNumber,
             telegramAccount,
+            telegramChatId,
             aboutMe,
             profilePic,
             )
