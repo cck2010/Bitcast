@@ -54,12 +54,13 @@ export function CategoryResults() {
             />
             </Col>
             <div className="description_container">
-              <Col xs={12} md={8}>
+              {/* <Col xs={12} md={8}> */}
               <h3>{searchingResult.product_name}</h3>
-              <h6>{searchingResult.countdown_start_time}</h6>
-              <h6>posted by {searchingResult.seller_id}</h6>
-              <p>description</p>
-              </Col>
+              <h6>底價： {searchingResult.min_price}</h6>
+              <h6>即買價： {searchingResult.buy_price}</h6>
+              <h6>拍賣主： {searchingResult.username}</h6>
+              <p className="products_description">商品簡介： {searchingResult.description}</p>
+              {/* </Col> */}
             </div>
             {/* </Row> */}
           </div>

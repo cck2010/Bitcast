@@ -8,7 +8,7 @@ export interface LiveStreamProduct {
     currentPrice: number;
     buyPrice: number;
     bidIncrement: number;
-    buyer?: string;
+    buyer: string;
     productImage: string;
     isSelected: boolean;
     countdownStartTime?: Date;
@@ -167,6 +167,27 @@ export class LiveStreamController {
             };
 
             res.json(response);
+        } catch (e) {
+            console.log(e);
+            res.json(e);
+        }
+    };
+
+    getOtherLives = async (req: Request, res: Response) => {
+        try {
+            const category = req.query.category as string;
+            const liveId = req.query.liveId as string;
+            const categoryIds = String(category);
+            const categoryIdArr = categoryIds
+                .split(",")
+                .map((item) => parseInt(item));
+
+            const results = await this.liveStreamService.getOtherLives(
+                parseInt(liveId),
+                categoryIdArr
+            );
+
+            res.json({ results, success: true });
         } catch (e) {
             console.log(e);
             res.json(e);

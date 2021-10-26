@@ -79,7 +79,9 @@ export class LiveStreamService {
                 "is_selected",
                 "duration",
                 "countdown_end_time",
-                "description"
+                "description",
+                "category_id",
+                "buyer_id"
             )
             .where("live_id", liveId);
 
@@ -97,7 +99,18 @@ export class LiveStreamService {
                 isSelected: false,
                 duration: 0,
                 description: "",
+                buyer: "",
             };
+
+            let buyer = "";
+            if (productResult.buyer_id !== null) {
+                buyer = (
+                    await this.knex("users")
+                        .select("username")
+                        .where("id", productResult.buyer_id)
+                )[0].username;
+            }
+
             product["id"] = productResult.id;
             product["productName"] = productResult.product_name;
             product["minPrice"] = productResult.min_price;
@@ -109,6 +122,8 @@ export class LiveStreamService {
             product["duration"] = productResult.duration;
             product["countdownEndTime"] = productResult.countdown_end_time;
             product["description"] = productResult.description;
+            product["categoryId"] = productResult.category_id;
+            product["buyer"] = buyer;
             products.push(product);
         }
         return products;
@@ -150,5 +165,23 @@ export class LiveStreamService {
                 )
                 .where("chat.id", messageId)
         )[0];
+    };
+
+    getOtherLives = async (liveId: number, categoryIdArr: number[]) => {
+        const recommendLists = await this.knex("products")
+            .leftJoin("live", "products.live_id", "live.id")
+            .leftJoin("users", "live.user_id", "users.id")
+            .select(
+                "live.buyer_link",
+                "live.image",
+                "live.title",
+                "users.username"
+            )
+            .whereIn("products.category_id", categoryIdArr)
+            .andWhere("products.is_selected", true)
+            .andWhere("live.is_live", true)
+            .whereNot("live.id", liveId);
+
+        return recommendLists;
     };
 }

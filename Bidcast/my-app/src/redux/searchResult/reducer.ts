@@ -1,9 +1,8 @@
-import { SearchProductsActions } from "./action";
+import { SearchProduct, SearchProductsActions } from "./action";
 import produce from "immer";
-import { Product } from "../products/actions";
 
 export interface ProductSearchState {
-    productList: Product[]
+    productList: SearchProduct[]
 }
 
 const initialState: ProductSearchState = {

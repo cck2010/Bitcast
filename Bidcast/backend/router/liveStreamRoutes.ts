@@ -19,5 +19,8 @@ liveStreamRoutes.get("/liveStream/chatMessage", (req, res) =>
 liveStreamRoutes.post("/liveStream/chatMessage", isLoggedIn, (req, res) =>
     liveStreamController.postMessage(req, res)
 );
+liveStreamRoutes.get("/liveStream/otherLives", (req, res) =>
+    liveStreamController.getOtherLives(req, res)
+);
 
 export default liveStreamRoutes;

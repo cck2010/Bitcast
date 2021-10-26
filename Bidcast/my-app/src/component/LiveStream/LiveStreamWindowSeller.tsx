@@ -54,6 +54,18 @@ function LiveStreamWindow() {
 
     useEffect(() => {
         return () => {
+            if (localStream) {
+                let tracks = localStream.getTracks();
+                tracks.forEach(function (track) {
+                    track.stop();
+                });
+                localStream.unpublish();
+            }
+        };
+    }, [localStream]);
+
+    useEffect(() => {
+        return () => {
             clearInterval(timerId);
             client?.close();
             signal?.close();
@@ -143,7 +155,6 @@ function LiveStreamWindow() {
                         </button>
                     </ButtonGroup>
                 )}
-
                 <video
                     id="pubVideo"
                     poster="transparent.png"
@@ -151,7 +162,11 @@ function LiveStreamWindow() {
                     controls
                     ref={pubVideo}
                     style={{
-                        backgroundImage: `url("${thumbnail}")`,
+                        backgroundImage: `${
+                            thumbnail
+                                ? `url("${process.env.REACT_APP_BACKEND_URL}/${thumbnail}")`
+                                : ""
+                        }`,
                     }}
                 ></video>
             </div>

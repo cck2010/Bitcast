@@ -21,8 +21,6 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     const [isBidding, setIsBidding] = useState<boolean>(true);
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
     const [timerId, setTimerId] = useState<number>(0);
-    const [username, setUsername] = useState<string>("");
-    const user = useSelector((state: RootState) => state.authState.user);
     const isAuthenticate = useSelector(
         (state: RootState) => state.user.isAuthenticate
     );
@@ -30,15 +28,6 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     const liveId = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.id
     );
-
-    useEffect(() => {
-        if (
-            typeof user === "object" &&
-            (username === "" || username === undefined)
-        ) {
-            setUsername(user.username);
-        }
-    }, [user, username]);
 
     const products = useSelector(
         (state: RootState) =>
@@ -58,6 +47,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
         bidIncrement: 0,
         productImage: "",
         description: "",
+        categoryId: 0,
         success: false,
     });
 
@@ -103,8 +93,12 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
 
     //Countdown Start Handler
     useEffect(() => {
-        if (productsDynamic.length !== 0) {
-            for (let ind in productsDynamic) {
+        if (
+            productsDynamic.length !== 0 &&
+            products.length !== 0 &&
+            productsDynamic.length === products.length
+        ) {
+            for (let ind in products) {
                 let countdownEndTime = productsDynamic[ind].countdownEndTime;
                 if (
                     productsDynamic[ind].isSelected &&
@@ -145,6 +139,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);
                     setIsBidding(false);
+                    break;
                 } else if (
                     productsDynamic[ind].isSelected &&
                     countdownEndTime === undefined
@@ -154,6 +149,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);
                     setIsBidding(false);
+                    break;
                 }
             }
         }
@@ -194,7 +190,12 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
         }
     };
     const customBidIncrement = () => {
-        if (props.ws) {
+        if (
+            props.ws &&
+            inputPrice >=
+                selectedProductDynamic.currentPrice +
+                    selectedProduct.bidIncrement
+        ) {
             dispatch(
                 fetchBidIncrement(
                     selectedProduct.id,
@@ -220,6 +221,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
         }
     };
     //Button On Click Handler
+
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded my-3">
             <div className="info w-100 h-100 d-flex justify-contens-center align-items-center flex-column">

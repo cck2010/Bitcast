@@ -43,6 +43,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
         bidIncrement: 0,
         productImage: "",
         description: "",
+        categoryId: 0,
         success: false,
     });
 
@@ -70,7 +71,11 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
 
     //Countdown Start Handler
     useEffect(() => {
-        if (productsDynamic.length !== 0) {
+        if (
+            productsDynamic.length !== 0 &&
+            products.length !== 0 &&
+            productsDynamic.length === products.length
+        ) {
             for (let ind in productsDynamic) {
                 let countdownEndTime = productsDynamic[ind].countdownEndTime;
                 if (
@@ -101,7 +106,6 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                             }, 16)
                         );
                     }
-                    break;
                 } else if (
                     productsDynamic[ind].isSelected &&
                     countdownEndTime !== undefined &&

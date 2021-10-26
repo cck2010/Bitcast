@@ -38,6 +38,7 @@ export function Broadcasting() {
     Object.values(state.broadcastingProducts.broadcastingProduct)
   );
 
+
   useEffect(() => {
     dispatch(fetchBroadcastingProducts());
   }, [dispatch]);
@@ -68,7 +69,7 @@ export function Broadcasting() {
           showDots={false}
           sliderClass=""
           slidesToSlide={1}
-          swipeable={false}
+          swipeable
         >
           {broadcastings.map((broadcasting) => (
             <div key={broadcasting.id}>
@@ -100,7 +101,7 @@ export function Broadcasting() {
                       <div className="time_label">秒</div>
                     </div>
                   </div>
-                  <Card.Title>{broadcasting.product_name}</Card.Title>
+                  <Card.Title>{broadcasting.title}</Card.Title>
                   <Card.Text>
                     目前價格:{" "}
                     <span className="biding_price">

@@ -73,7 +73,11 @@ function LiveStreamWindow() {
                     controls
                     ref={subVideo}
                     style={{
-                        backgroundImage: `url("${thumbnail}")`,
+                        backgroundImage: `${
+                            thumbnail
+                                ? `url("${process.env.REACT_APP_BACKEND_URL}/${thumbnail}")`
+                                : ""
+                        }`,
                     }}
                 ></video>
             </div>
