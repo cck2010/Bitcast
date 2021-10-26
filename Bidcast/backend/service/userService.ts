@@ -253,7 +253,31 @@ export class UserService {
             success: true,
         };
     }
-
+    refreshCurrentUser = async (userId:number):Promise<ResponseJson> => {
+        const users = await this.knex("users").select().where("id",userId)
+        return {
+            success: true,
+            data: {
+                msg: "return user data successfully",
+                user: {
+                    id: users[0].id,
+                    username: users[0].username,
+                    status_id: users[0].status_id,
+                    profile_pic: users[0].profile_pic,
+                    email: users[0].email,
+                    phone_number: users[0].phone_number,
+                    role_id: users[0].role_id,
+                    telegram_acct: users[0].telegram_acct,
+                    telegram_is_verified: users[0].telegram_is_verified,
+                    telegram_chat_id: users[0].telegram_chat_id,
+                    login_method_id: users[0].login_method_id,
+                    created_at: users[0].created_at,
+                    updated_at: users[0].updated_at,
+                    description:users[0].description
+                },
+            },
+        } as ResponseJson;
+    }
 
 
 

@@ -21,6 +21,7 @@ export function loadToken(token: string) {
     }
 }
 
+
 export type LoadToken = ReturnType<typeof loadToken>
 
 export type UserActions = ReturnType<typeof login> | ReturnType<typeof logout>;
@@ -44,7 +45,7 @@ export function checkCurrentUser() {
 
         try {
 
-           const user = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/current`, {
+            const user = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/current`, {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -59,6 +60,35 @@ export function checkCurrentUser() {
             return
         } catch (e) {
             console.log(e)
+        }
+    }
+}
+
+export function refreshCurrentUser(userId:number){
+    // console.log("userId", userId);
+    // let dataId = {"userId":userId} 
+    return async (dispatch: RootThunkDispatch)=>{
+        const token = localStorage.getItem('token')
+        if (token == null) {
+            // console.log("no token")
+            return;
+        }
+        try {
+            const res:any = await axios(`${process.env.REACT_APP_BACKEND_URL}/user/refreshCurrent`,{
+                method: "POST",
+            headers:({'Content-Type': 'application/json'}),
+            data: {userId:`${userId}`}
+            })
+            // console.log("refreshCurrentUser",res.data.token)
+            dispatch(login(res.data.token))
+            dispatch(loadToken(res.data.token))
+            localStorage.setItem('token',res.data.token)
+            
+            
+
+        } catch (error) {
+            console.log("error", error);
+            
         }
     }
 }
