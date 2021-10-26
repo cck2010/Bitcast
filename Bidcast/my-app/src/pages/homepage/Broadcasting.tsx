@@ -114,7 +114,7 @@ export function Broadcasting() {
                       variant="outline-dark"
                       className="bid_button"
                       onClick={() => {
-                        dispatch(push(`/liveStreaming?room=`));
+                        dispatch(push(`/liveStreaming?room=${broadcasting.buyer_link}`));
                       }}
                     >
                       觀看直播
