@@ -3,7 +3,7 @@ import "./LiveStream.scss";
 import LiveStreamWindow from "../../component/LiveStream/LiveStreamWindow";
 import LiveStreamControlPanel from "../../component/LiveStream/LiveStreamControlPanel";
 import LiveStreamChatRoom from "../../component/LiveStream/LiveStreamChatRoom";
-import LiveStreamRecommend from "../../component/LiveStream/LiveStreamRecommendSeller";
+import LiveStreamRecommend from "../../component/LiveStream/LiveStreamRecommend";
 import LiveStreamHeader from "../../component/LiveStream/LiveStreamHeader";
 import { useMediaQuery } from "react-responsive";
 import { Button, ButtonGroup } from "reactstrap";
@@ -86,14 +86,11 @@ function LiveStream() {
 
     //Add event listener
     useEffect(() => {
-        console.log("event");
         const popstaeHandler = () => {
             dispatch(changeDummy());
         };
-
         window.addEventListener("popstate", popstaeHandler);
         return () => {
-            console.log("remove event");
             window.removeEventListener("popstate", popstaeHandler);
         };
     }, [dispatch]);

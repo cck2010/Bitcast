@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSameCategoryLive } from "../../redux/LiveStream/actions";
+import {
+    changeDummy,
+    fetchSameCategoryLive,
+} from "../../redux/LiveStream/actions";
 import { RootState } from "../../store";
 import { Recommend } from "../../redux/LiveStream/actions";
-import { Link } from "react-router-dom";
 
 function LiveStreamRecommend() {
     const dispatch = useDispatch();
@@ -44,22 +46,26 @@ function LiveStreamRecommend() {
     return (
         <div className="LiveStreamRecommend my-3">
             {recommendation.map((item, ind) => (
-                <Link to={`/liveStreaming?room=${item.buyer_link}`} key={ind}>
-                    <div
-                        className="recommendAuction m-3 d-flex flex-column justify-content-between"
-                        key={ind}
-                    >
-                        <img
-                            className="thumbnail w-100 mb-3"
-                            src={`${process.env.REACT_APP_BACKEND_URL}/${item.image}`}
-                            alt="recommendAuction"
-                        />
-                        <div className="title text-center">{item.title}</div>
-                        <div className="username text-center">
-                            {item.username}
-                        </div>
-                    </div>
-                </Link>
+                <div
+                    className="recommendAuction m-3 d-flex flex-column justify-content-between"
+                    key={ind}
+                    onClick={() => {
+                        window.history.pushState(
+                            null,
+                            "",
+                            `https://localhost:3000/liveStreaming?room=${item.buyer_link}`
+                        );
+                        dispatch(changeDummy());
+                    }}
+                >
+                    <img
+                        className="thumbnail w-100 mb-3"
+                        src={`${process.env.REACT_APP_BACKEND_URL}/${item.image}`}
+                        alt="recommendAuction"
+                    />
+                    <div className="title text-center">{item.title}</div>
+                    <div className="username text-center">{item.username}</div>
+                </div>
             ))}
         </div>
     );

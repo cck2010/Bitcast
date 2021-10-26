@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./LiveStream.scss";
 import LiveStreamChatRoom from "../../component/LiveStream/LiveStreamChatRoom";
-import LiveStreamRecommend from "../../component/LiveStream/LiveStreamRecommendSeller";
+import LiveStreamRecommendSeller from "../../component/LiveStream/LiveStreamRecommendSeller";
 import LiveStreamHeader from "../../component/LiveStream/LiveStreamHeader";
 import { useMediaQuery } from "react-responsive";
 import { Button, ButtonGroup } from "reactstrap";
@@ -155,7 +155,7 @@ function LiveStream() {
                                     isTablet={isTablet}
                                 />
                             )}
-                            {page === 4 && <LiveStreamRecommend />}
+                            {page === 4 && <LiveStreamRecommendSeller />}
                         </>
                     )}
                 </div>
@@ -171,7 +171,7 @@ function LiveStream() {
                         </div>
                         <div className="row">
                             <div className="col">
-                                <LiveStreamRecommend />
+                                <LiveStreamRecommendSeller />
                             </div>
                         </div>
                     </div>
