@@ -1,13 +1,12 @@
 import { Card, Col, Image, Row } from "react-bootstrap";
-// import lihkg_logo from "../homepage/lihkg_logo.png";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store";
 import "./AccountDetails.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import bidcastQRcode from "./assets/bidcastQR.svg";
-// import { push } from "connected-react-router";
-import { refreshCurrentUser } from "../../redux/user/actions";
+import { Alert } from 'reactstrap';
+import { checkCurrentUser, refreshCurrentUser } from "../../redux/user/actions";
 
 type editInput = {
   username?: string,
@@ -28,7 +27,22 @@ export function AccountDetails() {
 
 
   const dispatch = useDispatch();
+  
+  const [alert, setAlert] = useState<any>([])
+  // const removeAlert = (e: any) => {
+  //   setAlert([])
+  // }
+  function AlertListAppend() {
 
+    return (
+      <div>
+
+        <Alert className={"Alert_container"} color="info" >
+          Telegram 帳戶已完成認証，請重新載入頁面
+        </Alert>
+      </div>
+    )
+  }
 
   const { register, handleSubmit,reset } = useForm<editInput>();
 
@@ -89,7 +103,22 @@ export function AccountDetails() {
   return (
     <div>
       <Row className={"details_container"}>
-        <Col className={"Detail_col_Left"} xs={12} md={8}>
+        
+        <Col className={"Detail_col_Right "} xs={12} md={4}>
+          <Card className="card_body">
+            <div className="card_bg_color"></div>
+            <CheckLoginShowPhoto />
+            {/* <Image src={`${process.env.REACT_APP_BACKEND_URL}/${userInfo.profile_pic}`} width="80" height="80" roundedCircle className="profile_logo" /> */}
+            <Card.Body>
+              <Card.Title>{userInfo.username}</Card.Title>
+              {/* <Card.Text >{userInfo.phone_number}</Card.Text> */}
+              {/* <Card.Text>{userInfo.email}</Card.Text> */}
+              <Card.Text className={"name_card_vice"}>{userInfo.telegram_acct ? `${userInfo.telegram_acct}` : "請登記 Telegram 帳號"}</Card.Text>
+              <Card.Text>{userInfo.description? `「 ${userInfo.description} 」`:"自我介紹..."}</Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col className={"Detail_col_Left order-md-first"} xs={12} md={8}>
           {/* Edit Profile Form */}
           <div className={"edit_pro_container editProForm_shown"}>
             <div className={"edit_header"}>更改帳戶資料</div>
@@ -128,20 +157,6 @@ export function AccountDetails() {
               <input className={"button_default"} type="submit" />
             </form>
           </div>
-        </Col>
-        <Col className={"Detail_col_Right"} xs={12} md={4}>
-          <Card className="card_body">
-            <div className="card_bg_color"></div>
-            <CheckLoginShowPhoto />
-            {/* <Image src={`${process.env.REACT_APP_BACKEND_URL}/${userInfo.profile_pic}`} width="80" height="80" roundedCircle className="profile_logo" /> */}
-            <Card.Body>
-              <Card.Title>{userInfo.username}</Card.Title>
-              {/* <Card.Text >{userInfo.phone_number}</Card.Text> */}
-              {/* <Card.Text>{userInfo.email}</Card.Text> */}
-              <Card.Text className={"name_card_vice"}>{userInfo.telegram_acct ? `${userInfo.telegram_acct}` : "請登記 Telegram 帳號"}</Card.Text>
-              <Card.Text>{userInfo.description? `「 ${userInfo.description} 」`:"自我介紹..."}</Card.Text>
-            </Card.Body>
-          </Card>
         </Col>
       </Row>
     </div>

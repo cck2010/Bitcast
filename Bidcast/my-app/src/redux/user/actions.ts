@@ -60,10 +60,9 @@ export function checkCurrentUser() {
             })
             // console.log("fetched")
             const newToken: any = res.data
-
+            
+            localStorage.setItem("token",newToken)
             dispatch(login(newToken))
-
-
             dispatch(loadToken(newToken))
 
             return
