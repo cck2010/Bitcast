@@ -1,3 +1,4 @@
+import moment from "moment";
 import { useEffect, useState } from "react";
 import { Button, Modal, Image, Container, Row, Col } from "react-bootstrap";
 import Carousel from "react-multi-carousel";
@@ -27,8 +28,6 @@ export function ProductDetails(props: any) {
   const products = useSelector((state: RootState) =>
     Object.values(state.comingAuction.productDetails)
   );
-
-  console.log(products);
 
   const dispatch = useDispatch();
 
@@ -63,7 +62,7 @@ export function ProductDetails(props: any) {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <h4>拍賣時間： {(liveArr[0] as any).starting_time}</h4>
+            <h4>拍賣時間： {moment((liveArr[0] as any).starting_time).format('YYYY-MM-DD hh:mm:ss')}</h4>
             <Container>
               <Row>
                 <Col xs={6} md={4}>

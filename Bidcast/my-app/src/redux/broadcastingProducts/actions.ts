@@ -8,6 +8,7 @@ export interface BroadcastingProducts {
     product_name: string;
     image: string;
     min_price: number;
+    buyer_link: string;
 }
 
 export function loadBroadcastingProducts (
