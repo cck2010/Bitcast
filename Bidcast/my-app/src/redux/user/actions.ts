@@ -1,5 +1,6 @@
 import { RootState, RootThunkDispatch } from "../../store";
 import axios from 'axios';
+import { history } from "../../store";
 // import jwt, { JwtPayload, VerifyOptions } from "jsonwebtoken";
 // import { push } from "connected-react-router";
 // import { JWTPayload } from "./reducer";
@@ -41,6 +42,8 @@ export function logoutThunk() {
     }
 }
 
+// eslint-disable-next-line react-hooks/rules-of-hooks
+
 export function checkCurrentUser() {
 
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
@@ -64,6 +67,14 @@ export function checkCurrentUser() {
 
 
             dispatch(loadToken(newToken))
+
+            const state = getState()
+
+            if (state.user.isAuthenticate && typeof state.authState.user !== "string" && state.authState.user !== undefined && state.authState.user!.phone_number === '11111111') {
+                console.log('redictection needed!')
+                history.push("/profilePage/accountDetails")
+
+            }
 
             return
         } catch (e) {

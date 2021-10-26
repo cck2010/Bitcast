@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 import "./App.scss";
 import LiveStream from "./pages/LiveStream/LiveStream";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import { LoginPage } from "./pages/login/LoginPage";
 import { HomePageNavbar } from "./pages/homepage/Navbar";
 import { Footer } from "./pages/homepage/Footer";
@@ -25,16 +25,18 @@ import { JWTPayload } from "./redux/user/reducer";
 
 import ToastDemo from "./pages/login/alert";
 import { CToaster } from "@coreui/react";
+import { push } from "connected-react-router";
 
-interface Toast{
-  toast:number;
-  addToast:number;
-}
+
 
 function App() {
   const dispatch = useDispatch();
   const [isAlertChecked, setIsAlertChecked] = useState(false);
   const userInfo  = useSelector((state: RootState) => state.authState.user);
+  const isAuthenticate = useSelector(
+    (state: RootState) => state.user.isAuthenticate
+  );
+  // const history = useHistory();
   
 const toaster = React.useRef() as React.MutableRefObject<HTMLInputElement>;
   useEffect(() => {
@@ -44,18 +46,17 @@ const toaster = React.useRef() as React.MutableRefObject<HTMLInputElement>;
     if (!isAlertChecked) {
         dispatch(checkCurrentUser());
         
-        console.log("userInfo = ", userInfo)
-        
-        if (typeof userInfo !=="string" &&  userInfo !== undefined && userInfo.phone_number!== '11111111'){
-          ToastDemo()
-        }
+       
         
         setIsAlertChecked(true)
     }
     // (dispatch(push('/profilePage/accountDetails')))
     // //    ( isAlertChecked(`請到個人頁面更改電話號碼`))
-  }, [dispatch, isAlertChecked, userInfo]);
+  }, [dispatch, isAlertChecked, userInfo,isAuthenticate]);
+  useEffect(() => {
+   
 
+  })
 
   
   const { detected } = useAdBlockDetector();
@@ -68,8 +69,8 @@ const toaster = React.useRef() as React.MutableRefObject<HTMLInputElement>;
         <div className="turn_off_adblock">Please Turn Off Your Adblock!!</div>
       ) : (
         <>
-        
-        <CToaster ref={toaster} push={<ToastDemo/>} placement="bottom-end"/>
+         <CToaster ref={toaster} push={<ToastDemo/>} placement="bottom-end"/>
+       
           <HomePageNavbar />
           {/* <LiveStream /> */}
           {/* <CreateBids /> */}
