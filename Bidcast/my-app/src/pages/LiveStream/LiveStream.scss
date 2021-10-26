@@ -3,7 +3,7 @@ $largeFontSize2: 1.2em;
 $smallFontSize: 0.5em;
 
 .LiveStream {
-    max-width: 1920px;
+    max-width: 98.5%;
 }
 
 .LiveStreamHeader {
@@ -218,5 +218,34 @@ $smallFontSize: 0.5em;
         font-size: $largeFontSize;
         padding: 10px 0;
         user-select: none;
+    }
+}
+
+.LiveStreamRecommend {
+    a {
+        text-decoration: none;
+    }
+    .recommendAuction {
+        cursor: pointer;
+        .thumbnail {
+            width: 40%;
+        }
+        .info {
+            width: 60%;
+            .title,
+            .username {
+                width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                color: black;
+            }
+            .title {
+                font-weight: bold;
+            }
+            .username {
+                font-size: $smallFontSize;
+            }
+        }
     }
 }

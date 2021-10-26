@@ -1,4 +1,4 @@
-import { Button, Card, Container, Image, Modal } from "react-bootstrap";
+import { Button, Card, Container, Image } from "react-bootstrap";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { SvgBorder } from "./SvgBorder";
@@ -7,9 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { RootState } from "../../store";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getComingAuctions,
-} from "../../redux/homepage/action";
+import { getComingAuctions } from "../../redux/homepage/action";
 import { useEffect, useState } from "react";
 import { ProductDetails } from "./ProductDetails";
 
@@ -42,8 +40,11 @@ export function ComingAuction() {
     dispatch(getComingAuctions());
   }, [dispatch]);
 
-  const [modalShow, setModalShow] = useState(-1);
+  useEffect(() => {
+    console.log(auctions);
+  }, [auctions]);
 
+  const [modalShow, setModalShow] = useState(-1);
 
   return (
     <div>
@@ -103,6 +104,7 @@ export function ComingAuction() {
                 <Card.Text>由{auction.username}主辦</Card.Text>
                 <div className="bid_share_container">
                   <Button
+                    key={auction.id}
                     variant="outline-dark"
                     className="bid_button"
                     onClick={() => setModalShow(auction.id)}
@@ -110,14 +112,16 @@ export function ComingAuction() {
                     更多資料
                   </Button>
 
-                  
+                  {modalShow === auction.id && (
                     <ProductDetails
-                      show={modalShow === auction.id}
-                      id= {auction.id}
+                      key={auction.id}
+                      show={auction.id}
+                      lives={auctions}
+                      id={auction.id}
                       onHide={() => setModalShow(-1)}
                     />
-                
-                
+                  )}
+
                   <RWebShare
                     data={{
                       text: "",

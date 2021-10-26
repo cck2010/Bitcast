@@ -126,18 +126,18 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
     //WebSocket Signal Handler
     const [ws, setWs] = useState<Socket | null>(null);
 
-    const connectWebSocket = () => {
-        if (process.env.REACT_APP_BACKEND_URL !== undefined) {
-            setWs(io(process.env.REACT_APP_BACKEND_URL));
-        }
-    };
-
-    if (liveId > 0 && ws === null) {
-        connectWebSocket();
-    }
-
     useEffect(() => {
-        if (ws) {
+        const connectWebSocket = () => {
+            if (process.env.REACT_APP_BACKEND_URL !== undefined) {
+                setWs(io(process.env.REACT_APP_BACKEND_URL));
+            }
+        };
+
+        if (liveId > 0 && ws === null) {
+            connectWebSocket();
+        }
+
+        if (ws && liveId > 0) {
             const initWebSocket = () => {
                 if (ws) {
                     ws.emit("joinRoom", liveId.toString() + "chatroom");
@@ -148,10 +148,13 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
             };
             initWebSocket();
         }
+    }, [dispatch, ws, liveId]);
+
+    useEffect(() => {
         return () => {
             ws?.close();
         };
-    }, [dispatch, ws, liveId]);
+    }, [ws]);
 
     return (
         <div className="LiveStreamChatRoom">

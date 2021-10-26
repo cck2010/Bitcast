@@ -283,8 +283,15 @@ footer {
   margin-left: 1em;
 }
 .modal-backdrop.show {
-  opacity: 0.1 !important;
+  opacity: 0.7 !important;
 }
 .modal-backdrop {
   background-color: #4e4e4e !important;
+}
+.product_details_container{
+  display: flex;
+  flex-direction: column;
+  .product_details_name{
+    text-align: center;
+  }
 }

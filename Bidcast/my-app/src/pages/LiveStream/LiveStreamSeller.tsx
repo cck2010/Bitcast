@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./LiveStream.scss";
 import LiveStreamChatRoom from "../../component/LiveStream/LiveStreamChatRoom";
-import LiveStreamRecommend from "../../component/LiveStream/LiveStreamRecommendSeller";
+import LiveStreamRecommendSeller from "../../component/LiveStream/LiveStreamRecommendSeller";
 import LiveStreamHeader from "../../component/LiveStream/LiveStreamHeader";
 import { useMediaQuery } from "react-responsive";
 import { Button, ButtonGroup } from "reactstrap";
@@ -12,6 +12,7 @@ import {
     fetchInitialChatMessages,
     fetchliveStreamInfo,
     fetchliveStreamProducts,
+    resetLiveId,
 } from "../../redux/LiveStream/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
@@ -30,6 +31,9 @@ function LiveStream() {
         token = token != null ? token : "";
 
         dispatch(fetchliveStreamInfo(room, token));
+        return () => {
+            dispatch(resetLiveId());
+        };
     }, [dispatch]);
 
     const liveId = useSelector(
@@ -57,17 +61,17 @@ function LiveStream() {
     //Websocket Setup
     const [ws, setWs] = useState<Socket | null>(null);
 
-    const connectWebSocket = () => {
-        if (process.env.REACT_APP_BACKEND_URL !== undefined) {
-            setWs(io(process.env.REACT_APP_BACKEND_URL));
-        }
-    };
-
-    if (liveId > 0 && ws === null) {
-        connectWebSocket();
-    }
-
     useEffect(() => {
+        const connectWebSocket = () => {
+            if (process.env.REACT_APP_BACKEND_URL !== undefined) {
+                setWs(io(process.env.REACT_APP_BACKEND_URL));
+            }
+        };
+
+        if (liveId > 0 && ws === null) {
+            connectWebSocket();
+        }
+
         if (ws) {
             const initWebSocket = () => {
                 if (ws) {
@@ -79,10 +83,13 @@ function LiveStream() {
             };
             initWebSocket();
         }
+    }, [dispatch, ws, liveId]);
+
+    useEffect(() => {
         return () => {
             ws?.close();
         };
-    }, [dispatch, ws, liveId]);
+    }, [ws]);
     //Websocket Setup
 
     //Add event listener
@@ -155,7 +162,7 @@ function LiveStream() {
                                     isTablet={isTablet}
                                 />
                             )}
-                            {page === 4 && <LiveStreamRecommend />}
+                            {page === 4 && <LiveStreamRecommendSeller />}
                         </>
                     )}
                 </div>
@@ -171,7 +178,7 @@ function LiveStream() {
                         </div>
                         <div className="row">
                             <div className="col">
-                                <LiveStreamRecommend />
+                                <LiveStreamRecommendSeller />
                             </div>
                         </div>
                     </div>

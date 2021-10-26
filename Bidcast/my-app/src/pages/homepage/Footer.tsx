@@ -1,5 +1,5 @@
 import { Button, Container, OverlayTrigger, Popover } from "react-bootstrap";
-import bidcast_logo from "./bidcast_logo.png";
+import bidcast_logo from "./bidcast_logo.svg";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
@@ -28,8 +28,7 @@ export function Footer() {
           <img
             alt="bidcast_logo"
             src={bidcast_logo}
-            width="100"
-            height="50"
+            height="30"
             className="d-inline-block align-top"
           />
           <div>
