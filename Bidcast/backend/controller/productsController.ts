@@ -130,6 +130,12 @@ export class ProductsController {
                 productId,
                 seconds
             );
+            if (result[1]) {
+                setTimeout(() => {
+                    this.productsService.telegramBidResult(productId);
+                }, (seconds + 10) * 1000);
+                // }, 1000);
+            }
             const response = {
                 id: productId,
                 countdownEndTime: result[0],

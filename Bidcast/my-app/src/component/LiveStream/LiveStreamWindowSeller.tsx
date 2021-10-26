@@ -22,6 +22,21 @@ function LiveStreamWindow() {
     let [timerId, setTimerId] = useState<NodeJS.Timeout>(
         setInterval(() => {}, 45000)
     );
+    const isAuthenticate = useSelector(
+        (state: RootState) => state.user.isAuthenticate
+    );
+    const username = useSelector((state: RootState) => {
+        if (
+            typeof state.authState.user !== "string" &&
+            state.authState.user?.username
+        ) {
+            return state.authState.user.username;
+        }
+        return "";
+    });
+    const seller = useSelector(
+        (state: RootState) => state.liveStream.liveStreamInfo.seller
+    );
     //Get States
 
     //Custom Hook
@@ -133,7 +148,7 @@ function LiveStreamWindow() {
     return (
         <div className="LiveStreamWindowSeller">
             <div className="flex flex-col h-screen relative">
-                {client != null && (
+                {client != null && isAuthenticate && username === seller && (
                     <ButtonGroup className="w-100">
                         <button
                             className="btn btn-primary"

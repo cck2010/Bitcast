@@ -60,6 +60,8 @@ export async function seed(knex: Knex): Promise<void> {
                     role_id:
                         rolesId[Math.floor(Math.random() * rolesId.length)],
                     telegram_is_verified: false,
+                    profile_pic:
+                        "360_F_391192211_2w5pQpFV1aozYQhcIw3FqA35vuTxJKrB.jpg",
                     created_by: "knex seed",
                     updated_by: "knex seed",
                     login_method_id:
@@ -122,10 +124,38 @@ export async function seed(knex: Knex): Promise<void> {
         }
 
         if (i === 0) {
+            const userId2 = (
+                await knex("users")
+                    .insert({
+                        username: "abc123",
+                        status_id:
+                            statusId[
+                                Math.floor(Math.random() * statusId.length)
+                            ],
+                        email: "abc@123.com",
+                        password: await hashPassword("123Abc!!"),
+                        phone_number: "23456789",
+                        role_id:
+                            rolesId[Math.floor(Math.random() * rolesId.length)],
+                        telegram_is_verified: false,
+                        profile_pic:
+                            "360_F_391192211_2w5pQpFV1aozYQhcIw3FqA35vuTxJKrB.jpg",
+                        created_by: "knex seed",
+                        updated_by: "knex seed",
+                        login_method_id:
+                            loginMethodsId[
+                                Math.floor(
+                                    Math.random() * loginMethodsId.length
+                                )
+                            ],
+                    })
+                    .returning("id")
+            )[0];
+
             const liveId2 = (
                 await knex("live")
                     .insert({
-                        user_id: userId,
+                        user_id: userId2,
                         title: chance.sentence(),
                         image: `${
                             imgArr[Math.floor(Math.random() * imgArr.length)]
@@ -156,7 +186,7 @@ export async function seed(knex: Knex): Promise<void> {
                 await knex("products").insert({
                     product_name: chance.word(),
                     live_id: liveId2,
-                    seller_id: userId,
+                    seller_id: userId2,
                     min_price: price,
                     current_price: price,
                     buy_price: price * 10,
