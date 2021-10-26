@@ -13,6 +13,7 @@ import {
     fetchInitialChatMessages,
     fetchliveStreamInfo,
     fetchliveStreamProducts,
+    resetLiveId,
 } from "../../redux/LiveStream/actions";
 import { RootState } from "../../store";
 import io, { Socket } from "socket.io-client";
@@ -29,6 +30,9 @@ function LiveStream() {
         token = token != null ? token : "";
 
         dispatch(fetchliveStreamInfo(room, token));
+        return () => {
+            dispatch(resetLiveId());
+        };
     }, [dispatch]);
 
     const liveId = useSelector(
@@ -78,10 +82,13 @@ function LiveStream() {
             };
             initWebSocket();
         }
+    }, [dispatch, ws, liveId]);
+
+    useEffect(() => {
         return () => {
             ws?.close();
         };
-    }, [dispatch, ws, liveId]);
+    }, [ws]);
     //Websocket Setup
 
     //Add event listener

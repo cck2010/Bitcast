@@ -187,6 +187,12 @@ export function changeDummy() {
     };
 }
 
+export function resetLiveId() {
+    return {
+        type: "@@liveStream/RESET_LIVE_ID" as const,
+    };
+}
+
 export type LiveStreamActions =
     | ReturnType<typeof loadliveStreamInfo>
     | ReturnType<typeof loadLiveStreamProducts>
@@ -197,7 +203,8 @@ export type LiveStreamActions =
     | ReturnType<typeof loadChatMessages>
     | ReturnType<typeof sendChatMessages>
     | ReturnType<typeof loadRecommendList>
-    | ReturnType<typeof changeDummy>;
+    | ReturnType<typeof changeDummy>
+    | ReturnType<typeof resetLiveId>;
 
 export function fetchliveStreamInfo(room: string, token: string) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
