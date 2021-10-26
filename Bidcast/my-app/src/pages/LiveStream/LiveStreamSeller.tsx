@@ -1,15 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./LiveStream.scss";
 import LiveStreamChatRoom from "../../component/LiveStream/LiveStreamChatRoom";
-import LiveStreamRecommend from "../../component/LiveStream/LiveStreamRecommend";
+import LiveStreamRecommendSeller from "../../component/LiveStream/LiveStreamRecommendSeller";
 import LiveStreamHeader from "../../component/LiveStream/LiveStreamHeader";
 import { useMediaQuery } from "react-responsive";
 import { Button, ButtonGroup } from "reactstrap";
 import LiveStreamWindowSeller from "../../component/LiveStream/LiveStreamWindowSeller";
 import LiveStreamControlPanelSeller from "../../component/LiveStream/LiveStreamControlPanelSeller";
 import {
+    changeDummy,
+    fetchInitialChatMessages,
     fetchliveStreamInfo,
     fetchliveStreamProducts,
+    resetLiveId,
 } from "../../redux/LiveStream/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
@@ -17,21 +20,9 @@ import io, { Socket } from "socket.io-client";
 import LiveStreamBiddingInfoSeller from "../../component/LiveStream/LiveStreamBiddingInfoSeller";
 
 function LiveStream() {
-    const liveStreamRef = useRef<HTMLDivElement>(null);
-
-    // react-responsive
-    const isDesktop = useMediaQuery({
-        query: "(min-width: 1200px)",
-    });
-
-    const isTablet = useMediaQuery({
-        query: "(min-width: 768px)",
-    });
-
-    const [page, setPage] = useState<number>(1);
-
-    // fetch info
+    //Get States
     const dispatch = useDispatch();
+    const liveStreamRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         let room = new URLSearchParams(window.location.search).get("room");
@@ -40,6 +31,9 @@ function LiveStream() {
         token = token != null ? token : "";
 
         dispatch(fetchliveStreamInfo(room, token));
+        return () => {
+            dispatch(resetLiveId());
+        };
     }, [dispatch]);
 
     const liveId = useSelector(
@@ -49,30 +43,39 @@ function LiveStream() {
     useEffect(() => {
         if (liveId !== 0) {
             dispatch(fetchliveStreamProducts(liveId, true));
+            dispatch(fetchInitialChatMessages(liveId));
         }
     }, [dispatch, liveId]);
+    //Get States
 
-    // connect socket.io
+    //React-responsive
+    const isDesktop = useMediaQuery({
+        query: "(min-width: 1200px)",
+    });
+    const isTablet = useMediaQuery({
+        query: "(min-width: 768px)",
+    });
+    const [page, setPage] = useState<number>(1);
+    //React-responsive
+
+    //Websocket Setup
     const [ws, setWs] = useState<Socket | null>(null);
 
-    const connectWebSocket = () => {
-        if (process.env.REACT_APP_BACKEND_URL !== undefined) {
-            setWs(io(process.env.REACT_APP_BACKEND_URL));
-        }
-    };
-
-    if (liveId > 0 && ws === null) {
-        connectWebSocket();
-    }
-
     useEffect(() => {
+        const connectWebSocket = () => {
+            if (process.env.REACT_APP_BACKEND_URL !== undefined) {
+                setWs(io(process.env.REACT_APP_BACKEND_URL));
+            }
+        };
+
+        if (liveId > 0 && ws === null) {
+            connectWebSocket();
+        }
+
         if (ws) {
             const initWebSocket = () => {
                 if (ws) {
                     ws.emit("joinRoom", liveId);
-                    ws.on("joinRoom", (message: string) => {
-                        console.log(message);
-                    });
                     ws.on("render", () => {
                         dispatch(fetchliveStreamProducts(liveId, false));
                     });
@@ -81,6 +84,25 @@ function LiveStream() {
             initWebSocket();
         }
     }, [dispatch, ws, liveId]);
+
+    useEffect(() => {
+        return () => {
+            ws?.close();
+        };
+    }, [ws]);
+    //Websocket Setup
+
+    //Add event listener
+    useEffect(() => {
+        const popstaeHandler = () => {
+            dispatch(changeDummy());
+        };
+        window.addEventListener("popstate", popstaeHandler);
+        return () => {
+            window.removeEventListener("popstate", popstaeHandler);
+        };
+    }, [dispatch]);
+    //Add event listener
 
     return (
         <div className="LiveStream m-3" ref={liveStreamRef}>
@@ -99,7 +121,7 @@ function LiveStream() {
                                 isTablet={isTablet}
                                 ws={ws}
                             />
-                            <LiveStreamHeader />
+                            <LiveStreamHeader ws={ws} />
                         </>
                     ) : (
                         <>
@@ -117,7 +139,7 @@ function LiveStream() {
                                     其他拍賣直播
                                 </Button>
                             </ButtonGroup>
-                            {page === 1 && <LiveStreamHeader />}
+                            {page === 1 && <LiveStreamHeader ws={ws} />}
                             {page === 2 && (
                                 <>
                                     <div className="row mt-3 rounded">
@@ -140,7 +162,7 @@ function LiveStream() {
                                     isTablet={isTablet}
                                 />
                             )}
-                            {page === 4 && <LiveStreamRecommend />}
+                            {page === 4 && <LiveStreamRecommendSeller />}
                         </>
                     )}
                 </div>
@@ -156,7 +178,7 @@ function LiveStream() {
                         </div>
                         <div className="row">
                             <div className="col">
-                                <LiveStreamRecommend />
+                                <LiveStreamRecommendSeller />
                             </div>
                         </div>
                     </div>

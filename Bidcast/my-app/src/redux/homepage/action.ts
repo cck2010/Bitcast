@@ -4,24 +4,43 @@ export interface ComingAuction {
     id: number;
     product_name: string;
     min_price: number;
-    product_image: string;
-    starting_time: number;
+    image: string;
+    starting_time: Date;
     username: string;
-    success: boolean;
+    category: string;
+    buy_price: number;
+    description: string;
+    title: string;
 }
+
+// export interface ProductDetails {
+//     id: number;
+//     title: string;
+//     starting_time: Date;
+//     image: string;
+//     description: string;
+// }
 
 export function loadComingAuctions(
     comingAuctions: ComingAuction[],
-    success: boolean
 ) {
     return {
         type: "@@comingAuction/LOAD_COMING_AUCTION" as const,
         comingAuctions,
-        success,
     };
 }
 
-export type ComingAuctionActions = ReturnType<typeof loadComingAuctions>;
+// export function loadProductDetails(
+//     productDetails: ProductDetails[],
+// ) {
+//     return {
+//         type: "@@productDetails/LOAD_PRODUCT_DETAILS" as const,
+//         productDetails
+//     }
+// }
+
+export type ComingAuctionActions = ReturnType<typeof loadComingAuctions> 
+// | ReturnType<typeof loadProductDetails>
 
 export function getComingAuctions() {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
@@ -32,11 +51,11 @@ export function getComingAuctions() {
 
             const json = await res.json();
 
-            if (json.success) {
+            if (json) {
 
-                dispatch(loadComingAuctions(json.data.results.rows, true))
+                dispatch(loadComingAuctions(json.data.results.rows))
             } else {
-                dispatch(loadComingAuctions([], false))
+                dispatch(loadComingAuctions([]))
             }
 
         } catch (error) {
@@ -44,3 +63,23 @@ export function getComingAuctions() {
         }
     }
 }
+
+// export function fetchProductDetails() {
+//     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
+//         try {
+//             const res = await fetch(
+//                 `${process.env.REACT_APP_BACKEND_URL}/product/details`
+//             )
+
+//             const json = await res.json()
+
+//             if (json) {
+//                 dispatch(loadProductDetails(json.data.results.rows))
+//             } else {
+//                 dispatch(loadProductDetails([]))
+//             }
+//         } catch (error) {
+//             console.log(error);
+//         }
+//     }
+// }

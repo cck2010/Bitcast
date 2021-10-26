@@ -9,7 +9,6 @@ import {
 } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
 import "./Profilepage.scss";
-import { useState } from "react";
 import {
   FiLogOut,
   FiArrowLeftCircle,
@@ -18,27 +17,33 @@ import {
 import { FaList, FaRegHeart } from "react-icons/fa";
 import { BsBroadcastPin } from "react-icons/bs";
 import { MdAccountBox } from "react-icons/md";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { Link } from "react-router-dom";
+import { menuIconClick } from "../../redux/Sidebar/actions";
 
 export function Sidebar() {
-  const [menuCollapse, setMenuCollapse] = useState(false);
 
-  const menuIconClick = () => {
-    //condition checking to change state from true to false and vice versa
-    menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true);
+  const menuCollapse = useSelector((state: RootState) =>
+  state.sideBar.menuCollapse
+);
+
+const dispatch = useDispatch()
+
+  const menuIconOnclickHandler = () => {
+    dispatch(menuIconClick(menuCollapse ? false : true))
+    
   };
 
   const user = useSelector((state: RootState) => state.authState.user);
   const userInfo = JSON.parse(JSON.stringify(user));
-  
+  // const ref = useRef(null)
   return (
     <div className="sidebar">
       <ProSidebar collapsed={menuCollapse} width="220px">
         <SidebarHeader>
           <h3 className="sidebar_username pt-3">{userInfo.username}</h3>
-          <div className="close_menu" onClick={menuIconClick}>
+          <div className="close_menu" onClick={menuIconOnclickHandler}>
             {menuCollapse ? <FiArrowRightCircle /> : <FiArrowLeftCircle />}
           </div>
         </SidebarHeader>

@@ -5,7 +5,7 @@ export class MyLiveController {
     constructor (private myLiveService: MyLiveService) {}
 
     getMyLive = async (req: Request, res: Response)=>{
-        try {
+        try {      
             const result = await this.myLiveService.getMyLive()
             res.json(result)
         } catch (error) {

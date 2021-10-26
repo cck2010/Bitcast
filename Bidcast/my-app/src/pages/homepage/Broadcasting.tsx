@@ -8,8 +8,11 @@ import {
   faPodcast,
 } from "@fortawesome/free-solid-svg-icons";
 import { push } from "connected-react-router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RWebShare } from "react-web-share";
+import { RootState } from "../../store";
+import { useEffect } from "react";
+import { fetchBroadcastingProducts } from "../../redux/broadcastingProducts/actions";
 
 const responsive = {
   desktop: {
@@ -31,6 +34,15 @@ const responsive = {
 
 export function Broadcasting() {
   const dispatch = useDispatch();
+  const broadcastings = useSelector((state: RootState) =>
+    Object.values(state.broadcastingProducts.broadcastingProduct)
+  );
+
+
+  useEffect(() => {
+    dispatch(fetchBroadcastingProducts());
+  }, [dispatch]);
+
   return (
     <div>
       <Container>
@@ -57,73 +69,75 @@ export function Broadcasting() {
           showDots={false}
           sliderClass=""
           slidesToSlide={1}
-          swipeable={false}
+          swipeable
         >
-          <div>
-            <Card className="product_card">
-              <div className="img_icon_container">
-                <Image
-                  className="img_fluid"
-                  src="https://i0.wp.com/sneakerhistory.com/wp-content/uploads/2019/08/kobe-ad-mid.jpg?resize=560%2C361&ssl=1"
-                  fluid
-                />
-                <FontAwesomeIcon className="podcast_icon" icon={faPodcast} />
-              </div>
-              <Card.Body>
-                <div className="counter">
-                  <div className="countdown_time">
-                    <div className="time_value">00</div>
-                    <div className="time_label">日</div>
-                  </div>
-                  <div className="countdown_time">
-                    <div className="time_value">00</div>
-                    <div className="time_label">時</div>
-                  </div>
-                  <div className="countdown_time">
-                    <div className="time_value">00</div>
-                    <div className="time_label">分</div>
-                  </div>
-                  <div className="countdown_time">
-                    <div className="time_value">00</div>
-                    <div className="time_label">秒</div>
-                  </div>
+          {broadcastings.map((broadcasting) => (
+            <div key={broadcasting.id}>
+              <Card className="product_card">
+                <div className="img_icon_container">
+                  <Image
+                    className="img_fluid"
+                    src={`${process.env.REACT_APP_BACKEND_URL}/${broadcasting.image}`}
+                    fluid
+                  />
+                  <FontAwesomeIcon className="podcast_icon" icon={faPodcast} />
                 </div>
-                <Card.Title>產品名</Card.Title>
-                <Card.Text>
-                  目前價格: <span className="biding_price">HKD 100</span>
-                </Card.Text>
-                <Card.Text>由XXX主辦</Card.Text>
-                <div className="bid_share_container">
-                  <Button
-                    variant="outline-dark"
-                    className="bid_button"
-                    onClick={() => {
-                      dispatch(push(`/liveStreaming?room=`));
-                    }}
-                  >
-                    觀看直播
-                  </Button>
+                <Card.Body>
+                  <div className="counter">
+                    <div className="countdown_time">
+                      <div className="time_value">00</div>
+                      <div className="time_label">日</div>
+                    </div>
+                    <div className="countdown_time">
+                      <div className="time_value">00</div>
+                      <div className="time_label">時</div>
+                    </div>
+                    <div className="countdown_time">
+                      <div className="time_value">00</div>
+                      <div className="time_label">分</div>
+                    </div>
+                    <div className="countdown_time">
+                      <div className="time_value">00</div>
+                      <div className="time_label">秒</div>
+                    </div>
+                  </div>
+                  <Card.Title>{broadcasting.title}</Card.Title>
+                  <Card.Text>
+                    目前價格:{" "}
+                    <span className="biding_price">
+                      HKD {broadcasting.current_price}
+                    </span>
+                  </Card.Text>
+                  <Card.Text>由{broadcasting.username}主辦</Card.Text>
+                  <div className="bid_share_container">
+                    <Button
+                      variant="outline-dark"
+                      className="bid_button"
+                      onClick={() => {
+                        dispatch(push(`/liveStreaming?room=`));
+                      }}
+                    >
+                      觀看直播
+                    </Button>
 
-                  <RWebShare
-                    data={{
-                      text: "",
-                      url: "",
-                      title: "Look at this amazing live",
-                    }}
-                    onClick={() => console.log("shared successfully!")}
-                  >
-                    <FontAwesomeIcon
-                      className="share_icon"
-                      icon={faExternalLinkAlt}
-                    />
-                  </RWebShare>
-                </div>
-              </Card.Body>
-            </Card>
-          </div>
-          <div>111</div>
-          <div>111</div>
-          <div>111</div>
+                    <RWebShare
+                      data={{
+                        text: "",
+                        url: "",
+                        title: "Look at this amazing live",
+                      }}
+                      onClick={() => console.log("shared successfully!")}
+                    >
+                      <FontAwesomeIcon
+                        className="share_icon"
+                        icon={faExternalLinkAlt}
+                      />
+                    </RWebShare>
+                  </div>
+                </Card.Body>
+              </Card>
+            </div>
+          ))}
         </Carousel>
       </Container>
     </div>

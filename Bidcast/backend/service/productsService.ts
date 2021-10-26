@@ -17,17 +17,16 @@ export class ProductsService {
         description: string,
         startDate: Date | string,
         liveImage: string | undefined,
-        userId:number,
-        sellerLink:string,
-        buyerLink:string
-        ) => {
-            console.log("liveTitle", liveTitle);
-            console.log("description", description);
-            console.log("startDate", startDate);
-            console.log("liveImage", liveImage);
-            console.log("userId", userId);
-            console.log("buyerLink", buyerLink);
-            
+        userId: number,
+        sellerLink: string,
+        buyerLink: string
+    ) => {
+        console.log("liveTitle", liveTitle);
+        console.log("description", description);
+        console.log("startDate", startDate);
+        console.log("liveImage", liveImage);
+        console.log("userId", userId);
+        console.log("buyerLink", buyerLink);
 
         const res = await this.knex("live")
             .insert({
@@ -50,7 +49,7 @@ export class ProductsService {
             .returning("*");
         // const resultData = await this.knex("live").select("*")
         // console.log("resultData", resultData);
-        console.log("Submitted live_id :", res);
+        // console.log("Submitted live_id :", res);
         return {
             success: true,
             data: { msg: "submit liveInfo success", res },
@@ -65,8 +64,82 @@ export class ProductsService {
     //     }
     // };
 
-    putBidIncrement = async (productId: number) => {
-        return productId + 10;
+    putcurrentPrice = async (
+        productId: number,
+        bidAmount: number,
+        addCurrentPrice: boolean,
+        userId: number
+    ) => {
+        const txn = await this.knex.transaction();
+        try {
+            const result = (
+                await txn("products")
+                    .select(
+                        "bid_increment",
+                        "current_price",
+                        "buy_price",
+                        "buyer_id",
+                        "countdown_end_time"
+                    )
+                    .where("id", productId)
+            )[0];
+
+            const bidIncrement = result.bid_increment;
+            const currentPrice = result.current_price;
+            const buyPrice = result.buy_price;
+            const buyerId = result.buyer_id;
+            const countdownEndTime = result.countdown_end_time;
+            let newPrice: number = 0;
+            if (addCurrentPrice) {
+                if (currentPrice + bidAmount < buyPrice) {
+                    newPrice = currentPrice + bidAmount;
+                } else {
+                    newPrice = buyPrice;
+                }
+            } else {
+                if (bidAmount < buyPrice) {
+                    if (bidAmount < currentPrice + bidIncrement) {
+                        return {
+                            currentPrice: 0,
+                            success: false,
+                        };
+                    }
+                    newPrice = bidAmount;
+                } else {
+                    newPrice = buyPrice;
+                }
+            }
+
+            if (userId === parseInt(buyerId) || newPrice <= currentPrice) {
+                return {
+                    currentPrice: 0,
+                    success: false,
+                };
+            }
+
+            await txn("products")
+                .update({
+                    current_price: newPrice,
+                    countdown_end_time:
+                        newPrice === buyPrice ? new Date() : countdownEndTime,
+                    buyer_id: userId,
+                })
+                .where("id", productId);
+
+            await txn.commit();
+            return {
+                currentPrice: newPrice,
+                isEnded: newPrice === buyPrice ? true : false,
+                success: true,
+            };
+        } catch (e) {
+            await txn.rollback();
+            return {
+                currentPrice: 0,
+                isEnded: false,
+                success: false,
+            };
+        }
     };
 
     startBid = async (productId: number, seconds: number) => {
@@ -132,7 +205,10 @@ export class ProductsService {
     };
     searchProductResults = async (searchKeywords: string) => {
         const results = await this.knex.raw(/*sql*/ `
-        select * from products where product_name ilike '%${searchKeywords}%';
+        select products.id, products.product_name, products.buy_price, products.min_price, products.product_image, products.description, users.username
+        from products 
+        left outer join users on products.seller_id = users.id
+        where product_name ilike '%${searchKeywords}%';
         `);
         return {
             success: true,
@@ -176,7 +252,7 @@ export class ProductsService {
             })
             .returning("*");
 
-        console.log("Submitted products :", res);
+        // console.log("Submitted products :", res);
         return {
             success: true,
             data: { msg: "submit product success", res },

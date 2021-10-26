@@ -1,7 +1,7 @@
 import { UserService } from "../service/userService";
 import { Request, Response } from "express";
-import jwtKey from "../jwt/jwt"
-import jwt from "jsonwebtoken"
+import jwtKey from "../jwt/jwt";
+import jwt from "jsonwebtoken";
 
 declare global {
     namespace Express {
@@ -20,6 +20,7 @@ declare global {
                 telegram_is_verified?: boolean;
                 telegram_chat_id?: number;
                 login_method_id?: number;
+                description?: string;
             };
         }
     }
@@ -39,24 +40,22 @@ export class UserController {
             );
             // console.log(result);
 
-            if (!(result.success)) {
+            if (!result.success) {
                 // console.log('not success');
 
                 return res.json(result);
             }
 
-            const payload = result.data.user
+            const payload = result.data.user;
             const signOptions: {} = {
-
                 expiresIn: "12h",
-                algorithm: "RS512" 			// RSASSA options[ "RS256", "RS384", "RS512" ]
+                algorithm: "RS512", // RSASSA options[ "RS256", "RS384", "RS512" ]
             };
 
             const token = jwt.sign(payload, jwtKey.privateKEY, signOptions);
 
             return res.json({
                 token: token,
-
             });
             // req.session["user"] = result.data.user;
         } catch (err) {
@@ -118,22 +117,19 @@ export class UserController {
             //     req.session["user"] = result.data.user;
             // }
             if (result.success === true) {
-                const payload = result.data.user
+                const payload = result.data.user;
                 const signOptions: {} = {
-
                     expiresIn: "12h",
-                    algorithm: "RS512" 			// RSASSA options[ "RS256", "RS384", "RS512" ]
+                    algorithm: "RS512", // RSASSA options[ "RS256", "RS384", "RS512" ]
                 };
 
                 const token = jwt.sign(payload, jwtKey.privateKEY, signOptions);
 
                 return res.json({
                     token: token,
-
                 });
             }
             return res.json(result);
-
         } catch (err) {
             console.log(err);
             return res.json({
@@ -176,16 +172,19 @@ export class UserController {
                 },
             });
         }
-    }
+    };
     loginFacebook = async (req: Request, res: Response) => {
         try {
             const facebookInfo = req.body;
-            const result = await this.userService.FacebookLogin(facebookInfo.email, facebookInfo.name, facebookInfo.image)
-            const payload = result.data.user
+            const result = await this.userService.FacebookLogin(
+                facebookInfo.email,
+                facebookInfo.name,
+                facebookInfo.image
+            );
+            const payload = result.data.user;
             const signOptions: {} = {
-
                 expiresIn: "12h",
-                algorithm: "RS512" 			// RSASSA options[ "RS256", "RS384", "RS512" ]
+                algorithm: "RS512", // RSASSA options[ "RS256", "RS384", "RS512" ]
             };
 
             if (payload) {
@@ -193,13 +192,12 @@ export class UserController {
 
                 return res.json({
                     token: token,
-
                 });
             } else {
                 return res.status(401).json({
                     token: null,
-                    message: 'Incorrect token'
-                })
+                    message: "Incorrect token",
+                });
             }
         } catch (e) {
             console.log(e);
@@ -209,16 +207,19 @@ export class UserController {
                 message: 'loginGoole unknow error'
             })
         }
-    }
+    };
     loginGoogle = async (req: Request, res: Response) => {
         try {
             const googleInfo = req.body;
-            const result = await this.userService.googleLogin(googleInfo.name, googleInfo.email, googleInfo.image)
-            const payload = result.data.user
+            const result = await this.userService.googleLogin(
+                googleInfo.name,
+                googleInfo.email,
+                googleInfo.image
+            );
+            const payload = result.data.user;
             const signOptions: {} = {
-
                 expiresIn: "12h",
-                algorithm: "RS512" 			// RSASSA options[ "RS256", "RS384", "RS512" ]
+                algorithm: "RS512", // RSASSA options[ "RS256", "RS384", "RS512" ]
             };
 
             if (payload) {
@@ -226,22 +227,56 @@ export class UserController {
 
                 return res.json({
                     token: token,
-
                 });
             } else {
                 return res.status(401).json({
                     token: null,
-                    message: 'Incorrect token'
-                })
+                    message: "Incorrect token",
+                });
             }
         } catch (e) {
             console.log(e);
 
             return res.json({
                 token: null,
-                message: 'loginGoole unknow error'
+                message: "loginGoole unknow error",
+            });
+        }
+    }
+    editProfile = async (req: Request, res: Response) => {
+        try {
+            console.log("test req.user>>>>>>>>>>>>>>>>>>", req.user)
+            const profilePic: any = req.file?.filename;
+            // console.log("profilePic", profilePic);
+            // console.log(req.body)
+            const {
+                username,
+                phoneNumber,
+                telegramAccount,
+                telegramChatId,
+                aboutMe,
+                userId
+            } = req.body;
 
-            })
+            const result = await this.userService.editProfile(
+                parseInt(userId),
+                username,
+                phoneNumber,
+                telegramAccount,
+                telegramChatId,
+                aboutMe,
+                profilePic,
+            )
+
+            console.log("result", result);
+            res.json(result);
+
+        } catch (error) {
+            res.json({
+                success: false,
+                data: { msg: "controller user edit profile fail" },
+                error: new Error("controller user edit profile fail"),
+            });
         }
 
     }

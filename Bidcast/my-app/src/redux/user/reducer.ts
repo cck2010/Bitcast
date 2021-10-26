@@ -40,6 +40,7 @@ export type JWTPayload = {
     telegram_is_verified?: boolean;
     telegram_chat_id?: number;
     login_method_id?: number;
+    description?: string;
 }
 
 export function userReducer(state: UserState = initialState, action: UserActions): UserState {
@@ -64,8 +65,8 @@ export let authReducer = (state: AuthState = loadTokenInitalState, action: AuthA
                         algorithms: ["RS512"]
                     }
 
-                    let key = process.env.REACT_APP_PUBLIC_KEY!.replace(/\\n/g, '\n')
-                    let payload: string | JwtPayload | any = jwt.verify(action.token, key, verifyOptions)
+                    let a = process.env.REACT_APP_PUBLIC_KEY!.replace(/\\n/g, '\n')
+                    let payload: string | JwtPayload | any = jwt.verify(action.token, a, verifyOptions)
                     // console.log('payload= ', payload)
                     const user: JWTPayload = {
                         id: payload.id,
@@ -78,9 +79,10 @@ export let authReducer = (state: AuthState = loadTokenInitalState, action: AuthA
                         role_id: payload.role_id,
                         status_id: payload.status_id,
                         telegram_acct: payload.telegram_acct,
-                        telegram_chat_id: payload.telegram_acct,
+                        telegram_chat_id: payload.telegram_chat_id,
                         telegram_is_verified: payload.telegram_is_verified,
-                        updated_at: payload.updated_at
+                        updated_at: payload.updated_at,
+                        description: payload.description,
 
 
                     }
@@ -103,12 +105,6 @@ export let authReducer = (state: AuthState = loadTokenInitalState, action: AuthA
     })
 }
 
-export interface PhoneState {
-    phoneIsNotAuthenticate: boolean;
 
-}
 
-const phoneState: PhoneState = {
-    phoneIsNotAuthenticate: false,
 
-}

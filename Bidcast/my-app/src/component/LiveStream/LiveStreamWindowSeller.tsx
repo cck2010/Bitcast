@@ -8,28 +8,29 @@ import { RootState } from "../../store";
 import useFetch from "react-fetch-hook";
 
 function LiveStreamWindow() {
+    //Get States
     const pubVideo = useRef<HTMLVideoElement>(null);
-
     const [client, setClient] = useState<Client | null>(null);
     let signal: IonSFUJSONRPCSignal | null = null;
     const [localStream, setLocalStream] = useState<LocalStream | null>(null);
-
     const token: string | null = new URLSearchParams(
         window.location.search
     ).get("token");
-
-    const result = useFetch<{ room: string }>(
-        `${process.env.REACT_APP_BACKEND_URL}/room?token=${token}`
-    );
-
     const thumbnail = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.thumbnail
     );
-
     let [timerId, setTimerId] = useState<NodeJS.Timeout>(
         setInterval(() => {}, 45000)
     );
+    //Get States
 
+    //Custom Hook
+    const result = useFetch<{ room: string }>(
+        `${process.env.REACT_APP_BACKEND_URL}/room?token=${token}`
+    );
+    //Custom Hook
+
+    //WebRTC Setup
     useEffect(() => {
         if (!result.isLoading && !client) {
             // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -53,12 +54,26 @@ function LiveStreamWindow() {
 
     useEffect(() => {
         return () => {
+            if (localStream) {
+                let tracks = localStream.getTracks();
+                tracks.forEach(function (track) {
+                    track.stop();
+                });
+                localStream.unpublish();
+            }
+        };
+    }, [localStream]);
+
+    useEffect(() => {
+        return () => {
             clearInterval(timerId);
             client?.close();
             signal?.close();
         };
     }, [client, signal, timerId]);
+    //WebRTC Setup
 
+    //Broadcast button Handler
     const start = (event: boolean): void => {
         if (event) {
             LocalStream.getUserMedia({
@@ -113,6 +128,7 @@ function LiveStreamWindow() {
         localStream.unpublish();
         pubVideo.current.srcObject = null;
     };
+    //Broadcast button Handler
 
     return (
         <div className="LiveStreamWindowSeller">
@@ -139,7 +155,6 @@ function LiveStreamWindow() {
                         </button>
                     </ButtonGroup>
                 )}
-
                 <video
                     id="pubVideo"
                     poster="transparent.png"
@@ -147,7 +162,11 @@ function LiveStreamWindow() {
                     controls
                     ref={pubVideo}
                     style={{
-                        backgroundImage: `url("${thumbnail}")`,
+                        backgroundImage: `${
+                            thumbnail
+                                ? `url("${process.env.REACT_APP_BACKEND_URL}/${thumbnail}")`
+                                : ""
+                        }`,
                     }}
                 ></video>
             </div>

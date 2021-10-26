@@ -180,9 +180,8 @@ h1{
 
 .resize_upload_photo{
     // margin-top: 20px;
-    // max-height:200px;
-
-    min-width: 280px;
+    max-height:220px;
+    min-width: 220px;
     max-width: 30vw;
     // height: 50vh;
 }
@@ -278,7 +277,7 @@ h1{
     right: 0;
     height: 100px;
     content: "";
-    background-image: url("pngegg.png");
+    background-image: url("./assets/pngegg.png");
     display: block;
     margin: 0 auto;
     background-size: 100%;
@@ -418,3 +417,9 @@ input[type=file] {
         cursor: pointer;
     }
 }
+
+//hide number input arrow
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }

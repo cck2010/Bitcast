@@ -8,13 +8,10 @@ import {
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Homepage.scss";
-import bidcast_logo from "./bidcast_logo.png";
+import bidcast_logo from "./bidcast_logo.svg";
 import lihkg_logo from "./lihkg_logo.png";
-import { Link, Route, Switch } from "react-router-dom";
-import { CreateBids } from "../createbids/CreateBids";
-import LiveStream from "../LiveStream/LiveStream";
+import { Link} from "react-router-dom";
 import { useState } from "react";
-import { Homepage } from "./Homepage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,6 +22,7 @@ import { push } from "connected-react-router";
 import { FormGroup, Input } from "reactstrap";
 import { fetchProductSearchResult } from "../../redux/searchResult/action";
 import { fetchCategories } from "../../redux/products/actions";
+import { menuIconClick } from "../../redux/Sidebar/actions";
 
 export function HomePageNavbar() {
   // const [show, setShow] = useState(false);
@@ -65,6 +63,10 @@ export function HomePageNavbar() {
     dispatch(fetchCategories());
   }, [dispatch])
 
+  const menuIconOnclickHandler = ()=>{
+    dispatch(menuIconClick(true))
+  }
+
   return (
     <div>
       <Navbar collapseOnSelect expand="md" className="navbar py-0">
@@ -72,12 +74,11 @@ export function HomePageNavbar() {
           <img
             alt="bidcast_logo"
             src={bidcast_logo}
-            width="120"
-            height="60"
+            height="40"
             className="d-inline-block align-top"
           />
         </Link>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Toggle aria-controls="responsive-navbar-nav"  onClick={menuIconOnclickHandler}/>
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto navbar_buttons">
             <FormGroup>

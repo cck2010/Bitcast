@@ -24,12 +24,15 @@ import liveStreamRoutes from "./router/liveStreamRoutes";
 import productsRoutes from "./router/productsRoutes";
 import { ProductsService } from "./service/productsService";
 import { ProductsController } from "./controller/productsController";
-import { comingAuctionRoutes } from "./router/comingAuction";
+import { comingAuctionRoutes } from "./router/comingAuctionRoutes";
 import { ComingAuctionController } from "./controller/comingAuctionController";
 import { ComingAuctionService } from "./service/comingAuctionService";
 import { MyLiveController } from "./controller/myLiveController";
 import { MyLiveService } from "./service/myLiveService";
 import { myLiveRoutes } from "./router/myLiveRoutes";
+import telegramRoutes from "./router/telegramRoutes";
+import { TelegramController } from "./controller/telegramController";
+import { TelegramService } from "./service/telegramService";
 
 // import { hashPassword, } from './hash';
 
@@ -61,15 +64,17 @@ export const liveStreamController = new LiveStreamController(
 export const productsController = new ProductsController(
     new ProductsService(knex)
 );
+export const telegramController = new TelegramController(
+    new TelegramService(knex)
+);
 export const comingAuctionController = new ComingAuctionController(
     new ComingAuctionService(knex)
 );
-export const myLiveController = new MyLiveController(
-    new MyLiveService(knex)
-);
+export const myLiveController = new MyLiveController(new MyLiveService(knex));
 
 // app.use(requestLogger, dummyCounter);
 app.use(userRoutes);
+app.use(telegramRoutes);
 app.use(liveStreamRoutes);
 app.use(productsRoutes);
 app.use(comingAuctionRoutes);
@@ -81,6 +86,7 @@ app.get("/profile", (req: express.Request, res: express.Response) => {
 app.use(express.static("public"));
 app.use(express.static("public", { extensions: ["html"] }));
 app.use(express.static("css"));
+app.use(express.static("usersProfile"));
 app.use(express.static("submitLivePicture"));
 app.use(express.static("submitProductsPicture"));
 app.use(express.static("logos"));
@@ -102,5 +108,3 @@ const PORT = env.PORT;
 server.listen(PORT, () => {
     logger.info(`Server準備好喇： http://localhost:${PORT}/`);
 });
-
-

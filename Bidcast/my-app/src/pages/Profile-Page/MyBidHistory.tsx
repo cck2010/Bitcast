@@ -7,7 +7,7 @@ export function MyBidHistory() {
         <h2 className="pt-3">拍賣紀錄</h2>
       </Container>
       <Container className="my_live_container pt-3">
-        <Card className="card_body" style={{ width: "16rem" }}>
+        <Card className="my_live_product_card_body" style={{ width: "16rem" }}>
           <Image
             className="my_live_products"
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Great_Wave_off_Kanagawa2.jpg/258px-Great_Wave_off_Kanagawa2.jpg"
@@ -23,7 +23,7 @@ export function MyBidHistory() {
             </Button>
           </Card.Body>
         </Card>
-        <Card className="card_body" style={{ width: "16rem" }}>
+        <Card className="my_live_product_card_body" style={{ width: "16rem" }}>
           <Image
             className="my_live_products"
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Great_Wave_off_Kanagawa2.jpg/258px-Great_Wave_off_Kanagawa2.jpg"

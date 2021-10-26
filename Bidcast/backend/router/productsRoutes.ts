@@ -1,6 +1,7 @@
 import express, { Request } from "express";
 import multer from "multer";
 import path from "path";
+import { isLoggedIn } from "../guard";
 import { productsController } from "../server";
 
 const productsRoutes = express.Router();
@@ -63,16 +64,20 @@ productsRoutes.post(
     submitProductsMulter,
     (req, res) => productsController.submitProductInfo(req, res)
 );
-productsRoutes.put("/liveStream/products/currentPrice", (req, res) =>
-    productsController.putBidIncrement(req, res)
+productsRoutes.put(
+    "/liveStream/products/currentPrice",
+    isLoggedIn,
+    (req, res) => productsController.putcurrentPrice(req, res)
 );
 
-productsRoutes.put("/liveStream/products/isSelected", (req, res) =>
+productsRoutes.put("/liveStream/products/isSelected", isLoggedIn, (req, res) =>
     productsController.selectProduct(req, res)
 );
 
-productsRoutes.put("/liveStream/products/productTime", (req, res) =>
+productsRoutes.put("/liveStream/products/productTime", isLoggedIn, (req, res) =>
     productsController.startBid(req, res)
 );
 //-------------------  for searching products ---------------------//
-productsRoutes.post("/product/search", (req, res) => productsController.searchProductResults(req, res))
+productsRoutes.post("/product/search", (req, res) =>
+    productsController.searchProductResults(req, res)
+);

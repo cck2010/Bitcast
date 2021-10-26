@@ -1,8 +1,10 @@
 import {
+    ChatMessage,
     LiveStreamActions,
     LiveStreamInfo,
     LiveStreamProduct,
     LiveStreamProductDynamicInfo,
+    Recommend,
 } from "./actions";
 import produce from "immer";
 
@@ -13,6 +15,15 @@ export interface LiveStreamState {
         liveStreamProductsArrDynamic: LiveStreamProductDynamicInfo[];
         success: boolean;
     };
+    chat: {
+        chatMessages: ChatMessage[];
+        success: boolean;
+    };
+    recommendList: {
+        results: Recommend[];
+        success: boolean;
+    };
+    dummy: number;
 }
 
 const initialState: LiveStreamState = {
@@ -31,6 +42,15 @@ const initialState: LiveStreamState = {
         liveStreamProductsArrDynamic: [],
         success: true,
     },
+    chat: {
+        chatMessages: [],
+        success: false,
+    },
+    recommendList: {
+        results: [],
+        success: false,
+    },
+    dummy: 0,
 };
 
 export function liveStreamReducer(
@@ -80,17 +100,50 @@ export function liveStreamReducer(
                 }
                 break;
             case "@@liveStream/BID_INCREMENT":
-                // for (let ind in state.liveStreamProducts
-                //     .liveStreamProductsArr) {
-                //     if (
-                //         state.liveStreamProducts.liveStreamProductsArr[ind]
-                //             .id === action.id
-                //     ) {
-                //         state.liveStreamProducts.liveStreamProductsArr[
-                //             ind
-                //         ].currentPrice = action.newPrice;
-                //     }
-                // }
+                let indUpdateBidIncrement = 0;
+                for (let liveStreamProduct of newState.liveStreamProducts
+                    .liveStreamProductsArrDynamic) {
+                    if (liveStreamProduct.id === action.id) {
+                        newState.liveStreamProducts.liveStreamProductsArrDynamic[
+                            indUpdateBidIncrement
+                        ].currentPrice = action.newPrice;
+                        newState.liveStreamProducts.liveStreamProductsArrDynamic[
+                            indUpdateBidIncrement
+                        ].buyer = action.buyer;
+                    }
+                    indUpdateBidIncrement++;
+                }
+                break;
+            case "@@liveStream/LOAD_CHAT_MESSAGES":
+                newState.chat.chatMessages = action.chatMessages.sort(
+                    (a, b) => a.id - b.id
+                );
+                newState.chat.success = action.success;
+                break;
+            case "@@liveStream/SEND_CHAT_MESSAGE":
+                let created_at = new Date(
+                    Date.parse(action.chatMessage.created_at)
+                );
+                let tempMessage = {
+                    id: action.chatMessage.id,
+                    username: action.chatMessage.username,
+                    profile_pic: action.chatMessage.profile_pic,
+                    message: action.chatMessage.message,
+                    created_at,
+                };
+                if (newState.chat.success && action.chatMessage.success) {
+                    newState.chat.chatMessages.push(tempMessage);
+                }
+                break;
+            case "@@liveStream/LOAD_RECOMMEND_LISTS":
+                newState.recommendList.results = action.recommendList;
+                newState.chat.success = action.success;
+                break;
+            case "@@liveStream/CHANGE_DUMMY":
+                newState.dummy = Math.floor(Math.random() * 10000);
+                break;
+            case "@@liveStream/RESET_LIVE_ID":
+                newState.liveStreamInfo.id = 0;
                 break;
         }
     });

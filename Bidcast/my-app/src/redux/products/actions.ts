@@ -20,6 +20,7 @@ export interface Product {
     updated_by: string;
     created_at: Date;
     updated_at: Date;
+    username:string;
 }
 
 export interface Category {
@@ -53,7 +54,7 @@ export function fetchCategories() {
         );
         const json = await res.json();
         const categoriesData = json.data.results;
-        console.log("json", categoriesData);
+        // console.log("json", categoriesData);
 
         // for(let category of json) {
         //  const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/categories/${category.id}/products`)

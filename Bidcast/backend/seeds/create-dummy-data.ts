@@ -6,6 +6,7 @@ const chance = new Chance();
 
 export async function seed(knex: Knex): Promise<void> {
     // Deletes ALL existing entries
+    await knex("chat").del();
     await knex("products").del();
     await knex("live").del();
     await knex("users").del();
@@ -38,6 +39,14 @@ export async function seed(knex: Knex): Promise<void> {
         ])
         .returning("id");
 
+    const imgArr = [
+        "productImage-1634870092849.png",
+        "productImage-1634875865005.jpeg",
+        "productImage-1634897449641.jpeg",
+        "productImage-1634898628085.jpeg",
+        "productImage-1635008978433.png",
+    ];
+
     for (let i = 0; i < 10; i++) {
         const userId = (
             await knex("users")
@@ -66,9 +75,9 @@ export async function seed(knex: Knex): Promise<void> {
                 .insert({
                     user_id: userId,
                     title: chance.sentence(),
-                    image: `https://picsum.photos/200/300?random=${Math.floor(
-                        Math.random() * 100
-                    )}`,
+                    image: `${
+                        imgArr[Math.floor(Math.random() * imgArr.length)]
+                    }`,
                     starting_time: chance.date({ year: 2021 }),
                     status_id:
                         statusId[Math.floor(Math.random() * statusId.length)],
@@ -118,9 +127,9 @@ export async function seed(knex: Knex): Promise<void> {
                     .insert({
                         user_id: userId,
                         title: chance.sentence(),
-                        image: `https://picsum.photos/200/300?random=${Math.floor(
-                            Math.random() * 100
-                        )}`,
+                        image: `${
+                            imgArr[Math.floor(Math.random() * imgArr.length)]
+                        }`,
                         starting_time: chance.date({ year: 2021 }),
                         status_id:
                             statusId[
@@ -137,7 +146,7 @@ export async function seed(knex: Knex): Promise<void> {
                     })
                     .returning("id")
             )[0];
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 10; i++) {
                 let isSelected = false;
                 if (i === 0) {
                     isSelected = true;

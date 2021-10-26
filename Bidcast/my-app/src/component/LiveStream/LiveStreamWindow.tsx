@@ -6,21 +6,20 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 
 function LiveStreamWindow() {
+    //Get States
     const subVideo = useRef<HTMLVideoElement>(null);
-
     let client: Client | null = null;
     let signal: IonSFUJSONRPCSignal | null = null;
-
     const room: string | null = new URLSearchParams(window.location.search).get(
         "room"
     );
-
     const thumbnail = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.thumbnail
     );
+    //Get States
 
+    //WebRTC Setup
     useEffect(() => {
-        // signal = new IonSFUJSONRPCSignal(webSocketIPBackUp);
         // eslint-disable-next-line react-hooks/exhaustive-deps
         signal = new IonSFUJSONRPCSignal(webSocketIP);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -61,6 +60,7 @@ function LiveStreamWindow() {
 
         return clearInterval(timerId);
     }, []);
+    //WebRTC Setup
 
     return (
         <div className="LiveStreamWindow">
@@ -73,7 +73,11 @@ function LiveStreamWindow() {
                     controls
                     ref={subVideo}
                     style={{
-                        backgroundImage: `url("${thumbnail}")`,
+                        backgroundImage: `${
+                            thumbnail
+                                ? `url("${process.env.REACT_APP_BACKEND_URL}/${thumbnail}")`
+                                : ""
+                        }`,
                     }}
                 ></video>
             </div>

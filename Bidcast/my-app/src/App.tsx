@@ -11,7 +11,6 @@ import { Footer } from "./pages/homepage/Footer";
 import { CreateBids } from "./pages/createbids/CreateBids";
 import LiveStreamSeller from "./pages/LiveStream/LiveStreamSeller";
 import { Homepage } from "./pages/homepage/Homepage";
-import { profile } from "console";
 import { ProfilePage } from "./pages/Profile-Page/Profilepage";
 import { CategoryResults } from "./pages/categories/Categories";
 import { useDispatch, useSelector } from "react-redux";

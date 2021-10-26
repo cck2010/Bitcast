@@ -3,7 +3,7 @@ $largeFontSize2: 1.2em;
 $smallFontSize: 0.5em;
 
 .LiveStream {
-    max-width: 1920px;
+    max-width: 98.5%;
 }
 
 .LiveStreamHeader {
@@ -108,6 +108,12 @@ $smallFontSize: 0.5em;
                 max-height: 200px;
             }
         }
+        .start_auction {
+            max-width: 500px;
+        }
+        label {
+            max-width: 500px;
+        }
     }
     .instant_info {
         padding: 0 0 0 20px;
@@ -126,6 +132,7 @@ $smallFontSize: 0.5em;
     }
 
     .bid_btn_groups {
+        max-width: 450px;
         .input_duration {
             font-size: 16px;
         }
@@ -182,6 +189,14 @@ $smallFontSize: 0.5em;
                         cubic-bezier(0.39, 0.575, 0.565, 1) both;
                 }
             }
+            .chat_username {
+                font-weight: bold;
+                height: fit-content;
+            }
+            .chat_propic {
+                width: 20px;
+                height: 20px;
+            }
 
             .footer {
                 margin: 10px 0 0 0;
@@ -203,5 +218,34 @@ $smallFontSize: 0.5em;
         font-size: $largeFontSize;
         padding: 10px 0;
         user-select: none;
+    }
+}
+
+.LiveStreamRecommend {
+    a {
+        text-decoration: none;
+    }
+    .recommendAuction {
+        cursor: pointer;
+        .thumbnail {
+            width: 40%;
+        }
+        .info {
+            width: 60%;
+            .title,
+            .username {
+                width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                color: black;
+            }
+            .title {
+                font-weight: bold;
+            }
+            .username {
+                font-size: $smallFontSize;
+            }
+        }
     }
 }

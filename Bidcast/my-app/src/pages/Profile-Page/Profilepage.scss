@@ -1,6 +1,5 @@
 @import "~react-pro-sidebar/dist/scss/styles.scss";
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap");
 
 .sidebar {
   width: 220px;
@@ -37,6 +36,12 @@
     max-height: 100px !important;
   }
 }
-.my_bid_card_container{
+.my_bid_card_container {
   width: 100%;
+}
+
+.my_live_product_card_body {
+  display: flex;
+  align-items: center;
+  margin: 5px;
 }
