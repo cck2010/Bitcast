@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./LiveStream.scss";
 import LiveStreamChatRoom from "../../component/LiveStream/LiveStreamChatRoom";
-import LiveStreamRecommend from "../../component/LiveStream/LiveStreamRecommend";
+import LiveStreamRecommend from "../../component/LiveStream/LiveStreamRecommendSeller";
 import LiveStreamHeader from "../../component/LiveStream/LiveStreamHeader";
 import { useMediaQuery } from "react-responsive";
 import { Button, ButtonGroup } from "reactstrap";
 import LiveStreamWindowSeller from "../../component/LiveStream/LiveStreamWindowSeller";
 import LiveStreamControlPanelSeller from "../../component/LiveStream/LiveStreamControlPanelSeller";
 import {
+    changeDummy,
     fetchInitialChatMessages,
     fetchliveStreamInfo,
     fetchliveStreamProducts,
@@ -83,6 +84,18 @@ function LiveStream() {
         };
     }, [dispatch, ws, liveId]);
     //Websocket Setup
+
+    //Add event listener
+    useEffect(() => {
+        const popstaeHandler = () => {
+            dispatch(changeDummy());
+        };
+        window.addEventListener("popstate", popstaeHandler);
+        return () => {
+            window.removeEventListener("popstate", popstaeHandler);
+        };
+    }, [dispatch]);
+    //Add event listener
 
     return (
         <div className="LiveStream m-3" ref={liveStreamRef}>

@@ -3,12 +3,13 @@ import "./LiveStream.scss";
 import LiveStreamWindow from "../../component/LiveStream/LiveStreamWindow";
 import LiveStreamControlPanel from "../../component/LiveStream/LiveStreamControlPanel";
 import LiveStreamChatRoom from "../../component/LiveStream/LiveStreamChatRoom";
-import LiveStreamRecommend from "../../component/LiveStream/LiveStreamRecommend";
+import LiveStreamRecommend from "../../component/LiveStream/LiveStreamRecommendSeller";
 import LiveStreamHeader from "../../component/LiveStream/LiveStreamHeader";
 import { useMediaQuery } from "react-responsive";
 import { Button, ButtonGroup } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
+    changeDummy,
     fetchInitialChatMessages,
     fetchliveStreamInfo,
     fetchliveStreamProducts,
@@ -26,7 +27,6 @@ function LiveStream() {
         room = room != null ? room : "";
         let token = new URLSearchParams(window.location.search).get("token");
         token = token != null ? token : "";
-        console.log(room, token, "room token");
 
         dispatch(fetchliveStreamInfo(room, token));
     }, [dispatch]);
@@ -83,6 +83,21 @@ function LiveStream() {
         };
     }, [dispatch, ws, liveId]);
     //Websocket Setup
+
+    //Add event listener
+    useEffect(() => {
+        console.log("event");
+        const popstaeHandler = () => {
+            dispatch(changeDummy());
+        };
+
+        window.addEventListener("popstate", popstaeHandler);
+        return () => {
+            console.log("remove event");
+            window.removeEventListener("popstate", popstaeHandler);
+        };
+    }, [dispatch]);
+    //Add event listener
 
     return (
         <div className="LiveStream m-3" ref={liveStreamRef}>
