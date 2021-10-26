@@ -34,7 +34,7 @@ function LiveStreamRecommend() {
     const recommendListCopy = [...recommendList];
     let len = recommendListCopy.length;
     const recommendation: Recommend[] = [];
-    for (let ind = 0; ind < Math.min(3, len); ind++) {
+    for (let ind = 0; ind < Math.min(10, len); ind++) {
         recommendation.push(
             recommendListCopy.splice(
                 Math.floor(Math.random() * recommendListCopy.length),
