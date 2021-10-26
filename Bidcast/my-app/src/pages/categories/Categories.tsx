@@ -4,16 +4,14 @@ import {
   Dropdown,
   DropdownButton,
   Image,
-  Row,
   Col,
 } from "react-bootstrap";
 import "./CategoryResult.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSlidersH } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { useEffect, useState } from "react";
-import { fetchProductSearchResult } from "../../redux/searchResult/action";
+
 
 export function CategoryResults() {
   const searchingResults = useSelector(

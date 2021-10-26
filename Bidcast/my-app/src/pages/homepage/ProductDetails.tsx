@@ -56,40 +56,39 @@ export function ProductDetails(props: any) {
             <Container>
               <Row>
                 <Col xs={6} md={4}>
-                  <Carousel
-                    additionalTransfrom={0}
-                    autoPlay={false}
-                    arrows={false}
-                    // autoPlaySpeed={5000}
-                    centerMode={false}
-                    className=""
-                    containerClass="container-with-dots"
-                    dotListClass=""
-                    draggable
-                    focusOnSelect={false}
-                    infinite
-                    itemClass=""
-                    keyBoardControl
-                    minimumTouchDrag={90}
-                    renderButtonGroupOutside={false}
-                    renderDotsOutside={false}
-                    responsive={productResponsive}
-                    showDots={false}
-                    sliderClass=""
-                    slidesToSlide={1}
-                    swipeable
-                  >
-                    <div className="product_details_container">
-
-                    </div>
-                    <Image
-                      src={`${process.env.REACT_APP_BACKEND_URL}/${
-                        (liveArr[0] as any).image
-                      }`}
-                      fluid
-                    />
+                  <div className="product_details_container">
+                    <Carousel
+                      additionalTransfrom={0}
+                      autoPlay={false}
+                      arrows
+                      // autoPlaySpeed={5000}
+                      centerMode={false}
+                      className=""
+                      containerClass="container-with-dots"
+                      dotListClass=""
+                      draggable
+                      focusOnSelect={false}
+                      infinite
+                      itemClass=""
+                      keyBoardControl
+                      minimumTouchDrag={90}
+                      renderButtonGroupOutside={false}
+                      renderDotsOutside={false}
+                      responsive={productResponsive}
+                      showDots={false}
+                      sliderClass=""
+                      slidesToSlide={1}
+                      swipeable
+                    >
+                      <Image
+                        src={`${process.env.REACT_APP_BACKEND_URL}/${
+                          (liveArr[0] as any).image
+                        }`}
+                        fluid
+                      />
+                    </Carousel>
                     <div className="product_details_name">product name</div>
-                  </Carousel>
+                  </div>
                 </Col>
                 <Col xs={12} md={8}>
                   <div className="products_info_container">

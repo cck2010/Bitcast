@@ -1,4 +1,4 @@
-import { Button, Card, Container, Image, Modal } from "react-bootstrap";
+import { Button, Card, Container, Image } from "react-bootstrap";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { SvgBorder } from "./SvgBorder";
