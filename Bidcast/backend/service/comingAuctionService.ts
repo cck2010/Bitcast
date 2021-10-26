@@ -37,9 +37,15 @@ export class ComingAuctionService {
         const results = await this.knex.raw(
             /*sql*/
             `
-            select * from live
-            order by live.starting_time asc
-            limit 10
+            select products.id, 
+            products.product_name, 
+            products.live_id, 
+            products.min_price, 
+            products.buy_price, 
+            products.product_image 
+            from products
+            left outer join live
+            on products.live_id = live.id
             `
         )
         return {
