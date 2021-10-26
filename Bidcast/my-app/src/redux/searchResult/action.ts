@@ -1,12 +1,17 @@
 import { RootState, RootThunkDispatch } from "../../store";
-import { Product } from "../products/actions";
 
-// export interface SearchProduct {
-//     productList: Product[]
-// }
+export interface SearchProduct {
+    id: number;
+    product_name: string;
+    buy_price: number;
+    product_image: string;
+    description: string;
+    username: string;
+    min_price: number;
+}
 
 //load product search result
-export function loadProductSearchResult(productList: Product[]) {
+export function loadProductSearchResult(productList: SearchProduct[]) {
     return {
         type: "@@products/LOAD_PRODUCT_SEARCH_RESULT" as const,
         productList,

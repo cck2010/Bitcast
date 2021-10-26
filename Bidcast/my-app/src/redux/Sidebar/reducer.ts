@@ -16,7 +16,7 @@ export function sidebarReducer (
 ): SidebarState {
     return produce(state, (newState) => {
         switch (action.type) {
-            case "@@SIDEBAR/MENU_ONCLICK":
+            case "@@sidebar/MENU_ONCLICK":
                 newState.menuCollapse = action.isCollapse
                 break;
         }

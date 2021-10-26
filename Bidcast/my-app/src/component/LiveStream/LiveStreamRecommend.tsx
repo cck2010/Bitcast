@@ -21,8 +21,6 @@ function LiveStreamRecommend() {
         (state: RootState) => state.liveStream.recommendList.results
     );
 
-    // console.log(recommendList);
-
     useEffect(() => {
         let categoryIdSet = new Set<number>();
         for (let product of products) {

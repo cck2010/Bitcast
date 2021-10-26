@@ -76,7 +76,6 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
         inputPrice,
         selectedProductDynamic.currentPrice,
         selectedProduct.bidIncrement,
-        selectedProduct,
     ]);
     //Get States
 
@@ -94,8 +93,12 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
 
     //Countdown Start Handler
     useEffect(() => {
-        if (productsDynamic.length !== 0) {
-            for (let ind in productsDynamic) {
+        if (
+            productsDynamic.length !== 0 &&
+            products.length !== 0 &&
+            productsDynamic.length === products.length
+        ) {
+            for (let ind in products) {
                 let countdownEndTime = productsDynamic[ind].countdownEndTime;
                 if (
                     productsDynamic[ind].isSelected &&
@@ -136,6 +139,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);
                     setIsBidding(false);
+                    break;
                 } else if (
                     productsDynamic[ind].isSelected &&
                     countdownEndTime === undefined
@@ -145,6 +149,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     setSelectedProduct(products[ind]);
                     setSelectedProductDynamic(productsDynamic[ind]);
                     setIsBidding(false);
+                    break;
                 }
             }
         }

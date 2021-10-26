@@ -146,7 +146,7 @@ export async function seed(knex: Knex): Promise<void> {
                     })
                     .returning("id")
             )[0];
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 10; i++) {
                 let isSelected = false;
                 if (i === 0) {
                     isSelected = true;

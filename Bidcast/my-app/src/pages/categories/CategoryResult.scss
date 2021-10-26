@@ -21,8 +21,19 @@
 }
 .description_container{
     margin-left: 20px;
-    width: 100%;
+    width: 70%;
 }
 .img-fluid {
     max-height: 200px;
+}
+.products_description{
+    width: 70%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.products_description:hover{
+    text-overflow:clip;
+    width:auto;
+    white-space: normal;
 }
