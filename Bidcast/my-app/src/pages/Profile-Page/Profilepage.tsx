@@ -10,6 +10,7 @@ import { MyBidHistory } from "./MyBidHistory";
 // import { Col, Container, Row } from "react-bootstrap";
 
 export function ProfilePage() {
+  
   return (
     <div className="profile_page">
       <Sidebar />
