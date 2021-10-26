@@ -220,3 +220,32 @@ $smallFontSize: 0.5em;
         user-select: none;
     }
 }
+
+.LiveStreamRecommend {
+    a {
+        text-decoration: none;
+    }
+    .recommendAuction {
+        cursor: pointer;
+        .thumbnail {
+            width: 40%;
+        }
+        .info {
+            width: 60%;
+            .title,
+            .username {
+                width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                color: black;
+            }
+            .title {
+                font-weight: bold;
+            }
+            .username {
+                font-size: $smallFontSize;
+            }
+        }
+    }
+}

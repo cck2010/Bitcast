@@ -34,7 +34,7 @@ function LiveStreamRecommend() {
     const recommendListCopy = [...recommendList];
     let len = recommendListCopy.length;
     const recommendation: Recommend[] = [];
-    for (let ind = 0; ind < Math.min(3, len); ind++) {
+    for (let ind = 0; ind < Math.min(10, len); ind++) {
         recommendation.push(
             recommendListCopy.splice(
                 Math.floor(Math.random() * recommendListCopy.length),
@@ -47,7 +47,7 @@ function LiveStreamRecommend() {
         <div className="LiveStreamRecommend my-3">
             {recommendation.map((item, ind) => (
                 <div
-                    className="recommendAuction m-3 d-flex flex-column justify-content-between"
+                    className="recommendAuction m-3 d-flex flex-row justify-content-between align-items-start"
                     key={ind}
                     onClick={() => {
                         window.history.pushState(
@@ -59,12 +59,18 @@ function LiveStreamRecommend() {
                     }}
                 >
                     <img
-                        className="thumbnail w-100 mb-3"
+                        className="thumbnail mb-3"
                         src={`${process.env.REACT_APP_BACKEND_URL}/${item.image}`}
                         alt="recommendAuction"
                     />
-                    <div className="title text-center">{item.title}</div>
-                    <div className="username text-center">{item.username}</div>
+                    <div className="info d-flex flex-column h-100 justify-content-between">
+                        <div className="title text-start ms-3 mt-3">
+                            {item.title}
+                        </div>
+                        <div className="username text-start ms-3 mt-3">
+                            {item.username}
+                        </div>
+                    </div>
                 </div>
             ))}
         </div>

@@ -48,17 +48,21 @@ function LiveStreamRecommend() {
             {recommendation.map((item, ind) => (
                 <Link to={`/liveStreaming?room=${item.buyer_link}`} key={ind}>
                     <div
-                        className="recommendAuction m-3 d-flex flex-column justify-content-between"
+                        className="recommendAuction m-3 d-flex flex-row justify-content-between align-items-start"
                         key={ind}
                     >
                         <img
-                            className="thumbnail w-100 mb-3"
+                            className="thumbnail mb-3"
                             src={`${process.env.REACT_APP_BACKEND_URL}/${item.image}`}
                             alt="recommendAuction"
                         />
-                        <div className="title text-center">{item.title}</div>
-                        <div className="username text-center">
-                            {item.username}
+                        <div className="info d-flex flex-column h-100 justify-content-between">
+                            <div className="title text-start ms-3 mt-3">
+                                {item.title}
+                            </div>
+                            <div className="username text-start ms-3 mt-3">
+                                {item.username}
+                            </div>
                         </div>
                     </div>
                 </Link>
