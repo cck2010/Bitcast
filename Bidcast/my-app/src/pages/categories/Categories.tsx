@@ -45,7 +45,6 @@ export function CategoryResults() {
 
         {searchingResults.map((searchingResult) => (
           <div className="category_items_container" key={searchingResult.id}>
-            {/* <Row> */}
               <Col xs={6} md={4}>
             <Image
               key={searchingResult.id}
@@ -54,29 +53,14 @@ export function CategoryResults() {
             />
             </Col>
             <div className="description_container">
-              {/* <Col xs={12} md={8}> */}
               <h3>{searchingResult.product_name}</h3>
               <h6>底價： {searchingResult.min_price}</h6>
               <h6>即買價： {searchingResult.buy_price}</h6>
               <h6>拍賣主： {searchingResult.username}</h6>
               <p className="products_description">商品簡介： {searchingResult.description}</p>
-              {/* </Col> */}
             </div>
-            {/* </Row> */}
           </div>
         ))}
-        <div className="category_items_container">
-          <Image
-            src="https://i.picsum.photos/id/5/200/200.jpg?hmac=oN9VtXdJYLSFssji8vCr48JaI-e5Zi4eH9GAiYBB_Ig"
-            fluid
-          />
-          <div className="description_container">
-            <h3>Name</h3>
-            <h6>Auction date</h6>
-            <h6>posted by</h6>
-            <p>description</p>
-          </div>
-        </div>
       </Container>
     </div>
   )

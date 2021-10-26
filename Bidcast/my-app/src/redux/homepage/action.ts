@@ -13,13 +13,13 @@ export interface ComingAuction {
     title: string;
 }
 
-export interface ProductDetails {
-    id: number;
-    title: string;
-    starting_time: Date;
-    image: string;
-    description: string;
-}
+// export interface ProductDetails {
+//     id: number;
+//     title: string;
+//     starting_time: Date;
+//     image: string;
+//     description: string;
+// }
 
 export function loadComingAuctions(
     comingAuctions: ComingAuction[],
@@ -30,17 +30,17 @@ export function loadComingAuctions(
     };
 }
 
-export function loadProductDetails(
-    productDetails: ProductDetails[],
-) {
-    return {
-        type: "@@productDetails/LOAD_PRODUCT_DETAILS" as const,
-        productDetails
-    }
-}
+// export function loadProductDetails(
+//     productDetails: ProductDetails[],
+// ) {
+//     return {
+//         type: "@@productDetails/LOAD_PRODUCT_DETAILS" as const,
+//         productDetails
+//     }
+// }
 
 export type ComingAuctionActions = ReturnType<typeof loadComingAuctions> 
-| ReturnType<typeof loadProductDetails>
+// | ReturnType<typeof loadProductDetails>
 
 export function getComingAuctions() {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
@@ -64,22 +64,22 @@ export function getComingAuctions() {
     }
 }
 
-export function fetchProductDetails() {
-    return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
-        try {
-            const res = await fetch(
-                `${process.env.REACT_APP_BACKEND_URL}/product/details`
-            )
+// export function fetchProductDetails() {
+//     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
+//         try {
+//             const res = await fetch(
+//                 `${process.env.REACT_APP_BACKEND_URL}/product/details`
+//             )
 
-            const json = await res.json()
+//             const json = await res.json()
 
-            if (json) {
-                dispatch(loadProductDetails(json.data.results.rows))
-            } else {
-                dispatch(loadProductDetails([]))
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
-}
+//             if (json) {
+//                 dispatch(loadProductDetails(json.data.results.rows))
+//             } else {
+//                 dispatch(loadProductDetails([]))
+//             }
+//         } catch (error) {
+//             console.log(error);
+//         }
+//     }
+// }
