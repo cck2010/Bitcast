@@ -79,7 +79,8 @@ export class ProductsService {
                         "current_price",
                         "buy_price",
                         "buyer_id",
-                        "countdown_end_time"
+                        "countdown_end_time",
+                        "seller_id"
                     )
                     .where("id", productId)
             )[0];
@@ -88,8 +89,15 @@ export class ProductsService {
             const currentPrice = result.current_price;
             const buyPrice = result.buy_price;
             const buyerId = result.buyer_id;
+            const sellerId = result.seller_id;
             const countdownEndTime = result.countdown_end_time;
             let newPrice: number = 0;
+            if (sellerId === userId) {
+                return {
+                    currentPrice: 0,
+                    success: false,
+                };
+            }
             if (addCurrentPrice) {
                 if (currentPrice + bidAmount < buyPrice) {
                     newPrice = currentPrice + bidAmount;
@@ -256,6 +264,47 @@ export class ProductsService {
         return {
             success: true,
             data: { msg: "submit product success", res },
+        };
+    };
+
+    telegramBidResult = async (productId: number) => {
+        const productInfo = (
+            await this.knex("products")
+                .select(
+                    "current_price",
+                    "buyer_id",
+                    "seller_id",
+                    "product_name"
+                )
+                .where("id", productId)
+        )[0];
+        const sellerTelegramInfo = (
+            await this.knex("users")
+                .select("username", "telegram_acct", "telegram_chat_id")
+                .where("id", productInfo.seller_id)
+        )[0];
+        let buyerTelegramInfo = {
+            username: null,
+            telegram_acct: null,
+            telegram_chat_id: null,
+        };
+        if (productInfo.buyer_id !== null) {
+            buyerTelegramInfo = (
+                await this.knex("users")
+                    .select("username", "telegram_acct", "telegram_chat_id")
+                    .where("id", productInfo.buyer_id)
+            )[0];
+        }
+        return {
+            productName: productInfo.product_name,
+            productFinalPrice: productInfo.current_price,
+            sellerUsername: sellerTelegramInfo.username,
+            sellerTelegramAcct: sellerTelegramInfo.telegram_acct,
+            sellerTelegramChatId: sellerTelegramInfo.telegram_chat_id,
+            buyerId: productInfo.buyer_id,
+            buyerUsername: buyerTelegramInfo.username,
+            buyerTelegramAcct: buyerTelegramInfo.telegram_acct,
+            buyerTelegramChatId: buyerTelegramInfo.telegram_chat_id,
         };
     };
 }

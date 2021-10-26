@@ -1,8 +1,6 @@
 import React from "react";
-// import { Socket } from "socket.io-client";
 
 interface DescriptionProps {
-    // ws: Socket | null;
     description: string;
 }
 

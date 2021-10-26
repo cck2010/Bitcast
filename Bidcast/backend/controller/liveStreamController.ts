@@ -57,6 +57,7 @@ export class LiveStreamController {
                 res.json({ success: false });
                 return;
             }
+
             const result = await this.liveStreamService.getInfo(room, token);
 
             interface LiveStreamInfo {

@@ -39,7 +39,6 @@ function LiveStreamWindow() {
         }, 10000);
 
         client.ontrack = (track, stream) => {
-            console.log("got track: ", track.id, "for stream: ", stream.id);
             track.onunmute = () => {
                 if (subVideo.current === null) {
                     return;

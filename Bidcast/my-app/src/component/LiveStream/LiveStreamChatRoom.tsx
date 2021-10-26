@@ -41,6 +41,10 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
         }
         setColor(colorArr);
     }, []);
+    const isAuthenticate = useSelector(
+        (state: RootState) => state.user.isAuthenticate
+    );
+
     //Get States
 
     //Scroll button
@@ -247,34 +251,40 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
                             </button>
                         )}
                     </div>
-                    <div className="footer d-flex mb-3">
-                        <input
-                            className="inputBox w-100"
-                            type="text"
-                            placeholder="請在此輸入留言..."
-                            value={inputMessage}
-                            onChange={(
-                                e: React.ChangeEvent<HTMLInputElement>
-                            ) => setInputMessage(e.target.value)}
-                            onKeyDown={(
-                                e: React.KeyboardEvent<HTMLInputElement>
-                            ) => {
-                                if (e.key === "Enter") {
+                    {isAuthenticate ? (
+                        <div className="footer d-flex mb-3">
+                            <input
+                                className="inputBox w-100"
+                                type="text"
+                                placeholder="請在此輸入留言..."
+                                value={inputMessage}
+                                onChange={(
+                                    e: React.ChangeEvent<HTMLInputElement>
+                                ) => setInputMessage(e.target.value)}
+                                onKeyDown={(
+                                    e: React.KeyboardEvent<HTMLInputElement>
+                                ) => {
+                                    if (e.key === "Enter") {
+                                        sendMessageHandler(inputMessage);
+                                        setInputMessage("");
+                                    }
+                                }}
+                            />
+                            <button
+                                className="sendBtn"
+                                onClick={() => {
                                     sendMessageHandler(inputMessage);
                                     setInputMessage("");
-                                }
-                            }}
-                        />
-                        <button
-                            className="sendBtn"
-                            onClick={() => {
-                                sendMessageHandler(inputMessage);
-                                setInputMessage("");
-                            }}
-                        >
-                            <i className="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
+                                }}
+                            >
+                                <i className="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="login_message mt-2 text-center">
+                            需先登入才可留言
+                        </div>
+                    )}
                 </div>
             </div>
             {props.isTablet && (

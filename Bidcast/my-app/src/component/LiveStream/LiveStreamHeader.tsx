@@ -58,7 +58,13 @@ function LiveStreamHeader(props: LiveStreamHeaderProps) {
                 <div className="userinfo d-flex align-items-center mb-4">
                     <img
                         className="profilePic rounded-circle"
-                        src={sellerImage}
+                        src={`${
+                            sellerImage.search(/(https:\/\/)|(http:\/\/)/i) < 0
+                                ? process.env.REACT_APP_BACKEND_URL +
+                                  "/" +
+                                  sellerImage
+                                : sellerImage
+                        }`}
                         alt="profilePic"
                     />
                     <div className="username mx-3">{seller}</div>

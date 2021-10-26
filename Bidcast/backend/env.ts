@@ -23,4 +23,5 @@ export const env = {
     FACEBOOK_APP_SECRET: process.env.FACEBOOK_APP_SECRET || "",
     PUBLIC_KEY: process.env.PUBLIC_KEY || "",
     PRIVATE_KEY: process.env.PRIVATE_KEY || "",
+    TOKEN: process.env.TOKEN || "",
 };
