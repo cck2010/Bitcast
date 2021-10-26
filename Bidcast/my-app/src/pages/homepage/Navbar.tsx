@@ -10,8 +10,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./Homepage.scss";
 import bidcast_logo from "./bidcast_logo.svg";
 import lihkg_logo from "./lihkg_logo.png";
-import { Link} from "react-router-dom";
+import { Link, Route, Switch } from "react-router-dom";
+import { CreateBids } from "../createbids/CreateBids";
+import LiveStream from "../LiveStream/LiveStream";
 import { useState } from "react";
+import { Homepage } from "./Homepage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -76,51 +79,17 @@ export function HomePageNavbar() {
         dispatch(menuIconClick(true));
     };
 
-  return (
-    <div>
-      <Navbar collapseOnSelect expand="md" className="navbar py-0">
-        <Link to="/" className="nav_link ms-3 mt-2 mt-md-0">
-          <img
-            alt="bidcast_logo"
-            src={bidcast_logo}
-            height="40"
-            className="d-inline-block align-top"
-          />
-        </Link>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav"  onClick={menuIconOnclickHandler}/>
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto navbar_buttons">
-            <FormGroup>
-              <Input
-                type="search"
-                name="search"
-                id="exampleSearch"
-                placeholder="search..."
-                onChange={(event) => {
-                  setSearchInput(event.target.value);
-                }}
-                onKeyPress={(event) => {
-                  if (event.key === "Enter") {
-                    event.preventDefault();
-                    dispatch(
-                      push(`/categoryResult?SearchingKeywords=${searchInput}`)
-                    );
-                  }
-                }}
-              />
-            </FormGroup>
-            <Link to="/" className="nav_link">
-              主頁
-            </Link>
-
-            {!isAuthenticate ? (
-              <OverlayTrigger
-                trigger="click"
-                placement="bottom"
-                overlay={popover}
-              >
-                <Link to="#" className="nav_link">
-                  舉辦拍賣
+    return (
+        <div>
+            <Navbar collapseOnSelect expand="md" className="navbar py-0">
+                <Link to="/" className="nav_link ms-3 mt-2 mt-md-0">
+                    <img
+                        alt="bidcast_logo"
+                        src={bidcast_logo}
+                        width="40"
+                        height="40"
+                        className="d-inline-block align-top"
+                    />
                 </Link>
                 <Navbar.Toggle
                     aria-controls="responsive-navbar-nav"
