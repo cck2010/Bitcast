@@ -185,3 +185,8 @@ body
   margin-left:5px;
   color:blue
 }
+.flexSpaceBetween{
+  display:flex;
+  justify-content: space-between;
+}
+@import "~bootstrap/scss/bootstrap";

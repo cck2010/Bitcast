@@ -123,7 +123,6 @@ async function checkVerified(tgGetUsername:string,email:string){
 
 
 bot.on("text", (ctx) => {
-   
     ctx.telegram.sendMessage(ctx.message.chat.id, `請打開左下角Menu 選擇項目`);
 
     // Explicit usage

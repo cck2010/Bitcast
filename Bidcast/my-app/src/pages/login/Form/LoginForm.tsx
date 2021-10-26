@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form"
 import axios from 'axios'
 import { useDispatch } from "react-redux"
-import { login, loadToken } from "../../../redux/user/actions";
+import { login, loadToken,  } from "../../../redux/user/actions";
 import { useState } from "react";
 import { push } from "connected-react-router";
 
@@ -33,6 +33,7 @@ export function LoginForm() {
             localStorage.setItem('token', res.data.token)
             dispatch(login(res.data.token))
             dispatch(loadToken(res.data.token))
+            
             dispatch(push('/'))
           }
           else{

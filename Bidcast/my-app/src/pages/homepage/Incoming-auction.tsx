@@ -1,4 +1,4 @@
-import { Button, Card, Container, Image, Modal } from "react-bootstrap";
+import { Button, Card, Container, Image } from "react-bootstrap";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { SvgBorder } from "./SvgBorder";
@@ -39,10 +39,6 @@ export function ComingAuction() {
   useEffect(() => {
     dispatch(getComingAuctions());
   }, [dispatch]);
-
-  useEffect(() => {
-    console.log(auctions);
-  }, [auctions]);
 
   const [modalShow, setModalShow] = useState(-1);
 

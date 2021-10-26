@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from "react"
+import { useEffect, useState, Fragment } from "react"
 import { Alert } from 'reactstrap';
 import { SubmitHandler, useForm, Controller, useFieldArray, useWatch } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux"
@@ -9,10 +9,10 @@ import "./CreateBids.scss"
 import { fetchCategories } from "../../redux/products/actions";
 import { push } from "connected-react-router";
 import { CloseCross, DatePickerIcon } from "./components/Fontawsome";
-import { AnySet } from "immer/dist/internal";
 import { v4 } from "uuid";
-import { BsWindowSidebar } from "react-icons/bs";
 import 'bootstrap/dist/css/bootstrap.min.css';
+// import { AnySet } from "immer/dist/internal";
+// import { BsWindowSidebar } from "react-icons/bs";
 // import axios from "axios";
 // import moment from "moment";
 

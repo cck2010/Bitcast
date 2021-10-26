@@ -1,14 +1,14 @@
-import { ComingAuction, ComingAuctionActions } from "./action";
+import { ComingAuction, ComingAuctionActions, ProductDetails } from "./action";
 import produce from "immer";
 
 export interface ComingAuctionState {
     comingAuctions: ComingAuction[];
-    // productDetails: ProductDetails[];
+    productDetails: ProductDetails[];
 }
 
 const initialState: ComingAuctionState = {
     comingAuctions: [],
-    // productDetails: []
+    productDetails: []
 }
 
 export function comingAuctionReducer(state: ComingAuctionState = initialState, action: ComingAuctionActions): ComingAuctionState {
@@ -17,9 +17,9 @@ export function comingAuctionReducer(state: ComingAuctionState = initialState, a
             case "@@comingAuction/LOAD_COMING_AUCTION":
                 newState.comingAuctions = action.comingAuctions;
                 break;
-            // case "@@productDetails/LOAD_PRODUCT_DETAILS":
-            //     newState.productDetails = action.productDetails;
-            //     break;
+            case "@@productDetails/LOAD_PRODUCT_DETAILS":
+                newState.productDetails = action.productDetails;
+                break;
         }
     })
 }
