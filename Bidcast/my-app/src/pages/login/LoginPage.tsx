@@ -8,7 +8,7 @@ import image from "./img2.jpg"
 import { SignupForm } from "./Form/SignupForm";
 import { LoginForm } from "./Form/LoginForm";
 import { useDispatch } from "react-redux"
-import { CheckUserPhoneNumber, loadToken, login, Toasts } from "../../redux/user/actions";
+import {  loadToken, login} from "../../redux/user/actions";
 import { useState } from "react";
 import axios from 'axios'
 import FacebookLogin from "react-facebook-login";
@@ -36,6 +36,7 @@ const AnimatedSwitch = withRouter(({ location }) => (
 export function LoginPage() {
   const dispatch = useDispatch();
   const [error, setError] = useState('')
+  
 
   const responseGoogle = async (response:any ) => {
     if(response.profileObj){
@@ -155,7 +156,7 @@ console.log(response.profileObj);
       
 
 <GoogleLogin
-    clientId="258328672991-k7fkb7k0tpiqp4an1ia3l23lig791nt2.apps.googleusercontent.com"
+    clientId={process.env.REACT_APP_GOOGLE_APP_ID || ''}
     buttonText="Login with Google"
     onSuccess={responseGoogle}
     onFailure={responseGoogle}

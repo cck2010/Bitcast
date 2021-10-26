@@ -147,10 +147,28 @@ export class UserController {
     };
     getCurrentUser = async (req: Request, res: Response) => {
         try {
-            res.json(req.user)
+            const payload = req.user
+            const signOptions: {} = {
+
+                expiresIn: "12h",
+                algorithm: "RS512" 			// RSASSA options[ "RS256", "RS384", "RS512" ]
+            };
+
+            if (payload) {
+                const token = jwt.sign(payload, jwtKey.privateKEY, signOptions);
+
+                return res.json(token);
+            } else {
+                return res.status(401).json({
+                    token: null,
+                    message: 'Incorrect token'
+                })
+            }
+
+
         } catch (err) {
             console.log(err);
-            res.json({
+            return res.json({
                 success: false,
                 error: err,
                 data: {

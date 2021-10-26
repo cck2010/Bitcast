@@ -6,7 +6,7 @@ import {
 } from "connected-react-router";
 import { createBrowserHistory } from "history";
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
-import { userReducer, UserState, AuthState, authReducer } from "./redux/user/reducer";
+import { userReducer, UserState, AuthState, authReducer, } from "./redux/user/reducer";
 import thunk, { ThunkDispatch } from "redux-thunk";
 import { UserActions, AuthActions } from "./redux/user/actions";
 import { createBidsReducer } from "./redux/createbid/reducer";
@@ -42,6 +42,7 @@ export interface RootState {
     comingAuction: ComingAuctionState;
     authState: AuthState;
     searchProduct: ProductSearchState
+
 }
 
 const reducer = combineReducers<RootState>({
@@ -53,6 +54,7 @@ const reducer = combineReducers<RootState>({
     comingAuction: comingAuctionReducer,
     authState: authReducer,
     searchProduct: productSearchReducer,
+
 });
 
 declare global {

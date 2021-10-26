@@ -1151,6 +1151,11 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@coreui/react@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@coreui/react/-/react-4.0.0.tgz#fb6a955c881bad4c0f10e70656d2214eda69775b"
+  integrity sha512-FE5s9TE7MIFh1QZhlMUB5LnEqh/IiqVdmT3YQtCOLmiHzXmUH4+BdM9Xt1QaK4SI61HxIsAlXUi73F1OgTBmQw==
+
 "@cspotcode/source-map-consumer@0.8.0":
   version "0.8.0"
   resolved "https://registry.npmjs.org/@cspotcode/source-map-consumer/-/source-map-consumer-0.8.0.tgz"
