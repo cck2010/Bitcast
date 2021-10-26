@@ -141,6 +141,36 @@ export class UserController {
             });
         }
     };
+    refreshCurrentUser = async (req: Request, res: Response) => {
+        try {
+            const {userId} = req.body
+
+            const result:any = await this.userService.refreshCurrentUser(parseInt(userId))
+            // console.log("refreshCurrentUser - -result >>>>>>", result);
+
+            if (result.success === true) {
+                const payload = result.data.user;
+                const signOptions: {} = {
+                    expiresIn: "12h",
+                    algorithm: "RS512", // RSASSA options[ "RS256", "RS384", "RS512" ]
+                };
+                const token = jwt.sign(payload, jwtKey.privateKEY, signOptions);
+                return res.json({
+                    token: token,
+                });
+            }
+            return res.json(result);
+        } catch (err) {
+            console.log(err);
+            return res.json({
+                success: false,
+                error: err,
+                data: {
+                    msg: "refreshCurrentUser controller failure",
+                },
+            });
+        }
+    }
     getCurrentUser = async (req: Request, res: Response) => {
         try {
             const payload = req.user

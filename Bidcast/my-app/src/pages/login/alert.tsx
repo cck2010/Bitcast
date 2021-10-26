@@ -11,8 +11,8 @@ function ToastDemo() {
   return (
       
     <CToast autohide={false} visible={true} className="align-items-center">
-  <div className="d-flex">
-    <CToastBody>Hello, world! This is a toast message.</CToastBody>
+  <div className="d-flex text-danger">
+    <CToastBody>請在個人頁面更改電話號碼</CToastBody>
     <CToastClose className="me-2 m-auto" />
   </div>
 </CToast>
