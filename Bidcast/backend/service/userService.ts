@@ -2,7 +2,7 @@ import { Knex } from "knex";
 import { hashPassword, checkPassword } from "../hash";
 import PasswordValidator from "password-validator";
 import { ResponseJson } from "../response";
-import validator from "email-validator"
+import validator from "email-validator";
 const schema = new PasswordValidator();
 schema
     .is()
@@ -21,15 +21,14 @@ schema
     .has()
     .symbols(); //Must have symbols
 
-
 export class UserService {
-    constructor(private knex: Knex) { }
+    constructor(private knex: Knex) {}
 
     register = async (
         username: string,
         email: string,
         password: string,
-        phoneNumber: number,
+        phoneNumber: number
     ): Promise<ResponseJson> => {
         if (!(username && email && password && phoneNumber)) {
             return {
@@ -40,21 +39,17 @@ export class UserService {
                 },
                 error: new Error("Please fill in the blank form"),
             };
-
         }
 
         // check black input value
         if (!schema.validate(password)) {
-
             return {
                 success: false,
                 data: {
                     msg: "請遵循所需的密碼格式",
                     user: {},
                 },
-                error: new Error(
-                    "Plese follow the required password format"
-                ),
+                error: new Error("Plese follow the required password format"),
             };
         }
         if (!validator.validate(email)) {
@@ -64,9 +59,7 @@ export class UserService {
                     msg: "請輸入正確的郵箱",
                     user: {},
                 },
-                error: new Error(
-                    "Please input your correct email"
-                ),
+                error: new Error("Please input your correct email"),
             };
         }
         if (phoneNumber.toString().length != 8) {
@@ -76,37 +69,39 @@ export class UserService {
                     msg: "請輸入正確的電話號碼",
                     user: {},
                 },
-                error: new Error(
-                    "Please input your correct phone number"
-                ),
+                error: new Error("Please input your correct phone number"),
             };
-
         }
 
         const hashedPassword = await hashPassword(password);
-        const localLoginId = await this.knex("login_methods").select('id').where('login_method', 'local')
-        const statusIdId = await this.knex('status').select('id').where('status', 'active')
-        const roleIdId = await this.knex('roles').select('id').where('role_name', 'user')
+        const localLoginId = await this.knex("login_methods")
+            .select("id")
+            .where("login_method", "local");
+        const statusIdId = await this.knex("status")
+            .select("id")
+            .where("status", "active");
+        const roleIdId = await this.knex("roles")
+            .select("id")
+            .where("role_name", "user");
         // inserted user
-        const createUserResult /*  = result.rows */ =
-            await this.knex("users")
-                .insert({
-                    username: username,
-                    status_id: statusIdId[0].id,
-                    email: email,
-                    phone_number: phoneNumber,
-                    password: hashedPassword,
-                    role_id: roleIdId[0].id,
-                    created_at: new Date(),
-                    updated_at: new Date(),
-                    telegram_is_verified: false,
-                    profile_pic:
-                        "360_F_391192211_2w5pQpFV1aozYQhcIw3FqA35vuTxJKrB.jpg",
-                    login_method_id: localLoginId[0].id,
-                    created_by: username,
-                    updated_by: username,
-                })
-                .returning("id");
+        const createUserResult /*  = result.rows */ = await this.knex("users")
+            .insert({
+                username: username,
+                status_id: statusIdId[0].id,
+                email: email,
+                phone_number: phoneNumber,
+                password: hashedPassword,
+                role_id: roleIdId[0].id,
+                created_at: new Date(),
+                updated_at: new Date(),
+                telegram_is_verified: false,
+                profile_pic:
+                    "360_F_391192211_2w5pQpFV1aozYQhcIw3FqA35vuTxJKrB.jpg",
+                login_method_id: localLoginId[0].id,
+                created_by: username,
+                updated_by: username,
+            })
+            .returning("id");
 
         //    users is the new input db row
         const users = await this.knex("users")
@@ -123,9 +118,7 @@ export class UserService {
         // console.log("emailCount=", emailCount);
 
         if (emailCount != 1) {
-            await this.knex("users")
-                .del()
-                .where("id", createUserResult[0]);
+            await this.knex("users").del().where("id", createUserResult[0]);
             return {
                 success: false,
                 data: {
@@ -145,15 +138,12 @@ export class UserService {
         const usernameCount = parseInt(checkRepeatusername.rows[0].count);
 
         if (usernameCount != 1) {
-            await this.knex("users")
-                .del()
-                .where("id", createUserResult[0]);
+            await this.knex("users").del().where("id", createUserResult[0]);
             return {
                 success: false,
                 data: {
                     msg: "用戶名重複，請重新選擇",
-                    user: {
-                    },
+                    user: {},
                 },
                 error: new Error("username repeated"),
             };
@@ -176,12 +166,11 @@ export class UserService {
                     login_method_id: users[0].login_method_id,
                     created_at: users[0].created_at,
                     updated_at: users[0].updated_at,
-                    description:users[0].description
+                    description: users[0].description,
                 },
             },
             error: new Error("signin success"),
         };
-
     };
 
     login = async (email: string, password: string): Promise<ResponseJson> => {
@@ -195,13 +184,13 @@ export class UserService {
                 error: new Error("Please fill in the blank form"),
             };
         }
-        const localLoginId = await this.knex("login_methods").select('id').where('login_method', 'local')
-        const users = await this.knex("users")
-            .select("*")
-            .where({
-                "email": email,
-                "login_method_id": localLoginId[0].id,
-            });
+        const localLoginId = await this.knex("login_methods")
+            .select("id")
+            .where("login_method", "local");
+        const users = await this.knex("users").select("*").where({
+            email: email,
+            login_method_id: localLoginId[0].id,
+        });
 
         if (users.length == 0) {
             // console.log(users.length);
@@ -216,7 +205,6 @@ export class UserService {
         }
 
         if (!(await checkPassword(password, users[0].password))) {
-
             return {
                 success: false,
                 data: {
@@ -243,18 +231,16 @@ export class UserService {
                     login_method_id: users[0].login_method_id,
                     created_at: users[0].created_at,
                     updated_at: users[0].updated_at,
-                    description:users[0].description,
-                    
-                    
+                    description: users[0].description,
                 },
 
                 msg: "成功登入",
             },
             success: true,
         };
-    }
-    refreshCurrentUser = async (userId:number):Promise<ResponseJson> => {
-        const users = await this.knex("users").select().where("id",userId)
+    };
+    refreshCurrentUser = async (userId: number): Promise<ResponseJson> => {
+        const users = await this.knex("users").select().where("id", userId);
         return {
             success: true,
             data: {
@@ -273,22 +259,16 @@ export class UserService {
                     login_method_id: users[0].login_method_id,
                     created_at: users[0].created_at,
                     updated_at: users[0].updated_at,
-                    description:users[0].description
+                    description: users[0].description,
                 },
             },
         } as ResponseJson;
-    }
-
-
+    };
 
     getCurrentUser = async (id: number): Promise<ResponseJson> => {
         // console.log(id);
 
-
-
-        const users = await this.knex("users")
-            .select()
-            .where("id", id)
+        const users = await this.knex("users").select().where("id", id);
 
         // console.log(users);
 
@@ -310,49 +290,68 @@ export class UserService {
                     login_method_id: users[0].login_method_id,
                     created_at: users[0].created_at,
                     updated_at: users[0].updated_at,
-                    description:users[0].description
+                    description: users[0].description,
                 },
             },
         } as ResponseJson;
     };
 
-    FacebookLogin = async (email: string, username: string, picture: string): Promise<ResponseJson> => {
-        const fbLoginId = await this.knex("login_methods").select('id').where('login_method', 'facebook')
-        const statusIdId = await this.knex('status').select('id').where('status', 'active')
-        const roleIdId = await this.knex('roles').select('id').where('role_name', 'user')
+    FacebookLogin = async (
+        email: string,
+        username: string,
+        picture: string
+    ): Promise<ResponseJson> => {
+        const fbLoginId = await this.knex("login_methods")
+            .select("id")
+            .where("login_method", "facebook");
+        const statusIdId = await this.knex("status")
+            .select("id")
+            .where("status", "active");
+        const roleIdId = await this.knex("roles")
+            .select("id")
+            .where("role_name", "user");
         let hashedPassword = await hashPassword(
             (Math.random() + 1).toString(36)
         );
 
-        const users = await this.knex("users")
-            .select()
-            .where({
-                "email": email,
-                "login_method_id": fbLoginId[0].id
-            })
+        const users = await this.knex("users").select().where({
+            email: email,
+            login_method_id: fbLoginId[0].id,
+        });
 
         if (users.length == 0) {
             // insert
 
-            const users /*  = result.rows */ =
-                await this.knex("users")
-                    .insert({
-                        username: username,
-                        status_id: statusIdId[0].id,
-                        email: email,
-                        phone_number: 11111111,
-                        password: hashedPassword,
-                        role_id: roleIdId[0].id,
-                        created_at: new Date(),
-                        updated_at: new Date(),
-                        telegram_is_verified: false,
-                        profile_pic: picture,
-                        login_method_id: fbLoginId[0].id,
-                        created_by: username,
-                        updated_by: username,
-                    })
-                    .returning(["id", 'status_id', 'email', 'phone_number', 'role_id', 'created_at', 'updated_at', 'telegram_is_verified', 'profile_pic',
-                        'login_method_id', 'created_by', 'updated_by']);
+            const users /*  = result.rows */ = await this.knex("users")
+                .insert({
+                    username: username,
+                    status_id: statusIdId[0].id,
+                    email: email,
+                    phone_number: 11111111,
+                    password: hashedPassword,
+                    role_id: roleIdId[0].id,
+                    created_at: new Date(),
+                    updated_at: new Date(),
+                    telegram_is_verified: false,
+                    profile_pic: picture,
+                    login_method_id: fbLoginId[0].id,
+                    created_by: username,
+                    updated_by: username,
+                })
+                .returning([
+                    "id",
+                    "status_id",
+                    "email",
+                    "phone_number",
+                    "role_id",
+                    "created_at",
+                    "updated_at",
+                    "telegram_is_verified",
+                    "profile_pic",
+                    "login_method_id",
+                    "created_by",
+                    "updated_by",
+                ]);
 
             return {
                 success: true,
@@ -372,11 +371,10 @@ export class UserService {
                         login_method_id: users[0].login_method_id,
                         created_at: users[0].created_at,
                         updated_at: users[0].updated_at,
-                        description:users[0].description
+                        description: users[0].description,
                     },
                 },
             } as ResponseJson;
-
         } else {
             return {
                 success: true,
@@ -396,22 +394,20 @@ export class UserService {
                         login_method_id: users[0].login_method_id,
                         created_at: users[0].created_at,
                         updated_at: users[0].updated_at,
-                        description:users[0].description
+                        description: users[0].description,
                     },
                 },
             } as ResponseJson;
         }
-
     };
     editProfile = async (
         userId: number,
         username?: string,
         phoneNumber?: number,
         telegramAccount?: string,
-        telegramChatId?:string,
+        telegramChatId?: string,
         aboutMe?: string,
-        profilePic?: string,
-
+        profilePic?: string
     ) => {
         // console.log("userId", userId);
         // console.log("username", username);
@@ -421,78 +417,97 @@ export class UserService {
         // console.log("profilePic", profilePic);
 
         // console.log("edit_service_mark")
-        if(telegramAccount != undefined){
-            const result = await this.knex("users").update({
-                username: username,
-                phone_number: phoneNumber,
-                telegram_acct: telegramAccount,
-                telegram_chat_id: telegramChatId,
-                telegram_is_verified:false,
-                description: aboutMe,
-                profile_pic: profilePic,
-                updated_at: new Date(),
-            }).where("id", userId).returning("*")
+        if (telegramAccount != undefined) {
+            const result = await this.knex("users")
+                .update({
+                    username: username,
+                    phone_number: phoneNumber,
+                    telegram_acct: telegramAccount,
+                    telegram_chat_id: telegramChatId,
+                    telegram_is_verified: false,
+                    description: aboutMe,
+                    profile_pic: profilePic,
+                    updated_at: new Date(),
+                })
+                .where("id", userId)
+                .returning("*");
             console.log("edit profile result >>>>> ", result);
             return {
                 success: true,
                 data: { msg: "edit profile success", result },
-    
-            }
-        }else{
-            const result = await this.knex("users").update({
-                username: username,
-                phone_number: phoneNumber,
-                telegram_acct: telegramAccount,
-                telegram_chat_id: telegramChatId,
-                description: aboutMe,
-                profile_pic: profilePic,
-                updated_at: new Date(),
-            }).where("id", userId).returning("*")
+            };
+        } else {
+            const result = await this.knex("users")
+                .update({
+                    username: username,
+                    phone_number: phoneNumber,
+                    telegram_acct: telegramAccount,
+                    telegram_chat_id: telegramChatId,
+                    description: aboutMe,
+                    profile_pic: profilePic,
+                    updated_at: new Date(),
+                })
+                .where("id", userId)
+                .returning("*");
             console.log("edit profile result >>>>> ", result);
             return {
                 success: true,
                 data: { msg: "edit profile success", result },
-    
-            }
+            };
         }
-    }
+    };
     googleLogin = async (username: string, email: string, pic: string) => {
-        const googleLoginId = await this.knex("login_methods").select('id').where('login_method', 'google')
-        const statusIdId = await this.knex('status').select('id').where('status', 'active')
-        const roleIdId = await this.knex('roles').select('id').where('role_name', 'user')
+        const googleLoginId = await this.knex("login_methods")
+            .select("id")
+            .where("login_method", "google");
+        const statusIdId = await this.knex("status")
+            .select("id")
+            .where("status", "active");
+        const roleIdId = await this.knex("roles")
+            .select("id")
+            .where("role_name", "user");
         let hashedPassword = await hashPassword(
             (Math.random() + 1).toString(36)
         );
 
-        const users = await this.knex("users")
-            .select()
-            .where({
-                "email": email,
-                "login_method_id": googleLoginId[0].id
-            })
+        const users = await this.knex("users").select().where({
+            email: email,
+            login_method_id: googleLoginId[0].id,
+        });
 
         if (users.length == 0) {
             // insert
 
-            const users /*  = result.rows */ =
-                await this.knex("users")
-                    .insert({
-                        username: username,
-                        status_id: statusIdId[0].id,
-                        email: email,
-                        phone_number: 11111111,
-                        password: hashedPassword,
-                        role_id: roleIdId[0].id,
-                        created_at: new Date(),
-                        updated_at: new Date(),
-                        telegram_is_verified: false,
-                        profile_pic: pic,
-                        login_method_id: googleLoginId[0].id,
-                        created_by: username,
-                        updated_by: username,
-                    })
-                    .returning(["id", 'status_id', 'email', 'phone_number', 'role_id', 'created_at', 'updated_at', 'telegram_is_verified', 'profile_pic',
-                        'login_method_id', 'created_by', 'updated_by']);
+            const users /*  = result.rows */ = await this.knex("users")
+                .insert({
+                    username: username,
+                    status_id: statusIdId[0].id,
+                    email: email,
+                    phone_number: 11111111,
+                    password: hashedPassword,
+                    role_id: roleIdId[0].id,
+                    created_at: new Date(),
+                    updated_at: new Date(),
+                    telegram_is_verified: false,
+                    profile_pic: pic,
+                    login_method_id: googleLoginId[0].id,
+                    created_by: username,
+                    updated_by: username,
+                })
+                .returning([
+                    "id",
+                    "status_id",
+                    "email",
+                    "phone_number",
+                    "role_id",
+                    "created_at",
+                    "updated_at",
+                    "telegram_is_verified",
+                    "profile_pic",
+                    "login_method_id",
+                    "created_by",
+                    "updated_by",
+                ]);
 
             return {
                 success: true,
@@ -515,7 +530,6 @@ export class UserService {
                     },
                 },
             } as ResponseJson;
-
         } else {
             return {
                 success: true,
@@ -539,6 +553,27 @@ export class UserService {
                 },
             } as ResponseJson;
         }
-    }
-}
+    };
 
+    subsciribe = async (followerId: number, followingId: number) => {
+        const result = await this.knex("follow_details")
+            .select("follower_id", "following_id")
+            .where({
+                follower_id: followerId,
+                following_id: followingId,
+            });
+        if (result.length === 0) {
+            await this.knex("follow_details").insert({
+                follower_id: followerId,
+                following_id: followingId,
+            });
+        } else {
+            await this.knex("follow_details")
+                .where({
+                    follower_id: followerId,
+                    following_id: followingId,
+                })
+                .del();
+        }
+    };
+}

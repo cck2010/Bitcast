@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
+import { fetchSubscribe } from "../../redux/user/actions";
 import { RootState } from "../../store";
 
 interface LiveStreamHeaderProps {
@@ -9,11 +10,15 @@ interface LiveStreamHeaderProps {
 
 function LiveStreamHeader(props: LiveStreamHeaderProps) {
     //Get States
+    const dispatch = useDispatch();
     const title = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.title
     );
     const seller = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.seller
+    );
+    const sellerId = useSelector(
+        (state: RootState) => state.liveStream.liveStreamInfo.sellerId
     );
     const sellerImage = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.sellerImage
@@ -54,7 +59,23 @@ function LiveStreamHeader(props: LiveStreamHeaderProps) {
     return (
         <div className="LiveStreamHeader px-3">
             <div className="mainInfo">
-                <div className="title my-3">{title}</div>
+                <div className="row">
+                    <div className="col">
+                        <div className="title my-3">{title}</div>
+                    </div>
+                    <div className="col-2 d-flex align-items-center justify-content-end">
+                        <div className="subscribe">
+                            <button
+                                className="btn btn-danger"
+                                onClick={() => {
+                                    dispatch(fetchSubscribe(sellerId));
+                                }}
+                            >
+                                關注 <i className="fas fa-bell"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 <div className="userinfo d-flex align-items-center mb-4">
                     <img
                         className="profilePic rounded-circle"
@@ -68,6 +89,7 @@ function LiveStreamHeader(props: LiveStreamHeaderProps) {
                         alt="profilePic"
                     />
                     <div className="username mx-3">{seller}</div>
+
                     <div className="viewers">
                         正在觀看人數: {onlineUsers}{" "}
                         <i className="fas fa-user-friends"></i>

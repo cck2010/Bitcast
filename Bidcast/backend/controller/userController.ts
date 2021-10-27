@@ -26,7 +26,7 @@ declare global {
     }
 }
 export class UserController {
-    constructor(private userService: UserService) { }
+    constructor(private userService: UserService) {}
     register = async (req: Request, res: Response) => {
         try {
             const { username, email, password, phoneNumber } = req.body;
@@ -143,9 +143,11 @@ export class UserController {
     };
     refreshCurrentUser = async (req: Request, res: Response) => {
         try {
-            const {userId} = req.body
+            const { userId } = req.body;
 
-            const result:any = await this.userService.refreshCurrentUser(parseInt(userId))
+            const result: any = await this.userService.refreshCurrentUser(
+                parseInt(userId)
+            );
             // console.log("refreshCurrentUser - -result >>>>>>", result);
 
             if (result.success === true) {
@@ -170,14 +172,13 @@ export class UserController {
                 },
             });
         }
-    }
+    };
     getCurrentUser = async (req: Request, res: Response) => {
         try {
-            const payload = req.user
+            const payload = req.user;
             const signOptions: {} = {
-
                 expiresIn: "12h",
-                algorithm: "RS512" 			// RSASSA options[ "RS256", "RS384", "RS512" ]
+                algorithm: "RS512", // RSASSA options[ "RS256", "RS384", "RS512" ]
             };
 
             if (payload) {
@@ -187,11 +188,9 @@ export class UserController {
             } else {
                 return res.status(401).json({
                     token: null,
-                    message: 'Incorrect token'
-                })
+                    message: "Incorrect token",
+                });
             }
-
-
         } catch (err) {
             console.log(err);
             return res.json({
@@ -234,8 +233,8 @@ export class UserController {
 
             return res.json({
                 token: null,
-                message: 'loginGoole unknow error'
-            })
+                message: "loginGoole unknow error",
+            });
         }
     };
     loginGoogle = async (req: Request, res: Response) => {
@@ -272,10 +271,10 @@ export class UserController {
                 message: "loginGoole unknow error",
             });
         }
-    }
+    };
     editProfile = async (req: Request, res: Response) => {
         try {
-            console.log("test req.user>>>>>>>>>>>>>>>>>>", req.user)
+            console.log("test req.user>>>>>>>>>>>>>>>>>>", req.user);
             const profilePic: any = req.file?.filename;
             // console.log("profilePic", profilePic);
             // console.log(req.body)
@@ -285,7 +284,7 @@ export class UserController {
                 telegramAccount,
                 telegramChatId,
                 aboutMe,
-                userId
+                userId,
             } = req.body;
 
             const result = await this.userService.editProfile(
@@ -295,12 +294,11 @@ export class UserController {
                 telegramAccount,
                 telegramChatId,
                 aboutMe,
-                profilePic,
-            )
+                profilePic
+            );
 
             console.log("result", result);
             res.json(result);
-
         } catch (error) {
             res.json({
                 success: false,
@@ -308,6 +306,28 @@ export class UserController {
                 error: new Error("controller user edit profile fail"),
             });
         }
+    };
 
-    }
+    subscribe = async (req: Request, res: Response) => {
+        try {
+            const { followingId } = req.body;
+            const userId = req.user && req.user.id ? req.user.id : 0;
+            if (userId === 0) {
+                res.json({
+                    success: false,
+                    data: { msg: "subscribe fail" },
+                });
+            }
+            await this.userService.subsciribe(userId, followingId);
+            const response = { success: true };
+            res.json(response);
+            return;
+        } catch (error) {
+            res.json({
+                success: false,
+                data: { msg: "subscribe fail" },
+                error: new Error("subscribe fail"),
+            });
+        }
+    };
 }
