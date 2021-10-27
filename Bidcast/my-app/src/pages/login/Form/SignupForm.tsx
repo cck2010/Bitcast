@@ -74,6 +74,7 @@ export function SignupForm() {
           Password:
           </label>
             <input
+            type="password"
              className="formFieldInput"
              placeholder="Enter your password"
               {...register('password')} />
