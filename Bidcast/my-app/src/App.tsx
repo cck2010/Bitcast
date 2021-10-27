@@ -31,6 +31,7 @@ import { CategoriesFilter } from "./pages/categories/CategoriesFilter";
 
 
 function App() {
+  
   const dispatch = useDispatch();
   const [isAlertChecked, setIsAlertChecked] = useState(false);
   const userInfo  = useSelector((state: RootState) => state.authState.user);
@@ -38,12 +39,12 @@ function App() {
     (state: RootState) => state.user.isAuthenticate
   );
   // const history = useHistory();
-  
-const toaster = React.useRef() as React.MutableRefObject<HTMLInputElement>;
+  // const toaster = React.useRef() as React.MutableRefObject<HTMLInputElement>;
+
   useEffect(() => {
 
 
-
+    
     if (!isAlertChecked) {
         dispatch(checkCurrentUser());
         
@@ -54,12 +55,7 @@ const toaster = React.useRef() as React.MutableRefObject<HTMLInputElement>;
     // (dispatch(push('/profilePage/accountDetails')))
     // //    ( isAlertChecked(`請到個人頁面更改電話號碼`))
   }, [dispatch, isAlertChecked, userInfo,isAuthenticate]);
-  useEffect(() => {
-   
-
-  })
-
-  
+ 
   const { detected } = useAdBlockDetector();
   <div>AdBlocker Detected: {JSON.stringify(detected)}</div>;
 
@@ -70,7 +66,7 @@ const toaster = React.useRef() as React.MutableRefObject<HTMLInputElement>;
         <div className="turn_off_adblock">Please Turn Off Your Adblock!!</div>
       ) : (
         <>
-         <CToaster ref={toaster} push={<ToastDemo/>} placement="bottom-end"/>
+         
        
           <HomePageNavbar />
           {/* <LiveStream /> */}

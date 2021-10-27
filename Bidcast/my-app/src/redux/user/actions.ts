@@ -63,15 +63,14 @@ export function checkCurrentUser() {
             })
             // console.log("fetched")
             const newToken: any = res.data
-            
-            localStorage.setItem("token",newToken)
+
+            localStorage.setItem("token", newToken)
             dispatch(login(newToken))
             dispatch(loadToken(newToken))
 
             const state = getState()
 
             if (state.user.isAuthenticate && typeof state.authState.user !== "string" && state.authState.user !== undefined && state.authState.user!.phone_number === '11111111') {
-                console.log('redictection needed!')
                 history.push("/profilePage/accountDetails")
 
             }
@@ -83,31 +82,31 @@ export function checkCurrentUser() {
     }
 }
 
-export function refreshCurrentUser(userId:number){
+export function refreshCurrentUser(userId: number) {
     // console.log("userId", userId);
     // let dataId = {"userId":userId} 
-    return async (dispatch: RootThunkDispatch)=>{
+    return async (dispatch: RootThunkDispatch) => {
         const token = localStorage.getItem('token')
         if (token == null) {
             // console.log("no token")
             return;
         }
         try {
-            const res:any = await axios(`${process.env.REACT_APP_BACKEND_URL}/user/refreshCurrent`,{
+            const res: any = await axios(`${process.env.REACT_APP_BACKEND_URL}/user/refreshCurrent`, {
                 method: "POST",
-            headers:({'Content-Type': 'application/json'}),
-            data: {userId:`${userId}`}
+                headers: ({ 'Content-Type': 'application/json' }),
+                data: { userId: `${userId}` }
             })
             // console.log("refreshCurrentUser",res.data.token)
             dispatch(login(res.data.token))
             dispatch(loadToken(res.data.token))
-            localStorage.setItem('token',res.data.token)
-            
-            
+            localStorage.setItem('token', res.data.token)
+
+
 
         } catch (error) {
             console.log("error", error);
-            
+
         }
     }
 }

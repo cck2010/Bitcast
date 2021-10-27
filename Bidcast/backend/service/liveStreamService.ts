@@ -38,7 +38,7 @@ export class LiveStreamService {
                 id: -1,
                 title: "Error",
                 seller: "Error",
-                sellerImage: "/defaultUser.png",
+                sellerImage: "defaultUser.png",
                 currentViewers: 0,
                 thumbnail: "",
                 description: "",
@@ -58,7 +58,7 @@ export class LiveStreamService {
             seller: userResult.username,
             sellerImage:
                 userResult.profile_pic == null
-                    ? "/defaultUser.png"
+                    ? "defaultUser.png"
                     : userResult.profile_pic,
             currentViewers: liveResult[0].current_viewers,
             thumbnail: liveResult[0].image,

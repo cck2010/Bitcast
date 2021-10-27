@@ -221,7 +221,7 @@ export function fetchliveStreamInfo(room: string, token: string) {
                         id: -1,
                         title: "Error",
                         seller: "Error",
-                        sellerImage: "/defaultUser.png",
+                        sellerImage: "defaultUser.png",
                         currentViewers: 0,
                         thumbnail: "",
                         description: "",

@@ -7,6 +7,9 @@ import { useEffect, useState } from "react";
 import bidcastQRcode from "./assets/bidcastQR.svg";
 import { Alert } from 'reactstrap';
 import { checkCurrentUser, refreshCurrentUser } from "../../redux/user/actions";
+import { CToaster } from "@coreui/react";
+import ToastDemo from "../login/alert";
+import React from "react";
 
 type editInput = {
   username?: string,
@@ -23,6 +26,11 @@ export function AccountDetails() {
   const token = localStorage.getItem('token')
   const user = useSelector((state: RootState) => state.authState.user);
   const userInfo = JSON.parse(JSON.stringify(user));
+  const toaster = React.useRef() as React.MutableRefObject<HTMLInputElement>;
+  const isAuthenticate = useSelector(
+    (state: RootState) => state.user.isAuthenticate
+  );
+ const [toast,setToast] = useState(false)
   // console.log("userInfo", userInfo);
 
 
@@ -32,6 +40,7 @@ export function AccountDetails() {
   // const removeAlert = (e: any) => {
   //   setAlert([])
   // }
+  
   function AlertListAppend() {
 
     return (
@@ -43,7 +52,18 @@ export function AccountDetails() {
       </div>
     )
   }
+useEffect(()=>{
 
+  if (isAuthenticate && typeof userInfo !== "string" && userInfo !== undefined && userInfo!.phone_number === '11111111') {
+    
+    setToast(true)
+    console.log('efwefgeg=',isAuthenticate)
+    console.log('efwefgeg=',userInfo)
+    return
+}
+
+
+},[isAuthenticate,userInfo])
   const { register, handleSubmit,reset } = useForm<editInput>();
 
   // profile photo shown setup
@@ -102,6 +122,7 @@ export function AccountDetails() {
 
   return (
     <div>
+      {toast?(<CToaster ref={toaster} push={<ToastDemo/>} placement="middle-end"/>):(console.log('not11111111'))}
       <Row className={"details_container"}>
         
         <Col className={"Detail_col_Right "} xs={12} md={4}>
