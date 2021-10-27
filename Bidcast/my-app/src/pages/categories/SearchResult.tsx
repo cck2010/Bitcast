@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 
 
-export function CategoryResults() {
+export function SearchResults() {
   const searchingResults = useSelector(
     (state: RootState) => state.searchProduct.productList
   )

@@ -33,6 +33,9 @@ import { myLiveRoutes } from "./router/myLiveRoutes";
 import telegramRoutes from "./router/telegramRoutes";
 import { TelegramController } from "./controller/telegramController";
 import { TelegramService } from "./service/telegramService";
+import { categoriesRoutes } from "./router/categoriesRoutes";
+import { CategoriesController } from "./controller/categoriesController";
+import { CategoriesService } from "./service/categoriesService";
 
 // import { hashPassword, } from './hash';
 
@@ -71,6 +74,7 @@ export const comingAuctionController = new ComingAuctionController(
     new ComingAuctionService(knex)
 );
 export const myLiveController = new MyLiveController(new MyLiveService(knex));
+export const categoriesController = new CategoriesController(new CategoriesService(knex));
 
 // app.use(requestLogger, dummyCounter);
 app.use(userRoutes);
@@ -80,6 +84,7 @@ app.use(productsRoutes);
 app.use(comingAuctionRoutes);
 app.use(express.static("img"));
 app.use(myLiveRoutes);
+app.use(categoriesRoutes);
 app.get("/profile", (req: express.Request, res: express.Response) => {
     res.sendFile(path.join(__dirname, "public", "404.html"));
 });

@@ -1,7 +1,6 @@
 import {
     Nav,
     Navbar,
-    Image,
     NavDropdown,
     Popover,
     OverlayTrigger,
@@ -9,21 +8,15 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Homepage.scss";
 import bidcast_logo from "./bidcast_logo.svg";
-import lihkg_logo from "./lihkg_logo.png";
-import { Link, Route, Switch } from "react-router-dom";
-import { CreateBids } from "../createbids/CreateBids";
-import LiveStream from "../LiveStream/LiveStream";
+import { Link } from "react-router-dom";
 import { useState } from "react";
-import { Homepage } from "./Homepage";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import React, { useEffect } from "react";
 import { checkCurrentUser, logoutThunk } from "../../redux/user/actions";
 import { push } from "connected-react-router";
 import { FormGroup, Input } from "reactstrap";
-import { fetchProductSearchResult } from "../../redux/searchResult/action";
+import { fetchFilteredCategories, fetchProductSearchResult } from "../../redux/searchResult/action";
 import { fetchCategories } from "../../redux/products/actions";
 import { menuIconClick } from "../../redux/Sidebar/actions";
 
@@ -79,6 +72,12 @@ export function HomePageNavbar() {
         dispatch(menuIconClick(true));
     };
 
+    const [categoryId, setCategoryId] = useState(0)
+
+    useEffect (()=>{
+        dispatch(fetchFilteredCategories(categoryId))
+    }, [dispatch, categoryId])
+
     return (
         <div>
             <Navbar collapseOnSelect expand="md" className="navbar py-0">
@@ -110,7 +109,7 @@ export function HomePageNavbar() {
                                         event.preventDefault();
                                         dispatch(
                                             push(
-                                                `/categoryResult?SearchingKeywords=${searchInput}`
+                                                `/searchResult?SearchingKeywords=${searchInput}`
                                             )
                                         );
                                     }
@@ -147,9 +146,10 @@ export function HomePageNavbar() {
                         >
                             {categories.map((category) => (
                                 <Link
-                                    to="/categoryResult?id="
+                                    to={`/categoryResult?category=${category.category}`}
                                     className="dropdown_items"
                                     key={category.id}
+                                    onClick={()=> setCategoryId(category.id)}
                                 >
                                     {category.category}
                                 </Link>
