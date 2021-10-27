@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { CToaster } from "@coreui/react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
 import {
@@ -8,6 +9,11 @@ import {
     LiveStreamProductDynamicInfo,
 } from "../../redux/LiveStream/actions";
 import { RootState } from "../../store";
+import ErrorCannotDoubleBid from "./ErrorCannotDoubleBid";
+import ErrorCannotSelfBid from "./ErrorCannotSelfBid";
+import ErrorPriceTooLow from "./ErrorPriceTooLow";
+import ErrorUnknown from "./ErrorUnknown";
+import InputPhoneNumber from "./InputPhoneNumber";
 import Login from "./Login";
 
 interface LiveStreamBiddingInfoProps {
@@ -25,6 +31,16 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     const isAuthenticate = useSelector(
         (state: RootState) => state.user.isAuthenticate
     );
+
+    const phoneNumber = useSelector((state: RootState) => {
+        if (
+            typeof state.authState.user !== "string" &&
+            state.authState.user?.phone_number
+        ) {
+            return state.authState.user?.phone_number;
+        }
+        return "";
+    });
 
     const liveId = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.id
@@ -78,6 +94,8 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
         selectedProductDynamic.currentPrice,
         selectedProduct.bidIncrement,
     ]);
+    const [toast, addToast] = useState<JSX.Element>(<></>);
+    const toaster = useRef<HTMLDivElement>(null);
     //Get States
 
     //Countdown End Handler
@@ -172,6 +190,19 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     }
                 }
             );
+            props.ws.on("updateCurrentPriceFail", (code: number) => {
+                console.log(code);
+
+                if (code === 0) {
+                    addToast(<ErrorCannotSelfBid />);
+                } else if (code === -10) {
+                    addToast(<ErrorPriceTooLow />);
+                } else if (code === -20) {
+                    addToast(<ErrorCannotDoubleBid />);
+                } else if (code === -30) {
+                    addToast(<ErrorUnknown />);
+                }
+            });
         }
     }, [dispatch, props.ws]);
     //WebSocket Signal Handler
@@ -225,7 +256,9 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
 
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded my-3">
-            {isAuthenticate ? (
+            {phoneNumber === "" || phoneNumber === "11111111" ? (
+                <InputPhoneNumber />
+            ) : isAuthenticate ? (
                 <div className="info w-100 h-100 d-flex justify-contens-center align-items-center flex-column">
                     <div className="row">
                         <div className="col-12 d-flex flex-row justify-content-center align-items-center w-100 h-100 mt-3">
@@ -330,6 +363,8 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
             ) : (
                 <Login />
             )}
+
+            <CToaster ref={toaster} push={toast} placement="bottom-end" />
         </div>
     );
 }
