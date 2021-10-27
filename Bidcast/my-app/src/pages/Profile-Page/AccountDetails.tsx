@@ -26,13 +26,15 @@ export function AccountDetails() {
   const token = localStorage.getItem('token')
   const user = useSelector((state: RootState) => state.authState.user);
   const userInfo = JSON.parse(JSON.stringify(user));
-  const toaster = React.useRef() as React.MutableRefObject<HTMLInputElement>;
+ 
   const isAuthenticate = useSelector(
     (state: RootState) => state.user.isAuthenticate
   );
- const [toast,setToast] = useState(false)
+ const [isToastExist,setIsToastExsist] = useState(false)
+ const [isAlertChecked, setIsAlertChecked] = useState(false);
+ const [toast, addToast] = useState<JSX.Element>(<></>)
   // console.log("userInfo", userInfo);
-
+ const toaster = React.useRef<HTMLDivElement>(null) 
 
   const dispatch = useDispatch();
   
@@ -52,18 +54,23 @@ export function AccountDetails() {
       </div>
     )
   }
+
 useEffect(()=>{
-
-  if (isAuthenticate && typeof userInfo !== "string" && userInfo !== undefined && userInfo!.phone_number === '11111111') {
-    
-    setToast(true)
-    console.log('efwefgeg=',isAuthenticate)
-    console.log('efwefgeg=',userInfo)
-    return
+  console.log('efwefgeg=',userInfo)
+if(typeof userInfo ==="object"){
+   if (!isAlertChecked && isAuthenticate && userInfo && typeof userInfo !== "string" &&
+   userInfo !== undefined && userInfo!.phone_number === '11111111') {
+    if(!isToastExist){
+    setIsAlertChecked(true)
+  
+    addToast(<ToastDemo/>)
+    setIsToastExsist(true)
+    // console.log('efwefgeg=',isAuthenticate)
+    console.log('123=',userInfo)
+    }
+  }
 }
-
-
-},[isAuthenticate,userInfo])
+},[isAlertChecked,isAuthenticate,userInfo,isToastExist])
   const { register, handleSubmit,reset } = useForm<editInput>();
 
   // profile photo shown setup
@@ -122,7 +129,7 @@ useEffect(()=>{
 
   return (
     <div>
-      {toast?(<CToaster ref={toaster} push={<ToastDemo/>} placement="middle-end"/>):(console.log('not11111111'))}
+      <CToaster ref={toaster} push={toast} placement="bottom-end"/>
       <Row className={"details_container"}>
         
         <Col className={"Detail_col_Right "} xs={12} md={4}>

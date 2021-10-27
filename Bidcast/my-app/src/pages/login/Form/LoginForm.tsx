@@ -57,6 +57,7 @@ export function LoginForm() {
             Password:
           </label>
           <input 
+            type="password"
            className="formFieldInput"
            placeholder="Enter your password"
            {...register('loginPassword')} />

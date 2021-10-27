@@ -8,7 +8,7 @@ import image from "./img2.jpg"
 import { SignupForm } from "./Form/SignupForm";
 import { LoginForm } from "./Form/LoginForm";
 import { useDispatch } from "react-redux"
-import {  checkCurrentUser, loadToken, login} from "../../redux/user/actions";
+import {   checkPhoneNumber, loadToken, login} from "../../redux/user/actions";
 import { useState } from "react";
 import axios from 'axios'
 import FacebookLogin from "react-facebook-login";
@@ -55,7 +55,7 @@ console.log(response.profileObj);
           localStorage.setItem('token', res.data.token)
           dispatch(login(res.data.token))
           dispatch(loadToken(res.data.token))
-          dispatch(checkCurrentUser())
+          dispatch(checkPhoneNumber())
           // dispatch(checkUserPhoneNumber())?
           // dispatch((Toasts())):
           dispatch(push('/'))
