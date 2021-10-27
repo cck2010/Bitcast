@@ -45,29 +45,10 @@ export function logoutThunk() {
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 
-export function checkCurrentUser() {
+export function checkPhoneNumber() {
 
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
-        const token = localStorage.getItem('token')
-
-        if (token == null) {
-            console.log("no token")
-            return;
-        }
-
         try {
-            const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/current`, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            })
-            // console.log("fetched")
-            const newToken: any = res.data
-
-            localStorage.setItem("token", newToken)
-            dispatch(login(newToken))
-            dispatch(loadToken(newToken))
-
             const state = getState()
 
             if (state.user.isAuthenticate && typeof state.authState.user !== "string" && state.authState.user !== undefined && state.authState.user!.phone_number === '11111111') {
@@ -107,6 +88,43 @@ export function refreshCurrentUser(userId: number) {
         } catch (error) {
             console.log("error", error);
 
+        }
+    }
+}
+
+export function checkCurrentUser() {
+
+    return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
+        const token = localStorage.getItem('token')
+
+        if (token == null) {
+            console.log("no token")
+            return;
+        }
+
+        try {
+            const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/current`, {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            })
+            // console.log("fetched")
+            const newToken: any = res.data
+
+            localStorage.setItem("token", newToken)
+            dispatch(login(newToken))
+            dispatch(loadToken(newToken))
+
+            const state = getState()
+
+            if (state.user.isAuthenticate && typeof state.authState.user !== "string" && state.authState.user !== undefined && state.authState.user!.phone_number === '11111111') {
+                history.push("/profilePage/accountDetails")
+
+            }
+
+            return
+        } catch (e) {
+            console.log(e)
         }
     }
 }

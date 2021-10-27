@@ -19,13 +19,11 @@ import { checkCurrentUser } from "./redux/user/actions";
 import { useAdBlockDetector } from "adblock-detector-hook";
 import { RootState } from "./store";
 import { faLessThanEqual } from "@fortawesome/free-solid-svg-icons";
-import { JWTPayload } from "./redux/user/reducer";
 
 
 
-import ToastDemo from "./pages/login/alert";
-import { CToaster } from "@coreui/react";
-import { push } from "connected-react-router";
+
+
 import { CategoriesFilter } from "./pages/categories/CategoriesFilter";
 
 
