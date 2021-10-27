@@ -128,26 +128,17 @@ export async function seed(knex: Knex): Promise<void> {
                 await knex("users")
                     .insert({
                         username: "abc123",
-                        status_id:
-                            statusId[
-                                Math.floor(Math.random() * statusId.length)
-                            ],
+                        status_id: statusId[0],
                         email: "abc@123.com",
                         password: await hashPassword("123Abc!!"),
                         phone_number: "23456789",
-                        role_id:
-                            rolesId[Math.floor(Math.random() * rolesId.length)],
+                        role_id: rolesId[0],
                         telegram_is_verified: false,
                         profile_pic:
                             "360_F_391192211_2w5pQpFV1aozYQhcIw3FqA35vuTxJKrB.jpg",
                         created_by: "knex seed",
                         updated_by: "knex seed",
-                        login_method_id:
-                            loginMethodsId[
-                                Math.floor(
-                                    Math.random() * loginMethodsId.length
-                                )
-                            ],
+                        login_method_id: loginMethodsId[0],
                     })
                     .returning("id")
             )[0];

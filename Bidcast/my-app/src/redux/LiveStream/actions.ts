@@ -358,6 +358,10 @@ export function fetchBidIncrement(
                         ws.emit("updateCurrentPrice", liveId, res.data.isEnded);
                     }
                 }
+            } else {
+                if (ws) {
+                    ws.emit("updateCurrentPriceFail", res.data.newPrice);
+                }
             }
         } catch (e) {
             console.log(e);

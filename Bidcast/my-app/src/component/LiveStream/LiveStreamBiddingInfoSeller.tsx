@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { CToaster } from "@coreui/react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
 import {
@@ -8,6 +9,8 @@ import {
     LiveStreamProductDynamicInfo,
 } from "../../redux/LiveStream/actions";
 import { RootState } from "../../store";
+import ErrorCannotStartCountdown from "./ErrorCannotStartCountdown";
+import InputPhoneNumber from "./InputPhoneNumber";
 import Login from "./Login";
 import NotSeller from "./NotSeller";
 
@@ -71,9 +74,20 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
         }
         return "";
     });
+    const phoneNumber = useSelector((state: RootState) => {
+        if (
+            typeof state.authState.user !== "string" &&
+            state.authState.user?.phone_number
+        ) {
+            return state.authState.user?.phone_number;
+        }
+        return "";
+    });
     const seller = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.seller
     );
+    const [toast, addToast] = useState<JSX.Element>(<></>);
+    const toaster = useRef<HTMLDivElement>(null);
     //Get States
 
     //Countdown End Handler
@@ -165,23 +179,29 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
 
     //Button On Click Handler
     const startBid = () => {
-        setRemainingTime(inputRemainingTime);
-        if (props.ws) {
-            dispatch(
-                fetchProductTime(
-                    selectedProduct.id,
-                    inputRemainingTime,
-                    setTimerId,
-                    props.ws,
-                    liveId
-                )
-            );
+        if (inputRemainingTime >= 60 && inputRemainingTime <= 300) {
+            setRemainingTime(inputRemainingTime);
+            if (props.ws) {
+                dispatch(
+                    fetchProductTime(
+                        selectedProduct.id,
+                        inputRemainingTime,
+                        setTimerId,
+                        props.ws,
+                        liveId
+                    )
+                );
+            }
+        } else {
+            addToast(<ErrorCannotStartCountdown />);
         }
     };
     //Button On Click Handler
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded my-3">
-            {isAuthenticate ? (
+            {phoneNumber === "" || phoneNumber === "11111111" ? (
+                <InputPhoneNumber />
+            ) : isAuthenticate ? (
                 seller === username ? (
                     <div className="info w-100 h-100 d-flex justify-contens-center align-items-center flex-column">
                         <div className="row">
@@ -262,7 +282,16 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                                     e: React.KeyboardEvent<HTMLInputElement>
                                 ) => {
                                     if (e.key === "Enter") {
-                                        startBid();
+                                        if (
+                                            inputRemainingTime >= 60 &&
+                                            inputRemainingTime <= 300
+                                        ) {
+                                            startBid();
+                                        } else {
+                                            addToast(
+                                                <ErrorCannotStartCountdown />
+                                            );
+                                        }
                                     }
                                 }}
                             />
@@ -274,6 +303,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
             ) : (
                 <Login />
             )}
+            <CToaster ref={toaster} push={toast} placement="bottom-end" />
         </div>
     );
 }

@@ -93,6 +93,7 @@ export class ProductsService {
             const countdownEndTime = result.countdown_end_time;
             let newPrice: number = 0;
             if (sellerId === userId) {
+                await txn.commit();
                 return {
                     currentPrice: 0,
                     success: false,
@@ -107,8 +108,9 @@ export class ProductsService {
             } else {
                 if (bidAmount < buyPrice) {
                     if (bidAmount < currentPrice + bidIncrement) {
+                        await txn.commit();
                         return {
-                            currentPrice: 0,
+                            currentPrice: -10,
                             success: false,
                         };
                     }
@@ -118,9 +120,17 @@ export class ProductsService {
                 }
             }
 
-            if (userId === parseInt(buyerId) || newPrice <= currentPrice) {
+            if (newPrice <= currentPrice) {
+                await txn.commit();
                 return {
-                    currentPrice: 0,
+                    currentPrice: -10,
+                    success: false,
+                };
+            }
+            if (userId === parseInt(buyerId)) {
+                await txn.commit();
+                return {
+                    currentPrice: -20,
                     success: false,
                 };
             }
@@ -143,7 +153,7 @@ export class ProductsService {
         } catch (e) {
             await txn.rollback();
             return {
-                currentPrice: 0,
+                currentPrice: -30,
                 isEnded: false,
                 success: false,
             };
