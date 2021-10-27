@@ -12,7 +12,7 @@ import { CreateBids } from "./pages/createbids/CreateBids";
 import LiveStreamSeller from "./pages/LiveStream/LiveStreamSeller";
 import { Homepage } from "./pages/homepage/Homepage";
 import { ProfilePage } from "./pages/Profile-Page/Profilepage";
-import { CategoryResults } from "./pages/categories/Categories";
+import { SearchResults } from "./pages/categories/SearchResult";
 import { useDispatch, useSelector } from "react-redux";
 import { checkCurrentUser } from "./redux/user/actions";
 // import { CreateBids } from "./pages/createbids/CreateBids";
@@ -26,6 +26,7 @@ import { JWTPayload } from "./redux/user/reducer";
 import ToastDemo from "./pages/login/alert";
 import { CToaster } from "@coreui/react";
 import { push } from "connected-react-router";
+import { CategoriesFilter } from "./pages/categories/CategoriesFilter";
 
 
 
@@ -85,8 +86,11 @@ function App() {
             <Route path="/liveStreamingSeller">
               <LiveStreamSeller />
             </Route>
+            <Route path="/searchResult">
+              <SearchResults />
+            </Route>
             <Route path="/categoryResult">
-              <CategoryResults />
+              <CategoriesFilter />
             </Route>
             <Route path="/profilePage">
               <ProfilePage />
