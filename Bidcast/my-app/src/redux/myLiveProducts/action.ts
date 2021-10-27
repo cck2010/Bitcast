@@ -4,10 +4,10 @@ import axios from 'axios';
 
 export interface MyLiveProducts {
     id: number;
-    user_id:number;
+    user_id: number;
     title: string;
     image: string;
-    starting_time: number;
+    starting_time: Date;
     max_viewer?: number;
     is_ended?: boolean;
 }
@@ -24,23 +24,23 @@ export function loadMyLiveProducts(
 export type LoadMyLiveProductsActions = ReturnType<typeof loadMyLiveProducts>;
 
 export function fetchMyLiveProducts() {
-    return async (dispatch: RootThunkDispatch, getState: ()=> RootState)=>{
+    return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         try {
- 
+
             const res = await fetch(
                 `${process.env.REACT_APP_BACKEND_URL}/profilePage/myLive`
             );
 
-            const json = await res.json();  
+            const json = await res.json();
 
-            if(json) {
+            if (json) {
                 dispatch(loadMyLiveProducts(json.data.results.rows))
             } else {
                 dispatch(loadMyLiveProducts([]))
             }
         } catch (error) {
             console.log(error);
-            
+
         }
     }
 }
