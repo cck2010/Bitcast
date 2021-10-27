@@ -16,7 +16,10 @@ import React, { useEffect } from "react";
 import { checkCurrentUser, logoutThunk } from "../../redux/user/actions";
 import { push } from "connected-react-router";
 import { FormGroup, Input } from "reactstrap";
-import { fetchFilteredCategories, fetchProductSearchResult } from "../../redux/searchResult/action";
+import {
+    fetchFilteredCategories,
+    fetchProductSearchResult,
+} from "../../redux/searchResult/action";
 import { fetchCategories } from "../../redux/products/actions";
 import { menuIconClick } from "../../redux/Sidebar/actions";
 
@@ -72,11 +75,11 @@ export function HomePageNavbar() {
         dispatch(menuIconClick(true));
     };
 
-    const [categoryId, setCategoryId] = useState(0)
+    const [categoryId, setCategoryId] = useState(0);
 
-    useEffect (()=>{
-        dispatch(fetchFilteredCategories(categoryId))
-    }, [dispatch, categoryId])
+    useEffect(() => {
+        dispatch(fetchFilteredCategories(categoryId));
+    }, [dispatch, categoryId]);
 
     return (
         <div>
@@ -149,7 +152,7 @@ export function HomePageNavbar() {
                                     to={`/categoryResult?category=${category.category}`}
                                     className="dropdown_items"
                                     key={category.id}
-                                    onClick={()=> setCategoryId(category.id)}
+                                    onClick={() => setCategoryId(category.id)}
                                 >
                                     {category.category}
                                 </Link>
@@ -173,7 +176,7 @@ export function HomePageNavbar() {
                             </Link>
                         )}
                         <Link
-                            to="/profilePage"
+                            to="/profilePage/accountDetails"
                             className="nav_link mb-md-0 mb-3 me-0 me-md-3"
                         >
                             {isAuthenticate && profilePic && (

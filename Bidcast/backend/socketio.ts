@@ -21,6 +21,9 @@ export function setSocketIO(io: socketIO.Server) {
                 .in(room.toString())
                 .emit("updateCurrentPrice", room, isEnded);
         });
+        socket.on("updateCurrentPriceFail", (code: number) => {
+            socket.emit("updateCurrentPriceFail", code);
+        });
         socket.on(
             "sendMessage",
             (room: number, message: ChatMessageWithSuccess) => {
