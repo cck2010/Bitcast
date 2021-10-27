@@ -6,6 +6,7 @@ export const env = {
     DB_PASSWORD: process.env.DB_PASSWORD,
     DB_NAME: process.env.DB_NAME,
     DB_HOST: process.env.DB_HOST || "localhost",
+    DB_PORT: process.env.DB_PORT || '5432',
     PORT: +process.env.PORT! || 8080,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,

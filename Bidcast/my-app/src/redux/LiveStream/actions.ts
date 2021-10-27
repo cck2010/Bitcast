@@ -6,6 +6,7 @@ export interface LiveStreamInfo {
     id: number;
     title: string;
     seller: string;
+    sellerId: number;
     sellerImage: string;
     currentViewers: number;
     thumbnail: string;
@@ -221,6 +222,7 @@ export function fetchliveStreamInfo(room: string, token: string) {
                         id: -1,
                         title: "Error",
                         seller: "Error",
+                        sellerId: 0,
                         sellerImage: "defaultUser.png",
                         currentViewers: 0,
                         thumbnail: "",

@@ -10,6 +10,7 @@ module.exports = {
       user: env.DB_USERNAME,
       password: env.DB_PASSWORD,
       host: env.DB_HOST,
+      port: env.DB_PORT,
     },
     pool: {
       min: 2,
@@ -25,7 +26,8 @@ module.exports = {
       host: process.env.POSTGRES_HOST,
       database: process.env.POSTGRES_DB,
       user: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD
+      password: process.env.POSTGRES_PASSWORD,
+      port: env.DB_PORT,
     },
     pool: {
       min: 2,
@@ -41,7 +43,8 @@ module.exports = {
       database: env.DB_NAME,
       user: env.DB_USERNAME,
       password: env.DB_PASSWORD,
-      host: env.DB_HOST
+      host: env.DB_HOST,
+      port: env.DB_PORT,
     },
     pool: {
       min: 2,
