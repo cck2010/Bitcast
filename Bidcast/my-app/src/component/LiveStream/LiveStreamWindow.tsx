@@ -77,6 +77,8 @@ function LiveStreamWindow() {
                                 ? `url("${process.env.REACT_APP_BACKEND_URL}/${thumbnail}")`
                                 : ""
                         }`,
+                        backgroundRepeat: "no-repeat",
+                        backgroundSize: "100% 100%",
                     }}
                 ></video>
             </div>
