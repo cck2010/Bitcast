@@ -1,9 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap");
+
 $largeFontSize: 1.5em;
 $largeFontSize2: 1.2em;
 $smallFontSize: 0.5em;
 
 .LiveStream {
     max-width: 98.5%;
+    font-family: "Noto Sans TC", sans-serif;
 }
 
 .LiveStreamHeader {
