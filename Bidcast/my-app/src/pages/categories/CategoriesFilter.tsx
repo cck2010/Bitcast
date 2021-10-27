@@ -29,12 +29,6 @@ export function CategoriesFilter() {
         dispatch(fetchProductsForFilter(orderCommand));
     }, [dispatch, orderCommand]);
 
-    const products = useSelector((state: RootState) =>
-        Object.values(state.searchProduct.productFilter)
-    );
-
-    console.log(products);
-
     return (
         <div className="category_page">
             <Container>
@@ -56,7 +50,12 @@ export function CategoriesFilter() {
                     >
                         <Dropdown.Item
                             eventKey="1"
-                            onClick={() => setOrderCommand("DateNewToOld")}
+                            onClick={() => {
+                                setOrderCommand("DateNewToOld");
+                                dispatch(
+                                    push(`/filteredProducts?DateNewToOld`)
+                                );
+                            }}
                         >
                             由新至舊
                         </Dropdown.Item>
