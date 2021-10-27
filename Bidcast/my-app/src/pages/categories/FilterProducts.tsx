@@ -15,7 +15,6 @@ import { RootState } from "../../store";
 import { useEffect, useState } from "react";
 import { fetchProductsForFilter } from "../../redux/searchResult/action";
 import { push } from "connected-react-router";
-import { Link } from "react-router-dom";
 
 export function FilterProducts() {
     const dispatch = useDispatch();
@@ -53,7 +52,12 @@ export function FilterProducts() {
                     >
                         <Dropdown.Item
                             eventKey="1"
-                            onClick={() => setOrderCommand("DateNewToOld")}
+                            onClick={() => {
+                                setOrderCommand("DateNewToOld");
+                                dispatch(
+                                    push(`/filteredProducts?DateOldToNew`)
+                                );
+                            }}
                         >
                             由新至舊
                         </Dropdown.Item>

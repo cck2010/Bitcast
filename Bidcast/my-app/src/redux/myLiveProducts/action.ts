@@ -1,5 +1,4 @@
 import { RootState, RootThunkDispatch } from "../../store";
-import axios from 'axios';
 
 
 export interface MyLiveProducts {
@@ -8,6 +7,7 @@ export interface MyLiveProducts {
     title: string;
     image: string;
     starting_time: Date;
+    seller_link: string;
     max_viewer?: number;
     is_ended?: boolean;
 }
