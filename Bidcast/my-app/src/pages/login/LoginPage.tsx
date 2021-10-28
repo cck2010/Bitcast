@@ -57,9 +57,9 @@ console.log(response.profileObj);
           dispatch(checkPhoneNumber())
           // dispatch(checkUserPhoneNumber())?
           // dispatch((Toasts())):
-          dispatch(push('/'))
+          
         } else {
-          setError('email or password wrong')
+          setError('發生未知錯誤')
         }
       } catch (e: any) {
         if (e?.response.status === 401) {
@@ -92,9 +92,10 @@ console.log(response.profileObj);
               localStorage.setItem('token', res.data.token)
               dispatch(login(res.data.token))
               dispatch(loadToken(res.data.token))
+              dispatch(checkPhoneNumber())
               // dispatch(checkUserPhoneNumber())?
               // dispatch((PhoneNumberMessageBox())):
-              dispatch(push('/'))
+              
               
             } else {
               setError('email or password wrong')

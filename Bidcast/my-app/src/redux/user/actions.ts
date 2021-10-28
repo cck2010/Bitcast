@@ -29,7 +29,21 @@ export function loadToken(token: string) {
     };
 }
 
-export type LoadToken = ReturnType<typeof loadToken>;
+export function loadFollower(userId: number[]) {
+    return {
+        type: "@@Follower/load_follower" as const,
+        userId,
+    };
+}
+export function loadFollowing(userId: number[]) {
+    return {
+        type: "@@Following/load_following" as const,
+        userId,
+    };
+}
+
+export type FollowerActions = ReturnType<typeof loadFollower>;
+export type FollowingActions = ReturnType<typeof loadFollowing>;
 
 export type AuthActions = ReturnType<typeof loadToken>;
 
@@ -55,7 +69,10 @@ export function checkPhoneNumber() {
                 state.authState.user !== undefined &&
                 state.authState.user!.phone_number === "11111111"
             ) {
+
                 history.push("/profilePage/accountDetails");
+            } else {
+                history.push("/");
             }
 
             return;
