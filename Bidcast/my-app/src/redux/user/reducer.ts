@@ -1,5 +1,5 @@
 import produce from "immer"
-import { UserActions, AuthActions } from "./actions";
+import { UserActions, AuthActions, FollowerActions, FollowingActions } from "./actions";
 import jwt, { JwtPayload, VerifyOptions } from "jsonwebtoken";
 
 
@@ -41,6 +41,36 @@ export type JWTPayload = {
     telegram_chat_id?: number;
     login_method_id?: number;
     description?: string;
+}
+
+export interface FollowerState {
+    userId: number[]
+}
+
+export interface FollowingState {
+    userId: number[]
+}
+const followerInitalState: FollowerState = {
+    userId: [0]
+}
+const followingInitalState: FollowingState = {
+    userId: [0]
+}
+export function FollowerReducer(state: FollowerState = followerInitalState, action: FollowerActions): FollowerState {
+    return produce(state, state => {
+        if (action.type === '@@Follower/load_follower') {
+            state.userId = action.userId;
+        }
+    }
+    )
+}
+export function FollowingReducer(state: FollowingState = followingInitalState, action: FollowingActions): FollowingState {
+    return produce(state, state => {
+        if (action.type === '@@Following/load_following') {
+            state.userId = action.userId;
+        }
+    }
+    )
 }
 
 export function userReducer(state: UserState = initialState, action: UserActions): UserState {

@@ -64,6 +64,7 @@ export class LiveStreamController {
                 id: number;
                 title: string;
                 seller: string;
+                sellerId: number;
                 sellerImage: string;
                 currentViewers: number;
                 thumbnail: string;
@@ -75,6 +76,7 @@ export class LiveStreamController {
                 id: result.id,
                 title: result.title,
                 seller: result.seller,
+                sellerId: result.sellerId,
                 sellerImage: result.sellerImage,
                 currentViewers: result.currentViewers,
                 thumbnail: result.thumbnail,

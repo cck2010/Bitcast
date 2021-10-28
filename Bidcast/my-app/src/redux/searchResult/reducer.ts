@@ -1,14 +1,16 @@
-import { CategoriesFilter, SearchProduct, SearchProductsActions } from "./action";
+import { CategoriesFilter, ProductFilter, SearchProduct, SearchProductsActions } from "./action";
 import produce from "immer";
 
 export interface ProductSearchState {
     productList: SearchProduct[]
     categories: CategoriesFilter[]
+    productFilter: ProductFilter[]
 }
 
 const initialState: ProductSearchState = {
     productList: [],
-    categories: []
+    categories: [],
+    productFilter: [],
 }
 
 export function productSearchReducer(
@@ -23,6 +25,9 @@ export function productSearchReducer(
                 break;
             case "@@products/LOAD_PRODUCT_CATEGORIES":
                 newState.categories = action.categories
+                break;
+            case "@@products/LOAD_PRODUCT_FOR_FILTER":
+                newState.productFilter = action.productFilter
         }
     })
 }

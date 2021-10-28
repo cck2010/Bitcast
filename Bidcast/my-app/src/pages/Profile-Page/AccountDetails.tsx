@@ -38,20 +38,6 @@ export function AccountDetails() {
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (
-            isAuthenticate &&
-            typeof userInfo !== "string" &&
-            userInfo !== undefined &&
-            userInfo!.phone_number === "11111111"
-        ) {
-            setToast(true);
-            console.log("efwefgeg=", isAuthenticate);
-            console.log("efwefgeg=", userInfo);
-            return;
-        }
-    }, [isAuthenticate, userInfo]);
-
     const { register, handleSubmit, reset } = useForm<editInput>();
 
     // profile photo shown setup
@@ -119,6 +105,19 @@ export function AccountDetails() {
 
         // dispatch(push("/profilePage/accountDetails"))
     };
+
+    function CheckLoginShowPhoto() {
+        return (
+            //if else check login method
+            <Image
+                src={`${process.env.REACT_APP_BACKEND_URL}/${userInfo.profile_pic}`}
+                width="80"
+                height="80"
+                roundedCircle
+                className="profile_logo"
+            />
+        );
+    }
 
     //loading Config Template
     const [loadStatus, setLoadStatus] = useState("loadingShown");

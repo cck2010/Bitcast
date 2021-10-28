@@ -17,4 +17,18 @@ export class CategoriesController {
             });
         }
     }
+
+    getProductsForFilter = async (req: Request, res: Response) => {
+        try {
+            const { orderCommand } = req.body
+            const result = await this.categoriesService.getProductsForFilter(orderCommand)
+            res.json(result)
+        } catch (error) {
+            res.json({
+                success: false,
+                data: { msg: "controller get products to filter fail" },
+                error: new Error("get products fail"),
+            });
+        }
+    }
 }

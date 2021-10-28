@@ -56,6 +56,7 @@ export class LiveStreamService {
             id: liveResult[0].id,
             title: liveResult[0].title,
             seller: userResult.username,
+            sellerId: liveResult[0].user_id,
             sellerImage:
                 userResult.profile_pic == null
                     ? "defaultUser.png"
