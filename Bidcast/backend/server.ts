@@ -52,16 +52,16 @@ const io = new SocketIO(server, {
 setSocketIO(io);
 
 //Print path middleware
-// app.use(
-//     (
-//         req: express.Request,
-//         res: express.Response,
-//         next: express.NextFunction
-//     ) => {
-//         console.log(req.method, req.path);
-//         next();
-//     }
-// );
+app.use(
+    (
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) => {
+        console.log(req.method, req.path);
+        next();
+    }
+);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
