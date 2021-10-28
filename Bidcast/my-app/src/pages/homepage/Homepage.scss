@@ -4,7 +4,9 @@ $logoColor: #11f3a2;
 
 .navbar {
     background-color: $navbarColor;
-    height: 100px;
+    .form-group {
+        width: 180px;
+    }
 }
 .nav_link {
     color: #ffffff !important;
@@ -264,7 +266,6 @@ footer {
 @media (min-width: 768px) {
     .navbar-expand-md .navbar-nav {
         flex-direction: row;
-        height: 100px;
     }
 }
 .navbar-toggler-icon {

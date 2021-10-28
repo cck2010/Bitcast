@@ -9,7 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./Homepage.scss";
 import bidcast_logo from "./bidcast_logo.svg";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import React, { useEffect } from "react";
@@ -21,7 +21,7 @@ import {
     fetchProductSearchResult,
 } from "../../redux/searchResult/action";
 import { fetchCategories } from "../../redux/products/actions";
-import { menuIconClick } from "../../redux/Sidebar/actions";
+import { menuIconClick, sidebarClick } from "../../redux/utility/actions";
 
 export function HomePageNavbar() {
     // const [show, setShow] = useState(false);
@@ -54,6 +54,20 @@ export function HomePageNavbar() {
         }
         return "";
     });
+    const sidebarCollapse = useSelector(
+        (state: RootState) => state.utility.sidebarCollapse
+    );
+    const menuCollapse = useSelector(
+        (state: RootState) => state.utility.menuCollapse
+    );
+    const isClicking = useSelector(
+        (state: RootState) => state.utility.isClicking
+    );
+    const menuRef = useRef<HTMLDivElement>(null);
+    const menuToggle = useRef<HTMLButtonElement>(null);
+    useEffect(() => {
+        console.log("menu state: ", menuRef);
+    }, [sidebarCollapse]);
 
     useEffect(() => {
         dispatch(checkCurrentUser());
@@ -81,7 +95,8 @@ export function HomePageNavbar() {
     }, [dispatch]);
 
     const menuIconOnclickHandler = () => {
-        dispatch(menuIconClick(true));
+        dispatch(sidebarClick(true));
+        dispatch(menuIconClick(menuCollapse ? false : true, false));
     };
 
     const [categoryId, setCategoryId] = useState(0);
@@ -90,10 +105,15 @@ export function HomePageNavbar() {
         dispatch(fetchFilteredCategories(categoryId));
     }, [dispatch, categoryId]);
 
+    useEffect(() => {
+        if (isClicking && menuRef.current && menuToggle.current) {
+            menuToggle.current.click();
+        }
+    }, [isClicking]);
     return (
         <div>
-            <Navbar collapseOnSelect expand="md" className="navbar py-0">
-                <Link to="/" className="nav_link ms-3 mt-2 mt-md-0">
+            <Navbar collapseOnSelect expand="md" className="navbar py-3">
+                <Link to="/" className="nav_link ms-3">
                     <img
                         alt="bidcast_logo"
                         src={bidcast_logo}
@@ -104,8 +124,13 @@ export function HomePageNavbar() {
                 <Navbar.Toggle
                     aria-controls="responsive-navbar-nav"
                     onClick={menuIconOnclickHandler}
+                    ref={menuToggle}
                 />
-                <Navbar.Collapse id="responsive-navbar-nav">
+                <Navbar.Collapse
+                    id="responsive-navbar-nav"
+                    className=" mt-md-0 mt-3"
+                    ref={menuRef}
+                >
                     <Nav className="me-auto navbar_buttons">
                         <FormGroup>
                             <Input
@@ -145,8 +170,8 @@ export function HomePageNavbar() {
                         ) : (
                             <Link
                                 to={
-                                    phoneNumber == "" ||
-                                    phoneNumber == "11111111"
+                                    phoneNumber === "" ||
+                                    phoneNumber === "11111111"
                                         ? "/profilePage/accountDetails"
                                         : "/createBids"
                                 }
