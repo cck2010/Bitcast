@@ -135,13 +135,8 @@ bot.on("text", (ctx) => {
 
 
 bot.on("sticker", (ctx) => {
-    // Explicit usage
-    // console.log(ctx.message);
 
-    ctx.telegram.sendMessage(ctx.message.chat.id, `Hello ${ctx.state.role}`);
-
-    // Using context shortcut
-    ctx.reply(`Hello ${ctx.state.role}`);
+    ctx.telegram.sendMessage(ctx.message.chat.id, `請打開左下角Menu 選擇項目`);
 });
 
 bot.on("callback_query", (ctx) => {
