@@ -1,6 +1,6 @@
 FROM node:14
 WORKDIR /usr/src/app
-COPY . .
+COPY ./backend ./backend
 EXPOSE 8080
 CMD cd backend && \
     yarn install && \ 

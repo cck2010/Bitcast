@@ -22,10 +22,10 @@ module.exports = {
     test: {
         client: "postgresql",
         connection: {
-            host: env.POSTGRES_HOST,
             database: env.POSTGRES_DB,
             user: env.POSTGRES_USER,
             password: env.POSTGRES_PASSWORD,
+            host: env.POSTGRES_HOST,
             port: env.DB_PORT,
         },
         pool: {
