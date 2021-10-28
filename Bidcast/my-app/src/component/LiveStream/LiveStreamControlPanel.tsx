@@ -53,7 +53,6 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
         }
     }, [props.ws]);
     //WebSocket Signal Handler
-    console.log("length", products.length);
 
     return (
         <div className="LiveStreamControlPanel rounded my-4">

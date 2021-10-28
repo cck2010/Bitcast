@@ -308,6 +308,32 @@ export class UserController {
         }
     };
 
+    getSubscribe = async (req: Request, res: Response) => {
+        try {
+            const userId = req.user && req.user.id ? req.user.id : 0;
+            if (userId === 0) {
+                res.json({
+                    success: false,
+                    data: { msg: "get subscribe fail" },
+                });
+            }
+            const result = await this.userService.getSubscribe(userId);
+            const response = {
+                followerList: result.followerList,
+                followingList: result.followingList,
+                success: true,
+            };
+            res.json(response);
+            return;
+        } catch (error) {
+            res.json({
+                success: false,
+                data: { msg: "get subscribe fail" },
+                error: new Error("get subscribe fail"),
+            });
+        }
+    };
+
     subscribe = async (req: Request, res: Response) => {
         try {
             const { followingId } = req.body;

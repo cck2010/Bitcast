@@ -1,7 +1,11 @@
-import produce from "immer"
-import { UserActions, AuthActions, FollowerActions, FollowingActions } from "./actions";
+import produce from "immer";
+import {
+    UserActions,
+    AuthActions,
+    FollowerActions,
+    FollowingActions,
+} from "./actions";
 import jwt, { JwtPayload, VerifyOptions } from "jsonwebtoken";
-
 
 export interface UserState {
     isAuthenticate: boolean;
@@ -12,19 +16,18 @@ export interface UserState {
 const initialState: UserState = {
     isAuthenticate: false,
     // userId: null,
-    token: null
-}
-
+    token: null,
+};
 
 const loadTokenInitalState: AuthState = {
     user: {},
-    error: ""
-}
+    error: "",
+};
 
 export type AuthState = {
-    user?: JWTPayload | string
-    error?: string
-}
+    user?: JWTPayload | string;
+    error?: string;
+};
 
 export type JWTPayload = {
     id?: number;
@@ -41,62 +44,79 @@ export type JWTPayload = {
     telegram_chat_id?: number;
     login_method_id?: number;
     description?: string;
-}
+};
 
 export interface FollowerState {
-    userId: number[]
+    userId: number[];
 }
 
 export interface FollowingState {
-    userId: number[]
+    userId: number[];
 }
 const followerInitalState: FollowerState = {
-    userId: [0]
-}
+    userId: [],
+};
 const followingInitalState: FollowingState = {
-    userId: [0]
-}
-export function FollowerReducer(state: FollowerState = followerInitalState, action: FollowerActions): FollowerState {
-    return produce(state, state => {
-        if (action.type === '@@Follower/load_follower') {
-            state.userId = action.userId;
+    userId: [],
+};
+export function followerReducer(
+    state: FollowerState = followerInitalState,
+    action: FollowerActions
+): FollowerState {
+    return produce(state, (newState) => {
+        if (action.type === "@@follower/LOAD_FOLLOWER") {
+            newState.userId = action.userId;
         }
-    }
-    )
+    });
 }
-export function FollowingReducer(state: FollowingState = followingInitalState, action: FollowingActions): FollowingState {
-    return produce(state, state => {
-        if (action.type === '@@Following/load_following') {
-            state.userId = action.userId;
-        }
-    }
-    )
-}
-
-export function userReducer(state: UserState = initialState, action: UserActions): UserState {
-    return produce(state, state => {
-        if (action.type === '@@user/LOGIN') {
-            state.token = action.token;
-            state.isAuthenticate = true;
-        } else if (action.type === '@@user/LOGOUT') {
-            state.token = null;
-            state.isAuthenticate = false
+export function followingReducer(
+    state: FollowingState = followingInitalState,
+    action: FollowingActions
+): FollowingState {
+    return produce(state, (newState) => {
+        if (action.type === "@@following/LOAD_FOLLOWING") {
+            newState.userId = action.userId;
         }
     });
 }
 
-export let authReducer = (state: AuthState = loadTokenInitalState, action: AuthActions,): AuthState => {
-    return produce(state, state => {
+export function userReducer(
+    state: UserState = initialState,
+    action: UserActions
+): UserState {
+    return produce(state, (state) => {
+        if (action.type === "@@user/LOGIN") {
+            state.token = action.token;
+            state.isAuthenticate = true;
+        } else if (action.type === "@@user/LOGOUT") {
+            state.token = null;
+            state.isAuthenticate = false;
+        }
+    });
+}
+
+export let authReducer = (
+    state: AuthState = loadTokenInitalState,
+    action: AuthActions
+): AuthState => {
+    return produce(state, (state) => {
         switch (action.type) {
-            case '@@Auth/load_token': {
+            case "@@Auth/load_token": {
                 try {
                     const verifyOptions: VerifyOptions = {
                         maxAge: "12h",
-                        algorithms: ["RS512"]
-                    }
+                        algorithms: ["RS512"],
+                    };
 
-                    let a = process.env.REACT_APP_PUBLIC_KEY!.replace(/\\n/g, '\n')
-                    let payload: string | JwtPayload | any = jwt.verify(action.token, a, verifyOptions)
+                    let a = process.env.REACT_APP_PUBLIC_KEY!.replace(
+                        /\\n/g,
+                        "\n"
+                    );
+                    let payload: string | JwtPayload | any = jwt.verify(
+                        action.token,
+                        a,
+                        verifyOptions
+                    );
                     // console.log('payload= ', payload)
                     const user: JWTPayload = {
                         id: payload.id,
@@ -113,28 +133,21 @@ export let authReducer = (state: AuthState = loadTokenInitalState, action: AuthA
                         telegram_is_verified: payload.telegram_is_verified,
                         updated_at: payload.updated_at,
                         description: payload.description,
-
-
-                    }
+                    };
                     return {
                         user,
-                        error: undefined
-                    }
+                        error: undefined,
+                    };
                 } catch (error) {
                     return {
-                        error: 'invalid JWT Token',
+                        error: "invalid JWT Token",
                         user: undefined,
-                    }
+                    };
                 }
             }
 
-
             default:
-                return state
+                return state;
         }
-    })
-}
-
-
-
-
+    });
+};

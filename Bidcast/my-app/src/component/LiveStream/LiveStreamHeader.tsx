@@ -29,9 +29,52 @@ function LiveStreamHeader(props: LiveStreamHeaderProps) {
     const liveId = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.id
     );
+    const subscribeList = useSelector(
+        (state: RootState) => state.following.userId
+    );
+    const userId = useSelector((state: RootState) => {
+        if (
+            typeof state.authState.user !== "string" &&
+            state.authState.user?.id
+        ) {
+            return state.authState.user?.id;
+        }
+        return 0;
+    });
     const [onlineUsers, setOnlineUsers] = useState<number>(0);
     const [timerId, setTimerId] = useState<number>(0);
+    const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
+    const [isSelf, setIsSelf] = useState<boolean>(false);
     //Get States
+
+    //Check Subscription
+    useEffect(() => {
+        dispatch(fetchSubscribe(true));
+    }, [dispatch]);
+    useEffect(() => {
+        let check = false;
+        for (let item of subscribeList) {
+            if (item === sellerId) {
+                check = true;
+            }
+        }
+        if (check) {
+            setIsSubscribed(true);
+        } else {
+            setIsSubscribed(false);
+        }
+    }, [subscribeList, sellerId]);
+    //Check Subscription
+
+    //Check Same Person
+    useEffect(() => {
+        if (sellerId === userId) {
+            setIsSelf(true);
+        } else {
+            setIsSelf(false);
+        }
+    }, [sellerId, userId]);
+    //Check Same Person
 
     //WebSocket Signal Handler
     useEffect(() => {
@@ -64,16 +107,29 @@ function LiveStreamHeader(props: LiveStreamHeaderProps) {
                         <div className="title my-3">{title}</div>
                     </div>
                     <div className="col-2 d-flex align-items-center justify-content-end">
-                        <div className="subscribe">
-                            <button
-                                className="btn btn-danger"
-                                onClick={() => {
-                                    dispatch(fetchSubscribe(sellerId));
-                                }}
-                            >
-                                關注 <i className="fas fa-bell"></i>
-                            </button>
-                        </div>
+                        {!isSelf && (
+                            <div className="subscribe">
+                                <button
+                                    className={`subscribe_btn btn ${
+                                        isSubscribed
+                                            ? "btn-secondary"
+                                            : "btn-danger"
+                                    }`}
+                                    onClick={() => {
+                                        dispatch(
+                                            fetchSubscribe(false, sellerId)
+                                        );
+                                    }}
+                                >
+                                    {isSubscribed ? "已關注" : "關注"}{" "}
+                                    {isSubscribed ? (
+                                        <i className="fas fa-bell-slash"></i>
+                                    ) : (
+                                        <i className="fas fa-bell"></i>
+                                    )}
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div className="userinfo d-flex align-items-center mb-4">

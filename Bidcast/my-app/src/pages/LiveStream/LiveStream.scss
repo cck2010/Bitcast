@@ -33,6 +33,9 @@ $smallFontSize: 0.5em;
             }
         }
     }
+    .subscribe_btn:focus {
+        box-shadow: none;
+    }
 }
 .LiveStreamControlPanel {
     .panel_bar {
