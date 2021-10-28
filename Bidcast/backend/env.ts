@@ -26,4 +26,5 @@ export const env = {
     PUBLIC_KEY: process.env.PUBLIC_KEY || "",
     PRIVATE_KEY: process.env.PRIVATE_KEY || "",
     TOKEN: process.env.TOKEN || "",
+    REACT_APP_BACKEND_URL: process.env.REACT_APP_BACKEND_URL,
 };
