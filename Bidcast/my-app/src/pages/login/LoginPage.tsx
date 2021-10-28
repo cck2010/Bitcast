@@ -129,13 +129,13 @@ console.log(response.profileObj);
     <div className="fakeapp">
       
       <div className="appAside">
-      <div className="vividworknav">
+      <div className="vividworknav1">
   <img className='smallpic'  src={image2} alt={image2} />
   <div className="work-text-content">
     <p>歡迎來到Bidcast</p>
   </div>
 </div>
-<div className="vividworknav">
+<div className="vividworknav2">
   <img className='smallpic'  src={image1} alt={image1} />
   <div className="work-text-content">
     <p>你可以在這裏享受即時拍賣和盡情消費的樂趣</p>
