@@ -107,7 +107,11 @@ export function FilterProducts() {
                             className="category_items_container"
                             key={product.id}
                         >
-                            <Col xs={6} md={4}>
+                            <Col
+                                xs={6}
+                                md={4}
+                                className="category_img_container"
+                            >
                                 <Image
                                     key={product.id}
                                     src={`${process.env.REACT_APP_BACKEND_URL}/${product.product_image}`}

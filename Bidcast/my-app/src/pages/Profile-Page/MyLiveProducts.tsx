@@ -60,19 +60,27 @@ export function MyLiveProducts() {
                                         </Button>
                                     </div>
                                 ) : (
-                                    <Button
-                                        variant="outline-dark"
-                                        className="bid_button"
-                                        onClick={() => {
-                                            dispatch(
-                                                push(
-                                                    `/liveStreamingSeller?token=${liveProduct.seller_link}`
-                                                )
-                                            );
-                                        }}
-                                    >
-                                        開始直播
-                                    </Button>
+                                    <div>
+                                        <Button
+                                            variant="outline-dark"
+                                            className="bid_button"
+                                            onClick={() => {
+                                                dispatch(
+                                                    push(
+                                                        `/liveStreamingSeller?token=${liveProduct.seller_link}`
+                                                    )
+                                                );
+                                            }}
+                                        >
+                                            開始直播
+                                        </Button>
+                                        <Button
+                                            variant="outline-dark"
+                                            className="bid_button"
+                                        >
+                                            完成直播
+                                        </Button>
+                                    </div>
                                 )}
                             </Card.Body>
                         </Card>

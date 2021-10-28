@@ -104,7 +104,11 @@ export function CategoriesFilter() {
                             className="category_items_container"
                             key={filterProduct.id}
                         >
-                            <Col xs={6} md={4}>
+                            <Col
+                                xs={6}
+                                md={4}
+                                className="category_img_container"
+                            >
                                 <Image
                                     key={filterProduct.id}
                                     src={`${process.env.REACT_APP_BACKEND_URL}/${filterProduct.product_image}`}
