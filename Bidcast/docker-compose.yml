@@ -20,8 +20,10 @@ services:
     db:
         image: "postgres:14"
         environment:
+            POSTGRES_USER: postgres
             POSTGRES_PASSWORD: postgres
             POSTGRES_DB: bidcast
+            POSTGRES_HOST: db
         ports:
             - "8432:5432"
         volumes:
