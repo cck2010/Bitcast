@@ -212,9 +212,11 @@ export function AccountDetails() {
                                     : "請登記 Telegram 帳號"}
                             </Card.Text>
                             <Card.Text>
+                                {/* <div className={"card_Description"}> */}
                                 {userInfo.description
                                     ? `「 ${userInfo.description} 」`
                                     : "「 自我介紹... 」"}
+                                {/* </div> */}
                             </Card.Text>
                         </Card.Body>
                     </Card>
