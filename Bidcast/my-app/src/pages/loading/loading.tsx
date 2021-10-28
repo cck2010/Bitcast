@@ -35,14 +35,14 @@ export function LoadingDefaultStyle() {
     const Loading = styled.div`
         width: 48px;
         height: 48px;
-        border: 5px solid #fff;
-        border-bottom-color: #000;
+        border: 5px solid #000;
+        border-bottom-color: #50f2a1;
         border-radius: 50%;
         display: inline-block;
         animation: ${rotation} 1s linear infinite;
     `;
     return (
-        <div className="App">
+        <div className="load-location">
             <Wrap>
                 <ResetCss />
                 <Loading />

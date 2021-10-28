@@ -12,6 +12,7 @@ import ToastDemo from "../login/alert";
 import React from "react";
 import { DatePickerIcon } from "./component/Fontawsome";
 import { LoadingDefaultStyle } from "../loading/loading";
+import path from "path";
 
 type editInput = {
     username?: string;
@@ -37,14 +38,6 @@ export function AccountDetails() {
 
     const dispatch = useDispatch();
 
-    const [showStatus, setShowStatus] = useState("loadingShown");
-
-    useEffect(() => {
-        setTimeout(() => {
-            setShowStatus("loadingHide");
-        }, 500);
-    }, [userInfo]);
-
     useEffect(() => {
         if (
             isAuthenticate &&
@@ -65,7 +58,13 @@ export function AccountDetails() {
     const [selectedImage, setSelectedImage] = useState<any>();
     const imageChange = (e: any) => {
         if (e.target.files && e.target.files.length > 0) {
-            setSelectedImage(e.target.files[0]);
+            if (
+                path.extname(e.target.files[0].name) == ".jpg" ||
+                path.extname(e.target.files[0].name) == ".jpeg" ||
+                path.extname(e.target.files[0].name) == ".png"
+            ) {
+                setSelectedImage(e.target.files[0]);
+            }
         }
     };
 
@@ -120,11 +119,21 @@ export function AccountDetails() {
 
         // dispatch(push("/profilePage/accountDetails"))
     };
-    return (
+
+    //loading Config Template
+    const [loadStatus, setLoadStatus] = useState("loadingShown");
+    useEffect(() => {
+        setTimeout(() => {
+            setLoadStatus("loadingHide");
+        }, 500);
+    }, [userInfo]);
+
+    return loadStatus == "loadingShown" ? (
+        <div className={loadStatus}>
+            <LoadingDefaultStyle />
+        </div>
+    ) : (
         <div>
-            <div className={showStatus}>
-                <LoadingDefaultStyle />
-            </div>
             {toast ? (
                 <CToaster
                     ref={toaster}
@@ -284,6 +293,7 @@ export function AccountDetails() {
                                 <div className={"profileImport"}>
                                     <input
                                         type="file"
+                                        accept="image/*"
                                         {...register("profilePic")}
                                         onChange={imageChange}
                                     />

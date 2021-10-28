@@ -27,33 +27,39 @@ export class ProductsService {
         console.log("liveImage", liveImage);
         console.log("userId", userId);
         console.log("buyerLink", buyerLink);
-
-        const res = await this.knex("live")
-            .insert({
-                user_id: userId,
-                title: liveTitle,
-                image: liveImage,
-                starting_time: startDate,
-                status_id: 1,
-                max_viewers: 0,
-                current_viewers: 0,
-                seller_link: sellerLink,
-                buyer_link: buyerLink,
-                is_live: false,
-                is_ended: false,
-                is_banned: false,
-                created_at: new Date(),
-                updated_at: new Date(),
-                description: description,
-            })
-            .returning("*");
-        // const resultData = await this.knex("live").select("*")
-        // console.log("resultData", resultData);
-        // console.log("Submitted live_id :", res);
-        return {
-            success: true,
-            data: { msg: "submit liveInfo success", res },
-        };
+        if(liveImage != undefined){
+            const res = await this.knex("live")
+                .insert({
+                    user_id: userId,
+                    title: liveTitle,
+                    image: liveImage,
+                    starting_time: startDate,
+                    status_id: 1,
+                    max_viewers: 0,
+                    current_viewers: 0,
+                    seller_link: sellerLink,
+                    buyer_link: buyerLink,
+                    is_live: false,
+                    is_ended: false,
+                    is_banned: false,
+                    created_at: new Date(),
+                    updated_at: new Date(),
+                    description: description,
+                })
+                .returning("*");
+            // const resultData = await this.knex("live").select("*")
+            // console.log("resultData", resultData);
+            // console.log("Submitted live_id :", res);
+            return {
+                success: true,
+                data: { msg: "submit liveInfo success", res },
+            };
+        }else{
+            return {
+                success: false,
+                data: { msg: "submit liveInfo fail due to data undefined" },
+            };
+        }
     };
     // submitBid = async (liveInput: Object, productInput: [Object]) => {
     //     console.table(liveInput);
@@ -247,34 +253,39 @@ export class ProductsService {
         userId: number
     ) => {
         console.log("index", productIndex);
-
-        // console.log(name,productImage, minimumBid,eachBidAmount,buyPrice,categoryId,description,liveId);
-        const res = await this.knex("products")
-            .insert({
-                product_name: name,
-                live_id: liveId,
-                seller_id: userId,
-                min_price: minimumBid,
-                current_price: minimumBid,
-                buy_price: buyPrice,
-                bid_increment: eachBidAmount,
-                category_id: categoryId,
-                product_image: productImage,
-                is_selected: productIndex == 0 ? true : false,
-                duration: 0,
-                created_by: username,
-                updated_by: username,
-                created_at: new Date(),
-                updated_at: new Date(),
-                description: description,
-            })
-            .returning("*");
-
-        // console.log("Submitted products :", res);
-        return {
-            success: true,
-            data: { msg: "submit product success", res },
-        };
+        if(productImage != undefined){
+            const res = await this.knex("products")
+                .insert({
+                    product_name: name,
+                    live_id: liveId,
+                    seller_id: userId,
+                    min_price: minimumBid,
+                    current_price: minimumBid,
+                    buy_price: buyPrice,
+                    bid_increment: eachBidAmount,
+                    category_id: categoryId,
+                    product_image: productImage,
+                    is_selected: productIndex == 0 ? true : false,
+                    duration: 0,
+                    created_by: username,
+                    updated_by: username,
+                    created_at: new Date(),
+                    updated_at: new Date(),
+                    description: description,
+                })
+                .returning("*");
+    
+            // console.log("Submitted products :", res);
+            return {
+                success: true,
+                data: { msg: "submit product success", res },
+            };
+        }else{
+            return {
+                success: false,
+                data: { msg: "submit product fail due to data undefined" },
+            };
+        }
     };
 
     telegramBidResult = async (productId: number) => {
