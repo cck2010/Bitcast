@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
-import { fetchSubscribe } from "../../redux/user/actions";
 import { RootState } from "../../store";
+import SubscribeButton from "../common/subscribeButton";
 
 interface LiveStreamHeaderProps {
     ws: Socket | null;
@@ -10,7 +10,6 @@ interface LiveStreamHeaderProps {
 
 function LiveStreamHeader(props: LiveStreamHeaderProps) {
     //Get States
-    const dispatch = useDispatch();
     const title = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.title
     );
@@ -29,6 +28,15 @@ function LiveStreamHeader(props: LiveStreamHeaderProps) {
     const liveId = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.id
     );
+    const userId = useSelector((state: RootState) => {
+        if (
+            typeof state.authState.user !== "string" &&
+            state.authState.user?.id
+        ) {
+            return state.authState.user?.id;
+        }
+        return 0;
+    });
     const [onlineUsers, setOnlineUsers] = useState<number>(0);
     const [timerId, setTimerId] = useState<number>(0);
     //Get States
@@ -64,16 +72,7 @@ function LiveStreamHeader(props: LiveStreamHeaderProps) {
                         <div className="title my-3">{title}</div>
                     </div>
                     <div className="col-2 d-flex align-items-center justify-content-end">
-                        <div className="subscribe">
-                            <button
-                                className="btn btn-danger"
-                                onClick={() => {
-                                    dispatch(fetchSubscribe(sellerId));
-                                }}
-                            >
-                                關注 <i className="fas fa-bell"></i>
-                            </button>
-                        </div>
+                        <SubscribeButton targetId={sellerId} userId={userId} />
                     </div>
                 </div>
                 <div className="userinfo d-flex align-items-center mb-4">

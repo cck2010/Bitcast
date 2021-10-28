@@ -6,9 +6,23 @@ import {
 } from "connected-react-router";
 import { createBrowserHistory } from "history";
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
-import { userReducer, UserState, AuthState, authReducer, FollowerState, FollowingState, FollowerReducer, FollowingReducer, } from "./redux/user/reducer";
+import {
+    userReducer,
+    UserState,
+    AuthState,
+    authReducer,
+    FollowerState,
+    FollowingState,
+    followerReducer,
+    followingReducer,
+} from "./redux/user/reducer";
 import thunk, { ThunkDispatch } from "redux-thunk";
-import { UserActions, AuthActions, FollowerActions, FollowingActions } from "./redux/user/actions";
+import {
+    UserActions,
+    AuthActions,
+    FollowerActions,
+    FollowingActions,
+} from "./redux/user/actions";
 import { createBidsReducer } from "./redux/createbid/reducer";
 import { productsReducer, ProductsState } from "./redux/products/reducer";
 import { liveStreamReducer, LiveStreamState } from "./redux/LiveStream/reducer";
@@ -16,13 +30,25 @@ import { LiveStreamActions } from "./redux/LiveStream/actions";
 import { ProductsActions } from "./redux/products/actions";
 import { CreateBids, createBidsActions } from "./redux/createbid/actions";
 import { ComingAuctionActions } from "./redux/homepage/action";
-import { comingAuctionReducer, ComingAuctionState } from "./redux/homepage/reducer";
+import {
+    comingAuctionReducer,
+    ComingAuctionState,
+} from "./redux/homepage/reducer";
 import { SearchProductsActions } from "./redux/searchResult/action";
-import { productSearchReducer, ProductSearchState } from "./redux/searchResult/reducer";
+import {
+    productSearchReducer,
+    ProductSearchState,
+} from "./redux/searchResult/reducer";
 import { LoadMyLiveProductsActions } from "./redux/myLiveProducts/action";
-import { myLiveProductsReducer, MyLiveProductsState } from "./redux/myLiveProducts/reducer";
+import {
+    myLiveProductsReducer,
+    MyLiveProductsState,
+} from "./redux/myLiveProducts/reducer";
 import { BroadcastingProductActions } from "./redux/broadcastingProducts/actions";
-import { broadcastingProductReducer, BroadcastProductState } from "./redux/broadcastingProducts/reducer";
+import {
+    broadcastingProductReducer,
+    BroadcastProductState,
+} from "./redux/broadcastingProducts/reducer";
 import { SidebarActions } from "./redux/Sidebar/actions";
 import { sidebarReducer, SidebarState } from "./redux/Sidebar/reducer";
 
@@ -41,7 +67,7 @@ export type RootAction =
     | SidebarActions
     | AuthActions
     | FollowerActions
-    | FollowingActions
+    | FollowingActions;
 
 export type RootThunkDispatch = ThunkDispatch<RootState, null, RootAction>;
 
@@ -57,9 +83,9 @@ export interface RootState {
     myLiveProduct: MyLiveProductsState;
     broadcastingProducts: BroadcastProductState;
     sideBar: SidebarState;
-    loadToken: AuthState
-    follower: FollowerState
-    following: FollowingState
+    loadToken: AuthState;
+    follower: FollowerState;
+    following: FollowingState;
 }
 
 const reducer = combineReducers<RootState>({
@@ -75,8 +101,8 @@ const reducer = combineReducers<RootState>({
     broadcastingProducts: broadcastingProductReducer,
     sideBar: sidebarReducer,
     loadToken: authReducer,
-    follower: FollowerReducer,
-    following: FollowingReducer,
+    follower: followerReducer,
+    following: followingReducer,
 });
 
 declare global {

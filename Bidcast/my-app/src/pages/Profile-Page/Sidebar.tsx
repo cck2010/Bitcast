@@ -56,16 +56,16 @@ export function Sidebar() {
                     <Menu iconShape="square">
                         <SubMenu title="拍賣資訊" icon={<FaList />}>
                             <MenuItem>
-                                已投得拍賣品
-                                <Link to="/profilePage/my-live-products" />
-                            </MenuItem>
-                            <MenuItem>
                                 我的直播拍賣
                                 <Link to="/profilePage/my-live" />
                             </MenuItem>
+                            <MenuItem>
+                                我的拍賣商品
+                                <Link to="/profilePage/my-live-products" />
+                            </MenuItem>
                         </SubMenu>
                         <MenuItem icon={<BsBroadcastPin />}>
-                            收藏的直播
+                            已投得商品
                         </MenuItem>
                         <SubMenu title="訂閱" icon={<FaRegHeart />}>
                             <MenuItem>

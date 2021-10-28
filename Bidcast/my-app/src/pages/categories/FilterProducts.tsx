@@ -15,6 +15,7 @@ import { RootState } from "../../store";
 import { useEffect, useState } from "react";
 import { fetchProductsForFilter } from "../../redux/searchResult/action";
 import { push } from "connected-react-router";
+import { Link } from "react-router-dom";
 
 export function FilterProducts() {
     const dispatch = useDispatch();
@@ -112,14 +113,23 @@ export function FilterProducts() {
                                 md={4}
                                 className="category_img_container"
                             >
-                                <Image
-                                    key={product.id}
-                                    src={`${process.env.REACT_APP_BACKEND_URL}/${product.product_image}`}
-                                    fluid
-                                />
+                                <Link
+                                    to={`/liveStreaming?room=${product.buyer_link}`}
+                                >
+                                    <Image
+                                        key={product.id}
+                                        src={`${process.env.REACT_APP_BACKEND_URL}/${product.product_image}`}
+                                        fluid
+                                    />
+                                </Link>
                             </Col>
                             <div className="description_container">
-                                <h3>{product.product_name}</h3>
+                                <Link
+                                    className="product_name_link"
+                                    to={`/liveStreaming?room=${product.buyer_link}`}
+                                >
+                                    <h3>{product.product_name}</h3>
+                                </Link>
                                 <h6>底價： {product.min_price}</h6>
                                 <h6>即買價： {product.buy_price}</h6>
                                 <h6>

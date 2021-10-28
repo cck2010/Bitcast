@@ -65,64 +65,102 @@ function LiveStreamControlPanel(props: LiveStreamControlPanelProps) {
                 <div
                     className={`col-12 d-flex d-col carousel position-relative`}
                 >
-                    <Carousel
-                        swipeAngle={false}
-                        items={1}
-                        ref={carousel}
-                        controls={false}
-                        nav={false}
-                    >
-                        {products.length !== 0 ? (
-                            products.map((product, ind) => (
-                                <div
-                                    key={product.id}
-                                    className={`carousel_card d-flex align-items-center justify-content-between`}
-                                    aria-label={`card${product.id}`}
-                                >
-                                    <img
+                    {products.length !== 0 ? (
+                        products.length > 1 ? (
+                            <Carousel
+                                swipeAngle={false}
+                                items={1}
+                                ref={carousel}
+                                controls={false}
+                                nav={false}
+                            >
+                                {products.map((product, ind) => (
+                                    <div
                                         key={product.id}
-                                        className={`carousel_img ms-3`}
-                                        src={product.productImage}
-                                        alt={`pic${product.id}`}
-                                    />
-                                    <div className="product_info mh-100 d-flex flex-column justify-content-center align-items-start">
-                                        <div className="product_name">
-                                            <i className="fas fa-gift"></i>{" "}
-                                            競價項目:
-                                            <br />
-                                            {product.productName}
+                                        className={`carousel_card d-flex align-items-center justify-content-between`}
+                                        aria-label={`card${product.id}`}
+                                    >
+                                        <img
+                                            key={product.id}
+                                            className={`carousel_img ms-3`}
+                                            src={product.productImage}
+                                            alt={`pic${product.id}`}
+                                        />
+                                        <div className="product_info mh-100 d-flex flex-column justify-content-center align-items-start">
+                                            <div className="product_name">
+                                                <i className="fas fa-gift"></i>{" "}
+                                                競價項目:
+                                                <br />
+                                                {product.productName}
+                                            </div>
+                                            <div className="product_price">
+                                                <i className="fas fa-chart-line"></i>{" "}
+                                                起標價:
+                                                <br />${product.minPrice}
+                                            </div>
                                         </div>
-                                        <div className="product_price">
-                                            <i className="fas fa-chart-line"></i>{" "}
-                                            起標價:
-                                            <br />${product.minPrice}
-                                        </div>
+                                        <LiveStreamDescription
+                                            description={
+                                                product.description
+                                                    ? product.description
+                                                    : ""
+                                            }
+                                        />
                                     </div>
-                                    <LiveStreamDescription
-                                        description={
-                                            product.description
-                                                ? product.description
-                                                : ""
-                                        }
-                                    />
-                                </div>
-                            ))
+                                ))}
+                            </Carousel>
                         ) : (
-                            <></>
-                        )}
-                    </Carousel>
-                    <button
-                        className="btn btn-secondary carousel_btn carousel_btn_left"
-                        onClick={() => goNextSlide("prev")}
-                    >
-                        <i className="fas fa-caret-left"></i>
-                    </button>
-                    <button
-                        className="btn btn-secondary carousel_btn carousel_btn_right"
-                        onClick={() => goNextSlide("next")}
-                    >
-                        <i className="fas fa-caret-right"></i>
-                    </button>
+                            <div
+                                className={`carousel_card w-100 d-flex align-items-center justify-content-between`}
+                                aria-label={`card${products[0].id}`}
+                            >
+                                <img
+                                    key={products[0].id}
+                                    className={`carousel_img ms-3`}
+                                    src={products[0].productImage}
+                                    alt={`pic${products[0].id}`}
+                                />
+                                <div className="product_info mh-100 d-flex flex-column justify-content-center align-items-start">
+                                    <div className="product_name">
+                                        <i className="fas fa-gift"></i>{" "}
+                                        競價項目:
+                                        <br />
+                                        {products[0].productName}
+                                    </div>
+                                    <div className="product_price">
+                                        <i className="fas fa-chart-line"></i>{" "}
+                                        起標價:
+                                        <br />${products[0].minPrice}
+                                    </div>
+                                </div>
+                                <LiveStreamDescription
+                                    description={
+                                        products[0].description
+                                            ? products[0].description
+                                            : ""
+                                    }
+                                />
+                            </div>
+                        )
+                    ) : (
+                        <></>
+                    )}
+                    {products.length > 1 && (
+                        <>
+                            <button
+                                className="btn btn-secondary carousel_btn carousel_btn_left"
+                                onClick={() => goNextSlide("prev")}
+                            >
+                                <i className="fas fa-caret-left"></i>
+                            </button>
+                            <button
+                                className="btn btn-secondary carousel_btn carousel_btn_right"
+                                onClick={() => goNextSlide("next")}
+                            >
+                                <i className="fas fa-caret-right"></i>
+                            </button>
+                        </>
+                    )}
                 </div>
             </div>
         </div>
