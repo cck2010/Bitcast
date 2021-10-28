@@ -4,7 +4,8 @@ import { ConnectedRouter, push } from 'connected-react-router';
 import { history,store } from '../../store';
 import { Provider } from "react-redux";
 import './Login.scss';
-import image from "./img2.jpg"
+import image1 from "./1.jpg"
+import image2 from "./img2.jpg"
 import { SignupForm } from "./Form/SignupForm";
 import { LoginForm } from "./Form/LoginForm";
 import { useDispatch } from "react-redux"
@@ -41,9 +42,7 @@ export function LoginPage() {
   const responseGoogle = async (response:any ) => {
     if(response.profileObj){
 console.log(response.profileObj);
-
     try {
-        
         const res = await axios.post<any>(`${process.env.REACT_APP_BACKEND_URL}/login/google`, {
           name:response.profileObj.name,
           email:response.profileObj.email,
@@ -58,9 +57,9 @@ console.log(response.profileObj);
           dispatch(checkPhoneNumber())
           // dispatch(checkUserPhoneNumber())?
           // dispatch((Toasts())):
-          dispatch(push('/'))
+          
         } else {
-          setError('email or password wrong')
+          setError('發生未知錯誤')
         }
       } catch (e: any) {
         if (e?.response.status === 401) {
@@ -93,9 +92,10 @@ console.log(response.profileObj);
               localStorage.setItem('token', res.data.token)
               dispatch(login(res.data.token))
               dispatch(loadToken(res.data.token))
+              dispatch(checkPhoneNumber())
               // dispatch(checkUserPhoneNumber())?
               // dispatch((PhoneNumberMessageBox())):
-              dispatch(push('/'))
+              
               
             } else {
               setError('email or password wrong')
@@ -113,11 +113,11 @@ console.log(response.profileObj);
 }
 
     function FbButton() {return <div className="flex-icon">
-      <span >
+      
 <div className="fab fa-facebook-square fa-lg rightMargin" />
 
 
-</span>
+
 <div>Login with Facebook</div>
 </div>;}
 
@@ -129,7 +129,18 @@ console.log(response.profileObj);
     <div className="fakeapp">
       
       <div className="appAside">
-        <img className='smallpic'  src={image} alt={image} />
+      <div className="vividworknav">
+  <img className='smallpic'  src={image2} alt={image2} />
+  <div className="work-text-content">
+    <p>歡迎來到Bidcast</p>
+  </div>
+</div>
+<div className="vividworknav">
+  <img className='smallpic'  src={image1} alt={image1} />
+  <div className="work-text-content">
+    <p>你可以在這裏享受即時拍賣和盡情消費的樂趣</p>
+  </div>
+</div>
       </div>
       
         <div className="appForm">

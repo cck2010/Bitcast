@@ -46,6 +46,8 @@ function App() {
     const { detected } = useAdBlockDetector();
     <div>AdBlocker Detected: {JSON.stringify(detected)}</div>;
 
+    const dummy = useSelector((state: RootState) => state.liveStream.dummy);
+
     return (
         <div className="App">
             {/* {} */}
@@ -67,7 +69,7 @@ function App() {
                         <Route path="/createBids">
                             <CreateBids />
                         </Route>
-                        <Route path="/liveStreaming">
+                        <Route path="/liveStreaming" key={dummy}>
                             <LiveStream />
                         </Route>
                         <Route path="/liveStreamingSeller">

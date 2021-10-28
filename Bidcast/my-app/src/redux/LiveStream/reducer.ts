@@ -31,6 +31,7 @@ const initialState: LiveStreamState = {
         id: 0,
         title: "Loading...",
         seller: "Loading...",
+        sellerId: 0,
         sellerImage: "defaultUser.png",
         currentViewers: 0,
         thumbnail: "",

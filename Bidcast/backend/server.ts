@@ -9,8 +9,8 @@ import { logger } from "./logger";
 import userRoutes from "./router/userRoutes";
 // import { dummyCounter, pageNotFound, requestLogger } from "./middlewares";
 import { env } from "./env";
-import { UserController } from "./controller/UserController";
-import { UserService } from "./service/UserService";
+import { UserController } from "./controller/userController";
+import { UserService } from "./service/userService";
 import { knex } from "./db";
 import cors from "cors";
 // import { isLoggedIn } from "./guard";
@@ -52,16 +52,16 @@ const io = new SocketIO(server, {
 setSocketIO(io);
 
 //Print path middleware
-// app.use(
-//     (
-//         req: express.Request,
-//         res: express.Response,
-//         next: express.NextFunction
-//     ) => {
-//         console.log(req.method, req.path);
-//         next();
-//     }
-// );
+app.use(
+    (
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) => {
+        console.log(req.method, req.path);
+        next();
+    }
+);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -86,7 +86,9 @@ export const comingAuctionController = new ComingAuctionController(
     new ComingAuctionService(knex)
 );
 export const myLiveController = new MyLiveController(new MyLiveService(knex));
-export const categoriesController = new CategoriesController(new CategoriesService(knex));
+export const categoriesController = new CategoriesController(
+    new CategoriesService(knex)
+);
 
 // app.use(requestLogger, dummyCounter);
 app.use(userRoutes);
