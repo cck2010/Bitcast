@@ -10,11 +10,7 @@ const bot = new Telegraf(TOKEN);
 // const botComposer = new Composer()
 
 bot.start((ctx: Context) => {
-    ctx.reply('你好，我係bidcast bot，請問有咩幫到你？\n 認証帳戶，請按：verify\n function2，請按：func2\n function3，請按：func3', Markup
-    .keyboard(['/Verify','/function2',"/function3"])
-    .oneTime()
-    .resize()
-  )
+    ctx.reply('你好，我係bidcast bot，請打開左下角Menu 選擇項目')
 });
 
 
@@ -70,7 +66,7 @@ bot.command('verify',(ctx) => {
     ctx.reply("請輸入電郵地址以確認 Telegram 帳戶", Markup.forceReply());
 });
 bot.command('how',(ctx) => {
-    ctx.reply("認証Bidcast的Telegram帳戶流程：\n\n  Step 1: 註冊成為bidcast會員\n  Step 2: 在手機telegram設置中，加入username\n  Step 3: 到更改帳戶資料頁面填上你的Telegram username(eg. @bidcast)\n  Step 4: 打開左下方Menu，選擇/verify\n  Step 5: 輸入你的bidcast電郵地址\n  Step 6: 看到成功確認信息後，回bidcast網頁的帳戶資料頁面，Telegram帳戶欄會變成「已確認」狀態");
+    ctx.reply("認証Bidcast的Telegram帳戶流程：\n\n  Step 1: 註冊成為bidcast會員\n  Step 2: 在手機telegram設置中，加入username\n  Step 3: 到更改帳戶資料頁面填上你的Telegram username(eg. @Bidcast_bot)\n  Step 4: 打開左下方Menu，選擇/verify\n  Step 5: 輸入你的bidcast電郵地址\n  Step 6: 看到成功確認信息後，回bidcast網頁的帳戶資料頁面，Telegram帳戶欄會變成「已確認」狀態");
 });
 
 bot.hears(/@?com/i,async (ctx)=>{

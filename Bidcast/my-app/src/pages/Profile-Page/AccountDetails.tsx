@@ -159,6 +159,15 @@ export function AccountDetails() {
     //loading Config Template
     const [loadStatus, setLoadStatus] = useState("loadingShown");
     useEffect(() => {
+        // if(userImg.search(
+        //     /(https:\/\/)|(http:\/\/)/i
+        // ) < 0
+        // ){
+        //     async function fetchPhoto(){
+        //         await fetch(userImg);
+        //     }
+
+        // }
         setTimeout(() => {
             setLoadStatus("loadingHide");
         }, 500);

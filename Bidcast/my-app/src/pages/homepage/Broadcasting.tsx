@@ -11,8 +11,9 @@ import { push } from "connected-react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { RWebShare } from "react-web-share";
 import { RootState } from "../../store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchBroadcastingProducts } from "../../redux/broadcastingProducts/actions";
+import { ProfileDetails } from "./ProfileDetails";
 
 const responsive = {
     desktop: {
@@ -37,10 +38,21 @@ export function Broadcasting() {
     const broadcastings = useSelector((state: RootState) =>
         Object.values(state.broadcastingProducts.broadcastingProduct)
     );
+    const userInfo = useSelector((state: RootState) =>
+        Object.values(state.user)
+    );
 
     useEffect(() => {
         dispatch(fetchBroadcastingProducts());
     }, [dispatch]);
+
+    // async function profilePreview(id: any) {
+    //     setModalShow(id);
+    //     console.log("auciton ID >>>>>>>>>>", id);
+    //     console.log("modalShow", modalShow);
+    // }
+
+    const [modalShow, setModalShow] = useState(-1);
 
     return (
         <div>
@@ -113,8 +125,28 @@ export function Broadcasting() {
                                         </span>
                                     </Card.Text>
                                     <Card.Text>
-                                        由{broadcasting.username}主辦
+                                        <div
+                                            key={broadcasting.id}
+                                            // onClick={() => {
+                                            //     profilePreview(broadcasting.id);
+                                            // }}
+                                            onClick={() =>
+                                                setModalShow(broadcasting.id)
+                                            }
+                                            className={"seller_name"}
+                                        >
+                                            由{broadcasting.username}主辦
+                                        </div>
                                     </Card.Text>
+                                    {modalShow === broadcasting.id && (
+                                        <ProfileDetails
+                                            show={broadcasting.id}
+                                            users={userInfo}
+                                            id={broadcasting.id}
+                                            onHide={() => setModalShow(-1)}
+                                        />
+                                    )}
+
                                     <div className="bid_share_container">
                                         <Button
                                             variant="outline-dark"
