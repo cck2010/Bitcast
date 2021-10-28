@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
-import { fetchSubscribe } from "../../redux/user/actions";
 import { RootState } from "../../store";
+import SubscribeButton from "../common/subscribeButton";
 
 interface LiveStreamHeaderProps {
     ws: Socket | null;
@@ -10,7 +10,6 @@ interface LiveStreamHeaderProps {
 
 function LiveStreamHeader(props: LiveStreamHeaderProps) {
     //Get States
-    const dispatch = useDispatch();
     const title = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.title
     );
@@ -29,9 +28,6 @@ function LiveStreamHeader(props: LiveStreamHeaderProps) {
     const liveId = useSelector(
         (state: RootState) => state.liveStream.liveStreamInfo.id
     );
-    const subscribeList = useSelector(
-        (state: RootState) => state.following.userId
-    );
     const userId = useSelector((state: RootState) => {
         if (
             typeof state.authState.user !== "string" &&
@@ -43,38 +39,7 @@ function LiveStreamHeader(props: LiveStreamHeaderProps) {
     });
     const [onlineUsers, setOnlineUsers] = useState<number>(0);
     const [timerId, setTimerId] = useState<number>(0);
-    const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
-    const [isSelf, setIsSelf] = useState<boolean>(false);
     //Get States
-
-    //Check Subscription
-    useEffect(() => {
-        dispatch(fetchSubscribe(true));
-    }, [dispatch]);
-    useEffect(() => {
-        let check = false;
-        for (let item of subscribeList) {
-            if (item === sellerId) {
-                check = true;
-            }
-        }
-        if (check) {
-            setIsSubscribed(true);
-        } else {
-            setIsSubscribed(false);
-        }
-    }, [subscribeList, sellerId]);
-    //Check Subscription
-
-    //Check Same Person
-    useEffect(() => {
-        if (sellerId === userId) {
-            setIsSelf(true);
-        } else {
-            setIsSelf(false);
-        }
-    }, [sellerId, userId]);
-    //Check Same Person
 
     //WebSocket Signal Handler
     useEffect(() => {
@@ -107,29 +72,7 @@ function LiveStreamHeader(props: LiveStreamHeaderProps) {
                         <div className="title my-3">{title}</div>
                     </div>
                     <div className="col-2 d-flex align-items-center justify-content-end">
-                        {!isSelf && (
-                            <div className="subscribe">
-                                <button
-                                    className={`subscribe_btn btn ${
-                                        isSubscribed
-                                            ? "btn-secondary"
-                                            : "btn-danger"
-                                    }`}
-                                    onClick={() => {
-                                        dispatch(
-                                            fetchSubscribe(false, sellerId)
-                                        );
-                                    }}
-                                >
-                                    {isSubscribed ? "已關注" : "關注"}{" "}
-                                    {isSubscribed ? (
-                                        <i className="fas fa-bell-slash"></i>
-                                    ) : (
-                                        <i className="fas fa-bell"></i>
-                                    )}
-                                </button>
-                            </div>
-                        )}
+                        <SubscribeButton targetId={sellerId} userId={userId} />
                     </div>
                 </div>
                 <div className="userinfo d-flex align-items-center mb-4">
