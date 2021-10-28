@@ -1,4 +1,4 @@
-import { Card, Col, Image, Row } from "react-bootstrap";
+import { Alert, Card, Col, Image, Row } from "react-bootstrap";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
@@ -24,19 +24,56 @@ type editInput = {
 };
 
 export function AccountDetails() {
+    const dispatch = useDispatch();
     //get user config
     const token = localStorage.getItem("token");
     const user = useSelector((state: RootState) => state.authState.user);
     const userInfo = JSON.parse(JSON.stringify(user));
     let userImg = userInfo.profile_pic;
-    const toaster = React.useRef() as React.MutableRefObject<HTMLInputElement>;
+    // const toaster = React.useRef() as React.MutableRefObject<HTMLInputElement>;
     const isAuthenticate = useSelector(
         (state: RootState) => state.user.isAuthenticate
     );
-    const [toast, setToast] = useState(false);
+    // const [toast, setToast] = useState(false);
     // console.log("userInfo", userInfo);
+    const [isToastExist, setIsToastExsist] = useState(false);
+    const [isAlertChecked, setIsAlertChecked] = useState(false);
+    const [toast, addToast] = useState<JSX.Element>(<></>);
+    const toaster = React.useRef(null);
+    const [alert, setAlert] = useState([]);
 
-    const dispatch = useDispatch();
+    function AlertListAppend() {
+        return (
+            <div>
+                <Alert className={"Alert_container"} color="info">
+                    Telegram 帳戶已完成認証，請重新載入頁面
+                </Alert>
+            </div>
+        );
+    }
+
+    useEffect(() => {
+        console.log("efwefgeg=", userInfo);
+        if (typeof userInfo === "object") {
+            if (
+                !isAlertChecked &&
+                isAuthenticate &&
+                userInfo &&
+                typeof userInfo !== "string" &&
+                userInfo !== undefined &&
+                userInfo!.phone_number === "11111111"
+            ) {
+                if (!isToastExist) {
+                    setIsAlertChecked(true);
+
+                    addToast(<ToastDemo />);
+                    setIsToastExsist(true);
+                    // console.log('efwefgeg=',isAuthenticate)
+                    console.log("123=", userInfo);
+                }
+            }
+        }
+    }, [isAlertChecked, isAuthenticate, userInfo, isToastExist]);
 
     const { register, handleSubmit, reset } = useForm<editInput>();
 
@@ -137,7 +174,7 @@ export function AccountDetails() {
                 <CToaster
                     ref={toaster}
                     push={<ToastDemo />}
-                    placement="middle-end"
+                    placement="bottom-end"
                 />
             ) : (
                 console.log("not11111111")
