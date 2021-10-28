@@ -9,3 +9,5 @@ https://imgflip.com/i/5ru98i
 
 turn off ad block
 https://imgflip.com/i/5ru9jw
+
+lsof -i :<port>
