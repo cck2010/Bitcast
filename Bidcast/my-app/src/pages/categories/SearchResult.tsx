@@ -9,15 +9,26 @@ import {
 import "./CategoryResult.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSlidersH } from "@fortawesome/free-solid-svg-icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { fetchProductsForFilter } from "../../redux/searchResult/action";
+import { push } from "connected-react-router";
 
 export function SearchResults() {
     const searchingResults = useSelector(
         (state: RootState) => state.searchProduct.productList
     );
+
+    const dispatch = useDispatch();
+
+    const [orderCommand, setOrderCommand] = useState(" ");
+
+    useEffect(() => {
+        dispatch(fetchProductsForFilter(orderCommand));
+    }, [dispatch, orderCommand]);
 
     return (
         <div className="category_page">
@@ -38,16 +49,52 @@ export function SearchResults() {
                         title="拍賣日期"
                         id="bg-nested-dropdown"
                     >
-                        <Dropdown.Item eventKey="1">由新至舊</Dropdown.Item>
-                        <Dropdown.Item eventKey="2">由舊至新</Dropdown.Item>
+                        <Dropdown.Item
+                            eventKey="1"
+                            onClick={() => {
+                                setOrderCommand("DateNewToOld");
+                                dispatch(
+                                    push(`/filteredProducts?DateNewToOld`)
+                                );
+                            }}
+                        >
+                            由新至舊
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                            eventKey="2"
+                            onClick={() => {
+                                setOrderCommand("DateOldToNew");
+                                dispatch(
+                                    push(`/filteredProducts?DateOldToNew`)
+                                );
+                            }}
+                        >
+                            由舊至新
+                        </Dropdown.Item>
                     </DropdownButton>
                     <DropdownButton
                         as={ButtonGroup}
                         title="底價"
                         id="bg-nested-dropdown"
                     >
-                        <Dropdown.Item eventKey="1">由高至低</Dropdown.Item>
-                        <Dropdown.Item eventKey="2">由低至高</Dropdown.Item>
+                        <Dropdown.Item
+                            eventKey="1"
+                            onClick={() => {
+                                setOrderCommand("PriceH2L");
+                                dispatch(push(`/filteredProducts?PriceH2L`));
+                            }}
+                        >
+                            由高至低
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                            eventKey="2"
+                            onClick={() => {
+                                setOrderCommand("PriceL2H");
+                                dispatch(push(`/filteredProducts?PriceL2H`));
+                            }}
+                        >
+                            由低至高
+                        </Dropdown.Item>
                     </DropdownButton>
                 </ButtonGroup>
                 <hr />
