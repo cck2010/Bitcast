@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { fetchMyLiveProducts } from "../../redux/myLiveProducts/action";
 import moment from "moment";
 
-export function MyLiveProducts() {
+export function MyLive() {
     const dispatch = useDispatch();
 
     const liveProducts = useSelector((state: RootState) =>

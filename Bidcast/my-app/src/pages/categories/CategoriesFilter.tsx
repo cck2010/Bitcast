@@ -15,6 +15,7 @@ import { RootState } from "../../store";
 import { useEffect, useState } from "react";
 import { fetchProductsForFilter } from "../../redux/searchResult/action";
 import { push } from "connected-react-router";
+import { Link } from "react-router-dom";
 
 export function CategoriesFilter() {
     const filterProducts = useSelector(
@@ -109,14 +110,23 @@ export function CategoriesFilter() {
                                 md={4}
                                 className="category_img_container"
                             >
-                                <Image
-                                    key={filterProduct.id}
-                                    src={`${process.env.REACT_APP_BACKEND_URL}/${filterProduct.product_image}`}
-                                    fluid
-                                />
+                                <Link
+                                    to={`/liveStreaming?room=${filterProduct.buyer_link}`}
+                                >
+                                    <Image
+                                        key={filterProduct.id}
+                                        src={`${process.env.REACT_APP_BACKEND_URL}/${filterProduct.product_image}`}
+                                        fluid
+                                    />
+                                </Link>
                             </Col>
                             <div className="description_container">
-                                <h3>{filterProduct.product_name}</h3>
+                                <Link
+                                    className="product_name_link"
+                                    to={`/liveStreaming?room=${filterProduct.buyer_link}`}
+                                >
+                                    <h3>{filterProduct.product_name}</h3>
+                                </Link>
                                 <h6>底價： {filterProduct.min_price}</h6>
                                 <h6>即買價： {filterProduct.buy_price}</h6>
                                 <h6>

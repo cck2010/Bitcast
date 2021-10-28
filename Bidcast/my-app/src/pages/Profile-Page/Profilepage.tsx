@@ -3,7 +3,7 @@ import "./Profilepage.scss";
 import { AccountDetails } from "./AccountDetails";
 import { Following } from "./Following";
 import { Route, Switch } from "react-router-dom";
-import { MyLiveProducts } from "./MyLiveProducts";
+import { MyLive } from "./MyLiveProducts";
 import { MyBidHistory } from "./MyBidHistory";
 
 // import { useState } from "react";
@@ -20,11 +20,11 @@ export function ProfilePage() {
                 <Route path="/profilePage/accountDetails">
                     <AccountDetails />
                 </Route>
-                <Route path="/profilePage/my-live">
-                    <MyLiveProducts />
-                </Route>
                 <Route path="/profilePage/my-live-products">
                     <MyBidHistory />
+                </Route>
+                <Route path="/profilePage/my-live">
+                    <MyLive />
                 </Route>
             </Switch>
         </div>

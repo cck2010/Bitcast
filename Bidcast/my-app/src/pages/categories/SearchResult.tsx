@@ -12,6 +12,7 @@ import { faSlidersH } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 export function SearchResults() {
     const searchingResults = useSelector(
@@ -57,14 +58,23 @@ export function SearchResults() {
                         key={searchingResult.id}
                     >
                         <Col xs={6} md={4} className="category_img_container">
-                            <Image
-                                key={searchingResult.id}
-                                src={`${process.env.REACT_APP_BACKEND_URL}/${searchingResult.product_image}`}
-                                fluid
-                            />
+                            <Link
+                                to={`/liveStreaming?room=${searchingResult.buyer_link}`}
+                            >
+                                <Image
+                                    key={searchingResult.id}
+                                    src={`${process.env.REACT_APP_BACKEND_URL}/${searchingResult.product_image}`}
+                                    fluid
+                                />
+                            </Link>
                         </Col>
                         <div className="description_container">
-                            <h3>{searchingResult.product_name}</h3>
+                            <Link
+                                className="product_name_link"
+                                to={`/liveStreaming?room=${searchingResult.buyer_link}`}
+                            >
+                                <h3>{searchingResult.product_name}</h3>
+                            </Link>
                             <h6>底價： {searchingResult.min_price}</h6>
                             <h6>即買價： {searchingResult.buy_price}</h6>
                             <h6>

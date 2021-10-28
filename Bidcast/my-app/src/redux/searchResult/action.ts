@@ -9,6 +9,7 @@ export interface SearchProduct {
     username: string;
     min_price: number;
     starting_time: Date;
+    buyer_link: string;
 }
 
 export interface CategoriesFilter {
@@ -18,6 +19,7 @@ export interface CategoriesFilter {
     product_image: string;
     description: string;
     username: string;
+    buyer_link: string;
     min_price: number;
     category: string;
     starting_time: Date;
@@ -32,6 +34,7 @@ export interface ProductFilter {
     username: string;
     min_price: number;
     starting_time: Date;
+    buyer_link: string;
 }
 
 //load product search result
