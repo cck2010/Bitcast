@@ -112,7 +112,6 @@ export function ComingAuction() {
 
                                     {modalShow === auction.id && (
                                         <ProductDetails
-                                            // key={auction.id}
                                             show={auction.id}
                                             lives={auctions}
                                             id={auction.id}

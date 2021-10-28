@@ -56,7 +56,7 @@ export function SearchResults() {
                         className="category_items_container"
                         key={searchingResult.id}
                     >
-                        <Col xs={6} md={4}>
+                        <Col xs={6} md={4} className="category_img_container">
                             <Image
                                 key={searchingResult.id}
                                 src={`${process.env.REACT_APP_BACKEND_URL}/${searchingResult.product_image}`}

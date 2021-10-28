@@ -45,6 +45,15 @@ export function HomePageNavbar() {
         }
         return "360_F_391192211_2w5pQpFV1aozYQhcIw3FqA35vuTxJKrB.jpg";
     });
+    const phoneNumber = useSelector((state: RootState) => {
+        if (
+            typeof state.authState.user !== "string" &&
+            state.authState.user?.phone_number
+        ) {
+            return state.authState.user?.phone_number;
+        }
+        return "";
+    });
 
     useEffect(() => {
         dispatch(checkCurrentUser());
@@ -134,7 +143,15 @@ export function HomePageNavbar() {
                                 </Link>
                             </OverlayTrigger>
                         ) : (
-                            <Link to="/createBids" className="nav_link">
+                            <Link
+                                to={
+                                    phoneNumber == "" ||
+                                    phoneNumber == "11111111"
+                                        ? "/profilePage/accountDetails"
+                                        : "/createBids"
+                                }
+                                className="nav_link"
+                            >
                                 舉辦拍賣
                             </Link>
                         )}

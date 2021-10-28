@@ -10,24 +10,23 @@ import { MyBidHistory } from "./MyBidHistory";
 // import { Col, Container, Row } from "react-bootstrap";
 
 export function ProfilePage() {
-  
-  return (
-    <div className="profile_page">
-      <Sidebar />
-      <Switch>
-        <Route path="/profilePage/following">
-          <Following />
-        </Route>
-        <Route path="/profilePage/accountDetails">
-          <AccountDetails />
-        </Route>
-        <Route path="/profilePage/my-live-products">
-          <MyLiveProducts />
-        </Route>
-        <Route path="/profilePage/my-bids">
-          <MyBidHistory />
-        </Route>
-      </Switch>
-    </div>
-  );
+    return (
+        <div className="profile_page">
+            <Sidebar />
+            <Switch>
+                <Route path="/profilePage/following">
+                    <Following />
+                </Route>
+                <Route path="/profilePage/accountDetails">
+                    <AccountDetails />
+                </Route>
+                <Route path="/profilePage/my-live">
+                    <MyLiveProducts />
+                </Route>
+                <Route path="/profilePage/my-live-products">
+                    <MyBidHistory />
+                </Route>
+            </Switch>
+        </div>
+    );
 }
