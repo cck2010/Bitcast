@@ -1,5 +1,6 @@
 import { Knex } from "knex";
 import { LiveStreamProduct } from "../controller/liveStreamController";
+import { env } from "../env";
 
 export class LiveStreamService {
     constructor(private knex: Knex) {}
@@ -118,7 +119,8 @@ export class LiveStreamService {
             product["currentPrice"] = productResult.current_price;
             product["buyPrice"] = productResult.buy_price;
             product["bidIncrement"] = productResult.bid_increment;
-            product["productImage"] = productResult.product_image;
+            product["productImage"] =
+                env.REACT_APP_BACKEND_URL + "/" + productResult.product_image;
             product["isSelected"] = productResult.is_selected;
             product["duration"] = productResult.duration;
             product["countdownEndTime"] = productResult.countdown_end_time;
