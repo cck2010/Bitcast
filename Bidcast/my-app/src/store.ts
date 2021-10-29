@@ -49,8 +49,8 @@ import {
     broadcastingProductReducer,
     BroadcastProductState,
 } from "./redux/broadcastingProducts/reducer";
-import { SidebarActions } from "./redux/Sidebar/actions";
-import { sidebarReducer, SidebarState } from "./redux/Sidebar/reducer";
+import { UtilityActions } from "./redux/utility/actions";
+import { utilityReducer, UtilityState } from "./redux/utility/reducer";
 
 export const history = createBrowserHistory();
 
@@ -64,7 +64,7 @@ export type RootAction =
     | SearchProductsActions
     | LoadMyLiveProductsActions
     | BroadcastingProductActions
-    | SidebarActions
+    | UtilityActions
     | AuthActions
     | FollowerActions
     | FollowingActions;
@@ -82,7 +82,7 @@ export interface RootState {
     searchProduct: ProductSearchState;
     myLiveProduct: MyLiveProductsState;
     broadcastingProducts: BroadcastProductState;
-    sideBar: SidebarState;
+    utility: UtilityState;
     loadToken: AuthState;
     follower: FollowerState;
     following: FollowingState;
@@ -99,7 +99,7 @@ const reducer = combineReducers<RootState>({
     searchProduct: productSearchReducer,
     myLiveProduct: myLiveProductsReducer,
     broadcastingProducts: broadcastingProductReducer,
-    sideBar: sidebarReducer,
+    utility: utilityReducer,
     loadToken: authReducer,
     follower: followerReducer,
     following: followingReducer,
