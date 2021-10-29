@@ -34,9 +34,15 @@ function App() {
         (state: RootState) => state.utility.menuCollapse
     );
     const appRef = useRef<HTMLDivElement>(null);
+    const [navbarRef, setNavbarRef] = useState<HTMLDivElement>();
+
     useEffect(() => {
         const closeMenu = (e: MouseEvent) => {
-            if (!menuCollapse && e.clientY > 374) {
+            if (
+                !menuCollapse &&
+                navbarRef &&
+                e.clientY > navbarRef.getBoundingClientRect().height
+            ) {
                 dispatch(menuIconClick(menuCollapse, true));
             }
         };
@@ -49,7 +55,7 @@ function App() {
                 }
             };
         }
-    }, [dispatch, menuCollapse]);
+    }, [dispatch, menuCollapse, navbarRef]);
 
     // const history = useHistory();
     // const toaster = React.useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -78,7 +84,7 @@ function App() {
                 </div>
             ) : (
                 <>
-                    <HomePageNavbar />
+                    <HomePageNavbar setNavbarRef={setNavbarRef} />
                     {/* <LiveStream /> */}
                     {/* <CreateBids /> */}
 

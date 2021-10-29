@@ -23,7 +23,13 @@ import {
 import { fetchCategories } from "../../redux/products/actions";
 import { menuIconClick, sidebarClick } from "../../redux/utility/actions";
 
-export function HomePageNavbar() {
+interface NavbarProps {
+    setNavbarRef: React.Dispatch<
+        React.SetStateAction<HTMLDivElement | undefined>
+    >;
+}
+
+export const HomePageNavbar = (props: NavbarProps) => {
     // const [show, setShow] = useState(false);
     // const showDropdown = () => {
     //   setShow(!show);
@@ -65,9 +71,8 @@ export function HomePageNavbar() {
     );
     const menuRef = useRef<HTMLDivElement>(null);
     const menuToggle = useRef<HTMLButtonElement>(null);
-    useEffect(() => {
-        console.log("menu state: ", menuRef);
-    }, [sidebarCollapse]);
+    const divRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {}, [sidebarCollapse]);
 
     useEffect(() => {
         dispatch(checkCurrentUser());
@@ -110,139 +115,149 @@ export function HomePageNavbar() {
             menuToggle.current.click();
         }
     }, [isClicking]);
-    return (
-        <div>
-            <Navbar collapseOnSelect expand="md" className="navbar py-3">
-                <Link to="/" className="nav_link ms-3">
-                    <img
-                        alt="bidcast_logo"
-                        src={bidcast_logo}
-                        height="40"
-                        className="d-inline-block align-top"
-                    />
-                </Link>
-                <Navbar.Toggle
-                    aria-controls="responsive-navbar-nav"
-                    onClick={menuIconOnclickHandler}
-                    ref={menuToggle}
-                />
-                <Navbar.Collapse
-                    id="responsive-navbar-nav"
-                    className=" mt-md-0 mt-3"
-                    ref={menuRef}
-                >
-                    <Nav className="me-auto navbar_buttons">
-                        <FormGroup>
-                            <Input
-                                type="search"
-                                name="search"
-                                id="exampleSearch"
-                                placeholder="搜尋..."
-                                onChange={(event) => {
-                                    setSearchInput(event.target.value);
-                                }}
-                                onKeyPress={(event) => {
-                                    if (event.key === "Enter") {
-                                        event.preventDefault();
-                                        dispatch(
-                                            push(
-                                                `/searchResult?SearchingKeywords=${searchInput}`
-                                            )
-                                        );
-                                    }
-                                }}
-                            />
-                        </FormGroup>
-                        <Link to="/" className="nav_link">
-                            主頁
-                        </Link>
 
-                        {!isAuthenticate ? (
-                            <OverlayTrigger
-                                trigger="click"
-                                placement="bottom"
-                                overlay={popover}
-                            >
-                                <Link to="#" className="nav_link">
+    useEffect(() => {
+        if (divRef && divRef.current) {
+            props.setNavbarRef(divRef.current);
+        }
+    }, [divRef, props]);
+    return (
+        <div ref={divRef}>
+            {divRef && (
+                <Navbar collapseOnSelect expand="md" className="navbar py-3">
+                    <Link to="/" className="nav_link ms-3">
+                        <img
+                            alt="bidcast_logo"
+                            src={bidcast_logo}
+                            height="40"
+                            className="d-inline-block align-top"
+                        />
+                    </Link>
+                    <Navbar.Toggle
+                        aria-controls="responsive-navbar-nav"
+                        onClick={menuIconOnclickHandler}
+                        ref={menuToggle}
+                    />
+                    <Navbar.Collapse
+                        id="responsive-navbar-nav"
+                        className=" mt-md-0 mt-3"
+                        ref={menuRef}
+                    >
+                        <Nav className="me-auto navbar_buttons">
+                            <FormGroup>
+                                <Input
+                                    type="search"
+                                    name="search"
+                                    id="exampleSearch"
+                                    placeholder="搜尋..."
+                                    onChange={(event) => {
+                                        setSearchInput(event.target.value);
+                                    }}
+                                    onKeyPress={(event) => {
+                                        if (event.key === "Enter") {
+                                            event.preventDefault();
+                                            dispatch(
+                                                push(
+                                                    `/searchResult?SearchingKeywords=${searchInput}`
+                                                )
+                                            );
+                                        }
+                                    }}
+                                />
+                            </FormGroup>
+                            <Link to="/" className="nav_link">
+                                主頁
+                            </Link>
+
+                            {!isAuthenticate ? (
+                                <OverlayTrigger
+                                    trigger="click"
+                                    placement="bottom"
+                                    overlay={popover}
+                                >
+                                    <Link to="#" className="nav_link">
+                                        舉辦拍賣
+                                    </Link>
+                                </OverlayTrigger>
+                            ) : (
+                                <Link
+                                    to={
+                                        phoneNumber === "" ||
+                                        phoneNumber === "11111111"
+                                            ? "/profilePage/accountDetails"
+                                            : "/createBids"
+                                    }
+                                    className="nav_link"
+                                >
                                     舉辦拍賣
                                 </Link>
-                            </OverlayTrigger>
-                        ) : (
-                            <Link
-                                to={
-                                    phoneNumber === "" ||
-                                    phoneNumber === "11111111"
-                                        ? "/profilePage/accountDetails"
-                                        : "/createBids"
-                                }
-                                className="nav_link"
-                            >
-                                舉辦拍賣
-                            </Link>
-                        )}
-
-                        <NavDropdown
-                            title="商品分類"
-                            id="collasible-nav-dropdown"
-                            className="dropdown"
-                            // show={show}
-                            // onMouseEnter={showDropdown}
-                            // onMouseLeave={hideDropdown}
-                        >
-                            {categories.map((category) => (
-                                <Link
-                                    to={`/categoryResult?category=${category.category}`}
-                                    className="dropdown_items"
-                                    key={category.id}
-                                    onClick={() => setCategoryId(category.id)}
-                                >
-                                    {category.category}
-                                </Link>
-                            ))}
-                        </NavDropdown>
-                        {!isAuthenticate ? (
-                            <Link to="/loginPage" className="nav_link">
-                                登入 ／ 註冊
-                            </Link>
-                        ) : (
-                            <Link
-                                to="#"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    dispatch(logoutThunk());
-                                    dispatch(push("/"));
-                                }}
-                                className="nav_link"
-                            >
-                                登出
-                            </Link>
-                        )}
-                        <Link
-                            to="/profilePage/accountDetails"
-                            className="nav_link mb-md-0 mb-3 me-0 me-md-3"
-                        >
-                            {isAuthenticate && profilePic && (
-                                <img
-                                    alt="profile_pic"
-                                    src={`${
-                                        profilePic.search(
-                                            /(https:\/\/)|(http:\/\/)/i
-                                        ) < 0
-                                            ? process.env
-                                                  .REACT_APP_BACKEND_URL +
-                                              "/" +
-                                              profilePic
-                                            : profilePic
-                                    }`}
-                                    width="40"
-                                    height="40"
-                                    className="rounded-circle"
-                                />
                             )}
-                        </Link>
-                    </Nav>
-                </Navbar.Collapse>
-            </Navbar>
+
+                            <NavDropdown
+                                title="商品分類"
+                                id="collasible-nav-dropdown"
+                                className="dropdown"
+                                // show={show}
+                                // onMouseEnter={showDropdown}
+                                // onMouseLeave={hideDropdown}
+                            >
+                                {categories.map((category) => (
+                                    <Link
+                                        to={`/categoryResult?category=${category.category}`}
+                                        className="dropdown_items"
+                                        key={category.id}
+                                        onClick={() =>
+                                            setCategoryId(category.id)
+                                        }
+                                    >
+                                        {category.category}
+                                    </Link>
+                                ))}
+                            </NavDropdown>
+                            {!isAuthenticate ? (
+                                <Link to="/loginPage" className="nav_link">
+                                    登入 ／ 註冊
+                                </Link>
+                            ) : (
+                                <Link
+                                    to="#"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        dispatch(logoutThunk());
+                                        dispatch(push("/"));
+                                    }}
+                                    className="nav_link"
+                                >
+                                    登出
+                                </Link>
+                            )}
+                            <Link
+                                to="/profilePage/accountDetails"
+                                className="nav_link mb-md-0 mb-3 me-0 me-md-3"
+                            >
+                                {isAuthenticate && profilePic && (
+                                    <img
+                                        alt="profile_pic"
+                                        src={`${
+                                            profilePic.search(
+                                                /(https:\/\/)|(http:\/\/)/i
+                                            ) < 0
+                                                ? process.env
+                                                      .REACT_APP_BACKEND_URL +
+                                                  "/" +
+                                                  profilePic
+                                                : profilePic
+                                        }`}
+                                        width="40"
+                                        height="40"
+                                        className="rounded-circle"
+                                    />
+                                )}
+                            </Link>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Navbar>
+            )}
         </div>
     );
-}
+};
