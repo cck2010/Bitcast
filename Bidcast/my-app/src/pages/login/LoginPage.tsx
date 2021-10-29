@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import './Login.scss';
 import image1 from "./1.jpg"
 import image2 from "./img2.jpg"
+import image3 from "./img1.jpeg"
 import { SignupForm } from "./Form/SignupForm";
 import { LoginForm } from "./Form/LoginForm";
 import { useDispatch } from "react-redux"
@@ -137,6 +138,12 @@ console.log(response.profileObj);
 </div>
 <div className="vividworknav2">
   <img className='smallpic'  src={image1} alt={image1} />
+  <div className="work-text-content">
+    <p>你可以在這裏享受即時拍賣和盡情消費的樂趣</p>
+  </div>
+</div>
+<div className="vividworknav3">
+  <img className='smallpic'  src={image3} alt={image3} />
   <div className="work-text-content">
     <p>你可以在這裏享受即時拍賣和盡情消費的樂趣</p>
   </div>
