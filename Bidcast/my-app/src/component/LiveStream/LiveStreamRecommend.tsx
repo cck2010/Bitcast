@@ -53,7 +53,7 @@ function LiveStreamRecommend() {
                         window.history.pushState(
                             null,
                             "",
-                            `https://localhost:3000/liveStreaming?room=${item.buyer_link}`
+                            `https://bidcast.online/liveStreaming?room=${item.buyer_link}`
                         );
                         dispatch(changeDummy());
                     }}
