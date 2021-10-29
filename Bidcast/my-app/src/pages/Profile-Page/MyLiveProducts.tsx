@@ -1,13 +1,63 @@
-import { Button, Card, Container, Image } from "react-bootstrap";
+import { useEffect } from "react";
+import { Accordion, Container, Table } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMyLiveProducts } from "../../redux/myLiveProducts/action";
+import { RootState } from "../../store";
+import { MyLiveProducts } from "../../redux/myLiveProducts/action";
 
-export function MyLiveProducts() {
+export function MyLiveProductsComponent() {
+    const myLiveProducts = useSelector((state: RootState) =>
+        Object.values(state.myLive.myLiveProducts)
+    );
+    let myLiveProductsSorted: MyLiveProducts[] = myLiveProducts.sort(
+        (item1, item2) => item2.id - item1.id
+    );
+    let myLiveProductsArr: MyLiveProducts[][] = [];
+    let ind = 0;
+
+    while (ind < myLiveProductsSorted.length) {
+        if (myLiveProductsArr.length === 0) {
+            myLiveProductsArr.push([]);
+            if (myLiveProductsSorted[ind] !== undefined) {
+                myLiveProductsArr[0].push(myLiveProductsSorted[ind]);
+                ind++;
+            }
+        } else {
+            if (
+                myLiveProductsArr[myLiveProductsArr.length - 1][0].id &&
+                myLiveProductsSorted[ind].id ===
+                    myLiveProductsArr[myLiveProductsArr.length - 1][0].id
+            ) {
+                myLiveProductsArr[myLiveProductsArr.length - 1].push(
+                    myLiveProductsSorted[ind]
+                );
+                ind++;
+            } else {
+                myLiveProductsArr.push([]);
+                myLiveProductsArr[myLiveProductsArr.length - 1].push(
+                    myLiveProductsSorted[ind]
+                );
+                ind++;
+            }
+        }
+    }
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchMyLiveProducts());
+    }, [dispatch]);
+
+    const user = useSelector((state: RootState) => state.authState.user);
+    const userInfo = JSON.parse(JSON.stringify(user));
+
     return (
         <div>
             <Container>
-                <h2 className="pt-3">已投得的商品</h2>
+                <h2 className="pt-3">我拍賣的商品</h2>
             </Container>
             <Container className="my_live_container pt-3">
-                <Card
+                {/* <Card
                     className="my_live_product_card_body"
                     style={{ width: "16rem" }}
                 >
@@ -44,7 +94,78 @@ export function MyLiveProducts() {
                             拍賣結束
                         </Button>
                     </Card.Body>
-                </Card>
+                </Card> */}
+
+                <Accordion defaultActiveKey="0" flush>
+                    {myLiveProductsArr.map(
+                        (myLiveProductArr, index) =>
+                            myLiveProductArr[0].seller_id === userInfo.id && (
+                                <Accordion.Item
+                                    eventKey={`${index}`}
+                                    key={myLiveProductArr[0].id}
+                                >
+                                    <Accordion.Header>
+                                        直播名稱： {myLiveProductArr[0].title}
+                                    </Accordion.Header>
+                                    <Accordion.Body>
+                                        <Table responsive="md">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>商品名稱</th>
+                                                    <th>底價</th>
+                                                    <th>即買價</th>
+                                                    <th>每次叫價</th>
+                                                    <th>拍賣成功／尚未賣出</th>
+                                                </tr>
+                                            </thead>
+                                            {myLiveProductArr.map(
+                                                (product, index) => (
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>{`${
+                                                                index + 1
+                                                            }`}</td>
+                                                            <td>
+                                                                {
+                                                                    product.product_name
+                                                                }
+                                                            </td>
+                                                            <td>
+                                                                {
+                                                                    product.min_price
+                                                                }
+                                                            </td>
+                                                            <td>
+                                                                {
+                                                                    product.buy_price
+                                                                }
+                                                            </td>
+                                                            <td>
+                                                                {
+                                                                    product.bid_increment
+                                                                }
+                                                            </td>
+                                                            {product.buyer_id ===
+                                                            null ? (
+                                                                <td>
+                                                                    尚未賣出
+                                                                </td>
+                                                            ) : (
+                                                                <td>
+                                                                    拍賣成功
+                                                                </td>
+                                                            )}
+                                                        </tr>
+                                                    </tbody>
+                                                )
+                                            )}
+                                        </Table>
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                            )
+                    )}
+                </Accordion>
             </Container>
         </div>
     );

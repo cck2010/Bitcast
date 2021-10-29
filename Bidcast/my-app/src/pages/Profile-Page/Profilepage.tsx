@@ -4,7 +4,7 @@ import { AccountDetails } from "./AccountDetails";
 import { Following } from "./Following";
 import { Route, Switch } from "react-router-dom";
 import { MyLive } from "./MyLive";
-import { MyLiveProducts } from "./MyLiveProducts";
+import { MyLiveProductsComponent } from "./MyLiveProducts";
 
 // import { useState } from "react";
 // import { Col, Container, Row } from "react-bootstrap";
@@ -21,7 +21,7 @@ export function ProfilePage() {
                     <AccountDetails />
                 </Route>
                 <Route path="/profilePage/my-live-products">
-                    <MyLiveProducts />
+                    <MyLiveProductsComponent />
                 </Route>
                 <Route path="/profilePage/my-live">
                     <MyLive />

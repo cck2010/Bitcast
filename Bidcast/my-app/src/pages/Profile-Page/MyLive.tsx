@@ -3,21 +3,21 @@ import { push } from "connected-react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { useEffect } from "react";
-import { fetchMyLiveProducts } from "../../redux/myLiveProducts/action";
+import { fetchMyLive } from "../../redux/myLiveProducts/action";
 import moment from "moment";
 
 export function MyLive() {
     const dispatch = useDispatch();
 
-    const liveProducts = useSelector((state: RootState) =>
-        Object.values(state.myLiveProduct.myLiveProducts)
+    const lives = useSelector((state: RootState) =>
+        Object.values(state.myLive.myLive)
     );
 
     const user = useSelector((state: RootState) => state.authState.user);
     const userInfo = JSON.parse(JSON.stringify(user));
 
     useEffect(() => {
-        dispatch(fetchMyLiveProducts());
+        dispatch(fetchMyLive());
     }, [dispatch]);
 
     return (
@@ -26,30 +26,30 @@ export function MyLive() {
                 <h2 className="pt-3">我的直播</h2>
             </Container>
             <Container className="my_live_container pt-3">
-                {liveProducts.map((liveProduct) =>
-                    liveProduct.user_id === userInfo.id ? (
+                {lives.map((live) =>
+                    live.user_id === userInfo.id ? (
                         <Card
-                            key={liveProduct.id}
+                            key={live.id}
                             className="my_live_product_card_body"
                             style={{ width: "16rem" }}
                         >
                             <Image
                                 className="my_live_products"
-                                src={`${process.env.REACT_APP_BACKEND_URL}/${liveProduct.image}`}
+                                src={`${process.env.REACT_APP_BACKEND_URL}/${live.image}`}
                                 fluid
                             />
                             <Card.Body className="my_bid_card_container">
-                                <Card.Title>{liveProduct.title}</Card.Title>
+                                <Card.Title>{live.title}</Card.Title>
                                 <Card.Text>
-                                    {moment(liveProduct.starting_time).format(
+                                    {moment(live.starting_time).format(
                                         "YYYY-MM-DD hh:mm:ss"
                                     )}
                                 </Card.Text>
 
-                                {liveProduct.is_ended ? (
+                                {live.is_ended ? (
                                     <div>
                                         <Card.Text>
-                                            觀看人數： {liveProduct.max_viewer}
+                                            觀看人數： {live.max_viewer}
                                         </Card.Text>
                                         <Button
                                             variant="outline-dark"
@@ -67,7 +67,7 @@ export function MyLive() {
                                             onClick={() => {
                                                 dispatch(
                                                     push(
-                                                        `/liveStreamingSeller?token=${liveProduct.seller_link}`
+                                                        `/liveStreamingSeller?token=${live.seller_link}`
                                                     )
                                                 );
                                             }}

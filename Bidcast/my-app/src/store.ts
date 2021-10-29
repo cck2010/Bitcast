@@ -19,8 +19,8 @@ import { ComingAuctionActions } from "./redux/homepage/action";
 import { comingAuctionReducer, ComingAuctionState } from "./redux/homepage/reducer";
 import { SearchProductsActions } from "./redux/searchResult/action";
 import { productSearchReducer, ProductSearchState } from "./redux/searchResult/reducer";
-import { LoadMyLiveProductsActions } from "./redux/myLiveProducts/action";
-import { myLiveProductsReducer, MyLiveProductsState } from "./redux/myLiveProducts/reducer";
+import { LoadMyLiveActions } from "./redux/myLiveProducts/action";
+import { myLiveReducer, MyLiveState } from "./redux/myLiveProducts/reducer";
 import { BroadcastingProductActions } from "./redux/broadcastingProducts/actions";
 import { broadcastingProductReducer, BroadcastProductState } from "./redux/broadcastingProducts/reducer";
 import { SidebarActions } from "./redux/Sidebar/actions";
@@ -36,7 +36,7 @@ export type RootAction =
     | createBidsActions
     | ComingAuctionActions
     | SearchProductsActions
-    | LoadMyLiveProductsActions
+    | LoadMyLiveActions
     | BroadcastingProductActions
     | SidebarActions
     | AuthActions
@@ -54,7 +54,7 @@ export interface RootState {
     comingAuction: ComingAuctionState;
     authState: AuthState;
     searchProduct: ProductSearchState;
-    myLiveProduct: MyLiveProductsState;
+    myLive: MyLiveState;
     broadcastingProducts: BroadcastProductState;
     sideBar: SidebarState;
     loadToken: AuthState
@@ -71,7 +71,7 @@ const reducer = combineReducers<RootState>({
     comingAuction: comingAuctionReducer,
     authState: authReducer,
     searchProduct: productSearchReducer,
-    myLiveProduct: myLiveProductsReducer,
+    myLive: myLiveReducer,
     broadcastingProducts: broadcastingProductReducer,
     sideBar: sidebarReducer,
     loadToken: authReducer,

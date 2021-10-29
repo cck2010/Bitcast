@@ -29,4 +29,17 @@ export class MyLiveController {
             });
         }
     }
+
+    getMyLiveProducts = async (req: Request, res: Response) => {
+        try {
+            const result = await this.myLiveService.getMyLiveProducts()
+            res.json(result)
+        } catch (error) {
+            res.json({
+                success: false,
+                data: { msg: "controller get my live products fail" },
+                error: new Error("get my live products fail"),
+            });
+        }
+    }
 }
