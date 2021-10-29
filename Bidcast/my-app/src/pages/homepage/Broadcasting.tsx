@@ -46,11 +46,16 @@ export function Broadcasting() {
         dispatch(fetchBroadcastingProducts());
     }, [dispatch]);
 
-    // async function profilePreview(id: any) {
-    //     setModalShow(id);
-    //     console.log("auciton ID >>>>>>>>>>", id);
-    //     console.log("modalShow", modalShow);
-    // }
+    async function profilePreview(info: any) {
+        for (let broadcasting of broadcastings) {
+            if (broadcasting.id == info) {
+                console.log("broadcasting", broadcasting);
+                console.log("broadcasting", broadcasting.username);
+                console.log("broadcasting", broadcasting.seller_id);
+                setModalShow(broadcasting.seller_id);
+            }
+        }
+    }
 
     const [modalShow, setModalShow] = useState(-1);
 
@@ -127,21 +132,26 @@ export function Broadcasting() {
                                     <Card.Text>
                                         <div
                                             key={broadcasting.id}
-                                            // onClick={() => {
-                                            //     profilePreview(broadcasting.id);
-                                            // }}
-                                            onClick={() =>
-                                                setModalShow(broadcasting.id)
-                                            }
+                                            onClick={() => {
+                                                profilePreview(broadcasting.id);
+                                            }}
+                                            // onClick={() =>
+                                            //     setModalShow(broadcasting.id)
+                                            // }
                                             className={"seller_name"}
                                         >
-                                            由{broadcasting.username}主辦
+                                            由
+                                            <span className={"card_username"}>
+                                                &nbsp;{broadcasting.username}
+                                                &nbsp;
+                                            </span>
+                                            主辦
                                         </div>
                                     </Card.Text>
                                     {modalShow === broadcasting.id && (
                                         <ProfileDetails
                                             show={broadcasting.id}
-                                            users={userInfo}
+                                            broadcasts={broadcasting}
                                             id={broadcasting.id}
                                             onHide={() => setModalShow(-1)}
                                         />

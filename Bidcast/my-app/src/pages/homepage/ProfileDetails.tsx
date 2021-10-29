@@ -5,6 +5,7 @@ import Carousel from "react-multi-carousel";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductDetails } from "../../redux/homepage/action";
 import { RootState } from "../../store";
+// import SubscribeButton from "../components/common/subscribeButton";
 
 const productResponsive = {
     desktop: {
@@ -25,8 +26,11 @@ const productResponsive = {
 };
 
 export function ProfileDetails(props: any) {
-    const products = useSelector((state: RootState) =>
-        Object.values(state.comingAuction.productDetails)
+    // const products = useSelector((state: RootState) =>
+    //     Object.values(state.comingAuction.productDetails)
+    // );
+    const userInfo = useSelector((state: RootState) =>
+        Object.values(state.user)
     );
 
     const dispatch = useDispatch();
@@ -35,133 +39,95 @@ export function ProfileDetails(props: any) {
         dispatch(fetchProductDetails());
     }, [dispatch]);
 
-    const { users } = props;
-    const [userArr, setUserArr] = useState([]);
+    const { broadcasts } = props;
+    const [broadcastArr, setBroadcastArr] = useState([]);
 
     useEffect(() => {
-        setUserArr(users.filter((user: any) => user.id === props.id));
+        console.log("broadcasts", broadcasts);
+        setBroadcastArr(broadcastArr.concat(broadcasts));
+        console.log("broadcastArr", broadcastArr);
     }, []);
 
-    if (!users) {
+    if (!broadcasts) {
+        console.log("no user");
         return <div></div>;
     }
 
     return (
         <div>
-            {userArr.length === 1 && (
+            {broadcastArr.length === 1 && (
                 <Modal
+                    className={"profile_card_container"}
                     {...props}
-                    size="lg"
+                    size="xs"
                     aria-labelledby="contained-modal-title-vcenter"
                     centered
-                    key={(userArr[0] as any).id}
+                    key={(broadcastArr[0] as any).seller_id}
                 >
-                    {/!*!!header */}
-                    <Modal.Header closeButton>
+                    {/*!!header */}
+                    <Modal.Header className={"profile_card_header"} closeButton>
                         <Modal.Title id="contained-modal-title-vcenter">
-                            {(userArr[0] as any).title}
+                            {/* {(broadcastArr[0] as any).username} */}
                         </Modal.Title>
                     </Modal.Header>
-                    {/!*body */}
-                    <Modal.Body>
-                        <h4>
-                            拍賣時間：{" "}
-                            {moment((userArr[0] as any).starting_time).format(
-                                "YYYY-MM-DD hh:mm:ss"
-                            )}
-                        </h4>
+                    {/*body */}
+                    <Modal.Body className={"profile_card_body"}>
+                        {/* <h4>Info here：</h4> */}
+
+                        <Image
+                            className={"profile_preview_pic"}
+                            src={`${
+                                (broadcastArr[0] as any).profile_pic.search(
+                                    /(https:\/\/)|(http:\/\/)/i
+                                ) < 0
+                                    ? process.env.REACT_APP_BACKEND_URL +
+                                      "/" +
+                                      (broadcastArr[0] as any).profile_pic
+                                    : (broadcastArr[0] as any).profile_pic
+                            }`}
+                            roundedCircle
+                        />
                         <Container>
                             <Row>
-                                {/!*left side  */}
-                                <Col xs={6} md={4}>
-                                    <Carousel
-                                        additionalTransfrom={0}
-                                        autoPlay={false}
-                                        arrows
-                                        // autoPlaySpeed={5000}
-                                        centerMode={false}
-                                        className=""
-                                        containerClass="container-with-dots"
-                                        dotListClass=""
-                                        draggable
-                                        focusOnSelect={false}
-                                        infinite
-                                        itemClass=""
-                                        keyBoardControl
-                                        minimumTouchDrag={90}
-                                        renderButtonGroupOutside={false}
-                                        renderDotsOutside={false}
-                                        responsive={productResponsive}
-                                        showDots={false}
-                                        sliderClass=""
-                                        slidesToSlide={1}
-                                        swipeable
-                                    >
-                                        {products.map(
-                                            (product) =>
-                                                product.live_id ===
-                                                    (userArr[0] as any).id && (
-                                                    <div
-                                                        className="product_details_container"
-                                                        key={product.id}
-                                                    >
-                                                        <Image
-                                                            src={`${process.env.REACT_APP_BACKEND_URL}/${product.product_image}`}
-                                                            fluid
-                                                        />
-                                                        <div>
-                                                            商品名稱：{" "}
-                                                            {
-                                                                product.product_name
-                                                            }
-                                                        </div>
-                                                        <div>
-                                                            底價：{" "}
-                                                            {product.min_price}
-                                                        </div>
-                                                        <div>
-                                                            即買價：{" "}
-                                                            {product.buy_price}
-                                                        </div>
-                                                    </div>
-                                                )
-                                        )}
-                                    </Carousel>
-                                </Col>
-                                {/!*right side  */}
-                                <Col xs={12} md={8}>
-                                    <div className="products_info_container">
-                                        <div className="products_detailed_info">
-                                            <p className="product_detailed_description">
-                                                拍賣簡介：{" "}
-                                                {
-                                                    (userArr[0] as any)
-                                                        .description
-                                                }
-                                            </p>
+                                {/*left side  */}
+                                <Col xs={6} md={4}></Col>
+                                <h4 className={"profile_card_username"}>
+                                    {(broadcastArr[0] as any).username}
+                                </h4>
 
-                                            <div>
-                                                <p>
-                                                    拍賣商品數量：
-                                                    {
-                                                        products.filter(
-                                                            (product) =>
-                                                                product.live_id ===
-                                                                (
-                                                                    userArr[0] as any
-                                                                ).id
-                                                        ).length
-                                                    }
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Col>
+                                {/*right side  */}
+                                <Col xs={12} md={8}></Col>
+                                <div className={"profile_card_description"}>
+                                    「&nbsp;
+                                    {(broadcastArr[0] as any).description
+                                        ? (broadcastArr[0] as any).description
+                                        : "此人尚未撰寫個人介紹"}
+                                    &nbsp;」
+                                </div>
                             </Row>
                         </Container>
                     </Modal.Body>
-                    <Modal.Footer>
-                        <Button onClick={props.onHide}>Close</Button>
+                    <Modal.Footer className={"profile_card_footer"}>
+                        <div className={"followers_container"}>
+                            <span className={"card_info_Num"}>80</span>
+                            {/* {(broadcastArr[0] as any).telegram_acct
+                                ? (broadcastArr[0] as any).telegram_acct
+                                : "此人尚未有Telegram Account"} */}
+                            <span className={"card_info_item"}>粉絲</span>
+                        </div>
+                        <div className={"products_container"}>
+                            <span className={"card_info_Num"}>10</span>
+                            {/* {(broadcastArr[0] as any).telegram_acct
+                                ? (broadcastArr[0] as any).telegram_acct
+                                : "此人尚未有Telegram Account"} */}
+                            <span className={"card_info_item"}>拍賣</span>
+                        </div>
+                        <div className={"follow_button_container"}>
+                            {/* {(broadcastArr[0] as any).telegram_acct
+                                ? (broadcastArr[0] as any).telegram_acct
+                                : "此人尚未有Telegram Account"} */}
+                            <span>追蹤</span>
+                        </div>
                     </Modal.Footer>
                 </Modal>
             )}

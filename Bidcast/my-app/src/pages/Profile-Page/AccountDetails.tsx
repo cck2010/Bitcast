@@ -327,6 +327,7 @@ export function AccountDetails() {
                                 <label>關於我 :</label>{" "}
                                 <textarea
                                     className={"input_editProfile"}
+                                    maxLength={150}
                                     {...register("aboutMe")}
                                     placeholder={
                                         userInfo.description
