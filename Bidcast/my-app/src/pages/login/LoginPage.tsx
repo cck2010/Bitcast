@@ -145,7 +145,7 @@ console.log(response.profileObj);
 <div className="vividworknav3">
   <img className='smallpic'  src={image3} alt={image3} />
   <div className="work-text-content">
-    <p>你可以在這裏享受即時拍賣和盡情消費的樂趣</p>
+    <p>Have fun</p>
   </div>
 </div>
       </div>
