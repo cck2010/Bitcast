@@ -20,17 +20,17 @@ import { MdAccountBox } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { Link } from "react-router-dom";
-import { menuIconClick } from "../../redux/Sidebar/actions";
+import { sidebarClick } from "../../redux/utility/actions";
 
 export function Sidebar() {
-    const menuCollapse = useSelector(
-        (state: RootState) => state.sideBar.menuCollapse
+    const sidebarCollapse = useSelector(
+        (state: RootState) => state.utility.sidebarCollapse
     );
 
     const dispatch = useDispatch();
 
-    const menuIconOnclickHandler = () => {
-        dispatch(menuIconClick(menuCollapse ? false : true));
+    const sidebarOnClickHandler = () => {
+        dispatch(sidebarClick(sidebarCollapse ? false : true));
     };
 
     // const user = useSelector((state: RootState) => state.authState.user);
@@ -38,14 +38,14 @@ export function Sidebar() {
     // const ref = useRef(null)
     return (
         <div className="sidebar">
-            <ProSidebar collapsed={menuCollapse} width="220px">
+            <ProSidebar collapsed={sidebarCollapse} width="220px">
                 <SidebarHeader>
                     {/* <h3 className="sidebar_username pt-3">{userInfo.username}</h3> */}
                     <div
                         className="close_menu pb-3"
-                        onClick={menuIconOnclickHandler}
+                        onClick={sidebarOnClickHandler}
                     >
-                        {menuCollapse ? (
+                        {sidebarCollapse ? (
                             <FiArrowRightCircle />
                         ) : (
                             <FiArrowLeftCircle />

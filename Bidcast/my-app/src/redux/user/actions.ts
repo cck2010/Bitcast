@@ -9,6 +9,12 @@ interface SubscriptionRes {
     success: boolean;
 }
 
+interface getSubscriptionRes {
+    followerList: number[];
+    followingList: number[];
+    success: boolean;
+}
+
 export function login(token: string) {
     return {
         type: "@@user/LOGIN" as const,
@@ -31,13 +37,13 @@ export function loadToken(token: string) {
 
 export function loadFollower(userId: number[]) {
     return {
-        type: "@@Follower/load_follower" as const,
+        type: "@@follower/LOAD_FOLLOWER" as const,
         userId,
     };
 }
 export function loadFollowing(userId: number[]) {
     return {
-        type: "@@Following/load_following" as const,
+        type: "@@following/LOAD_FOLLOWING" as const,
         userId,
     };
 }
@@ -69,7 +75,6 @@ export function checkPhoneNumber() {
                 state.authState.user !== undefined &&
                 state.authState.user!.phone_number === "11111111"
             ) {
-
                 history.push("/profilePage/accountDetails");
             } else {
                 history.push("/");
@@ -153,7 +158,7 @@ export function checkCurrentUser() {
     };
 }
 
-export function fetchSubscribe(followingId: number) {
+export function fetchSubscribe(isGet: boolean, followingId: number = 0) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         const token = localStorage.getItem("token");
 
@@ -163,18 +168,34 @@ export function fetchSubscribe(followingId: number) {
         }
 
         try {
-            const res = await axios.post<SubscriptionRes>(
-                `${process.env.REACT_APP_BACKEND_URL}/subscription`,
-                { followingId },
-                {
-                    headers: {
-                        Authorization: "Bearer " + token,
-                    },
-                }
-            );
+            if (isGet) {
+                const res = await axios.get<getSubscriptionRes>(
+                    `${process.env.REACT_APP_BACKEND_URL}/subscription`,
+                    {
+                        headers: {
+                            Authorization: "Bearer " + token,
+                        },
+                    }
+                );
 
-            if (res.data.success) {
-                //fetch user data again
+                if (res.data.success) {
+                    dispatch(loadFollower(res.data.followerList));
+                    dispatch(loadFollowing(res.data.followingList));
+                }
+            } else {
+                const res = await axios.post<SubscriptionRes>(
+                    `${process.env.REACT_APP_BACKEND_URL}/subscription`,
+                    { followingId },
+                    {
+                        headers: {
+                            Authorization: "Bearer " + token,
+                        },
+                    }
+                );
+
+                if (res.data.success) {
+                    dispatch(fetchSubscribe(true));
+                }
             }
         } catch (e) {
             console.log(e);

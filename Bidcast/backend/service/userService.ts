@@ -555,6 +555,27 @@ export class UserService {
         }
     };
 
+    getSubscribe = async (userId: number) => {
+        let followingList = await this.knex("follow_details")
+            .select("following_id")
+            .where({
+                follower_id: userId,
+            });
+
+        let followerList = await this.knex("follow_details")
+            .select("follower_id")
+            .where({
+                following_id: userId,
+            });
+        if (followerList.length !== 0) {
+            followerList = followerList.map((item) => item.follower_id);
+        }
+        if (followingList.length !== 0) {
+            followingList = followingList.map((item) => item.following_id);
+        }
+        return { followerList, followingList };
+    };
+
     subsciribe = async (followerId: number, followingId: number) => {
         const result = await this.knex("follow_details")
             .select("follower_id", "following_id")

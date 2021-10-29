@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "react-custom-scroll/dist/customScroll.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 import "./App.scss";
 import LiveStream from "./pages/LiveStream/LiveStream";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { LoginPage } from "./pages/login/LoginPage";
 import { HomePageNavbar } from "./pages/homepage/Navbar";
 import { Footer } from "./pages/homepage/Footer";
@@ -18,10 +18,10 @@ import { checkCurrentUser } from "./redux/user/actions";
 // import { CreateBids } from "./pages/createbids/CreateBids";
 import { useAdBlockDetector } from "adblock-detector-hook";
 import { RootState } from "./store";
-import { faLessThanEqual } from "@fortawesome/free-solid-svg-icons";
 
 import { CategoriesFilter } from "./pages/categories/CategoriesFilter";
 import { FilterProducts } from "./pages/categories/FilterProducts";
+import { menuIconClick } from "./redux/utility/actions";
 
 function App() {
     const dispatch = useDispatch();
@@ -30,6 +30,33 @@ function App() {
     const isAuthenticate = useSelector(
         (state: RootState) => state.user.isAuthenticate
     );
+    const menuCollapse = useSelector(
+        (state: RootState) => state.utility.menuCollapse
+    );
+    const appRef = useRef<HTMLDivElement>(null);
+    const [navbarRef, setNavbarRef] = useState<HTMLDivElement>();
+
+    useEffect(() => {
+        const closeMenu = (e: MouseEvent) => {
+            if (
+                !menuCollapse &&
+                navbarRef &&
+                e.clientY > navbarRef.getBoundingClientRect().height
+            ) {
+                dispatch(menuIconClick(menuCollapse, true));
+            }
+        };
+        if (appRef && appRef.current) {
+            appRef.current.addEventListener("click", closeMenu);
+            return () => {
+                if (appRef && appRef.current) {
+                    // eslint-disable-next-line react-hooks/exhaustive-deps
+                    appRef.current.removeEventListener("click", closeMenu);
+                }
+            };
+        }
+    }, [dispatch, menuCollapse, navbarRef]);
+
     // const history = useHistory();
     // const toaster = React.useRef() as React.MutableRefObject<HTMLInputElement>;
 
@@ -49,7 +76,7 @@ function App() {
     const dummy = useSelector((state: RootState) => state.liveStream.dummy);
 
     return (
-        <div className="App">
+        <div className="App" ref={appRef}>
             {/* {} */}
             {detected ? (
                 <div className="turn_off_adblock">
@@ -57,7 +84,7 @@ function App() {
                 </div>
             ) : (
                 <>
-                    <HomePageNavbar />
+                    <HomePageNavbar setNavbarRef={setNavbarRef} />
                     {/* <LiveStream /> */}
                     {/* <CreateBids /> */}
 
