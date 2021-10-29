@@ -41,8 +41,9 @@ export function LoginPage() {
   
 
   const responseGoogle = async (response:any ) => {
+    console.log(response);
     if(response.profileObj){
-console.log(response.profileObj);
+
     try {
         const res = await axios.post<any>(`${process.env.REACT_APP_BACKEND_URL}/login/google`, {
           name:response.profileObj.name,
@@ -130,17 +131,20 @@ console.log(response.profileObj);
     <div className="fakeapp">
       
       <div className="appAside">
+      <div>
+      
       <div className="vividworknav1">
-  <img className='smallpic'  src={image2} alt={image2} />
+  <img className='smallpic'  src={image1} alt={image1} />
   <div className="work-text-content">
     <p>歡迎來到Bidcast</p>
   </div>
 </div>
 <div className="vividworknav2">
-  <img className='smallpic'  src={image1} alt={image1} />
+  <img className='smallpic'  src={image2} alt={image2} />
   <div className="work-text-content">
     <p>你可以在這裏享受即時拍賣和盡情消費的樂趣</p>
   </div>
+</div>
 </div>
 <div className="vividworknav3">
   <img className='smallpic'  src={image3} alt={image3} />
