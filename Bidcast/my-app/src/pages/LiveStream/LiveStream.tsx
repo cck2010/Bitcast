@@ -73,6 +73,12 @@ function LiveStream(props: LiveStreamProps) {
     }, [props, liveId]);
     //Get States
 
+    //Scroll to top
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+    //Scroll to top
+
     //React-responsive
     const isDesktop = useMediaQuery({
         query: "(min-width: 1200px)",

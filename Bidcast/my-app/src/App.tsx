@@ -15,16 +15,15 @@ import { ProfilePage } from "./pages/Profile-Page/Profilepage";
 import { SearchResults } from "./pages/categories/SearchResult";
 import { useDispatch, useSelector } from "react-redux";
 import { checkCurrentUser } from "./redux/user/actions";
-// import { CreateBids } from "./pages/createbids/CreateBids";
 import { useAdBlockDetector } from "adblock-detector-hook";
 import { RootState } from "./store";
-
 import { CategoriesFilter } from "./pages/categories/CategoriesFilter";
 import { FilterProducts } from "./pages/categories/FilterProducts";
 import { menuIconClick } from "./redux/utility/actions";
 import { LoadingDefaultStyle } from "./pages/loading/loading";
 import Four0Four from "./pages/four0Four/four0Four";
 import Adblock from "./pages/adblock/adblock";
+import ScrollRestoration from "react-scroll-restoration";
 
 function App() {
     const dispatch = useDispatch();
@@ -95,9 +94,7 @@ function App() {
                         </div>
                     )}
                     <HomePageNavbar setNavbarRef={setNavbarRef} />
-                    {/* <LiveStream /> */}
-                    {/* <CreateBids /> */}
-
+                    <ScrollRestoration />
                     <Switch>
                         {/* <Route path="/" ><Homepage /></Route> */}
                         <Route path="/" exact>
