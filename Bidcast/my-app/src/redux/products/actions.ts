@@ -20,7 +20,7 @@ export interface Product {
     updated_by: string;
     created_at: Date;
     updated_at: Date;
-    username:string;
+    username: string;
 }
 
 export interface Category {
@@ -41,7 +41,7 @@ export function loadCategories(categories: Category[]) {
 
 
 
-export type ProductsActions = ReturnType<typeof loadCategories> 
+export type ProductsActions = ReturnType<typeof loadCategories>
 
 
 
@@ -49,20 +49,26 @@ export type ProductsActions = ReturnType<typeof loadCategories>
 
 export function fetchCategories() {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
-        const res = await fetch(
-            `${process.env.REACT_APP_BACKEND_URL}/categories`
-        );
-        const json = await res.json();
-        const categoriesData = json.data.results;
-        // console.log("json", categoriesData);
+        try {
+            const res = await fetch(
+                `${process.env.REACT_APP_BACKEND_URL}/categories`
+            );
+            const json = await res.json();
+            const categoriesData = json.data.results;
+            // console.log("json", categoriesData);
 
-        // for(let category of json) {
-        //  const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/categories/${category.id}/products`)
-        //  const productJson = await res.json();
+            // for(let category of json) {
+            //  const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/categories/${category.id}/products`)
+            //  const productJson = await res.json();
 
-        //  dispatch(loadProduct(productJson, category.id));
-        // }
-        dispatch(loadCategories(categoriesData));
+            //  dispatch(loadProduct(productJson, category.id));
+            // }
+            dispatch(loadCategories(categoriesData));
+        } catch (error) {
+            console.log(error);
+
+        }
+
     };
 }
 

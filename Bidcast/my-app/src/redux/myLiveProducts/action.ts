@@ -22,7 +22,24 @@ export interface MyLiveProducts {
     buyer_id: number;
     title: string;
     live_id: number;
+    username: string;
+    email: string;
+    phone_number: number;
+    deal_price: number;
+    product_image: string;
+    starting_time: Date;
 }
+
+// export interface MyBidHistory {
+//     id: number;
+//     product_name: string;
+//     starting_time: Date;
+//     username: string;
+//     email: string;
+//     phone_number: number;
+//     deal_price: number;
+//     buyer_id: number;
+// }
 
 export function loadMyLive(
     myLive: MyLive[]
