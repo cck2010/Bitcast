@@ -1,35 +1,13 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchSameCategoryLive } from "../../redux/LiveStream/actions";
+import React from "react";
+import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { Recommend } from "../../redux/LiveStream/actions";
 import { Link } from "react-router-dom";
 
 function LiveStreamRecommend() {
-    const dispatch = useDispatch();
-
-    const liveId = useSelector(
-        (state: RootState) => state.liveStream.liveStreamInfo.id
-    );
-
-    const products = useSelector(
-        (state: RootState) =>
-            state.liveStream.liveStreamProducts.liveStreamProductsArr
-    );
-
     const recommendList = useSelector(
         (state: RootState) => state.liveStream.recommendList.results
     );
-
-    // console.log(recommendList);
-
-    useEffect(() => {
-        let categoryIdSet = new Set<number>();
-        for (let product of products) {
-            categoryIdSet.add(product.categoryId);
-        }
-        dispatch(fetchSameCategoryLive(liveId, categoryIdSet));
-    }, [dispatch, products, liveId]);
 
     const recommendListCopy = [...recommendList];
     let len = recommendListCopy.length;

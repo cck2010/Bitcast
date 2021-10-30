@@ -13,14 +13,18 @@ import {
     fetchInitialChatMessages,
     fetchliveStreamInfo,
     fetchliveStreamProducts,
+    fetchSameCategoryLive,
     resetLiveId,
 } from "../../redux/LiveStream/actions";
 import { RootState } from "../../store";
 import io, { Socket } from "socket.io-client";
 import LiveStreamBiddingInfo from "../../component/LiveStream/LiveStreamBiddingInfo";
-import { LoadingDefaultStyle } from "../loading/loading";
 
-function LiveStream() {
+interface LiveStreamProps {
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function LiveStream(props: LiveStreamProps) {
     //Get States
     const dispatch = useDispatch();
     const liveStreamRef = useRef<HTMLDivElement>(null);
@@ -46,7 +50,27 @@ function LiveStream() {
             dispatch(fetchInitialChatMessages(liveId));
         }
     }, [dispatch, liveId]);
-    const [isLoading, setIsLoading] = useState(true);
+
+    const recommendProducts = useSelector(
+        (state: RootState) =>
+            state.liveStream.liveStreamProducts.liveStreamProductsArr
+    );
+
+    useEffect(() => {
+        let categoryIdSet = new Set<number>();
+        for (let product of recommendProducts) {
+            categoryIdSet.add(product.categoryId);
+        }
+        dispatch(
+            fetchSameCategoryLive(liveId, categoryIdSet, props.setIsLoading)
+        );
+    }, [dispatch, recommendProducts, liveId, props]);
+
+    useEffect(() => {
+        if (liveId === 0) {
+            props.setIsLoading(true);
+        }
+    }, [props, liveId]);
     //Get States
 
     //React-responsive
@@ -106,103 +130,89 @@ function LiveStream() {
     //Add event listener
 
     return (
-        <div
-            className={`LiveStream ${!isLoading && "m-3"}`}
-            ref={liveStreamRef}
-        >
-            {isLoading ? (
-                <div
-                    className="backLayer"
-                    style={{ height: "calc(100vh - 270px)" }}
-                >
-                    <LoadingDefaultStyle />
-                </div>
-            ) : (
-                <div className="row">
-                    <div className={`${isTablet ? "col-8" : "col"}`}>
-                        <LiveStreamWindow />
-                        {isTablet ? (
-                            <>
-                                <div className="row mt-3 rounded">
-                                    <div className={`col-12`}>
-                                        <LiveStreamBiddingInfo ws={ws} />
-                                    </div>
+        <div className="LiveStream m-3" ref={liveStreamRef}>
+            <div className="row">
+                <div className={`${isTablet ? "col-8" : "col"}`}>
+                    <LiveStreamWindow />
+                    {isTablet ? (
+                        <>
+                            <div className="row mt-3 rounded">
+                                <div className={`col-12`}>
+                                    <LiveStreamBiddingInfo ws={ws} />
                                 </div>
-                                <LiveStreamControlPanel
-                                    isDesktop={isDesktop}
-                                    isTablet={isTablet}
-                                    ws={ws}
-                                />
-                                <LiveStreamHeader ws={ws} />
-                            </>
-                        ) : (
-                            <>
-                                <ButtonGroup className="w-100">
-                                    <Button onClick={() => setPage(1)}>
-                                        直播資料
-                                    </Button>
-                                    <Button onClick={() => setPage(2)}>
-                                        拍賣設定
-                                    </Button>
-                                    <Button onClick={() => setPage(3)}>
-                                        聊天室
-                                    </Button>
-                                    <Button onClick={() => setPage(4)}>
-                                        其他拍賣直播
-                                    </Button>
-                                </ButtonGroup>
-                                {page === 1 && <LiveStreamHeader ws={ws} />}
-                                {page === 2 && (
-                                    <>
-                                        <div className="row mt-3 rounded">
-                                            <div className={`col-12`}>
-                                                <LiveStreamBiddingInfo
-                                                    ws={ws}
-                                                />
-                                            </div>
+                            </div>
+                            <LiveStreamControlPanel
+                                isDesktop={isDesktop}
+                                isTablet={isTablet}
+                                ws={ws}
+                            />
+                            <LiveStreamHeader ws={ws} />
+                        </>
+                    ) : (
+                        <>
+                            <ButtonGroup className="w-100">
+                                <Button onClick={() => setPage(1)}>
+                                    直播資料
+                                </Button>
+                                <Button onClick={() => setPage(2)}>
+                                    拍賣設定
+                                </Button>
+                                <Button onClick={() => setPage(3)}>
+                                    聊天室
+                                </Button>
+                                <Button onClick={() => setPage(4)}>
+                                    其他拍賣直播
+                                </Button>
+                            </ButtonGroup>
+                            {page === 1 && <LiveStreamHeader ws={ws} />}
+                            {page === 2 && (
+                                <>
+                                    <div className="row mt-3 rounded">
+                                        <div className={`col-12`}>
+                                            <LiveStreamBiddingInfo ws={ws} />
                                         </div>
-                                        <LiveStreamControlPanel
-                                            isDesktop={isDesktop}
-                                            isTablet={isTablet}
-                                            ws={ws}
-                                        />
-                                    </>
-                                )}
-                                {page === 3 && (
-                                    <LiveStreamChatRoom
-                                        liveStreamRef={liveStreamRef}
+                                    </div>
+                                    <LiveStreamControlPanel
+                                        isDesktop={isDesktop}
                                         isTablet={isTablet}
+                                        ws={ws}
                                     />
-                                )}
-                                {page === 4 && (
-                                    <LiveStreamRecommend
-                                        isLoading={isLoading}
-                                    />
-                                )}
-                            </>
-                        )}
-                    </div>
-                    {isTablet && (
-                        <div className="col-4">
-                            <div className="row">
-                                <div className="col">
-                                    <LiveStreamChatRoom
-                                        liveStreamRef={liveStreamRef}
-                                        isTablet={isTablet}
-                                    />
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col">
-                                    <LiveStreamRecommend
-                                        isLoading={isLoading}
-                                    />
-                                </div>
-                            </div>
-                        </div>
+                                </>
+                            )}
+                            {page === 3 && (
+                                <LiveStreamChatRoom
+                                    liveStreamRef={liveStreamRef}
+                                    isTablet={isTablet}
+                                />
+                            )}
+                            {page === 4 && (
+                                <LiveStreamRecommend
+                                    setIsLoading={props.setIsLoading}
+                                />
+                            )}
+                        </>
                     )}
                 </div>
-            )}
+                {isTablet && (
+                    <div className="col-4">
+                        <div className="row">
+                            <div className="col">
+                                <LiveStreamChatRoom
+                                    liveStreamRef={liveStreamRef}
+                                    isTablet={isTablet}
+                                />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col">
+                                <LiveStreamRecommend
+                                    setIsLoading={props.setIsLoading}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

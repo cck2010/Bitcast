@@ -532,7 +532,8 @@ export function fetchChatMessages(
 
 export function fetchSameCategoryLive(
     liveId: number,
-    categoryIdSet: Set<number>
+    categoryIdSet: Set<number>,
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         try {
@@ -546,6 +547,9 @@ export function fetchSameCategoryLive(
             );
             if (res.data.success) {
                 dispatch(loadRecommendList(res.data.results, res.data.success));
+                window.setTimeout(() => {
+                    setIsLoading(false);
+                }, 100);
             }
         } catch (e) {
             console.log(e);
