@@ -21,6 +21,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { Link } from "react-router-dom";
 import { sidebarClick } from "../../redux/utility/actions";
+import { logoutThunk } from "../../redux/user/actions";
+import { push } from "connected-react-router";
 
 export function Sidebar() {
     const sidebarCollapse = useSelector(
@@ -74,7 +76,9 @@ export function Sidebar() {
                                     訂閱的人
                                 </Link>
                             </MenuItem>
-                            <MenuItem>我的粉絲</MenuItem>
+                            <MenuItem>
+                                <Link to="/profilePage/follower">我的粉絲</Link>
+                            </MenuItem>
                         </SubMenu>
                         <MenuItem icon={<MdAccountBox />}>
                             帳戶資料
@@ -84,7 +88,19 @@ export function Sidebar() {
                 </SidebarContent>
                 <SidebarFooter>
                     <Menu iconShape="square">
-                        <MenuItem icon={<FiLogOut />}>登出</MenuItem>
+                        <MenuItem icon={<FiLogOut />}>
+                            <Link
+                                to="#"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    dispatch(logoutThunk());
+                                    dispatch(push("/"));
+                                }}
+                                className="nav_link"
+                            >
+                                登出
+                            </Link>
+                        </MenuItem>
                     </Menu>
                 </SidebarFooter>
             </ProSidebar>

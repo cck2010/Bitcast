@@ -1,35 +1,19 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    changeDummy,
-    fetchSameCategoryLive,
-} from "../../redux/LiveStream/actions";
+import { changeDummy } from "../../redux/LiveStream/actions";
 import { RootState } from "../../store";
 import { Recommend } from "../../redux/LiveStream/actions";
 
-function LiveStreamRecommend() {
+interface LiveStreamRecommendProps {
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function LiveStreamRecommend(props: LiveStreamRecommendProps) {
     const dispatch = useDispatch();
-
-    const liveId = useSelector(
-        (state: RootState) => state.liveStream.liveStreamInfo.id
-    );
-
-    const products = useSelector(
-        (state: RootState) =>
-            state.liveStream.liveStreamProducts.liveStreamProductsArr
-    );
 
     const recommendList = useSelector(
         (state: RootState) => state.liveStream.recommendList.results
     );
-
-    useEffect(() => {
-        let categoryIdSet = new Set<number>();
-        for (let product of products) {
-            categoryIdSet.add(product.categoryId);
-        }
-        dispatch(fetchSameCategoryLive(liveId, categoryIdSet));
-    }, [dispatch, products, liveId]);
 
     const recommendListCopy = [...recommendList];
     let len = recommendListCopy.length;
@@ -56,6 +40,7 @@ function LiveStreamRecommend() {
                             `${process.env.REACT_APP_FRONTEND_URL}/liveStreaming?room=${item.buyer_link}`
                         );
                         dispatch(changeDummy());
+                        props.setIsLoading(true);
                     }}
                 >
                     <img

@@ -13,13 +13,18 @@ import {
     fetchInitialChatMessages,
     fetchliveStreamInfo,
     fetchliveStreamProducts,
+    fetchSameCategoryLive,
     resetLiveId,
 } from "../../redux/LiveStream/actions";
 import { RootState } from "../../store";
 import io, { Socket } from "socket.io-client";
 import LiveStreamBiddingInfo from "../../component/LiveStream/LiveStreamBiddingInfo";
 
-function LiveStream() {
+interface LiveStreamProps {
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function LiveStream(props: LiveStreamProps) {
     //Get States
     const dispatch = useDispatch();
     const liveStreamRef = useRef<HTMLDivElement>(null);
@@ -45,7 +50,34 @@ function LiveStream() {
             dispatch(fetchInitialChatMessages(liveId));
         }
     }, [dispatch, liveId]);
+
+    const recommendProducts = useSelector(
+        (state: RootState) =>
+            state.liveStream.liveStreamProducts.liveStreamProductsArr
+    );
+
+    useEffect(() => {
+        let categoryIdSet = new Set<number>();
+        for (let product of recommendProducts) {
+            categoryIdSet.add(product.categoryId);
+        }
+        dispatch(
+            fetchSameCategoryLive(liveId, categoryIdSet, props.setIsLoading)
+        );
+    }, [dispatch, recommendProducts, liveId, props]);
+
+    useEffect(() => {
+        if (liveId === 0) {
+            props.setIsLoading(true);
+        }
+    }, [props, liveId]);
     //Get States
+
+    //Scroll to top
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+    //Scroll to top
 
     //React-responsive
     const isDesktop = useMediaQuery({
@@ -78,6 +110,7 @@ function LiveStream() {
                     ws.on("render", () => {
                         dispatch(fetchliveStreamProducts(liveId, false));
                     });
+                    ws.emit("checkOnlineUsers", liveId);
                 }
             };
             initWebSocket();
@@ -159,7 +192,11 @@ function LiveStream() {
                                     isTablet={isTablet}
                                 />
                             )}
-                            {page === 4 && <LiveStreamRecommend />}
+                            {page === 4 && (
+                                <LiveStreamRecommend
+                                    setIsLoading={props.setIsLoading}
+                                />
+                            )}
                         </>
                     )}
                 </div>
@@ -175,7 +212,9 @@ function LiveStream() {
                         </div>
                         <div className="row">
                             <div className="col">
-                                <LiveStreamRecommend />
+                                <LiveStreamRecommend
+                                    setIsLoading={props.setIsLoading}
+                                />
                             </div>
                         </div>
                     </div>

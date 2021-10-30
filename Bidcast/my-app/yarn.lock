@@ -10313,6 +10313,11 @@ react-scripts@4.0.3:
   optionalDependencies:
     fsevents "^2.1.3"
 
+react-scroll-restoration@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/react-scroll-restoration/-/react-scroll-restoration-1.0.8.tgz#b8bb3a460ca3bc919143d6342bc45227ae5106fe"
+  integrity sha512-ArWiz5ygQBrvJyPF/0AmzRML17QP1gPsH6xAxJkO0FcWlNvtnylsEkCOzpf7Wnif7yZYod3rDCbUJfJj5qpg3w==
+
 react-slidedown@^2.4.5:
   version "2.4.5"
   resolved "https://registry.npmjs.org/react-slidedown/-/react-slidedown-2.4.5.tgz"
