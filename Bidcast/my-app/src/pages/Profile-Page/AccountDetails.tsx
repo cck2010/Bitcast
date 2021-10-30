@@ -42,11 +42,10 @@ export function AccountDetails() {
     const toaster = React.useRef(null);
     const [alert, setAlert] = useState([]);
 
+    //     const handleShow = (event:React.MouseEvent) => {
+    //     event.stopPropagation();
 
-//     const handleShow = (event:React.MouseEvent) => {
-//     event.stopPropagation();
-    
-//   };
+    //   };
     function AlertListAppend() {
         return (
             <div>
@@ -178,9 +177,9 @@ export function AccountDetails() {
             {toast ? (
                 <CToaster
                     ref={toaster}
-                    push={<ToastDemo />}
+                    push={toast}
                     placement="bottom-end"
-                    id = "toast"
+                    id="toast"
                 />
             ) : (
                 console.log("not11111111")
@@ -372,7 +371,7 @@ export function AccountDetails() {
                                 </div>
                             )}
 
-                            <input className={"button_default"} type="submit"  />
+                            <input className={"button_default"} type="submit" />
                             {/* onClick={handleShow} */}
                         </form>
                     </div>
