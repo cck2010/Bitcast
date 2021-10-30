@@ -58,7 +58,7 @@ export function ProfileDetails(props: any) {
     const { broadcasts } = props;
     const [broadcastArr, setBroadcastArr] = useState([]);
 
-    const [proId, setProId] = useState("");
+    // const [proId, setProId] = useState("");
 
     useEffect(() => {
         dispatch(fetchSellerSubscribe(broadcasts.id));

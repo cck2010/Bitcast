@@ -47,9 +47,9 @@ export function Broadcasting() {
     async function profilePreview(info: any) {
         for (let broadcasting of broadcastings) {
             if (broadcasting.id == info) {
-                console.log("broadcasting", broadcasting);
-                console.log("broadcasting", broadcasting.username);
-                console.log("broadcasting", broadcasting.seller_id);
+                // console.log("broadcasting", broadcasting);
+                // console.log("broadcasting", broadcasting.username);
+                // console.log("broadcasting", broadcasting.seller_id);
                 dispatch(fetchSellerSubscribe(broadcasting.seller_id));
                 setModalShow(broadcasting.seller_id);
             }
