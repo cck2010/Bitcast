@@ -6,6 +6,7 @@ import { Following } from "./Following";
 import { Route, Switch } from "react-router-dom";
 import { MyLive } from "./MyLive";
 import { MyLiveProductsComponent } from "./MyLiveProducts";
+import { MyBidHistory } from "./MyBidHistory";
 
 // import { useState } from "react";
 // import { Col, Container, Row } from "react-bootstrap";
@@ -32,6 +33,9 @@ export function ProfilePage(props: ProfilePageProps) {
                 </Route>
                 <Route path="/profilePage/my-live">
                     <MyLive />
+                </Route>
+                <Route path="/profilePage/my-bid-history">
+                    <MyBidHistory />
                 </Route>
             </Switch>
         </div>

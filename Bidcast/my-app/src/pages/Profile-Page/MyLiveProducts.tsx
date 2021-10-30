@@ -121,7 +121,7 @@ export function MyLiveProductsComponent() {
                                             </thead>
                                             {myLiveProductArr.map(
                                                 (product, index) => (
-                                                    <tbody>
+                                                    <tbody key={product.id}>
                                                         <tr>
                                                             <td>{`${
                                                                 index + 1

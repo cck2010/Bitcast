@@ -15,7 +15,7 @@ import {
     FiArrowRightCircle,
 } from "react-icons/fi";
 import { FaList, FaRegHeart } from "react-icons/fa";
-import { BsBroadcastPin } from "react-icons/bs";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 import { MdAccountBox } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
@@ -66,8 +66,9 @@ export function Sidebar() {
                                 <Link to="/profilePage/my-live-products" />
                             </MenuItem>
                         </SubMenu>
-                        <MenuItem icon={<BsBroadcastPin />}>
+                        <MenuItem icon={<AiOutlineShoppingCart />}>
                             已投得商品
+                            <Link to="/profilePage/my-bid-history" />
                         </MenuItem>
                         <SubMenu title="訂閱" icon={<FaRegHeart />}>
                             <MenuItem>

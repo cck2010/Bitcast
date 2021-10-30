@@ -25,7 +25,9 @@ export class ComingAuctionService {
             right outer join products on products.live_id = live.id
             left outer join users on live.user_id = users.id
             where products.is_selected = true
-            limit 10`
+            ORDER BY random()
+            limit 10
+            `
         )
         return {
             success: true,
