@@ -61,7 +61,7 @@ export function MyBidHistory() {
                                         成交價格： {myBidHistory.deal_price}
                                     </Card.Text>
                                     <Card.Text>
-                                        賣家電郵： {myBidHistory.email})
+                                        賣家電郵： {myBidHistory.email}
                                     </Card.Text>
                                     <Card.Text>
                                         賣家電話： {myBidHistory.phone_number}
