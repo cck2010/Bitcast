@@ -82,9 +82,9 @@ export function AccountDetails() {
     const imageChange = (e: any) => {
         if (e.target.files && e.target.files.length > 0) {
             if (
-                path.extname(e.target.files[0].name) == ".jpg" ||
-                path.extname(e.target.files[0].name) == ".jpeg" ||
-                path.extname(e.target.files[0].name) == ".png"
+                path.extname(e.target.files[0].name) === ".jpg" ||
+                path.extname(e.target.files[0].name) === ".jpeg" ||
+                path.extname(e.target.files[0].name) === ".png"
             ) {
                 setSelectedImage(e.target.files[0]);
             }
@@ -254,7 +254,7 @@ export function AccountDetails() {
                                     className={"input_editProfile"}
                                     {...register("phoneNumber")}
                                     placeholder={
-                                        userInfo.phone_number == "11111111"
+                                        userInfo.phone_number === "11111111"
                                             ? "沒有"
                                             : userInfo.phone_number
                                             ? userInfo.phone_number
@@ -290,6 +290,7 @@ export function AccountDetails() {
                                     <img
                                         className={"bidcast_bot_QR"}
                                         src={bidcastQRcode}
+                                        alt="bidcastQRcode"
                                     ></img>
                                     <div className={"bot_info"}>
                                         <div>
@@ -347,6 +348,7 @@ export function AccountDetails() {
                                         src={URL.createObjectURL(
                                             selectedImage as any
                                         )}
+                                        alt=""
                                     />
                                     <div className={"file_Info_container"}>
                                         {/* <div>{selectedImage.name as any}</div> */}
