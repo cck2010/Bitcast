@@ -58,13 +58,17 @@ export function MyBidHistory() {
                                         ).format("YYYY-MM-DD")}
                                     </Card.Text>
                                     <Card.Text>
-                                        成交價格： {myBidHistory.deal_price}
+                                        成交價格： {myBidHistory.current_price}
                                     </Card.Text>
                                     <Card.Text>
                                         賣家電郵： {myBidHistory.email}
                                     </Card.Text>
                                     <Card.Text>
                                         賣家電話： {myBidHistory.phone_number}
+                                    </Card.Text>
+                                    <Card.Text>
+                                        賣家Telegram帳戶：{" "}
+                                        {myBidHistory.telegram_acct}
                                     </Card.Text>
                                     <Card.Text>
                                         由 {myBidHistory.username} 主辦

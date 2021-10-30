@@ -25,9 +25,10 @@ export interface MyLiveProducts {
     username: string;
     email: string;
     phone_number: number;
-    deal_price: number;
+    current_price: number;
     product_image: string;
     starting_time: Date;
+    telegram_acct: string;
 }
 
 // export interface MyBidHistory {
