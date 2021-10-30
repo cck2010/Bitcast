@@ -12,6 +12,7 @@ import {
     fetchInitialChatMessages,
     fetchliveStreamInfo,
     fetchliveStreamProducts,
+    fetchSameCategoryLive,
     resetLiveId,
 } from "../../redux/LiveStream/actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,7 +20,11 @@ import { RootState } from "../../store";
 import io, { Socket } from "socket.io-client";
 import LiveStreamBiddingInfoSeller from "../../component/LiveStream/LiveStreamBiddingInfoSeller";
 
-function LiveStream() {
+interface LiveStreamProps {
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function LiveStream(props: LiveStreamProps) {
     //Get States
     const dispatch = useDispatch();
     const liveStreamRef = useRef<HTMLDivElement>(null);
@@ -46,6 +51,27 @@ function LiveStream() {
             dispatch(fetchInitialChatMessages(liveId));
         }
     }, [dispatch, liveId]);
+
+    const recommendProducts = useSelector(
+        (state: RootState) =>
+            state.liveStream.liveStreamProducts.liveStreamProductsArr
+    );
+
+    useEffect(() => {
+        let categoryIdSet = new Set<number>();
+        for (let product of recommendProducts) {
+            categoryIdSet.add(product.categoryId);
+        }
+        dispatch(
+            fetchSameCategoryLive(liveId, categoryIdSet, props.setIsLoading)
+        );
+    }, [dispatch, recommendProducts, liveId, props]);
+
+    useEffect(() => {
+        if (liveId === 0) {
+            props.setIsLoading(true);
+        }
+    }, [props, liveId]);
     //Get States
 
     //React-responsive
@@ -79,6 +105,7 @@ function LiveStream() {
                     ws.on("render", () => {
                         dispatch(fetchliveStreamProducts(liveId, false));
                     });
+                    ws.emit("checkOnlineUsers", liveId);
                 }
             };
             initWebSocket();
@@ -105,7 +132,7 @@ function LiveStream() {
     //Add event listener
 
     return (
-        <div className="LiveStream m-3" ref={liveStreamRef}>
+        <div className={`LiveStream m-3`} ref={liveStreamRef}>
             <div className="row">
                 <div className={`${isTablet ? "col-8" : "col"}`}>
                     <LiveStreamWindowSeller />

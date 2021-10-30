@@ -1,6 +1,6 @@
 
 export function Following(){
     return (
-        <div>hihi</div>
+        <div>Following</div>
     )
 }

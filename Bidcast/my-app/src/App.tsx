@@ -22,6 +22,9 @@ import { RootState } from "./store";
 import { CategoriesFilter } from "./pages/categories/CategoriesFilter";
 import { FilterProducts } from "./pages/categories/FilterProducts";
 import { menuIconClick } from "./redux/utility/actions";
+import { LoadingDefaultStyle } from "./pages/loading/loading";
+import Four0Four from "./pages/four0Four/four0Four";
+import Adblock from "./pages/adblock/adblock";
 
 function App() {
     const dispatch = useDispatch();
@@ -35,6 +38,7 @@ function App() {
     );
     const appRef = useRef<HTMLDivElement>(null);
     const [navbarRef, setNavbarRef] = useState<HTMLDivElement>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
         const closeMenu = (e: MouseEvent) => {
@@ -79,11 +83,17 @@ function App() {
         <div className="App" ref={appRef}>
             {/* {} */}
             {detected ? (
-                <div className="turn_off_adblock">
-                    Please Turn Off Your Adblock!!
-                </div>
+                <Adblock />
             ) : (
                 <>
+                    {isLoading && (
+                        <div className="d-flex">
+                            <div className="back_layer"></div>
+                            <div className="absolute_layer">
+                                <LoadingDefaultStyle />
+                            </div>
+                        </div>
+                    )}
                     <HomePageNavbar setNavbarRef={setNavbarRef} />
                     {/* <LiveStream /> */}
                     {/* <CreateBids /> */}
@@ -91,16 +101,16 @@ function App() {
                     <Switch>
                         {/* <Route path="/" ><Homepage /></Route> */}
                         <Route path="/" exact>
-                            <Homepage />
+                            <Homepage setIsLoading={setIsLoading} />
                         </Route>
                         <Route path="/createBids">
                             <CreateBids />
                         </Route>
                         <Route path="/liveStreaming" key={dummy}>
-                            <LiveStream />
+                            <LiveStream setIsLoading={setIsLoading} />
                         </Route>
                         <Route path="/liveStreamingSeller">
-                            <LiveStreamSeller />
+                            <LiveStreamSeller setIsLoading={setIsLoading} />
                         </Route>
                         <Route path="/searchResult">
                             <SearchResults />
@@ -116,6 +126,9 @@ function App() {
                         </Route>
                         <Route path="/loginPage">
                             <LoginPage />
+                        </Route>
+                        <Route path="/">
+                            <Four0Four />
                         </Route>
                     </Switch>
                     <Footer />
