@@ -7,7 +7,11 @@ import {
 import { RootState } from "../../store";
 import { Recommend } from "../../redux/LiveStream/actions";
 
-function LiveStreamRecommend() {
+interface LiveStreamRecommendProps {
+    isLoading: boolean;
+}
+
+function LiveStreamRecommend(props: LiveStreamRecommendProps) {
     const dispatch = useDispatch();
 
     const liveId = useSelector(

@@ -23,6 +23,7 @@ export function LoadingDefaultStyle() {
         text-align: center;
         position: fixed;
         z-index: 13000;
+        background-color: rgba(0, 0, 0, 0.5)
     `;
     const rotation = keyframes`
         0% {
