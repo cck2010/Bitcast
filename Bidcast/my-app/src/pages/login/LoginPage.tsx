@@ -41,7 +41,7 @@ export function LoginPage() {
   
 
   const responseGoogle = async (response:any ) => {
-    console.log(response);
+    // console.log(response);
     if(response.profileObj){
 
     try {
@@ -77,7 +77,7 @@ export function LoginPage() {
 
   const responseFacebook = async (response:any) => {
     
-  console.log(response)
+  // console.log(response)
   
     
   if(response){
