@@ -29,13 +29,22 @@ export function MyBidHistory() {
                         myBidHistory.buyer_id !== null &&
                         myBidHistory.buyer_id === userInfo.id && (
                             <Card
-                                className="my_live_product_card_body"
+                                className="my_live_product_card_body pt-3 px-3"
                                 style={{ width: "16rem" }}
                                 key={myBidHistory.id}
                             >
                                 <Image
                                     className="my_live_products"
-                                    src={myBidHistory.product_image}
+                                    src={`${
+                                        myBidHistory.product_image.search(
+                                            /(https:\/\/)|(http:\/\/)/i
+                                        ) < 0
+                                            ? process.env
+                                                  .REACT_APP_BACKEND_URL +
+                                              "/" +
+                                              myBidHistory.product_image
+                                            : myBidHistory.product_image
+                                    }`}
                                     fluid
                                 />
                                 <Card.Body className="my_bid_card_container">
