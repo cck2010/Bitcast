@@ -73,7 +73,9 @@ export function Sidebar() {
                                     訂閱的人
                                 </Link>
                             </MenuItem>
-                            <MenuItem>我的粉絲</MenuItem>
+                            <MenuItem>
+                                <Link to="/profilePage/follower">我的粉絲</Link>
+                            </MenuItem>
                         </SubMenu>
                         <MenuItem icon={<MdAccountBox />}>
                             帳戶資料

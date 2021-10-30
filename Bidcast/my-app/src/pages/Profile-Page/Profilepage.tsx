@@ -1,6 +1,7 @@
 import { Sidebar } from "./Sidebar";
 import "./Profilepage.scss";
 import { AccountDetails } from "./AccountDetails";
+import { Follower } from "./Follower";
 import { Following } from "./Following";
 import { Route, Switch } from "react-router-dom";
 import { MyLive } from "./MyLive";
@@ -14,6 +15,9 @@ export function ProfilePage() {
         <div className="profile_page">
             <Sidebar />
             <Switch>
+                <Route path="/profilePage/follower">
+                    <Follower />
+                </Route>
                 <Route path="/profilePage/following">
                     <Following />
                 </Route>
