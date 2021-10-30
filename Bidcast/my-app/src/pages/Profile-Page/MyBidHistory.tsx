@@ -1,20 +1,30 @@
 import moment from "moment";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Card, Container, Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMyLiveProducts } from "../../redux/myLiveProducts/action";
 import { RootState } from "../../store";
-import './MyBidHistory.scss'
+import "./MyBidHistory.scss";
 
-export function MyBidHistory() {
+interface MyBidHistoryProps {
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export function MyBidHistory(props: MyBidHistoryProps) {
+    const [loadState, setLoadState] = useState<number>(0);
     const myBidHistories = useSelector((state: RootState) =>
         Object.values(state.myLive.myLiveProducts)
     );
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchMyLiveProducts());
-    }, [dispatch]);
+        if (loadState === 0) {
+            props.setIsLoading(true);
+        }
+    }, [loadState, props]);
+    useEffect(() => {
+        dispatch(fetchMyLiveProducts(props.setIsLoading, setLoadState));
+    }, [dispatch, props]);
 
     const user = useSelector((state: RootState) => state.authState.user);
     const userInfo = JSON.parse(JSON.stringify(user));

@@ -1,6 +1,5 @@
 import { RootState, RootThunkDispatch } from "../../store";
 
-
 export interface MyLive {
     id: number;
     user_id: number;
@@ -42,31 +41,27 @@ export interface MyLiveProducts {
 //     buyer_id: number;
 // }
 
-export function loadMyLive(
-    myLive: MyLive[]
-) {
+export function loadMyLive(myLive: MyLive[]) {
     return {
         type: "@@myLive/LOAD_MY_LIVE" as const,
         myLive,
-    }
+    };
 }
 
-export function loadMyLiveProducts(
-    myLiveProducts: MyLiveProducts[]
-) {
+export function loadMyLiveProducts(myLiveProducts: MyLiveProducts[]) {
     return {
         type: "@@myLive/LOAD_MY_LIVE_PRODUCTS" as const,
         myLiveProducts,
-    }
+    };
 }
 
-export type LoadMyLiveActions = ReturnType<typeof loadMyLive>
-    | ReturnType<typeof loadMyLiveProducts>
+export type LoadMyLiveActions =
+    | ReturnType<typeof loadMyLive>
+    | ReturnType<typeof loadMyLiveProducts>;
 
 export function fetchMyLive() {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         try {
-
             const res = await fetch(
                 `${process.env.REACT_APP_BACKEND_URL}/profilePage/myLive`
             );
@@ -74,21 +69,22 @@ export function fetchMyLive() {
             const json = await res.json();
 
             if (json) {
-                dispatch(loadMyLive(json.data.results.rows))
+                dispatch(loadMyLive(json.data.results.rows));
             } else {
-                dispatch(loadMyLive([]))
+                dispatch(loadMyLive([]));
             }
         } catch (error) {
             console.log(error);
-
         }
-    }
+    };
 }
 
-export function fetchMyLiveProducts() {
+export function fetchMyLiveProducts(
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    setLoadState: React.Dispatch<React.SetStateAction<number>>
+) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         try {
-
             const res = await fetch(
                 `${process.env.REACT_APP_BACKEND_URL}/profile/myLiveProducts`
             );
@@ -96,12 +92,16 @@ export function fetchMyLiveProducts() {
             const json = await res.json();
 
             if (json) {
-                dispatch(loadMyLiveProducts(json.data.results.rows))
+                dispatch(loadMyLiveProducts(json.data.results.rows));
             } else {
-                dispatch(loadMyLiveProducts([]))
+                dispatch(loadMyLiveProducts([]));
             }
+            window.setTimeout(() => {
+                setIsLoading(false);
+                setLoadState((loadState) => loadState + 1);
+            }, 500);
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 }

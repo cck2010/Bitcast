@@ -29,13 +29,15 @@ export function ProfilePage(props: ProfilePageProps) {
                     <AccountDetails />
                 </Route>
                 <Route path="/profilePage/my-live-products">
-                    <MyLiveProductsComponent />
+                    <MyLiveProductsComponent
+                        setIsLoading={props.setIsLoading}
+                    />
                 </Route>
                 <Route path="/profilePage/my-live">
                     <MyLive />
                 </Route>
                 <Route path="/profilePage/my-bid-history">
-                    <MyBidHistory />
+                    <MyBidHistory setIsLoading={props.setIsLoading} />
                 </Route>
             </Switch>
         </div>
