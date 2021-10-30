@@ -6,6 +6,7 @@ const chance = new Chance();
 
 export async function seed(knex: Knex): Promise<void> {
     // Deletes ALL existing entries
+    await knex("follow_details").del();
     await knex("chat").del();
     await knex("products").del();
     await knex("live").del();
@@ -40,11 +41,19 @@ export async function seed(knex: Knex): Promise<void> {
         .returning("id");
 
     const imgArr = [
+        "liveImage-1634805135838.jpeg",
+        "liveImage-1635333470896.png",
+        "liveImage-1635333674659.jpeg",
+        "liveImage-1635427799318.png",
+        "liveImage-1635427941411.png",
+        "liveImage-1635475836637.png",
         "productImage-1634870092849.png",
         "productImage-1634875865005.jpeg",
-        "productImage-1634897449641.jpeg",
-        "productImage-1634898628085.jpeg",
-        "productImage-1635008978433.png",
+        "productImage-1635333470915.png",
+        "productImage-1635333674740.png",
+        "productImage-1635427941421.png",
+        "productImage-1635475836947.png",
+        "productImage-1635475836981.jpeg",
     ];
 
     for (let i = 0; i < 10; i++) {
@@ -112,9 +121,9 @@ export async function seed(knex: Knex): Promise<void> {
                 bid_increment: Math.floor(price / 10) + 1,
                 category_id:
                     categoryId[Math.floor(Math.random() * categoryId.length)],
-                product_image: `https://picsum.photos/200/300?random=${Math.floor(
-                    Math.random() * 100
-                )}`,
+                product_image: `${
+                    imgArr[Math.floor(Math.random() * imgArr.length)]
+                }`,
                 is_selected: isSelected,
                 duration: 0,
                 created_by: "knex seed",
@@ -186,9 +195,9 @@ export async function seed(knex: Knex): Promise<void> {
                         categoryId[
                             Math.floor(Math.random() * categoryId.length)
                         ],
-                    product_image: `https://picsum.photos/200/300?random=${Math.floor(
-                        Math.random() * 100
-                    )}`,
+                    product_image: `${
+                        imgArr[Math.floor(Math.random() * imgArr.length)]
+                    }`,
                     is_selected: isSelected,
                     duration: 0,
                     created_by: "knex seed",
