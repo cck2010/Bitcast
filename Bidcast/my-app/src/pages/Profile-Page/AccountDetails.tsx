@@ -163,6 +163,15 @@ export function AccountDetails() {
     //loading Config Template
     const [loadStatus, setLoadStatus] = useState("loadingShown");
     useEffect(() => {
+        // if(userImg.search(
+        //     /(https:\/\/)|(http:\/\/)/i
+        // ) < 0
+        // ){
+        //     async function fetchPhoto(){
+        //         await fetch(userImg);
+        //     }
+
+        // }
         setTimeout(() => {
             setLoadStatus("loadingHide");
         }, 500);
@@ -220,9 +229,11 @@ export function AccountDetails() {
                                     : "此用戶並未登記 Telegram 帳號"}
                             </Card.Text>
                             <Card.Text>
+                                {/* <div className={"card_Description"}> */}
                                 {userInfo.description
                                     ? `「 ${userInfo.description} 」`
                                     : "「 自我介紹... 」"}
+                                {/* </div> */}
                             </Card.Text>
                         </Card.Body>
                     </Card>
@@ -325,6 +336,7 @@ export function AccountDetails() {
                                 <label>關於我 :</label>{" "}
                                 <textarea
                                     className={"input_editProfile"}
+                                    maxLength={150}
                                     {...register("aboutMe")}
                                     placeholder={
                                         userInfo.description

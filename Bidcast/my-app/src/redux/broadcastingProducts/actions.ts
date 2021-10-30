@@ -9,6 +9,7 @@ export interface BroadcastingProducts {
     image: string;
     min_price: number;
     buyer_link: string;
+    seller_id:number;
 }
 
 export function loadBroadcastingProducts (
@@ -31,6 +32,7 @@ export function fetchBroadcastingProducts () {
             const json = await res.json()
             
             if(json) {
+                // console.log("json.data.results.rows", json.data.results.rows);
                 dispatch(loadBroadcastingProducts(json.data.results.rows))
             } else {
                 dispatch(loadBroadcastingProducts([]))

@@ -39,6 +39,7 @@ export function ProductDetails(props: any) {
     const [liveArr, setLiveArr] = useState([]);
 
     useEffect(() => {
+        // console.log("lives", lives);
         setLiveArr(lives.filter((live: any) => live.id === props.id));
     }, []);
 

@@ -554,7 +554,15 @@ export class UserService {
             } as ResponseJson;
         }
     };
-
+    getSellerSubscribe = async (sellerId:number) => {
+        let sellerFollowerList = await this.knex("follow_details")
+            .select("follower_id")
+            .where({
+                following_id: sellerId,
+            });
+            let liveRecordList = await this.knex.raw(`select live.id from users left outer join live on users.id = live.user_id where users.id=${sellerId}`)
+            return {sellerFollowerList,liveRecordList};
+    }
     getSubscribe = async (userId: number) => {
         let followingList = await this.knex("follow_details")
             .select("following_id")

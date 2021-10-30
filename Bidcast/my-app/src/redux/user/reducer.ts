@@ -4,6 +4,7 @@ import {
     AuthActions,
     FollowerActions,
     FollowingActions,
+    sellerFollowerActions,
     UserCardInfo,
 } from "./actions";
 import jwt, { JwtPayload, VerifyOptions } from "jsonwebtoken";
@@ -46,7 +47,10 @@ export type JWTPayload = {
     login_method_id?: number;
     description?: string;
 };
-
+export interface sellerFollowerState {
+    sellerId:number[];
+    liveRecord:number[];
+}
 export interface FollowerState {
     userId: number[];
     userDetails: UserCardInfo[];
@@ -58,6 +62,11 @@ export interface FollowingState {
     userDetails: UserCardInfo[];
     success: boolean;
 }
+const sellerFollowerInitalState: sellerFollowerState = {
+    sellerId:[],
+    liveRecord:[]
+}
+
 const followerInitalState: FollowerState = {
     userId: [],
     userDetails: [],
@@ -68,6 +77,19 @@ const followingInitalState: FollowingState = {
     userDetails: [],
     success: false,
 };
+
+export function sellerFollowerReducer(
+    state: sellerFollowerState = sellerFollowerInitalState,
+    action: sellerFollowerActions 
+    ): sellerFollowerState {
+        return produce(state, (newState)=>{
+            if (action.type === "@@sellerFollower/LOAD_SELLERFOLLOWER"){
+                newState.sellerId = action.sellerId;
+                newState.liveRecord = action.liveRecord;
+            }
+        });
+    }
+
 export function followerReducer(
     state: FollowerState = followerInitalState,
     action: FollowerActions
