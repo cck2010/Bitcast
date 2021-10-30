@@ -601,6 +601,7 @@ export class UserService {
     getUserCardInfo = async (idArr: number[]) => {
         const result = await this.knex("users")
             .select(
+                "id",
                 "profile_pic as propic",
                 "username",
                 "telegram_acct as telegramAcct",

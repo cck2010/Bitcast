@@ -5,6 +5,7 @@ import "./FollowingFollower.scss";
 import Login from "../../component/LiveStream/Login";
 import { useEffect, useState } from "react";
 import { fetchSubscribe, fetchUserCardInfo } from "../../redux/user/actions";
+import SubscribeButton from "../../component/common/subscribeButton";
 
 interface ProfilePageProps {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -22,6 +23,15 @@ export function Following(props: ProfilePageProps) {
     const followingDetails = useSelector(
         (state: RootState) => state.following.userDetails
     );
+    const userId = useSelector((state: RootState) => {
+        if (
+            typeof state.authState.user !== "string" &&
+            state.authState.user?.id
+        ) {
+            return state.authState.user?.id;
+        }
+        return 0;
+    });
     useEffect(() => {
         if (loadState === 0) {
             props.setIsLoading(true);
@@ -93,6 +103,10 @@ export function Following(props: ProfilePageProps) {
                                                 ? `「 ${item.description} 」`
                                                 : `「 大家好~我是${item.username} 」`}
                                         </Card.Text>
+                                        <SubscribeButton
+                                            targetId={item.id}
+                                            userId={userId}
+                                        />
                                     </Card.Body>
                                 </Card>
                             </div>

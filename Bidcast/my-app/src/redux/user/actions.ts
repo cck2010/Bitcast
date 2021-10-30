@@ -16,6 +16,7 @@ interface GetSubscriptionRes {
 }
 
 export interface UserCardInfo {
+    id: number;
     username: string;
     propic: string;
     telegramAcct: string;
