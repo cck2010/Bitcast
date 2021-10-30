@@ -1,7 +1,6 @@
 import { RootState, RootThunkDispatch } from "../../store";
 import axios from "axios";
 import { history } from "../../store";
-import { AnyStyledComponent } from "styled-components";
 // import jwt, { JwtPayload, VerifyOptions } from "jsonwebtoken";
 // import { push } from "connected-react-router";
 // import { JWTPayload } from "./reducer";
@@ -16,10 +15,10 @@ interface GetSubscriptionRes {
     success: boolean;
 }
 
-interface loadSellerFollowerRes{
+interface loadSellerFollowerRes {
     sellerFollowerList: number[];
     liveRecordList: number[];
-    success:boolean;
+    success: boolean;
 }
 export interface UserCardInfo {
     id: number;
@@ -48,12 +47,13 @@ export function loadToken(token: string) {
         token,
     };
 }
-export function loadSellerFollower(sellerId:number[],liveRecord:number[]){
+export function loadSellerFollower(sellerId: number[], liveRecord: number[]) {
     return {
         type: "@@sellerFollower/LOAD_SELLERFOLLOWER" as const,
         sellerId,
         liveRecord,
-    }
+    };
+}
 
 export function loadFollower(userId: number[], success: boolean) {
     return {
@@ -75,7 +75,7 @@ export function loadFollowing(userId: number[], success: boolean) {
         success,
     };
 }
-export type sellerFollowerActions = ReturnType<typeof loadSellerFollower>
+export type sellerFollowerActions = ReturnType<typeof loadSellerFollower>;
 
 export function loadFollowingDetails(userDetails: UserCardInfo[]) {
     return {
@@ -197,8 +197,8 @@ export function checkCurrentUser() {
         }
     };
 }
-export function fetchSellerSubscribe(sellerId:number){
-    return async (dispatch: RootThunkDispatch, getState: ()=>RootState)=>{
+export function fetchSellerSubscribe(sellerId: number) {
+    return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         const token = localStorage.getItem("token");
 
         if (token == null) {
@@ -206,19 +206,26 @@ export function fetchSellerSubscribe(sellerId:number){
             return;
         }
         try {
-            const res = await axios.get<loadSellerFollowerRes>(`${process.env.REACT_APP_BACKEND_URL}/subscription/${sellerId}`,
-            {
-                headers: {
-                    Authorization: "Bearer " + token,
-                },
-            })
-            if(res.data.success) {
-                dispatch(loadSellerFollower(res.data.sellerFollowerList,res.data.liveRecordList));
+            const res = await axios.get<loadSellerFollowerRes>(
+                `${process.env.REACT_APP_BACKEND_URL}/subscription/${sellerId}`,
+                {
+                    headers: {
+                        Authorization: "Bearer " + token,
+                    },
+                }
+            );
+            if (res.data.success) {
+                dispatch(
+                    loadSellerFollower(
+                        res.data.sellerFollowerList,
+                        res.data.liveRecordList
+                    )
+                );
             }
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    }
+    };
 }
 export function fetchSubscribe(isGet: boolean, followingId: number = 0) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
