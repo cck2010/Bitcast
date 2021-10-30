@@ -1,5 +1,5 @@
 .adblock {
-    min-height: calc(100vh - 270px);
+    min-height: var(--contentMinHeight);
     font-size: 1px;
 
     .logo {

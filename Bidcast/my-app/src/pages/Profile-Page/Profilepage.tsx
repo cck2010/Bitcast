@@ -9,17 +9,20 @@ import { MyLiveProductsComponent } from "./MyLiveProducts";
 
 // import { useState } from "react";
 // import { Col, Container, Row } from "react-bootstrap";
+interface ProfilePageProps {
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-export function ProfilePage() {
+export function ProfilePage(props: ProfilePageProps) {
     return (
         <div className="profile_page">
             <Sidebar />
             <Switch>
                 <Route path="/profilePage/follower">
-                    <Follower />
+                    <Follower setIsLoading={props.setIsLoading} />
                 </Route>
                 <Route path="/profilePage/following">
-                    <Following />
+                    <Following setIsLoading={props.setIsLoading} />
                 </Route>
                 <Route path="/profilePage/accountDetails">
                     <AccountDetails />
