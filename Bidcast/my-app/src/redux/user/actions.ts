@@ -257,12 +257,16 @@ export function fetchUserCardInfo(
             if (res.data.success) {
                 if (type === "following") {
                     dispatch(loadFollowingDetails(res.data.result));
-                    setIsLoading(false);
-                    setLoadState((loadState) => loadState + 1);
+                    window.setTimeout(() => {
+                        setIsLoading(false);
+                        setLoadState((loadState) => loadState + 1);
+                    }, 500);
                 } else if (type === "follower") {
                     dispatch(loadFollowerDetails(res.data.result));
-                    setIsLoading(false);
-                    setLoadState((loadState) => loadState + 1);
+                    window.setTimeout(() => {
+                        setIsLoading(false);
+                        setLoadState((loadState) => loadState + 1);
+                    }, 500);
                 }
             }
         } catch (e) {
