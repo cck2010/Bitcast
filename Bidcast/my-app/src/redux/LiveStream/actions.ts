@@ -549,7 +549,7 @@ export function fetchSameCategoryLive(
                 dispatch(loadRecommendList(res.data.results, res.data.success));
                 window.setTimeout(() => {
                     setIsLoading(false);
-                }, 100);
+                }, 200);
             }
         } catch (e) {
             console.log(e);

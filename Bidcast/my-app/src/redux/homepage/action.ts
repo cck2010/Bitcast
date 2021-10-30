@@ -60,7 +60,7 @@ export function getComingAuctions(
             window.setTimeout(() => {
                 setIsLoading(false);
                 setLoadState((loadState) => loadState + 1);
-            }, 100);
+            }, 300);
         } catch (error) {
             console.log(error);
         }

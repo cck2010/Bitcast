@@ -23,6 +23,8 @@ import { CategoriesFilter } from "./pages/categories/CategoriesFilter";
 import { FilterProducts } from "./pages/categories/FilterProducts";
 import { menuIconClick } from "./redux/utility/actions";
 import { LoadingDefaultStyle } from "./pages/loading/loading";
+import Four0Four from "./pages/four0Four/four0Four";
+import Adblock from "./pages/adblock/adblock";
 
 function App() {
     const dispatch = useDispatch();
@@ -81,9 +83,7 @@ function App() {
         <div className="App" ref={appRef}>
             {/* {} */}
             {detected ? (
-                <div className="turn_off_adblock">
-                    Please Turn Off Your Adblock!!
-                </div>
+                <Adblock />
             ) : (
                 <>
                     {isLoading && (
@@ -126,6 +126,9 @@ function App() {
                         </Route>
                         <Route path="/loginPage">
                             <LoginPage />
+                        </Route>
+                        <Route path="/">
+                            <Four0Four />
                         </Route>
                     </Switch>
                     <Footer />

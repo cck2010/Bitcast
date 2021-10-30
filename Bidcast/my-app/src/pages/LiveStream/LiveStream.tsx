@@ -104,6 +104,7 @@ function LiveStream(props: LiveStreamProps) {
                     ws.on("render", () => {
                         dispatch(fetchliveStreamProducts(liveId, false));
                     });
+                    ws.emit("checkOnlineUsers", liveId);
                 }
             };
             initWebSocket();
