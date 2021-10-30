@@ -37,6 +37,9 @@ function LiveStreamHeader(props: LiveStreamHeaderProps) {
         }
         return 0;
     });
+    const isAuthenticate = useSelector(
+        (state: RootState) => state.user.isAuthenticate
+    );
     const [onlineUsers, setOnlineUsers] = useState<number>(0);
     const [timerId, setTimerId] = useState<number>(0);
     //Get States
@@ -71,9 +74,14 @@ function LiveStreamHeader(props: LiveStreamHeaderProps) {
                     <div className="col">
                         <div className="title my-3">{title}</div>
                     </div>
-                    <div className="col-2 d-flex align-items-center justify-content-end">
-                        <SubscribeButton targetId={sellerId} userId={userId} />
-                    </div>
+                    {isAuthenticate && (
+                        <div className="col-2 d-flex align-items-center justify-content-end">
+                            <SubscribeButton
+                                targetId={sellerId}
+                                userId={userId}
+                            />
+                        </div>
+                    )}
                 </div>
                 <div className="userinfo d-flex align-items-center mb-4">
                     <img

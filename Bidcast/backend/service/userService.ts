@@ -597,4 +597,18 @@ export class UserService {
                 .del();
         }
     };
+
+    getUserCardInfo = async (idArr: number[]) => {
+        const result = await this.knex("users")
+            .select(
+                "profile_pic as propic",
+                "username",
+                "telegram_acct as telegramAcct",
+                "phone_number as phoneNumber",
+                "email",
+                "description"
+            )
+            .whereIn("id", idArr);
+        return result;
+    };
 }

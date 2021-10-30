@@ -122,7 +122,7 @@ function App() {
                             <FilterProducts />
                         </Route>
                         <Route path="/profilePage">
-                            <ProfilePage />
+                            <ProfilePage setIsLoading={setIsLoading} />
                         </Route>
                         <Route path="/loginPage">
                             <LoginPage />

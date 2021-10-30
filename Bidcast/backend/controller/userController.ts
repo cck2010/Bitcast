@@ -338,7 +338,7 @@ export class UserController {
         try {
             const { followingId } = req.body;
             const userId = req.user && req.user.id ? req.user.id : 0;
-            if (userId === 0) {
+            if (userId === 0 || followingId === userId) {
                 res.json({
                     success: false,
                     data: { msg: "subscribe fail" },
@@ -353,6 +353,34 @@ export class UserController {
                 success: false,
                 data: { msg: "subscribe fail" },
                 error: new Error("subscribe fail"),
+            });
+        }
+    };
+
+    getUserCardInfo = async (req: Request, res: Response) => {
+        try {
+            const { idString } = req.query;
+            const idArr = JSON.stringify(idString)
+                .replace(/"/g, "")
+                .split(",")
+                .map((id) => parseInt(id));
+            if (idArr.length === 0) {
+                res.json({
+                    result: [],
+                    success: false,
+                });
+            }
+            const result = await this.userService.getUserCardInfo(idArr);
+            const response = {
+                result,
+                success: true,
+            };
+            res.json(response);
+        } catch (error) {
+            res.json({
+                success: false,
+                data: { msg: "get user card info fail" },
+                error: new Error("get user card info fail"),
             });
         }
     };

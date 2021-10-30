@@ -54,7 +54,7 @@ html {
     .back_layer {
         width: 99vw;
         height: 200vh;
-        z-index: 10;
+        z-index: 2000;
         position: absolute;
         background-color: white;
     }
@@ -62,7 +62,8 @@ html {
         width: 0;
         height: 200vh;
         position: absolute;
-        z-index: 100;
+        z-index: 2001;
         top: 0;
     }
+    --contentMinHeight: calc(100vh - 270px);
 }

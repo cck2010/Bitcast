@@ -201,7 +201,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded my-3">
             {!isAuthenticate ? (
-                <Login />
+                <Login message={"請先登入再進行拍賣"} />
             ) : phoneNumber !== "" && phoneNumber !== "11111111" ? (
                 seller === username ? (
                     <div className="info w-100 h-100 d-flex justify-contens-center align-items-center flex-column">
