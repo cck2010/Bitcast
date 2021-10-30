@@ -164,7 +164,7 @@ export function AccountDetails() {
         }, 500);
     }, [userInfo]);
 
-    return loadStatus == "loadingShown" ? (
+    return loadStatus === "loadingShown" ? (
         <div className={loadStatus}>
             <LoadingDefaultStyle />
         </div>
