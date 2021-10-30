@@ -48,12 +48,11 @@ body
   
   display: flex;
   color: #D6D6D5;
+  
 }
 .appAside {
   width: 70%;
   background-color: white;
-  
-  
   
 }
 
@@ -98,8 +97,8 @@ body
   margin-top: 10px;
 }
 .smallpic{
-  
   width: 100%;
+  max-width:800px;
   height:100%
 }
 .remove-btn {

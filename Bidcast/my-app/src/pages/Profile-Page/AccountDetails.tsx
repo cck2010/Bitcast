@@ -42,6 +42,11 @@ export function AccountDetails() {
     const toaster = React.useRef(null);
     const [alert, setAlert] = useState([]);
 
+
+//     const handleShow = (event:React.MouseEvent) => {
+//     event.stopPropagation();
+    
+//   };
     function AlertListAppend() {
         return (
             <div>
@@ -53,7 +58,7 @@ export function AccountDetails() {
     }
 
     useEffect(() => {
-        console.log("efwefgeg=", userInfo);
+        // console.log("efwefgeg=", userInfo);
         if (typeof userInfo === "object") {
             if (
                 !isAlertChecked &&
@@ -69,7 +74,7 @@ export function AccountDetails() {
                     addToast(<ToastDemo />);
                     setIsToastExsist(true);
                     // console.log('efwefgeg=',isAuthenticate)
-                    console.log("123=", userInfo);
+                    // console.log("123=", userInfo);
                 }
             }
         }
@@ -175,6 +180,7 @@ export function AccountDetails() {
                     ref={toaster}
                     push={<ToastDemo />}
                     placement="bottom-end"
+                    id = "toast"
                 />
             ) : (
                 console.log("not11111111")
@@ -365,7 +371,9 @@ export function AccountDetails() {
                                     </div>
                                 </div>
                             )}
-                            <input className={"button_default"} type="submit" />
+
+                            <input className={"button_default"} type="submit"  />
+                            {/* onClick={handleShow} */}
                         </form>
                     </div>
                 </Col>

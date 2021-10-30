@@ -23,6 +23,7 @@ import {
 import { fetchCategories } from "../../redux/products/actions";
 import { menuIconClick, sidebarClick } from "../../redux/utility/actions";
 
+
 interface NavbarProps {
     setNavbarRef: React.Dispatch<
         React.SetStateAction<HTMLDivElement | undefined>
@@ -122,6 +123,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
         }
     }, [divRef, props]);
     return (
+    
         <div ref={divRef}>
             {divRef && (
                 <Navbar collapseOnSelect expand="md" className="navbar py-3">
@@ -165,6 +167,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                     }}
                                 />
                             </FormGroup>
+                            
                             <Link to="/" className="nav_link">
                                 主頁
                             </Link>
@@ -259,5 +262,6 @@ export const HomePageNavbar = (props: NavbarProps) => {
                 </Navbar>
             )}
         </div>
+    
     );
 };
