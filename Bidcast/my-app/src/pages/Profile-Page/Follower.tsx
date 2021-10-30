@@ -11,17 +11,17 @@ interface ProfilePageProps {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function Following(props: ProfilePageProps) {
+export function Follower(props: ProfilePageProps) {
     const dispatch = useDispatch();
     const [loadState, setLoadState] = useState<number>(0);
     const isAuthenticate = useSelector(
         (state: RootState) => state.user.isAuthenticate
     );
-    const followingList = useSelector(
-        (state: RootState) => state.following.userId
+    const followerList = useSelector(
+        (state: RootState) => state.follower.userId
     );
-    const followingDetails = useSelector(
-        (state: RootState) => state.following.userDetails
+    const followerDetails = useSelector(
+        (state: RootState) => state.follower.userDetails
     );
     const userId = useSelector((state: RootState) => {
         if (
@@ -41,26 +41,26 @@ export function Following(props: ProfilePageProps) {
         dispatch(fetchSubscribe(true));
     }, [dispatch]);
     useEffect(() => {
-        if (followingList.length > 0) {
+        if (followerList.length > 0) {
             dispatch(
                 fetchUserCardInfo(
-                    followingList,
-                    "following",
+                    followerList,
+                    "follower",
                     props.setIsLoading,
                     setLoadState
                 )
             );
         }
-    }, [dispatch, followingList, props]);
+    }, [dispatch, followerList, props]);
 
     return (
-        <div className="following w-100 me-3 mb-3">
+        <div className="follower w-100 me-3 mb-3">
             {!isAuthenticate ? (
                 <Login message={"請先登入"} />
             ) : (
                 <div className="row">
-                    {followingDetails.length !== 0 &&
-                        followingDetails.map((item) => (
+                    {followerDetails.length !== 0 &&
+                        followerDetails.map((item) => (
                             <div
                                 className="col-lg-3 col-md-4 col-sm-6 col-12"
                                 key={item.username}

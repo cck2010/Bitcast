@@ -1,22 +1,27 @@
 import produce from "immer";
-import { LoadMyLiveProductsActions, MyLiveProducts } from "./action";
+import { LoadMyLiveActions, MyLive, MyLiveProducts } from "./action";
 
 
-export interface MyLiveProductsState {
+export interface MyLiveState {
+    myLive: MyLive[],
     myLiveProducts: MyLiveProducts[]
 }
 
-const initialState: MyLiveProductsState = {
+const initialState: MyLiveState = {
+    myLive: [],
     myLiveProducts: []
 }
 
-export function myLiveProductsReducer(
-    state: MyLiveProductsState = initialState,
-    action: LoadMyLiveProductsActions
-): MyLiveProductsState {
+export function myLiveReducer(
+    state: MyLiveState = initialState,
+    action: LoadMyLiveActions
+): MyLiveState {
     return produce(state, (newState) => {
         switch (action.type) {
-            case "@@myLiveProducts/LOAD_MY_LIVE_PRODUCTS":
+            case "@@myLive/LOAD_MY_LIVE":
+                newState.myLive = action.myLive;
+                break;
+            case "@@myLive/LOAD_MY_LIVE_PRODUCTS":
                 newState.myLiveProducts = action.myLiveProducts;
                 break;
         }

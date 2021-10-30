@@ -32,7 +32,13 @@ const responsive = {
     },
 };
 
-export function ComingAuction() {
+interface ComingAuctionProps {
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    loadState: number;
+    setLoadState: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export function ComingAuction(props: ComingAuctionProps) {
     const auctions = useSelector((state: RootState) =>
         Object.values(state.comingAuction.comingAuctions)
     );
@@ -40,8 +46,10 @@ export function ComingAuction() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getComingAuctions());
-    }, [dispatch]);
+        if (props.loadState === 0) {
+            dispatch(getComingAuctions(props.setIsLoading, props.setLoadState));
+        }
+    }, [dispatch, props]);
 
     const [modalShowProf, setModalShowProf] = useState(-1);
     const [modalShow, setModalShow] = useState(-1);

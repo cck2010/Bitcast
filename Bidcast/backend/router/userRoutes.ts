@@ -55,4 +55,9 @@ userRoutes.post("/subscription", isLoggedIn, (req, res) =>
     userController.subscribe(req, res)
 );
 
+// Profile Page
+userRoutes.get("/userCardInfo", isLoggedIn, (req, res) =>
+    userController.getUserCardInfo(req, res)
+);
+
 export default userRoutes;

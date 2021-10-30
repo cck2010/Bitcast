@@ -42,6 +42,10 @@ export function AccountDetails() {
     const toaster = React.useRef(null);
     const [alert, setAlert] = useState([]);
 
+    //     const handleShow = (event:React.MouseEvent) => {
+    //     event.stopPropagation();
+
+    //   };
     function AlertListAppend() {
         return (
             <div>
@@ -53,7 +57,7 @@ export function AccountDetails() {
     }
 
     useEffect(() => {
-        console.log("efwefgeg=", userInfo);
+        // console.log("efwefgeg=", userInfo);
         if (typeof userInfo === "object") {
             if (
                 !isAlertChecked &&
@@ -69,7 +73,7 @@ export function AccountDetails() {
                     addToast(<ToastDemo />);
                     setIsToastExsist(true);
                     // console.log('efwefgeg=',isAuthenticate)
-                    console.log("123=", userInfo);
+                    // console.log("123=", userInfo);
                 }
             }
         }
@@ -82,9 +86,9 @@ export function AccountDetails() {
     const imageChange = (e: any) => {
         if (e.target.files && e.target.files.length > 0) {
             if (
-                path.extname(e.target.files[0].name) == ".jpg" ||
-                path.extname(e.target.files[0].name) == ".jpeg" ||
-                path.extname(e.target.files[0].name) == ".png"
+                path.extname(e.target.files[0].name) === ".jpg" ||
+                path.extname(e.target.files[0].name) === ".jpeg" ||
+                path.extname(e.target.files[0].name) === ".png"
             ) {
                 setSelectedImage(e.target.files[0]);
             }
@@ -173,7 +177,7 @@ export function AccountDetails() {
         }, 500);
     }, [userInfo]);
 
-    return loadStatus == "loadingShown" ? (
+    return loadStatus === "loadingShown" ? (
         <div className={loadStatus}>
             <LoadingDefaultStyle />
         </div>
@@ -182,8 +186,9 @@ export function AccountDetails() {
             {toast ? (
                 <CToaster
                     ref={toaster}
-                    push={<ToastDemo />}
+                    push={toast}
                     placement="bottom-end"
+                    id="toast"
                 />
             ) : (
                 console.log("not11111111")
@@ -191,34 +196,37 @@ export function AccountDetails() {
             <Row className={"details_container"}>
                 <Col className={"Detail_col_Right "} xs={12} md={4}>
                     <Card className="card_body">
-                        <div className="card_bg_color"></div>
-
-                        {userImg != undefined && (
-                            <Image
-                                src={`${
-                                    userImg.search(
-                                        /(https:\/\/)|(http:\/\/)/i
-                                    ) < 0
-                                        ? process.env.REACT_APP_BACKEND_URL +
-                                          "/" +
-                                          userImg
-                                        : userImg
-                                }`}
-                                width="80"
-                                height="80"
-                                roundedCircle
-                                className="profile_logo"
-                            />
-                        )}
-
+                        <div className="card_bg_color">
+                            {userImg !== undefined && (
+                                <div className="card_absolute_layer d-flex justify-content-center">
+                                    <Image
+                                        src={`${
+                                            userImg.search(
+                                                /(https:\/\/)|(http:\/\/)/i
+                                            ) < 0
+                                                ? process.env
+                                                      .REACT_APP_BACKEND_URL +
+                                                  "/" +
+                                                  userImg
+                                                : userImg
+                                        }`}
+                                        width="80"
+                                        height="80"
+                                        roundedCircle
+                                        className="profile_logo"
+                                        alt="propic"
+                                    />
+                                </div>
+                            )}
+                        </div>
                         <Card.Body>
                             <Card.Title>{userInfo.username}</Card.Title>
-                            {/* <Card.Text >{userInfo.phone_number}</Card.Text> */}
-                            {/* <Card.Text>{userInfo.email}</Card.Text> */}
+                            {/* <Card.Text >{item.phone_number}</Card.Text> */}
+                            {/* <Card.Text>{item.email}</Card.Text> */}
                             <Card.Text className={"name_card_vice"}>
-                                {userInfo.telegram_acct
-                                    ? `${userInfo.telegram_acct}`
-                                    : "請登記 Telegram 帳號"}
+                                {userInfo.telegramAcct
+                                    ? `${userInfo.telegramAcct}`
+                                    : "此用戶並未登記 Telegram 帳號"}
                             </Card.Text>
                             <Card.Text>
                                 {/* <div className={"card_Description"}> */}
@@ -262,7 +270,7 @@ export function AccountDetails() {
                                     className={"input_editProfile"}
                                     {...register("phoneNumber")}
                                     placeholder={
-                                        userInfo.phone_number == "11111111"
+                                        userInfo.phone_number === "11111111"
                                             ? "沒有"
                                             : userInfo.phone_number
                                             ? userInfo.phone_number
@@ -298,6 +306,7 @@ export function AccountDetails() {
                                     <img
                                         className={"bidcast_bot_QR"}
                                         src={bidcastQRcode}
+                                        alt="bidcastQRcode"
                                     ></img>
                                     <div className={"bot_info"}>
                                         <div>
@@ -356,6 +365,7 @@ export function AccountDetails() {
                                         src={URL.createObjectURL(
                                             selectedImage as any
                                         )}
+                                        alt=""
                                     />
                                     <div className={"file_Info_container"}>
                                         {/* <div>{selectedImage.name as any}</div> */}
@@ -372,7 +382,9 @@ export function AccountDetails() {
                                     </div>
                                 </div>
                             )}
+
                             <input className={"button_default"} type="submit" />
+                            {/* onClick={handleShow} */}
                         </form>
                     </div>
                 </Col>

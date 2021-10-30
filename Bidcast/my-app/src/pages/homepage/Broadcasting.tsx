@@ -101,24 +101,6 @@ export function Broadcasting() {
                                     />
                                 </div>
                                 <Card.Body>
-                                    <div className="counter">
-                                        <div className="countdown_time">
-                                            <div className="time_value">00</div>
-                                            <div className="time_label">日</div>
-                                        </div>
-                                        <div className="countdown_time">
-                                            <div className="time_value">00</div>
-                                            <div className="time_label">時</div>
-                                        </div>
-                                        <div className="countdown_time">
-                                            <div className="time_value">00</div>
-                                            <div className="time_label">分</div>
-                                        </div>
-                                        <div className="countdown_time">
-                                            <div className="time_value">00</div>
-                                            <div className="time_label">秒</div>
-                                        </div>
-                                    </div>
                                     <Card.Title className="broadcasting_title">
                                         {broadcasting.title}
                                     </Card.Title>

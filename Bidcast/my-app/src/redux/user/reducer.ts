@@ -4,7 +4,8 @@ import {
     AuthActions,
     FollowerActions,
     FollowingActions,
-    sellerFollowerActions
+    sellerFollowerActions,
+    UserCardInfo,
 } from "./actions";
 import jwt, { JwtPayload, VerifyOptions } from "jsonwebtoken";
 
@@ -52,10 +53,12 @@ export interface sellerFollowerState {
 }
 export interface FollowerState {
     userId: number[];
+    userDetails: UserCardInfo[];
 }
 
 export interface FollowingState {
     userId: number[];
+    userDetails: UserCardInfo[];
 }
 const sellerFollowerInitalState: sellerFollowerState = {
     sellerId:[],
@@ -64,9 +67,11 @@ const sellerFollowerInitalState: sellerFollowerState = {
 
 const followerInitalState: FollowerState = {
     userId: [],
+    userDetails: [],
 };
 const followingInitalState: FollowingState = {
     userId: [],
+    userDetails: [],
 };
 
 export function sellerFollowerReducer(
@@ -86,8 +91,13 @@ export function followerReducer(
     action: FollowerActions
 ): FollowerState {
     return produce(state, (newState) => {
-        if (action.type === "@@follower/LOAD_FOLLOWER") {
-            newState.userId = action.userId;
+        switch (action.type) {
+            case "@@follower/LOAD_FOLLOWER":
+                newState.userId = action.userId;
+                break;
+            case "@@follower/LOAD_FOLLOWER_DETAILS":
+                newState.userDetails = action.userDetails;
+                break;
         }
     });
 }
@@ -96,8 +106,13 @@ export function followingReducer(
     action: FollowingActions
 ): FollowingState {
     return produce(state, (newState) => {
-        if (action.type === "@@following/LOAD_FOLLOWING") {
-            newState.userId = action.userId;
+        switch (action.type) {
+            case "@@following/LOAD_FOLLOWING":
+                newState.userId = action.userId;
+                break;
+            case "@@following/LOAD_FOLLOWING_DETAILS":
+                newState.userDetails = action.userDetails;
+                break;
         }
     });
 }
@@ -123,7 +138,7 @@ export let authReducer = (
 ): AuthState => {
     return produce(state, (state) => {
         switch (action.type) {
-            case "@@Auth/load_token": {
+            case "@@Auth/load_token":
                 try {
                     const verifyOptions: VerifyOptions = {
                         maxAge: "12h",
@@ -166,8 +181,6 @@ export let authReducer = (
                         user: undefined,
                     };
                 }
-            }
-
             default:
                 return state;
         }

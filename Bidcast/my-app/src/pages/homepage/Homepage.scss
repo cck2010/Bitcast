@@ -6,6 +6,7 @@ $logoColor: #11f3a2;
 
 .navbar {
     background-color: $navbarColor;
+    z-index: 2002;
     .form-group {
         width: 180px;
     }

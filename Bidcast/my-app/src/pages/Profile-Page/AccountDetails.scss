@@ -1,5 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap");
 
+.loadingShown {
+    position: absolute;
+    top: 0px;
+}
+
 .details_container {
     width: 100%;
     // min-width: 251px;
@@ -248,6 +253,12 @@
     width: 100%;
     font-family: "Noto Sans TC", sans-serif;
     font-weight: 300;
+    .card-body {
+        p {
+            overflow-y: scroll;
+            max-height: 150px;
+        }
+    }
 }
 .card_bg_color {
     background-color: #2f4154;

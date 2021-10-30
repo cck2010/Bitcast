@@ -10,7 +10,7 @@ interface SubscriptionRes {
     success: boolean;
 }
 
-interface getSubscriptionRes {
+interface GetSubscriptionRes {
     followerList: number[];
     followingList: number[];
     success: boolean;
@@ -20,6 +20,13 @@ interface loadSellerFollowerRes{
     sellerFollowerList: number[];
     liveRecordList: number[];
     success:boolean;
+}
+export interface UserCardInfo {
+    id: number;
+    username: string;
+    propic: string;
+    telegramAcct: string;
+    description: string;
 }
 
 export function login(token: string) {
@@ -55,6 +62,12 @@ export function loadFollower(userId: number[]) {
         userId,
     };
 }
+export function loadFollowerDetails(userDetails: UserCardInfo[]) {
+    return {
+        type: "@@follower/LOAD_FOLLOWER_DETAILS" as const,
+        userDetails,
+    };
+}
 export function loadFollowing(userId: number[]) {
     return {
         type: "@@following/LOAD_FOLLOWING" as const,
@@ -62,8 +75,20 @@ export function loadFollowing(userId: number[]) {
     };
 }
 export type sellerFollowerActions = ReturnType<typeof loadSellerFollower>
-export type FollowerActions = ReturnType<typeof loadFollower>;
-export type FollowingActions = ReturnType<typeof loadFollowing>;
+
+export function loadFollowingDetails(userDetails: UserCardInfo[]) {
+    return {
+        type: "@@following/LOAD_FOLLOWING_DETAILS" as const,
+        userDetails,
+    };
+}
+
+export type FollowerActions =
+    | ReturnType<typeof loadFollower>
+    | ReturnType<typeof loadFollowerDetails>;
+export type FollowingActions =
+    | ReturnType<typeof loadFollowing>
+    | ReturnType<typeof loadFollowingDetails>;
 
 export type AuthActions = ReturnType<typeof loadToken>;
 
@@ -205,7 +230,7 @@ export function fetchSubscribe(isGet: boolean, followingId: number = 0) {
 
         try {
             if (isGet) {
-                const res = await axios.get<getSubscriptionRes>(
+                const res = await axios.get<GetSubscriptionRes>(
                     `${process.env.REACT_APP_BACKEND_URL}/subscription`,
                     {
                         headers: {
@@ -231,6 +256,55 @@ export function fetchSubscribe(isGet: boolean, followingId: number = 0) {
 
                 if (res.data.success) {
                     dispatch(fetchSubscribe(true));
+                }
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
+}
+
+export function fetchUserCardInfo(
+    idArr: number[],
+    type: string,
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    setLoadState: React.Dispatch<React.SetStateAction<number>>
+) {
+    return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
+        const token = localStorage.getItem("token");
+
+        if (token == null) {
+            console.log("no token");
+            return;
+        }
+
+        try {
+            let idString = idArr.join(",");
+            const res = await axios.get<{
+                result: UserCardInfo[];
+                success: boolean;
+            }>(
+                `${process.env.REACT_APP_BACKEND_URL}/userCardInfo?idString=${idString}`,
+                {
+                    headers: {
+                        Authorization: "Bearer " + token,
+                    },
+                }
+            );
+
+            if (res.data.success) {
+                if (type === "following") {
+                    dispatch(loadFollowingDetails(res.data.result));
+                    window.setTimeout(() => {
+                        setIsLoading(false);
+                        setLoadState((loadState) => loadState + 1);
+                    }, 500);
+                } else if (type === "follower") {
+                    dispatch(loadFollowerDetails(res.data.result));
+                    window.setTimeout(() => {
+                        setIsLoading(false);
+                        setLoadState((loadState) => loadState + 1);
+                    }, 500);
                 }
             }
         } catch (e) {

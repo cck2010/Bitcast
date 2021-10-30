@@ -8,14 +8,14 @@ export function LoadingComponentTest() {
 export function LoadingDefaultStyle() {
     const ResetCss = createGlobalStyle`
       body{
-        width: 100%;
-      height: 100vh;
-      margin: 0;
-      padding: 0;
+        width: 99vw;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
       }
     `;
     const Wrap = styled.div`
-        width: 100%;
+        width: 100vw;
         height: 100vh;
         display: flex;
         align-items: center;
@@ -23,6 +23,7 @@ export function LoadingDefaultStyle() {
         text-align: center;
         position: fixed;
         z-index: 13000;
+        background-color: rgba(0, 0, 0, 0.5);
     `;
     const rotation = keyframes`
         0% {

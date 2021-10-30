@@ -256,9 +256,9 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
 
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded my-3">
-            {phoneNumber === "" || phoneNumber === "11111111" ? (
-                <InputPhoneNumber />
-            ) : isAuthenticate ? (
+            {!isAuthenticate ? (
+                <Login message={"請先登入再進行拍賣"} />
+            ) : phoneNumber !== "" && phoneNumber !== "11111111" ? (
                 <div className="info w-100 h-100 d-flex justify-contens-center align-items-center flex-column">
                     <div className="row">
                         <div className="col-12 d-flex flex-row justify-content-center align-items-center w-100 h-100 mt-3">
@@ -361,7 +361,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     </div>
                 </div>
             ) : (
-                <Login />
+                <InputPhoneNumber />
             )}
 
             <CToaster ref={toaster} push={toast} placement="bottom-end" />

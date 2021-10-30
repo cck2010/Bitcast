@@ -270,15 +270,17 @@ function LiveStreamChatRoom(props: LiveStreamChatRoomProps) {
                                     }
                                 }}
                             />
-                            <button
-                                className="sendBtn"
-                                onClick={() => {
-                                    sendMessageHandler(inputMessage);
-                                    setInputMessage("");
-                                }}
-                            >
-                                <i className="fas fa-paper-plane"></i>
-                            </button>
+                            <div className="position-relative">
+                                <button
+                                    className="sendBtn ripple"
+                                    onClick={() => {
+                                        sendMessageHandler(inputMessage);
+                                        setInputMessage("");
+                                    }}
+                                >
+                                    <i className="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
                         </div>
                     ) : (
                         <div className="login_message mt-2 text-center">

@@ -196,12 +196,13 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
             addToast(<ErrorCannotStartCountdown />);
         }
     };
+
     //Button On Click Handler
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded my-3">
-            {phoneNumber === "" || phoneNumber === "11111111" ? (
-                <InputPhoneNumber />
-            ) : isAuthenticate ? (
+            {!isAuthenticate ? (
+                <Login message={"請先登入再進行拍賣"} />
+            ) : phoneNumber !== "" && phoneNumber !== "11111111" ? (
                 seller === username ? (
                     <div className="info w-100 h-100 d-flex justify-contens-center align-items-center flex-column">
                         <div className="row">
@@ -301,7 +302,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     <NotSeller />
                 )
             ) : (
-                <Login />
+                <InputPhoneNumber />
             )}
             <CToaster ref={toaster} push={toast} placement="bottom-end" />
         </div>

@@ -7,3 +7,4 @@ export const myLiveRoutes = express.Router()
 
 myLiveRoutes.get("/profilePage/myLive", (req, res) => myLiveController.getMyLive(req, res))
 myLiveRoutes.get("/profilePage/myBidHistory", (req, res) => myLiveController.getMyBidHistory(req, res))
+myLiveRoutes.get("/profile/myLiveProducts", (req, res) => myLiveController.getMyLiveProducts(req, res))
