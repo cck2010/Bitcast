@@ -20,6 +20,9 @@ export function Follower(props: ProfilePageProps) {
     const followerList = useSelector(
         (state: RootState) => state.follower.userId
     );
+    const followerListLoaded = useSelector(
+        (state: RootState) => state.follower.success
+    );
     const followerDetails = useSelector(
         (state: RootState) => state.follower.userDetails
     );
@@ -50,8 +53,13 @@ export function Follower(props: ProfilePageProps) {
                     setLoadState
                 )
             );
+        } else if (followerList.length === 0 && followerListLoaded) {
+            window.setTimeout(() => {
+                props.setIsLoading(false);
+                setLoadState((loadState) => loadState + 1);
+            }, 500);
         }
-    }, [dispatch, followerList, props]);
+    }, [dispatch, followerList, props, followerListLoaded]);
 
     return (
         <div className="follower w-100 me-3 mb-3">
@@ -111,6 +119,9 @@ export function Follower(props: ProfilePageProps) {
                                 </Card>
                             </div>
                         ))}
+                    {followerDetails.length === 0 && loadState !== 0 && (
+                        <div className="zero m-3">你暫時沒有粉絲</div>
+                    )}
                 </div>
             )}
         </div>

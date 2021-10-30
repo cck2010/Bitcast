@@ -364,6 +364,8 @@ export class UserController {
                 .replace(/"/g, "")
                 .split(",")
                 .map((id) => parseInt(id));
+            console.log(idArr);
+
             if (idArr.length === 0) {
                 res.json({
                     result: [],

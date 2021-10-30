@@ -43,10 +43,11 @@ export function loadToken(token: string) {
     };
 }
 
-export function loadFollower(userId: number[]) {
+export function loadFollower(userId: number[], success: boolean) {
     return {
         type: "@@follower/LOAD_FOLLOWER" as const,
         userId,
+        success,
     };
 }
 export function loadFollowerDetails(userDetails: UserCardInfo[]) {
@@ -55,10 +56,11 @@ export function loadFollowerDetails(userDetails: UserCardInfo[]) {
         userDetails,
     };
 }
-export function loadFollowing(userId: number[]) {
+export function loadFollowing(userId: number[], success: boolean) {
     return {
         type: "@@following/LOAD_FOLLOWING" as const,
         userId,
+        success,
     };
 }
 export function loadFollowingDetails(userDetails: UserCardInfo[]) {
@@ -203,8 +205,12 @@ export function fetchSubscribe(isGet: boolean, followingId: number = 0) {
                 );
 
                 if (res.data.success) {
-                    dispatch(loadFollower(res.data.followerList));
-                    dispatch(loadFollowing(res.data.followingList));
+                    dispatch(
+                        loadFollower(res.data.followerList, res.data.success)
+                    );
+                    dispatch(
+                        loadFollowing(res.data.followingList, res.data.success)
+                    );
                 }
             } else {
                 const res = await axios.post<SubscriptionRes>(
@@ -258,17 +264,13 @@ export function fetchUserCardInfo(
             if (res.data.success) {
                 if (type === "following") {
                     dispatch(loadFollowingDetails(res.data.result));
-                    window.setTimeout(() => {
-                        setIsLoading(false);
-                        setLoadState((loadState) => loadState + 1);
-                    }, 500);
                 } else if (type === "follower") {
                     dispatch(loadFollowerDetails(res.data.result));
-                    window.setTimeout(() => {
-                        setIsLoading(false);
-                        setLoadState((loadState) => loadState + 1);
-                    }, 500);
                 }
+                window.setTimeout(() => {
+                    setIsLoading(false);
+                    setLoadState((loadState) => loadState + 1);
+                }, 500);
             }
         } catch (e) {
             console.log(e);

@@ -50,19 +50,23 @@ export type JWTPayload = {
 export interface FollowerState {
     userId: number[];
     userDetails: UserCardInfo[];
+    success: boolean;
 }
 
 export interface FollowingState {
     userId: number[];
     userDetails: UserCardInfo[];
+    success: boolean;
 }
 const followerInitalState: FollowerState = {
     userId: [],
     userDetails: [],
+    success: false,
 };
 const followingInitalState: FollowingState = {
     userId: [],
     userDetails: [],
+    success: false,
 };
 export function followerReducer(
     state: FollowerState = followerInitalState,
@@ -72,6 +76,7 @@ export function followerReducer(
         switch (action.type) {
             case "@@follower/LOAD_FOLLOWER":
                 newState.userId = action.userId;
+                newState.success = action.success;
                 break;
             case "@@follower/LOAD_FOLLOWER_DETAILS":
                 newState.userDetails = action.userDetails;
@@ -87,6 +92,7 @@ export function followingReducer(
         switch (action.type) {
             case "@@following/LOAD_FOLLOWING":
                 newState.userId = action.userId;
+                newState.success = action.success;
                 break;
             case "@@following/LOAD_FOLLOWING_DETAILS":
                 newState.userDetails = action.userDetails;

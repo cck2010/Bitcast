@@ -20,6 +20,9 @@ export function Following(props: ProfilePageProps) {
     const followingList = useSelector(
         (state: RootState) => state.following.userId
     );
+    const followingListLoaded = useSelector(
+        (state: RootState) => state.follower.success
+    );
     const followingDetails = useSelector(
         (state: RootState) => state.following.userDetails
     );
@@ -50,8 +53,13 @@ export function Following(props: ProfilePageProps) {
                     setLoadState
                 )
             );
+        } else if (followingList.length === 0 && followingListLoaded) {
+            window.setTimeout(() => {
+                props.setIsLoading(false);
+                setLoadState((loadState) => loadState + 1);
+            }, 500);
         }
-    }, [dispatch, followingList, props]);
+    }, [dispatch, followingList, props, followingListLoaded]);
 
     return (
         <div className="following w-100 me-3 mb-3">
@@ -111,6 +119,9 @@ export function Following(props: ProfilePageProps) {
                                 </Card>
                             </div>
                         ))}
+                    {followingDetails.length === 0 && loadState !== 0 && (
+                        <div className="zero m-3">你暫時沒有訂閱的人</div>
+                    )}
                 </div>
             )}
         </div>
