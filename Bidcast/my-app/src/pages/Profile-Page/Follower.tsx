@@ -91,7 +91,7 @@ export function Follower(props: ProfilePageProps) {
                                         <Card.Text>
                                             {item.description
                                                 ? `「 ${item.description} 」`
-                                                : `「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」「 大家好~我是${item.username} 」`}
+                                                : `「 大家好~我是${item.username} 」`}
                                         </Card.Text>
                                     </Card.Body>
                                 </Card>
