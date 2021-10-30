@@ -182,34 +182,37 @@ export function AccountDetails() {
             <Row className={"details_container"}>
                 <Col className={"Detail_col_Right "} xs={12} md={4}>
                     <Card className="card_body">
-                        <div className="card_bg_color"></div>
-
-                        {userImg != undefined && (
-                            <Image
-                                src={`${
-                                    userImg.search(
-                                        /(https:\/\/)|(http:\/\/)/i
-                                    ) < 0
-                                        ? process.env.REACT_APP_BACKEND_URL +
-                                          "/" +
-                                          userImg
-                                        : userImg
-                                }`}
-                                width="80"
-                                height="80"
-                                roundedCircle
-                                className="profile_logo"
-                            />
-                        )}
-
+                        <div className="card_bg_color">
+                            {userImg !== undefined && (
+                                <div className="card_absolute_layer d-flex justify-content-center">
+                                    <Image
+                                        src={`${
+                                            userImg.search(
+                                                /(https:\/\/)|(http:\/\/)/i
+                                            ) < 0
+                                                ? process.env
+                                                      .REACT_APP_BACKEND_URL +
+                                                  "/" +
+                                                  userImg
+                                                : userImg
+                                        }`}
+                                        width="80"
+                                        height="80"
+                                        roundedCircle
+                                        className="profile_logo"
+                                        alt="propic"
+                                    />
+                                </div>
+                            )}
+                        </div>
                         <Card.Body>
                             <Card.Title>{userInfo.username}</Card.Title>
-                            {/* <Card.Text >{userInfo.phone_number}</Card.Text> */}
-                            {/* <Card.Text>{userInfo.email}</Card.Text> */}
+                            {/* <Card.Text >{item.phone_number}</Card.Text> */}
+                            {/* <Card.Text>{item.email}</Card.Text> */}
                             <Card.Text className={"name_card_vice"}>
-                                {userInfo.telegram_acct
-                                    ? `${userInfo.telegram_acct}`
-                                    : "請登記 Telegram 帳號"}
+                                {userInfo.telegramAcct
+                                    ? `${userInfo.telegramAcct}`
+                                    : "此用戶並未登記 Telegram 帳號"}
                             </Card.Text>
                             <Card.Text>
                                 {userInfo.description
