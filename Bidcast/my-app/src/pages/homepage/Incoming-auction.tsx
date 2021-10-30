@@ -10,6 +10,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getComingAuctions } from "../../redux/homepage/action";
 import { useEffect, useState } from "react";
 import { ProductDetails } from "./ProductDetails";
+import { fetchBroadcastingProducts } from "../../redux/broadcastingProducts/actions";
+import { fetchSellerSubscribe } from "../../redux/user/actions";
+import { ProfileDetails } from "./ProfileDetails";
 
 const responsive = {
     desktop: {
@@ -40,8 +43,24 @@ export function ComingAuction() {
         dispatch(getComingAuctions());
     }, [dispatch]);
 
+    const [modalShowProf, setModalShowProf] = useState(-1);
     const [modalShow, setModalShow] = useState(-1);
 
+    useEffect(() => {
+        dispatch(fetchBroadcastingProducts());
+    }, [dispatch]);
+
+    async function profilePreview(info: any) {
+        for (let auction of auctions) {
+            if (auction.id == info) {
+                console.log("auction", auction);
+                console.log("auction", auction.username);
+                console.log("auction", auction.user_id);
+                dispatch(fetchSellerSubscribe(auction.user_id));
+                setModalShowProf(auction.user_id);
+            }
+        }
+    }
     return (
         <div>
             <Container>
@@ -99,7 +118,33 @@ export function ComingAuction() {
                                 <Card.Title className="broadcasting_title">
                                     {auction.title}
                                 </Card.Title>
-                                <Card.Text>由{auction.username}主辦</Card.Text>
+                                <Card.Text>
+                                    <div
+                                        key={auction.id}
+                                        onClick={() => {
+                                            profilePreview(auction.id);
+                                        }}
+                                        // onClick={() =>
+                                        //     setModalShow(broadcasting.id)
+                                        // }
+                                        className={"seller_name"}
+                                    >
+                                        由
+                                        <span className={"card_username"}>
+                                            &nbsp;{auction.username}
+                                            &nbsp;
+                                        </span>
+                                        主辦
+                                    </div>
+                                </Card.Text>
+                                {modalShowProf === auction.id && (
+                                    <ProfileDetails
+                                        show={auction.id}
+                                        broadcasts={auction}
+                                        id={auction.id}
+                                        onHide={() => setModalShowProf(-1)}
+                                    />
+                                )}
                                 <div className="bid_share_container">
                                     <Button
                                         key={auction.id}

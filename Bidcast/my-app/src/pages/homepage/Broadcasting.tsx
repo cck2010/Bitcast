@@ -14,6 +14,7 @@ import { RootState } from "../../store";
 import { useEffect, useState } from "react";
 import { fetchBroadcastingProducts } from "../../redux/broadcastingProducts/actions";
 import { ProfileDetails } from "./ProfileDetails";
+import { fetchSellerSubscribe } from "../../redux/user/actions";
 
 const responsive = {
     desktop: {
@@ -38,9 +39,6 @@ export function Broadcasting() {
     const broadcastings = useSelector((state: RootState) =>
         Object.values(state.broadcastingProducts.broadcastingProduct)
     );
-    const userInfo = useSelector((state: RootState) =>
-        Object.values(state.user)
-    );
 
     useEffect(() => {
         dispatch(fetchBroadcastingProducts());
@@ -52,6 +50,7 @@ export function Broadcasting() {
                 console.log("broadcasting", broadcasting);
                 console.log("broadcasting", broadcasting.username);
                 console.log("broadcasting", broadcasting.seller_id);
+                dispatch(fetchSellerSubscribe(broadcasting.seller_id));
                 setModalShow(broadcasting.seller_id);
             }
         }

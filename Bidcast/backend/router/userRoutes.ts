@@ -45,9 +45,12 @@ userRoutes.post("/login/google", (req, res) =>
 );
 
 // Subscribe
+userRoutes.get("/subscription/:id", isLoggedIn, (req,res)=> 
+    userController.getSellerSubscribe(req, res))
 userRoutes.get("/subscription", isLoggedIn, (req, res) =>
     userController.getSubscribe(req, res)
 );
+
 userRoutes.post("/subscription", isLoggedIn, (req, res) =>
     userController.subscribe(req, res)
 );

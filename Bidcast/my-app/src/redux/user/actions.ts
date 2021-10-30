@@ -1,6 +1,7 @@
 import { RootState, RootThunkDispatch } from "../../store";
 import axios from "axios";
 import { history } from "../../store";
+import { AnyStyledComponent } from "styled-components";
 // import jwt, { JwtPayload, VerifyOptions } from "jsonwebtoken";
 // import { push } from "connected-react-router";
 // import { JWTPayload } from "./reducer";
@@ -13,6 +14,12 @@ interface getSubscriptionRes {
     followerList: number[];
     followingList: number[];
     success: boolean;
+}
+
+interface loadSellerFollowerRes{
+    sellerFollowerList: number[];
+    liveRecordList: number[];
+    success:boolean;
 }
 
 export function login(token: string) {
@@ -34,7 +41,14 @@ export function loadToken(token: string) {
         token,
     };
 }
+export function loadSellerFollower(sellerId:number[],liveRecord:number[]){
+    return {
+        type: "@@sellerFollower/LOAD_SELLERFOLLOWER" as const,
+        sellerId,
+        liveRecord,
+    }
 
+}
 export function loadFollower(userId: number[]) {
     return {
         type: "@@follower/LOAD_FOLLOWER" as const,
@@ -47,7 +61,7 @@ export function loadFollowing(userId: number[]) {
         userId,
     };
 }
-
+export type sellerFollowerActions = ReturnType<typeof loadSellerFollower>
 export type FollowerActions = ReturnType<typeof loadFollower>;
 export type FollowingActions = ReturnType<typeof loadFollowing>;
 
@@ -157,7 +171,29 @@ export function checkCurrentUser() {
         }
     };
 }
+export function fetchSellerSubscribe(sellerId:number){
+    return async (dispatch: RootThunkDispatch, getState: ()=>RootState)=>{
+        const token = localStorage.getItem("token");
 
+        if (token == null) {
+            console.log("no token");
+            return;
+        }
+        try {
+            const res = await axios.get<loadSellerFollowerRes>(`${process.env.REACT_APP_BACKEND_URL}/subscription/${sellerId}`,
+            {
+                headers: {
+                    Authorization: "Bearer " + token,
+                },
+            })
+            if(res.data.success) {
+                dispatch(loadSellerFollower(res.data.sellerFollowerList,res.data.liveRecordList));
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}
 export function fetchSubscribe(isGet: boolean, followingId: number = 0) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         const token = localStorage.getItem("token");

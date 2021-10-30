@@ -348,7 +348,7 @@ footer {
     width: 130px;
     height: 130px;
     text-align: center;
-    border: 3px solid #1e2833 !important;
+    // border: 3px solid #1e2833 !important;
     // position: absolute;
     // top: -65px;
     // left: 184px;
@@ -377,6 +377,7 @@ footer {
     align-items: center;
     padding-left: 10% !important;
     padding-right: 10% !important;
+    border-top: 6px solid rgb(158, 158, 158) !important;
 
     div {
         // margin: 10px;
@@ -384,16 +385,67 @@ footer {
         flex-direction: column;
         // padding-left: 30px;
         // padding-right: 30px;
-
         .card_info_Num {
             font-size: 35px;
             font-weight: 700;
         }
         .card_info_item {
-            color: grey;
-            font-family: "Noto Sans TC", sans-serif;
-            font-size: 20px;
-            font-weight: 600;
+            color: grey !important;
+            font-family: "Noto Sans TC", sans-serif !important;
+            font-size: 20px !important;
+            font-weight: 600 !important;
+        }
+        .card_himself_container {
+            display: flex;
+            width: 80px;
+            height: 35px;
+            padding-top: 0.275rem;
+            padding-bottom: 0.275rem;
+            vertical-align: middle;
+            border: 1px solid transparent;
+            border-radius: 0.25rem !important;
+            background-color: #1f2833;
+            cursor: pointer;
+
+            .card_himself {
+                font-family: "Noto Sans TC", sans-serif !important;
+                font-size: 15px !important;
+                font-weight: 600;
+                line-height: 1.5;
+                color: white;
+                text-align: center;
+                text-decoration: none;
+            }
+        }
+        .card_himself_container:hover {
+            background-color: #1f2833;
+            animation: card_himself_buttonBG ease-in 0.1s;
+            animation-fill-mode: forwards;
+            @keyframes card_himself_buttonBG {
+                0% {
+                    background-color: #1f2833;
+                }
+                100% {
+                    background-color: #41546b;
+                }
+            }
+        }
+        .card_himself_container:active {
+            box-shadow: 0 2px 5px #666;
+            transform: translateY(2px);
+            background-color: #1f2833;
+            animation: card_himself_buttonActiveBG ease-in 0.1s;
+            animation-fill-mode: forwards;
+            @keyframes card_himself_buttonActiveBG {
+                0% {
+                    color: white;
+                    background-color: #1f2833;
+                }
+                100% {
+                    color: black;
+                    background-color: #12f2a1;
+                }
+            }
         }
     }
 }

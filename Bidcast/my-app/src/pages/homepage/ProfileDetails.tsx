@@ -5,7 +5,9 @@ import Carousel from "react-multi-carousel";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductDetails } from "../../redux/homepage/action";
 import { RootState } from "../../store";
-// import SubscribeButton from "../components/common/subscribeButton";
+import SubscribeButton from "../../component/common/subscribeButton";
+import { fetchSellerSubscribe, fetchSubscribe } from "../../redux/user/actions";
+import { push } from "connected-react-router";
 
 const productResponsive = {
     desktop: {
@@ -29,23 +31,44 @@ export function ProfileDetails(props: any) {
     // const products = useSelector((state: RootState) =>
     //     Object.values(state.comingAuction.productDetails)
     // );
-    const userInfo = useSelector((state: RootState) =>
-        Object.values(state.user)
-    );
+    const userId = useSelector((state: RootState) => {
+        if (
+            typeof state.authState.user !== "string" &&
+            state.authState.user?.id
+        ) {
+            return state.authState.user?.id;
+        }
+    });
+    const sellerFollowers = useSelector((state: RootState) => {
+        if (
+            typeof state.authState.user !== "string" &&
+            state.authState.user?.id
+        ) {
+            return state.sellerFollower;
+        }
+    });
 
     const dispatch = useDispatch();
+    //get subscript
+    // dispatch(fetchSubscribe(true);
 
-    useEffect(() => {
-        dispatch(fetchProductDetails());
-    }, [dispatch]);
+    //post subscript
+    // dispatch(fetchSubscribe(false, userId));
 
     const { broadcasts } = props;
     const [broadcastArr, setBroadcastArr] = useState([]);
 
+    const [proId, setProId] = useState("");
+
     useEffect(() => {
-        console.log("broadcasts", broadcasts);
+        dispatch(fetchSellerSubscribe(broadcasts.id));
+        dispatch(fetchProductDetails());
+    }, [dispatch]);
+
+    useEffect(() => {
+        // console.log("broadcasts", broadcasts);
         setBroadcastArr(broadcastArr.concat(broadcasts));
-        console.log("broadcastArr", broadcastArr);
+        // console.log("broadcastArr", broadcastArr);
     }, []);
 
     if (!broadcasts) {
@@ -109,24 +132,51 @@ export function ProfileDetails(props: any) {
                     </Modal.Body>
                     <Modal.Footer className={"profile_card_footer"}>
                         <div className={"followers_container"}>
-                            <span className={"card_info_Num"}>80</span>
+                            <span className={"card_info_Num"}>
+                                {sellerFollowers
+                                    ? sellerFollowers.sellerId.length
+                                    : 0}
+                            </span>
                             {/* {(broadcastArr[0] as any).telegram_acct
                                 ? (broadcastArr[0] as any).telegram_acct
                                 : "此人尚未有Telegram Account"} */}
                             <span className={"card_info_item"}>粉絲</span>
                         </div>
                         <div className={"products_container"}>
-                            <span className={"card_info_Num"}>10</span>
+                            <span className={"card_info_Num"}>
+                                {sellerFollowers
+                                    ? sellerFollowers.liveRecord.length
+                                    : 0}
+                            </span>
                             {/* {(broadcastArr[0] as any).telegram_acct
                                 ? (broadcastArr[0] as any).telegram_acct
                                 : "此人尚未有Telegram Account"} */}
-                            <span className={"card_info_item"}>拍賣</span>
+                            <span className={"card_info_item"}>拍賣紀錄</span>
                         </div>
                         <div className={"follow_button_container"}>
                             {/* {(broadcastArr[0] as any).telegram_acct
                                 ? (broadcastArr[0] as any).telegram_acct
                                 : "此人尚未有Telegram Account"} */}
-                            <span>追蹤</span>
+                            {/* <span>追蹤</span> */}
+                            {(broadcastArr[0] as any).user_id === userId ? (
+                                <div
+                                    className={"card_himself_container"}
+                                    onClick={() => {
+                                        dispatch(
+                                            push("/profilePage/accountDetails")
+                                        );
+                                    }}
+                                >
+                                    <span className={"card_himself"}>
+                                        我的主頁
+                                    </span>
+                                </div>
+                            ) : (
+                                <SubscribeButton
+                                    targetId={(broadcastArr[0] as any).user_id}
+                                    userId={userId as number}
+                                />
+                            )}
                         </div>
                     </Modal.Footer>
                 </Modal>
