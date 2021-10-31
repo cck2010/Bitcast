@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavLink, Route, Switch, BrowserRouter, withRouter } from "react-router-dom";
 import { ConnectedRouter, push } from 'connected-react-router';
 import { history,store } from '../../store';
@@ -16,6 +16,7 @@ import axios from 'axios'
 import FacebookLogin from "react-facebook-login";
 import {SwitchTransition, CSSTransition} from 'react-transition-group';
 import GoogleLogin from 'react-google-login';
+import { LoadingDefaultStyle } from "../loading/loading";
 
 
 const AnimatedSwitch = withRouter(({ location }) => (
@@ -42,6 +43,8 @@ export function LoginPage() {
 
   const responseGoogle = async (response:any ) => {
     // console.log(response);
+
+
     if(response.profileObj){
 
     try {
@@ -88,7 +91,7 @@ export function LoginPage() {
               email:response.email,
               image:response.picture.data.url
             })
-            console.log(res.data)
+            // console.log(res.data)
             
             if (res.data.token != null) {
               localStorage.setItem('token', res.data.token)
@@ -122,9 +125,18 @@ export function LoginPage() {
 
 <div>Login with Facebook</div>
 </div>;}
-
+    const [loadStatus, setLoadStatus] = useState("loadingShown");
+    useEffect(() => {
+        setTimeout(() => {
+            setLoadStatus("loadingHide");
+        }, 200);
+    }, []);
   return (
-    
+    loadStatus === "loadingShown" ? (
+        <div className={loadStatus}>
+            <LoadingDefaultStyle />
+        </div>
+    ) : (
 <Provider store={store}>
   <ConnectedRouter history={history}>
   <BrowserRouter>
@@ -196,6 +208,6 @@ export function LoginPage() {
       </BrowserRouter>
   </ConnectedRouter>
 </Provider>
-
+    )
   )
 }

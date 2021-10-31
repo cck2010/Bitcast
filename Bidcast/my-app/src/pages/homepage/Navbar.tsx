@@ -100,12 +100,16 @@ export const HomePageNavbar = (props: NavbarProps) => {
         dispatch(fetchCategories());
     }, [dispatch]);
 
-    const menuIconOnclickHandler = () => {
+    const menuIconOnclickHandler = (e:React.MouseEvent) => {
+        e.stopPropagation();
         dispatch(sidebarClick(true));
         dispatch(menuIconClick(menuCollapse ? false : true, false));
     };
-
+    const preventPropagation = (e:React.MouseEvent) => {
+        e.stopPropagation();}
     const [categoryId, setCategoryId] = useState(0);
+
+
 
     useEffect(() => {
         dispatch(fetchFilteredCategories(categoryId));
@@ -126,6 +130,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
     
         <div ref={divRef}>
             {divRef && (
+           
                 <Navbar collapseOnSelect expand="md" className="navbar py-3">
                     <Link to="/" className="nav_link ms-3">
                         <img
@@ -144,6 +149,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
                         id="responsive-navbar-nav"
                         className=" mt-md-0 mt-3"
                         ref={menuRef}
+                        onClick={preventPropagation}
                     >
                         <Nav className="me-auto navbar_buttons">
                             <FormGroup>
@@ -260,7 +266,9 @@ export const HomePageNavbar = (props: NavbarProps) => {
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
+                
             )}
+            
         </div>
     
     );
