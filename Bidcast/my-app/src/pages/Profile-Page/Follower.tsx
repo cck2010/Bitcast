@@ -6,6 +6,7 @@ import Login from "../../component/LiveStream/Login";
 import { useEffect, useState } from "react";
 import { fetchSubscribe, fetchUserCardInfo } from "../../redux/user/actions";
 import SubscribeButton from "../../component/common/subscribeButton";
+import "./Animation.scss";
 
 interface ProfilePageProps {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -54,10 +55,8 @@ export function Follower(props: ProfilePageProps) {
                 )
             );
         } else if (followerList.length === 0 && followerListLoaded) {
-            window.setTimeout(() => {
-                props.setIsLoading(false);
-                setLoadState((loadState) => loadState + 1);
-            }, 500);
+            props.setIsLoading(false);
+            setLoadState((loadState) => loadState + 1);
         }
     }, [dispatch, followerList, props, followerListLoaded]);
 
@@ -70,7 +69,7 @@ export function Follower(props: ProfilePageProps) {
                     {followerDetails.length !== 0 &&
                         followerDetails.map((item) => (
                             <div
-                                className="col-lg-3 col-md-4 col-sm-6 col-12"
+                                className="col-lg-3 col-md-4 col-sm-6 col-12 mb-3"
                                 key={item.username}
                             >
                                 <Card className="card_body">

@@ -104,7 +104,13 @@ export const HomePageNavbar = (props: NavbarProps) => {
         dispatch(menuIconClick(menuCollapse ? false : true, false));
     };
     const navbarOnClickHandler = () => {
-        menuToggle.current?.click();
+        if (
+            menuToggle.current?.classList[
+                Array.from(menuToggle.current?.classList).indexOf("collapsed")
+            ] !== "collapsed"
+        ) {
+            menuToggle.current?.click();
+        }
     };
 
     const [categoryId, setCategoryId] = useState(0);
@@ -270,6 +276,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                         width="40"
                                         height="40"
                                         className="rounded-circle"
+                                        onClick={navbarOnClickHandler}
                                     />
                                 )}
                             </Link>

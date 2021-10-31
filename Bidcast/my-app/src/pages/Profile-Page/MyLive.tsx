@@ -5,6 +5,7 @@ import { RootState } from "../../store";
 import { useEffect } from "react";
 import { fetchMyLive } from "../../redux/myLiveProducts/action";
 import moment from "moment";
+import "./Animation.scss";
 
 export function MyLive() {
     const dispatch = useDispatch();
@@ -21,7 +22,7 @@ export function MyLive() {
     }, [dispatch]);
 
     return (
-        <div>
+        <div className="myLive ps-3">
             <Container>
                 <h2 className="pt-3">我的直播</h2>
             </Container>

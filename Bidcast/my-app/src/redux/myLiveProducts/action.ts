@@ -96,10 +96,8 @@ export function fetchMyLiveProducts(
             } else {
                 dispatch(loadMyLiveProducts([]));
             }
-            window.setTimeout(() => {
-                setIsLoading(false);
-                setLoadState((loadState) => loadState + 1);
-            }, 500);
+            setIsLoading(false);
+            setLoadState((loadState) => loadState + 1);
         } catch (error) {
             console.log(error);
         }

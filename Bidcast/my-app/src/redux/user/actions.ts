@@ -310,10 +310,8 @@ export function fetchUserCardInfo(
                 } else if (type === "follower") {
                     dispatch(loadFollowerDetails(res.data.result));
                 }
-                window.setTimeout(() => {
-                    setIsLoading(false);
-                    setLoadState((loadState) => loadState + 1);
-                }, 500);
+                setIsLoading(false);
+                setLoadState((loadState) => loadState + 1);
             }
         } catch (e) {
             console.log(e);

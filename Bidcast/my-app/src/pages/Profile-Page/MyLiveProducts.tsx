@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchMyLiveProducts } from "../../redux/myLiveProducts/action";
 import { RootState } from "../../store";
 import { MyLiveProducts } from "../../redux/myLiveProducts/action";
+import "./Animation.scss";
+import "./MyLiveProducts.scss";
 
 interface MyLiveProductsProps {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -62,7 +64,7 @@ export function MyLiveProductsComponent(props: MyLiveProductsProps) {
     const userInfo = JSON.parse(JSON.stringify(user));
 
     return (
-        <div>
+        <div className="myLiveProducts ps-3">
             <Container>
                 <h2 className="pt-3">我拍賣的商品</h2>
             </Container>
