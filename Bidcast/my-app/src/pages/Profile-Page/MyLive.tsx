@@ -61,7 +61,7 @@ export function MyLive() {
                                         </Button>
                                     </div>
                                 ) : (
-                                    <div>
+                                    <div className="d-flex justify-content-around w-100">
                                         <Button
                                             variant="outline-dark"
                                             className="bid_button"
