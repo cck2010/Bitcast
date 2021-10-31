@@ -40,75 +40,81 @@ export function MyLive() {
             </Container>
             <Container className="my_live_container pt-3">
                 <div className="row w-100">
-                    {lives.map((live) =>
-                        live.user_id === userInfo.id ? (
-                            <div
-                                className="col-lg-3 col-md-4 col-sm-6 col-12 mb-3"
-                                key={live.id}
-                            >
-                                <Card
-                                    className="my_live_product_card_body w-100 h-100"
-                                    style={{ width: "16rem" }}
+                    {lives.map(
+                        (live) =>
+                            live.user_id === userInfo.id && (
+                                <div
+                                    className="col-lg-3 col-md-4 col-sm-6 col-12 mb-3"
+                                    key={live.id}
                                 >
-                                    <div className="card_bg_color2">
-                                        <div className="card_absolute_layer d-flex justify-content-center">
-                                            <Image
-                                                className="my_live_products"
-                                                src={`${process.env.REACT_APP_BACKEND_URL}/${live.image}`}
-                                                fluid
-                                            />
+                                    <Card
+                                        className="my_live_product_card_body w-100 h-100"
+                                        style={{ width: "16rem" }}
+                                    >
+                                        <div className="card_bg_color2">
+                                            <div className="card_absolute_layer d-flex justify-content-center">
+                                                <Image
+                                                    className="my_live_products"
+                                                    src={`${process.env.REACT_APP_BACKEND_URL}/${live.image}`}
+                                                    fluid
+                                                />
+                                            </div>
                                         </div>
-                                    </div>
-                                    <Card.Body className="my_bid_card_container">
-                                        <Card.Title>{live.title}</Card.Title>
-                                        <Card.Text>
-                                            {moment(live.starting_time).format(
-                                                "YYYY-MM-DD hh:mm:ss"
-                                            )}
-                                        </Card.Text>
+                                        <Card.Body className="my_bid_card_container">
+                                            <Card.Title>
+                                                {live.title}
+                                            </Card.Title>
+                                            <Card.Text>
+                                                {moment(
+                                                    live.starting_time
+                                                ).format("YYYY-MM-DD hh:mm:ss")}
+                                            </Card.Text>
 
-                                        {live.is_ended ? (
-                                            <div>
-                                                <Card.Text>
-                                                    觀看人數： {live.max_viewer}
-                                                </Card.Text>
-                                                <Button
-                                                    variant="outline-dark"
-                                                    className="bid_button"
-                                                    disabled
-                                                >
-                                                    直播完結
-                                                </Button>
-                                            </div>
-                                        ) : (
-                                            <div className="d-flex justify-content-around w-100">
-                                                <Button
-                                                    variant="outline-dark"
-                                                    className="bid_button"
-                                                    onClick={() => {
-                                                        dispatch(
-                                                            push(
-                                                                `/liveStreamingSeller?token=${live.seller_link}`
-                                                            )
-                                                        );
-                                                    }}
-                                                >
-                                                    開始直播
-                                                </Button>
-                                                <Button
-                                                    variant="outline-dark"
-                                                    className="bid_button"
-                                                >
-                                                    完成直播
-                                                </Button>
-                                            </div>
-                                        )}
-                                    </Card.Body>
-                                </Card>
-                            </div>
-                        ) : (
-                            " "
-                        )
+                                            {live.is_ended ? (
+                                                <div>
+                                                    <Card.Text>
+                                                        觀看人數：{" "}
+                                                        {live.max_viewers}
+                                                    </Card.Text>
+                                                    <Button
+                                                        variant="outline-dark"
+                                                        className="bid_button"
+                                                        disabled
+                                                    >
+                                                        直播完結
+                                                    </Button>
+                                                </div>
+                                            ) : (
+                                                <div className="d-flex justify-content-around w-100">
+                                                    <Button
+                                                        variant="outline-dark"
+                                                        className="bid_button"
+                                                        onClick={() => {
+                                                            // setLiveId(live.id);
+                                                            dispatch(
+                                                                push(
+                                                                    `/liveStreamingSeller?token=${live.seller_link}`
+                                                                )
+                                                            );
+                                                        }}
+                                                    >
+                                                        開始直播
+                                                    </Button>
+                                                    <Button
+                                                        variant="outline-dark"
+                                                        className="bid_button"
+                                                        onClick={() => {
+                                                            setLiveId(live.id);
+                                                        }}
+                                                    >
+                                                        完成直播
+                                                    </Button>
+                                                </div>
+                                            )}
+                                        </Card.Body>
+                                    </Card>
+                                </div>
+                            )
                     )}
                 </div>
 
