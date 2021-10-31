@@ -19,7 +19,7 @@ export function Homepage(props: HomepageProps) {
     }, [props, loadState]);
     return (
         <div>
-            <section>
+            <section className={"Konva_container"}>
                 <HomepageCanvas />
             </section>
             <section>
