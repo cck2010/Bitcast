@@ -39,7 +39,9 @@ export class MyLiveService {
         const results = await this.knex.raw(
             /*sql*/
             `
-            select * from products
+            select 
+            *
+            from products
             left outer join users on products.seller_id = users.id
             left outer join live on products.live_id = live.id
             `

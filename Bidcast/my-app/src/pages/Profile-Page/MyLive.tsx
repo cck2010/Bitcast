@@ -2,7 +2,7 @@ import { Button, Card, Container, Image } from "react-bootstrap";
 import { push } from "connected-react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
     fetchMyLive,
     updateLiveStatus,
@@ -30,6 +30,9 @@ export function MyLive() {
     useEffect(() => {
         dispatch(updateLiveStatus(liveId));
     }, [dispatch, liveId]);
+
+    const [, updateState] = useState({});
+    const forceUpdate = useCallback(() => updateState({}), []);
 
     // const [disabled, setDisabled] = useState(false);
 
@@ -90,7 +93,7 @@ export function MyLive() {
                                                         variant="outline-dark"
                                                         className="bid_button"
                                                         onClick={() => {
-                                                            // setLiveId(live.id);
+                                                            setLiveId(live.id);
                                                             dispatch(
                                                                 push(
                                                                     `/liveStreamingSeller?token=${live.seller_link}`
@@ -105,6 +108,8 @@ export function MyLive() {
                                                         className="bid_button"
                                                         onClick={() => {
                                                             setLiveId(live.id);
+                                                            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                                                            forceUpdate;
                                                         }}
                                                     >
                                                         完成直播
@@ -117,29 +122,6 @@ export function MyLive() {
                             )
                     )}
                 </div>
-
-                <Card
-                    className="my_live_product_card_body"
-                    style={{ width: "16rem" }}
-                >
-                    <Image
-                        className="my_live_products"
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOKWyupCA7IZfNCTrogofaPnaClmqOly430g&usqp=CAU"
-                        fluid
-                    />
-                    <Card.Body className="my_bid_card_container">
-                        <Card.Title>Name</Card.Title>
-                        <Card.Text>Live starting time</Card.Text>
-                        <Card.Text>max viewers</Card.Text>
-                        <Button
-                            variant="outline-dark"
-                            className="bid_button"
-                            disabled
-                        >
-                            直播完結
-                        </Button>
-                    </Card.Body>
-                </Card>
             </Container>
         </div>
     );

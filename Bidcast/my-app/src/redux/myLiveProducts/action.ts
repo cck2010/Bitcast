@@ -30,17 +30,6 @@ export interface MyLiveProducts {
     telegram_acct: string;
 }
 
-// export interface MyBidHistory {
-//     id: number;
-//     product_name: string;
-//     starting_time: Date;
-//     username: string;
-//     email: string;
-//     phone_number: number;
-//     deal_price: number;
-//     buyer_id: number;
-// }
-
 export function loadMyLive(myLive: MyLive[]) {
     return {
         type: "@@myLive/LOAD_MY_LIVE" as const,
