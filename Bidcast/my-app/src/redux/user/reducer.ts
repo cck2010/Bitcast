@@ -4,6 +4,7 @@ import {
     AuthActions,
     FollowerActions,
     FollowingActions,
+    sellerFollowerActions,
     UserCardInfo,
 } from "./actions";
 import jwt, { JwtPayload, VerifyOptions } from "jsonwebtoken";
@@ -46,24 +47,49 @@ export type JWTPayload = {
     login_method_id?: number;
     description?: string;
 };
-
+export interface sellerFollowerState {
+    sellerId:number[];
+    liveRecord:number[];
+}
 export interface FollowerState {
     userId: number[];
     userDetails: UserCardInfo[];
+    success: boolean;
 }
 
 export interface FollowingState {
     userId: number[];
     userDetails: UserCardInfo[];
+    success: boolean;
 }
+const sellerFollowerInitalState: sellerFollowerState = {
+    sellerId:[],
+    liveRecord:[]
+}
+
 const followerInitalState: FollowerState = {
     userId: [],
     userDetails: [],
+    success: false,
 };
 const followingInitalState: FollowingState = {
     userId: [],
     userDetails: [],
+    success: false,
 };
+
+export function sellerFollowerReducer(
+    state: sellerFollowerState = sellerFollowerInitalState,
+    action: sellerFollowerActions 
+    ): sellerFollowerState {
+        return produce(state, (newState)=>{
+            if (action.type === "@@sellerFollower/LOAD_SELLERFOLLOWER"){
+                newState.sellerId = action.sellerId;
+                newState.liveRecord = action.liveRecord;
+            }
+        });
+    }
+
 export function followerReducer(
     state: FollowerState = followerInitalState,
     action: FollowerActions
@@ -72,6 +98,7 @@ export function followerReducer(
         switch (action.type) {
             case "@@follower/LOAD_FOLLOWER":
                 newState.userId = action.userId;
+                newState.success = action.success;
                 break;
             case "@@follower/LOAD_FOLLOWER_DETAILS":
                 newState.userDetails = action.userDetails;
@@ -87,6 +114,7 @@ export function followingReducer(
         switch (action.type) {
             case "@@following/LOAD_FOLLOWING":
                 newState.userId = action.userId;
+                newState.success = action.success;
                 break;
             case "@@following/LOAD_FOLLOWING_DETAILS":
                 newState.userDetails = action.userDetails;

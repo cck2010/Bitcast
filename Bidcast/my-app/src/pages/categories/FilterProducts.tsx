@@ -30,8 +30,6 @@ export function FilterProducts() {
         Object.values(state.searchProduct.productFilter)
     );
 
-    console.log(products);
-
     return (
         <div className="category_page">
             <Container>

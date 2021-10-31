@@ -307,9 +307,40 @@ export class UserController {
             });
         }
     };
-
+    getSellerSubscribe = async (req:Request, res:Response)=>{
+        try {
+            const {id} = req.params
+            console.log("getSellerSubscribe->>>id", id);
+            let sellerId = parseInt(id)
+            if (sellerId === 0) {
+                res.json({
+                    success: false,
+                    data: { msg: "get seller subscribe fail" },
+                });
+            }
+            const result = await this.userService.getSellerSubscribe(sellerId);
+            // console.log("result", result.sellerFollowerList);
+            // console.log("result", result.liveRecordList);
+            const response = {
+                sellerFollowerList: result.sellerFollowerList,
+                liveRecordList: result.liveRecordList.rows,
+                success: true,
+            };
+            res.json(response);
+            return;
+        } catch (error) {
+            res.json({
+                success: false,
+                data: { msg: "get seller subscribe fail" },
+                error: new Error("get seller subscribe fail"),
+            });
+        }
+    }
     getSubscribe = async (req: Request, res: Response) => {
         try {
+            
+            console.log("in getSubscribe")
+            // console.log("seller_id_for_subscribe", id);
             const userId = req.user && req.user.id ? req.user.id : 0;
             if (userId === 0) {
                 res.json({
@@ -364,6 +395,8 @@ export class UserController {
                 .replace(/"/g, "")
                 .split(",")
                 .map((id) => parseInt(id));
+            console.log(idArr);
+
             if (idArr.length === 0) {
                 res.json({
                     result: [],

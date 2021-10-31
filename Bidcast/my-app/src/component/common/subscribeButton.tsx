@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSubscribe } from "../../redux/user/actions";
+import { fetchSellerSubscribe, fetchSubscribe } from "../../redux/user/actions";
 import { RootState } from "../../store";
 
 interface SubscriptionBtnProps {
@@ -45,6 +45,12 @@ function SubscribeButton(props: SubscriptionBtnProps) {
             setIsSelf(false);
         }
     }, [props.targetId, props.userId]);
+
+    const trigger = async () => {
+        await dispatch(fetchSubscribe(false, props.targetId));
+        await dispatch(fetchSellerSubscribe(props.targetId));
+    };
+
     //Check Same Person
     return (
         <>
@@ -54,9 +60,10 @@ function SubscribeButton(props: SubscriptionBtnProps) {
                         className={`subscribe_btn btn ${
                             isSubscribed ? "btn-secondary" : "btn-danger"
                         }`}
-                        onClick={() => {
-                            dispatch(fetchSubscribe(false, props.targetId));
-                        }}
+                        // onClick={() => {
+                        //     dispatch(fetchSubscribe(false, props.targetId));
+                        // }}
+                        onClick={trigger}
                     >
                         {isSubscribed ? "已關注" : "關注"}{" "}
                         {isSubscribed ? (

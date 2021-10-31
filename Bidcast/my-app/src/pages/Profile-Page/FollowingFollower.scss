@@ -11,3 +11,13 @@
 .subscribe_btn:focus {
     box-shadow: none !important;
 }
+
+.follower,
+.following {
+    font-size: 1.5rem;
+    font-family: "Noto Sans TC", sans-serif;
+    padding-left: 0.5rem;
+    .card_body {
+        height: 100%;
+    }
+}

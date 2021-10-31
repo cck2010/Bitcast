@@ -11,8 +11,10 @@ import { push } from "connected-react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { RWebShare } from "react-web-share";
 import { RootState } from "../../store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchBroadcastingProducts } from "../../redux/broadcastingProducts/actions";
+import { ProfileDetails } from "./ProfileDetails";
+import { fetchSellerSubscribe } from "../../redux/user/actions";
 
 const responsive = {
     desktop: {
@@ -41,6 +43,20 @@ export function Broadcasting() {
     useEffect(() => {
         dispatch(fetchBroadcastingProducts());
     }, [dispatch]);
+
+    async function profilePreview(info: any) {
+        for (let broadcasting of broadcastings) {
+            if (broadcasting.id === info) {
+                // console.log("broadcasting", broadcasting);
+                // console.log("broadcasting", broadcasting.username);
+                // console.log("broadcasting", broadcasting.seller_id);
+                dispatch(fetchSellerSubscribe(broadcasting.seller_id));
+                setModalShow(broadcasting.seller_id);
+            }
+        }
+    }
+
+    const [modalShow, setModalShow] = useState(-1);
 
     return (
         <div>
@@ -95,9 +111,34 @@ export function Broadcasting() {
                                         </span>
                                     </Card.Text>
                                     <Card.Text>
-                                        由{broadcasting.username}主辦
+                                        <div
+                                            key={broadcasting.id}
+                                            onClick={() => {
+                                                profilePreview(broadcasting.id);
+                                            }}
+                                            // onClick={() =>
+                                            //     setModalShow(broadcasting.id)
+                                            // }
+                                            className={"seller_name"}
+                                        >
+                                            由
+                                            <span className={"card_username"}>
+                                                &nbsp;{broadcasting.username}
+                                                &nbsp;
+                                            </span>
+                                            主辦
+                                        </div>
                                     </Card.Text>
-                                    <div className="bid_share_container">
+                                    {modalShow === broadcasting.id && (
+                                        <ProfileDetails
+                                            show={broadcasting.id}
+                                            broadcasts={broadcasting}
+                                            id={broadcasting.id}
+                                            onHide={() => setModalShow(-1)}
+                                        />
+                                    )}
+
+                                    <div className="bid_share_container w-75 justify-content-aorund">
                                         <Button
                                             variant="outline-dark"
                                             className="bid_button"
@@ -115,7 +156,7 @@ export function Broadcasting() {
                                         <RWebShare
                                             data={{
                                                 text: "",
-                                                url: `https://bidcast.online/liveStreaming?room=${broadcasting.buyer_link}`,
+                                                url: `${process.env.REACT_APP_FRONTEND_URL}/liveStreaming?room=${broadcasting.buyer_link}`,
                                                 title: "Look at this amazing live",
                                             }}
                                             onClick={() =>
