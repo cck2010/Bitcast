@@ -34,11 +34,15 @@ export function MyLive() {
                             className="my_live_product_card_body"
                             style={{ width: "16rem" }}
                         >
-                            <Image
-                                className="my_live_products"
-                                src={`${process.env.REACT_APP_BACKEND_URL}/${live.image}`}
-                                fluid
-                            />
+                            <div className="card_bg_color2">
+                                <div className="card_absolute_layer d-flex justify-content-center">
+                                    <Image
+                                        className="my_live_products"
+                                        src={`${process.env.REACT_APP_BACKEND_URL}/${live.image}`}
+                                        fluid
+                                    />
+                                </div>
+                            </div>
                             <Card.Body className="my_bid_card_container">
                                 <Card.Title>{live.title}</Card.Title>
                                 <Card.Text>
