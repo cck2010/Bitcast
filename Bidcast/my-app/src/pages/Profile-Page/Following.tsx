@@ -6,6 +6,7 @@ import Login from "../../component/LiveStream/Login";
 import { useEffect, useState } from "react";
 import { fetchSubscribe, fetchUserCardInfo } from "../../redux/user/actions";
 import SubscribeButton from "../../component/common/subscribeButton";
+import "./Animation.scss";
 
 interface ProfilePageProps {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,6 +20,9 @@ export function Following(props: ProfilePageProps) {
     );
     const followingList = useSelector(
         (state: RootState) => state.following.userId
+    );
+    const followingListLoaded = useSelector(
+        (state: RootState) => state.follower.success
     );
     const followingDetails = useSelector(
         (state: RootState) => state.following.userDetails
@@ -50,8 +54,11 @@ export function Following(props: ProfilePageProps) {
                     setLoadState
                 )
             );
+        } else if (followingList.length === 0 && followingListLoaded) {
+            props.setIsLoading(false);
+            setLoadState((loadState) => loadState + 1);
         }
-    }, [dispatch, followingList, props]);
+    }, [dispatch, followingList, props, followingListLoaded]);
 
     return (
         <div className="following w-100 me-3 mb-3">
@@ -62,7 +69,7 @@ export function Following(props: ProfilePageProps) {
                     {followingDetails.length !== 0 &&
                         followingDetails.map((item) => (
                             <div
-                                className="col-lg-3 col-md-4 col-sm-6 col-12"
+                                className="col-lg-3 col-md-4 col-sm-6 col-12 mb-3"
                                 key={item.username}
                             >
                                 <Card className="card_body">
@@ -111,6 +118,9 @@ export function Following(props: ProfilePageProps) {
                                 </Card>
                             </div>
                         ))}
+                    {followingDetails.length === 0 && loadState !== 0 && (
+                        <div className="zero m-3">你暫時沒有訂閱的人</div>
+                    )}
                 </div>
             )}
         </div>

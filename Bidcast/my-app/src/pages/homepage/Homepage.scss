@@ -129,7 +129,6 @@ footer {
     color: #ffffff;
     display: block;
     line-height: 1;
-    margin-top: 25px;
     font-weight: 600;
     border-radius: 30px;
     -webkit-border-radius: 30px;
@@ -145,7 +144,7 @@ footer {
     border: #ffffff;
 }
 .info_container {
-    margin: 1.8em;
+    margin: 1em;
     width: 90%;
     overflow: hidden;
     height: auto;
@@ -227,6 +226,7 @@ footer {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    height: 22em;
 }
 .bid_with_bidcast {
     padding-bottom: 30px;
@@ -315,6 +315,10 @@ footer {
 }
 .seller_name {
     cursor: pointer;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 // profile_card style field
@@ -448,5 +452,18 @@ footer {
                 }
             }
         }
+    }
+}
+
+.rotate_image {
+    animation: rotation 15s infinite linear;
+    margin-left: 10px;
+}
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
     }
 }

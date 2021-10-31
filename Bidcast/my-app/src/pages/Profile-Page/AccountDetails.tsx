@@ -45,7 +45,10 @@ export function AccountDetails() {
     //     const handleShow = (event:React.MouseEvent) => {
     //     event.stopPropagation();
 
-    //   };
+    const handleShow = (event:React.MouseEvent) => {
+    event.stopPropagation();
+    
+  };
     function AlertListAppend() {
         return (
             <div>
@@ -69,7 +72,7 @@ export function AccountDetails() {
             ) {
                 if (!isToastExist) {
                     setIsAlertChecked(true);
-
+// console.log(isToastExist)
                     addToast(<ToastDemo />);
                     setIsToastExsist(true);
                     // console.log('efwefgeg=',isAuthenticate)
@@ -383,8 +386,8 @@ export function AccountDetails() {
                                 </div>
                             )}
 
-                            <input className={"button_default"} type="submit" />
-                            {/* onClick={handleShow} */}
+                            <input className={"button_default"} type="submit" onClick={handleShow} />
+                            
                         </form>
                     </div>
                 </Col>

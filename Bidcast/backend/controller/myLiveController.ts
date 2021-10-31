@@ -42,4 +42,18 @@ export class MyLiveController {
             });
         }
     }
+
+    changeLiveStatus = async (req: Request, res: Response) => {
+        try {
+            const { liveId } = req.body
+            const result = await this.myLiveService.changeLiveStatus(liveId)
+            res.json(result)
+        } catch (error) {
+            res.json({
+                success: false,
+                data: { msg: "controller get live status fail" },
+                error: new Error("get live status fail"),
+            });
+        }
+    }
 }

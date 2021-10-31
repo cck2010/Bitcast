@@ -1,4 +1,4 @@
-import { Knex } from "knex"
+import { Knex } from "knex";
 
 export class ComingAuctionService {
     constructor(private knex: Knex) { }
@@ -6,17 +6,17 @@ export class ComingAuctionService {
     getComingAuction = async () => {
         const results = await this.knex.raw(
             /*sql*/
-            `select live.id,live.user_id, live.title, live.image, live.starting_time, live.description, username, profile_pic from live
+            `select live.id,live.user_id, live.title, live.image, live.starting_time, live.description, username, profile_pic, live.buyer_link from live
             left outer join users on live.user_id = users.id 
             order by live.starting_time asc
             limit 10
             `
-        )
+        );
         return {
             success: true,
-            data: { msg: "get products success", results }
-        }
-    }
+            data: { msg: "get products success", results },
+        };
+    };
 
     getBroadcastingProduct = async () => {
         const results = await this.knex.raw(
@@ -28,12 +28,12 @@ export class ComingAuctionService {
             ORDER BY random()
             limit 10
             `
-        )
+        );
         return {
             success: true,
-            data: { msg: "get broadcasting products success", results }
-        }
-    }
+            data: { msg: "get broadcasting products success", results },
+        };
+    };
 
     getProductDetails = async () => {
         const results = await this.knex.raw(
@@ -49,10 +49,10 @@ export class ComingAuctionService {
             left outer join live
             on products.live_id = live.id
             `
-        )
+        );
         return {
             success: true,
-            data: { msg: "get product details success", results }
-        }
-    }
+            data: { msg: "get product details success", results },
+        };
+    };
 }

@@ -7,6 +7,11 @@ $smallFontSize: 0.5em;
 .LiveStream {
     max-width: 98.5%;
     font-family: "Noto Sans TC", sans-serif;
+    .page_btn {
+        padding-left: 0;
+        padding-right: 0;
+        font-size: $smallFontSize;
+    }
 }
 
 .LiveStreamHeader {

@@ -11,8 +11,9 @@ export interface ComingAuction {
     buy_price: number;
     description: string;
     title: string;
-    user_id:number;
-    profile_pic:string;
+    user_id: number;
+    profile_pic: string;
+    buyer_link: string;
 }
 
 export interface ProductDetails {

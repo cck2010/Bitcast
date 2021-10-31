@@ -1,6 +1,5 @@
 import { RootState, RootThunkDispatch } from "../../store";
 
-
 export interface MyLive {
     id: number;
     user_id: number;
@@ -8,7 +7,7 @@ export interface MyLive {
     image: string;
     starting_time: Date;
     seller_link: string;
-    max_viewer?: number;
+    max_viewers?: number;
     is_ended?: boolean;
 }
 
@@ -31,42 +30,34 @@ export interface MyLiveProducts {
     telegram_acct: string;
 }
 
-// export interface MyBidHistory {
-//     id: number;
-//     product_name: string;
-//     starting_time: Date;
-//     username: string;
-//     email: string;
-//     phone_number: number;
-//     deal_price: number;
-//     buyer_id: number;
-// }
-
-export function loadMyLive(
-    myLive: MyLive[]
-) {
+export function loadMyLive(myLive: MyLive[]) {
     return {
         type: "@@myLive/LOAD_MY_LIVE" as const,
         myLive,
-    }
+    };
 }
 
-export function loadMyLiveProducts(
-    myLiveProducts: MyLiveProducts[]
-) {
+export function loadMyLiveProducts(myLiveProducts: MyLiveProducts[]) {
     return {
         type: "@@myLive/LOAD_MY_LIVE_PRODUCTS" as const,
         myLiveProducts,
+    };
+}
+
+export function loadLiveStatus(liveId: number) {
+    return {
+        type: "@@myLive/LOAD_LIVE_STATUS" as const,
+        liveId,
     }
 }
 
 export type LoadMyLiveActions = ReturnType<typeof loadMyLive>
     | ReturnType<typeof loadMyLiveProducts>
+    | ReturnType<typeof loadLiveStatus>
 
 export function fetchMyLive() {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         try {
-
             const res = await fetch(
                 `${process.env.REACT_APP_BACKEND_URL}/profilePage/myLive`
             );
@@ -74,34 +65,61 @@ export function fetchMyLive() {
             const json = await res.json();
 
             if (json) {
-                dispatch(loadMyLive(json.data.results.rows))
+                dispatch(loadMyLive(json.data.results.rows));
             } else {
-                dispatch(loadMyLive([]))
+                dispatch(loadMyLive([]));
             }
         } catch (error) {
             console.log(error);
-
         }
-    }
+    };
 }
 
-export function fetchMyLiveProducts() {
+export function fetchMyLiveProducts(
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    setLoadState: React.Dispatch<React.SetStateAction<number>>
+) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         try {
-
             const res = await fetch(
-                `${process.env.REACT_APP_BACKEND_URL}/profile/myLiveProducts`
+                `${process.env.REACT_APP_BACKEND_URL}/profilePage/myLiveProducts`
             );
 
             const json = await res.json();
 
             if (json) {
-                dispatch(loadMyLiveProducts(json.data.results.rows))
+                dispatch(loadMyLiveProducts(json.data.results.rows));
             } else {
-                dispatch(loadMyLiveProducts([]))
+                dispatch(loadMyLiveProducts([]));
             }
+            setIsLoading(false);
+            setLoadState((loadState) => loadState + 1);
         } catch (error) {
             console.log(error);
+        }
+    }
+}
+
+export function updateLiveStatus(liveId: number) {
+    return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
+        try {
+            const res = await fetch(
+                `${process.env.REACT_APP_BACKEND_URL}/profilePage/liveIsEnded`, {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+
+                },
+                body: JSON.stringify({ liveId })
+            }
+            )
+            const json = await res.json()
+
+            dispatch(loadLiveStatus(json.data.results))
+
+        } catch (error) {
+            console.log(error);
+
         }
     }
 }

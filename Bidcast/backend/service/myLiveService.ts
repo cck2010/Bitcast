@@ -5,9 +5,15 @@ export class MyLiveService {
 
     getMyLive = async () => {
         const results = await this.knex.raw(/*sql */ `
-        select * from live
-        left outer join users 
-        on live.user_id = users.id
+        select live.id, 
+        live.user_id, 
+        live.title, 
+        live.image, 
+        live.starting_time, 
+        live.max_viewers, 
+        live.seller_link, 
+        live.is_ended 
+        from live
         `)
         return {
             success: true,
@@ -33,7 +39,9 @@ export class MyLiveService {
         const results = await this.knex.raw(
             /*sql*/
             `
-            select * from products
+            select 
+            *
+            from products
             left outer join users on products.seller_id = users.id
             left outer join live on products.live_id = live.id
             `
@@ -41,6 +49,19 @@ export class MyLiveService {
         return {
             success: true,
             data: { msg: "get my live products success", results }
+        }
+    }
+
+    changeLiveStatus = async (liveId: number) => {
+        const results = await this.knex("live")
+            .where("id", liveId)
+            .update({
+                "is_ended": true,
+                "is_live": false
+            }, ['id', 'is_ended', 'is_live'])
+        return {
+            success: true,
+            data: { msg: "update live status success", results }
         }
     }
 }

@@ -6,6 +6,7 @@ import Login from "../../component/LiveStream/Login";
 import { useEffect, useState } from "react";
 import { fetchSubscribe, fetchUserCardInfo } from "../../redux/user/actions";
 import SubscribeButton from "../../component/common/subscribeButton";
+import "./Animation.scss";
 
 interface ProfilePageProps {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,6 +20,9 @@ export function Follower(props: ProfilePageProps) {
     );
     const followerList = useSelector(
         (state: RootState) => state.follower.userId
+    );
+    const followerListLoaded = useSelector(
+        (state: RootState) => state.follower.success
     );
     const followerDetails = useSelector(
         (state: RootState) => state.follower.userDetails
@@ -50,8 +54,11 @@ export function Follower(props: ProfilePageProps) {
                     setLoadState
                 )
             );
+        } else if (followerList.length === 0 && followerListLoaded) {
+            props.setIsLoading(false);
+            setLoadState((loadState) => loadState + 1);
         }
-    }, [dispatch, followerList, props]);
+    }, [dispatch, followerList, props, followerListLoaded]);
 
     return (
         <div className="follower w-100 me-3 mb-3">
@@ -62,7 +69,7 @@ export function Follower(props: ProfilePageProps) {
                     {followerDetails.length !== 0 &&
                         followerDetails.map((item) => (
                             <div
-                                className="col-lg-3 col-md-4 col-sm-6 col-12"
+                                className="col-lg-3 col-md-4 col-sm-6 col-12 mb-3"
                                 key={item.username}
                             >
                                 <Card className="card_body">
@@ -111,6 +118,9 @@ export function Follower(props: ProfilePageProps) {
                                 </Card>
                             </div>
                         ))}
+                    {followerDetails.length === 0 && loadState !== 0 && (
+                        <div className="zero m-3">你暫時沒有粉絲</div>
+                    )}
                 </div>
             )}
         </div>
