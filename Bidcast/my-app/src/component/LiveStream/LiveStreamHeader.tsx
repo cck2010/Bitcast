@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useMediaQuery } from "react-responsive";
 import { Socket } from "socket.io-client";
 import { RootState } from "../../store";
 import SubscribeButton from "../common/subscribeButton";
@@ -42,6 +43,9 @@ function LiveStreamHeader(props: LiveStreamHeaderProps) {
     );
     const [onlineUsers, setOnlineUsers] = useState<number>(0);
     const [timerId, setTimerId] = useState<number>(0);
+    const responsive = useMediaQuery({
+        query: "(min-width: 420px)",
+    });
     //Get States
 
     //WebSocket Signal Handler
@@ -71,11 +75,17 @@ function LiveStreamHeader(props: LiveStreamHeaderProps) {
         <div className="LiveStreamHeader px-3">
             <div className="mainInfo">
                 <div className="row">
-                    <div className="col">
-                        <div className="title my-3">{title}</div>
+                    <div className="col-md-10 col-8">
+                        <div
+                            className={`${
+                                responsive ? "title" : "responsive_title"
+                            } my-3`}
+                        >
+                            {title}
+                        </div>
                     </div>
                     {isAuthenticate && (
-                        <div className="col-2 d-flex align-items-center justify-content-end">
+                        <div className="col-md-2 col-4 d-flex align-items-center justify-content-end">
                             <SubscribeButton
                                 targetId={sellerId}
                                 userId={userId}
@@ -98,7 +108,7 @@ function LiveStreamHeader(props: LiveStreamHeaderProps) {
                     <div className="username mx-3">{seller}</div>
 
                     <div className="viewers">
-                        正在觀看人數: {onlineUsers}{" "}
+                        {responsive && "正在觀看人數"} {onlineUsers}{" "}
                         <i className="fas fa-user-friends"></i>
                     </div>
                 </div>

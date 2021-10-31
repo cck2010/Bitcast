@@ -158,16 +158,28 @@ function LiveStream(props: LiveStreamProps) {
                     ) : (
                         <>
                             <ButtonGroup className="w-100">
-                                <Button onClick={() => setPage(1)}>
+                                <Button
+                                    className="page_btn"
+                                    onClick={() => setPage(1)}
+                                >
                                     直播資料
                                 </Button>
-                                <Button onClick={() => setPage(2)}>
+                                <Button
+                                    className="page_btn"
+                                    onClick={() => setPage(2)}
+                                >
                                     拍賣設定
                                 </Button>
-                                <Button onClick={() => setPage(3)}>
+                                <Button
+                                    className="page_btn"
+                                    onClick={() => setPage(3)}
+                                >
                                     聊天室
                                 </Button>
-                                <Button onClick={() => setPage(4)}>
+                                <Button
+                                    className="page_btn"
+                                    onClick={() => setPage(4)}
+                                >
                                     其他拍賣直播
                                 </Button>
                             </ButtonGroup>
