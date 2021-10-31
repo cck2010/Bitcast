@@ -8,7 +8,7 @@ export interface MyLive {
     image: string;
     starting_time: Date;
     seller_link: string;
-    max_viewer?: number;
+    max_viewers?: number;
     is_ended?: boolean;
 }
 
@@ -60,8 +60,16 @@ export function loadMyLiveProducts(
     }
 }
 
+export function loadLiveStatus(liveId: number) {
+    return {
+        type: "@@myLive/LOAD_LIVE_STATUS" as const,
+        liveId,
+    }
+}
+
 export type LoadMyLiveActions = ReturnType<typeof loadMyLive>
     | ReturnType<typeof loadMyLiveProducts>
+    | ReturnType<typeof loadLiveStatus>
 
 export function fetchMyLive() {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
@@ -90,7 +98,7 @@ export function fetchMyLiveProducts() {
         try {
 
             const res = await fetch(
-                `${process.env.REACT_APP_BACKEND_URL}/profile/myLiveProducts`
+                `${process.env.REACT_APP_BACKEND_URL}/profilePage/myLiveProducts`
             );
 
             const json = await res.json();
@@ -102,6 +110,30 @@ export function fetchMyLiveProducts() {
             }
         } catch (error) {
             console.log(error);
+        }
+    }
+}
+
+export function updateLiveStatus(liveId: number) {
+    return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
+        try {
+            const res = await fetch(
+                `${process.env.REACT_APP_BACKEND_URL}/profilePage/liveIsEnded`, {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+
+                },
+                body: JSON.stringify({ liveId })
+            }
+            )
+            const json = await res.json()
+
+            dispatch(loadLiveStatus(json.data.results))
+
+        } catch (error) {
+            console.log(error);
+
         }
     }
 }

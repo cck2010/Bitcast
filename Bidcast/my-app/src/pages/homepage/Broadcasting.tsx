@@ -115,7 +115,7 @@ export function Broadcasting() {
                                         <RWebShare
                                             data={{
                                                 text: "",
-                                                url: "",
+                                                url: `https://bidcast.online/liveStreaming?room=${broadcasting.buyer_link}`,
                                                 title: "Look at this amazing live",
                                             }}
                                             onClick={() =>

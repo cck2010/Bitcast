@@ -130,7 +130,7 @@ export function ComingAuction(props: ComingAuctionProps) {
                                     <RWebShare
                                         data={{
                                             text: "",
-                                            url: "",
+                                            url: `https://bidcast.online/liveStreaming?room=${auction.buyer_link}`,
                                             title: "Look at this amazing live",
                                         }}
                                         onClick={() =>
