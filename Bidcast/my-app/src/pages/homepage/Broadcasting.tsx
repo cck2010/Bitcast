@@ -138,7 +138,7 @@ export function Broadcasting() {
                                         />
                                     )}
 
-                                    <div className="bid_share_container">
+                                    <div className="bid_share_container w-75 justify-content-aorund">
                                         <Button
                                             variant="outline-dark"
                                             className="bid_button"

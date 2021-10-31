@@ -315,6 +315,10 @@ footer {
 }
 .seller_name {
     cursor: pointer;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 // profile_card style field

@@ -153,7 +153,7 @@ export function ComingAuction(props: ComingAuctionProps) {
                                         onHide={() => setModalShowProf(-1)}
                                     />
                                 )}
-                                <div className="bid_share_container">
+                                <div className="bid_share_container w-75 justify-content-aorund">
                                     <Button
                                         key={auction.id}
                                         variant="outline-dark"
