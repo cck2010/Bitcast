@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { fetchMyLive } from "../../redux/myLiveProducts/action";
 import moment from "moment";
 import "./Animation.scss";
+import "./MyLive.scss";
 
 export function MyLive() {
     const dispatch = useDispatch();
@@ -27,7 +28,7 @@ export function MyLive() {
                 <h2 className="pt-3">我的直播</h2>
             </Container>
             <Container className="my_live_container pt-3">
-                <div className="row">
+                <div className="row w-100">
                     {lives.map((live) =>
                         live.user_id === userInfo.id ? (
                             <div

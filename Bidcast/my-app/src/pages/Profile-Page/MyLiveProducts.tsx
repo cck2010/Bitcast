@@ -68,7 +68,7 @@ export function MyLiveProductsComponent(props: MyLiveProductsProps) {
             <Container>
                 <h2 className="pt-3">我拍賣的商品</h2>
             </Container>
-            <Container className="my_live_container pt-3">
+            <Container className="my_live_products_container pt-3">
                 {/* <Card
                     className="my_live_product_card_body"
                     style={{ width: "16rem" }}
