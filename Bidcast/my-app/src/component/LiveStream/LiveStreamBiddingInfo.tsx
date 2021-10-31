@@ -318,7 +318,13 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                                         拍賣已結束
                                     </div>
                                 ) : (
-                                    <div className="remaining_time mt-2 ms-4 text-center">
+                                    <div
+                                        className={`${
+                                            responsive
+                                                ? "remaining_time"
+                                                : "responsive_remaining_time"
+                                        } mt-2 ms-4 text-center`}
+                                    >
                                         <i className="fas fa-hourglass-half"></i>
                                         {""}剩餘 {remainingTime} 秒
                                     </div>
