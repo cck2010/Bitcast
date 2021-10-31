@@ -46,7 +46,7 @@ export function Broadcasting() {
 
     async function profilePreview(info: any) {
         for (let broadcasting of broadcastings) {
-            if (broadcasting.id == info) {
+            if (broadcasting.id === info) {
                 // console.log("broadcasting", broadcasting);
                 // console.log("broadcasting", broadcasting.username);
                 // console.log("broadcasting", broadcasting.seller_id);
@@ -156,7 +156,7 @@ export function Broadcasting() {
                                         <RWebShare
                                             data={{
                                                 text: "",
-                                                url: "",
+                                                url: `${process.env.REACT_APP_FRONTEND_URL}/liveStreaming?room=${broadcasting.buyer_link}`,
                                                 title: "Look at this amazing live",
                                             }}
                                             onClick={() =>

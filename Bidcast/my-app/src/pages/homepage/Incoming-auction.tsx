@@ -69,6 +69,21 @@ export function ComingAuction(props: ComingAuctionProps) {
             }
         }
     }
+    const [now, setNow] = useState<string>(new Date().toString());
+    const [timerId, setTimerId] = useState<number>(0);
+    useEffect(() => {
+        setTimerId(
+            window.setInterval(() => {
+                setNow(new Date().toString());
+            }, 16)
+        );
+    }, []);
+    useEffect(() => {
+        return () => {
+            clearInterval(timerId);
+        };
+    }, [timerId]);
+
     return (
         <div>
             <Container>
@@ -107,19 +122,66 @@ export function ComingAuction(props: ComingAuctionProps) {
                             <Card.Body>
                                 <div className="counter">
                                     <div className="countdown_time">
-                                        <div className="time_value">00</div>
+                                        <div className="time_value">
+                                            {Math.floor(
+                                                (Date.parse(
+                                                    auction.starting_time.toString()
+                                                ) -
+                                                    Date.parse(now)) /
+                                                    (24 * 60 * 60 * 1000)
+                                            )}
+                                        </div>
                                         <div className="time_label">日</div>
                                     </div>
                                     <div className="countdown_time">
-                                        <div className="time_value">00</div>
+                                        <div className="time_value">
+                                            {(
+                                                "0" +
+                                                (
+                                                    Math.floor(
+                                                        (Date.parse(
+                                                            auction.starting_time.toString()
+                                                        ) -
+                                                            Date.parse(now)) /
+                                                            (60 * 60 * 1000)
+                                                    ) % 24
+                                                ).toString()
+                                            ).slice(-2)}
+                                        </div>
                                         <div className="time_label">時</div>
                                     </div>
                                     <div className="countdown_time">
-                                        <div className="time_value">00</div>
+                                        <div className="time_value">
+                                            {(
+                                                "0" +
+                                                (
+                                                    Math.floor(
+                                                        (Date.parse(
+                                                            auction.starting_time.toString()
+                                                        ) -
+                                                            Date.parse(now)) /
+                                                            (60 * 1000)
+                                                    ) % 60
+                                                ).toString()
+                                            ).slice(-2)}
+                                        </div>
                                         <div className="time_label">分</div>
                                     </div>
                                     <div className="countdown_time">
-                                        <div className="time_value">00</div>
+                                        <div className="time_value">
+                                            {(
+                                                "0" +
+                                                (
+                                                    Math.floor(
+                                                        (Date.parse(
+                                                            auction.starting_time.toString()
+                                                        ) -
+                                                            Date.parse(now)) /
+                                                            1000
+                                                    ) % 60
+                                                ).toString()
+                                            ).slice(-2)}
+                                        </div>
                                         <div className="time_label">秒</div>
                                     </div>
                                 </div>
@@ -175,7 +237,7 @@ export function ComingAuction(props: ComingAuctionProps) {
                                     <RWebShare
                                         data={{
                                             text: "",
-                                            url: "",
+                                            url: `${process.env.REACT_APP_FRONTEND_URL}/liveStreaming?room=${auction.buyer_link}`,
                                             title: "Look at this amazing live",
                                         }}
                                         onClick={() =>

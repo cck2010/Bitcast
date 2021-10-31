@@ -13,6 +13,7 @@ export interface ComingAuction {
     title: string;
     user_id: number;
     profile_pic: string;
+    buyer_link: string;
 }
 
 export interface ProductDetails {
