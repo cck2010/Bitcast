@@ -15,6 +15,8 @@ import {
     FollowingState,
     followerReducer,
     followingReducer,
+    sellerFollowerState,
+    sellerFollowerReducer,
 } from "./redux/user/reducer";
 import thunk, { ThunkDispatch } from "redux-thunk";
 import {
@@ -22,6 +24,7 @@ import {
     AuthActions,
     FollowerActions,
     FollowingActions,
+    sellerFollowerActions,
 } from "./redux/user/actions";
 import { createBidsReducer } from "./redux/createbid/reducer";
 import { productsReducer, ProductsState } from "./redux/products/reducer";
@@ -65,6 +68,7 @@ export type RootAction =
     | BroadcastingProductActions
     | UtilityActions
     | AuthActions
+    | sellerFollowerActions
     | FollowerActions
     | FollowingActions;
 
@@ -85,6 +89,7 @@ export interface RootState {
     loadToken: AuthState;
     follower: FollowerState;
     following: FollowingState;
+    sellerFollower: sellerFollowerState;
 }
 
 const reducer = combineReducers<RootState>({
@@ -102,6 +107,7 @@ const reducer = combineReducers<RootState>({
     loadToken: authReducer,
     follower: followerReducer,
     following: followingReducer,
+    sellerFollower: sellerFollowerReducer, 
 });
 
 declare global {

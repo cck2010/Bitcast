@@ -37,7 +37,7 @@ function LiveStreamRecommend(props: LiveStreamRecommendProps) {
                         window.history.pushState(
                             null,
                             "",
-                            `https://localhost:3000/liveStreaming?room=${item.buyer_link}`
+                            `${process.env.REACT_APP_FRONTEND_URL}/liveStreaming?room=${item.buyer_link}`
                         );
                         dispatch(changeDummy());
                         props.setIsLoading(true);

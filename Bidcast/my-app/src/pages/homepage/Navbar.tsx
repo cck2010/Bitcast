@@ -23,7 +23,6 @@ import {
 import { fetchCategories } from "../../redux/products/actions";
 import { menuIconClick, sidebarClick } from "../../redux/utility/actions";
 
-
 interface NavbarProps {
     setNavbarRef: React.Dispatch<
         React.SetStateAction<HTMLDivElement | undefined>
@@ -107,6 +106,16 @@ export const HomePageNavbar = (props: NavbarProps) => {
     };
     const preventPropagation = (e:React.MouseEvent) => {
         e.stopPropagation();}
+    const navbarOnClickHandler = () => {
+        if (
+            menuToggle.current?.classList[
+                Array.from(menuToggle.current?.classList).indexOf("collapsed")
+            ] !== "collapsed"
+        ) {
+            menuToggle.current?.click();
+        }
+    };
+
     const [categoryId, setCategoryId] = useState(0);
 
 
@@ -127,7 +136,6 @@ export const HomePageNavbar = (props: NavbarProps) => {
         }
     }, [divRef, props]);
     return (
-    
         <div ref={divRef}>
             {divRef && (
            
@@ -173,8 +181,12 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                     }}
                                 />
                             </FormGroup>
-                            
-                            <Link to="/" className="nav_link">
+
+                            <Link
+                                to="/"
+                                className="nav_link"
+                                onClick={navbarOnClickHandler}
+                            >
                                 主頁
                             </Link>
 
@@ -184,7 +196,11 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                     placement="bottom"
                                     overlay={popover}
                                 >
-                                    <Link to="#" className="nav_link">
+                                    <Link
+                                        to="#"
+                                        className="nav_link"
+                                        onClick={navbarOnClickHandler}
+                                    >
                                         舉辦拍賣
                                     </Link>
                                 </OverlayTrigger>
@@ -197,6 +213,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                             : "/createBids"
                                     }
                                     className="nav_link"
+                                    onClick={navbarOnClickHandler}
                                 >
                                     舉辦拍賣
                                 </Link>
@@ -215,16 +232,21 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                         to={`/categoryResult?category=${category.category}`}
                                         className="dropdown_items"
                                         key={category.id}
-                                        onClick={() =>
-                                            setCategoryId(category.id)
-                                        }
+                                        onClick={() => {
+                                            setCategoryId(category.id);
+                                            navbarOnClickHandler();
+                                        }}
                                     >
                                         {category.category}
                                     </Link>
                                 ))}
                             </NavDropdown>
                             {!isAuthenticate ? (
-                                <Link to="/loginPage" className="nav_link">
+                                <Link
+                                    to="/loginPage"
+                                    className="nav_link"
+                                    onClick={navbarOnClickHandler}
+                                >
                                     登入 ／ 註冊
                                 </Link>
                             ) : (
@@ -234,6 +256,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                         e.preventDefault();
                                         dispatch(logoutThunk());
                                         dispatch(push("/"));
+                                        navbarOnClickHandler();
                                     }}
                                     className="nav_link"
                                 >
@@ -260,6 +283,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                         width="40"
                                         height="40"
                                         className="rounded-circle"
+                                        onClick={navbarOnClickHandler}
                                     />
                                 )}
                             </Link>
@@ -270,6 +294,5 @@ export const HomePageNavbar = (props: NavbarProps) => {
             )}
             
         </div>
-    
     );
 };

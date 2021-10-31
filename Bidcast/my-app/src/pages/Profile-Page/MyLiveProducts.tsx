@@ -1,11 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Accordion, Container, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMyLiveProducts } from "../../redux/myLiveProducts/action";
 import { RootState } from "../../store";
 import { MyLiveProducts } from "../../redux/myLiveProducts/action";
+import "./Animation.scss";
+import "./MyLiveProducts.scss";
 
-export function MyLiveProductsComponent() {
+interface MyLiveProductsProps {
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export function MyLiveProductsComponent(props: MyLiveProductsProps) {
+    const [loadState, setLoadState] = useState<number>(0);
     const myLiveProducts = useSelector((state: RootState) =>
         Object.values(state.myLive.myLiveProducts)
     );
@@ -45,14 +52,19 @@ export function MyLiveProductsComponent() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchMyLiveProducts());
-    }, [dispatch]);
+        if (loadState === 0) {
+            props.setIsLoading(true);
+        }
+    }, [loadState, props]);
+    useEffect(() => {
+        dispatch(fetchMyLiveProducts(props.setIsLoading, setLoadState));
+    }, [dispatch, props]);
 
     const user = useSelector((state: RootState) => state.authState.user);
     const userInfo = JSON.parse(JSON.stringify(user));
 
     return (
-        <div>
+        <div className="myLiveProducts ps-3">
             <Container>
                 <h2 className="pt-3">我拍賣的商品</h2>
             </Container>
@@ -121,7 +133,7 @@ export function MyLiveProductsComponent() {
                                             </thead>
                                             {myLiveProductArr.map(
                                                 (product, index) => (
-                                                    <tbody>
+                                                    <tbody key={product.id}>
                                                         <tr>
                                                             <td>{`${
                                                                 index + 1

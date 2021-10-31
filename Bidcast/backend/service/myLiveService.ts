@@ -20,7 +20,7 @@ export class MyLiveService {
             /*sql */
             `
             select * from products
-            left outer join users on products.buyer_id = users.id
+            left outer join users on products.seller_id = users.id
             `
         )
         return {
