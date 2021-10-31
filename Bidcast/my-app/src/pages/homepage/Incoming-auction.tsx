@@ -13,6 +13,7 @@ import { ProductDetails } from "./ProductDetails";
 import { fetchBroadcastingProducts } from "../../redux/broadcastingProducts/actions";
 import { fetchSellerSubscribe } from "../../redux/user/actions";
 import { ProfileDetails } from "./ProfileDetails";
+import "./Incoming-auction.scss";
 
 const responsive = {
     desktop: {
@@ -120,71 +121,85 @@ export function ComingAuction(props: ComingAuctionProps) {
                                 fluid
                             />
                             <Card.Body>
-                                <div className="counter">
-                                    <div className="countdown_time">
-                                        <div className="time_value">
-                                            {Math.floor(
-                                                (Date.parse(
-                                                    auction.starting_time.toString()
-                                                ) -
-                                                    Date.parse(now)) /
-                                                    (24 * 60 * 60 * 1000)
-                                            )}
+                                {Date.parse(auction.starting_time.toString()) -
+                                    Date.parse(now) >
+                                0 ? (
+                                    <div className="counter">
+                                        <div className="countdown_time">
+                                            <div className="time_value">
+                                                {Math.floor(
+                                                    (Date.parse(
+                                                        auction.starting_time.toString()
+                                                    ) -
+                                                        Date.parse(now)) /
+                                                        (24 * 60 * 60 * 1000)
+                                                )}
+                                            </div>
+                                            <div className="time_label">日</div>
                                         </div>
-                                        <div className="time_label">日</div>
-                                    </div>
-                                    <div className="countdown_time">
-                                        <div className="time_value">
-                                            {(
-                                                "0" +
-                                                (
-                                                    Math.floor(
-                                                        (Date.parse(
-                                                            auction.starting_time.toString()
-                                                        ) -
-                                                            Date.parse(now)) /
-                                                            (60 * 60 * 1000)
-                                                    ) % 24
-                                                ).toString()
-                                            ).slice(-2)}
+                                        <div className="countdown_time">
+                                            <div className="time_value">
+                                                {(
+                                                    "0" +
+                                                    (
+                                                        Math.floor(
+                                                            (Date.parse(
+                                                                auction.starting_time.toString()
+                                                            ) -
+                                                                Date.parse(
+                                                                    now
+                                                                )) /
+                                                                (60 * 60 * 1000)
+                                                        ) % 24
+                                                    ).toString()
+                                                ).slice(-2)}
+                                            </div>
+                                            <div className="time_label">時</div>
                                         </div>
-                                        <div className="time_label">時</div>
-                                    </div>
-                                    <div className="countdown_time">
-                                        <div className="time_value">
-                                            {(
-                                                "0" +
-                                                (
-                                                    Math.floor(
-                                                        (Date.parse(
-                                                            auction.starting_time.toString()
-                                                        ) -
-                                                            Date.parse(now)) /
-                                                            (60 * 1000)
-                                                    ) % 60
-                                                ).toString()
-                                            ).slice(-2)}
+                                        <div className="countdown_time">
+                                            <div className="time_value">
+                                                {(
+                                                    "0" +
+                                                    (
+                                                        Math.floor(
+                                                            (Date.parse(
+                                                                auction.starting_time.toString()
+                                                            ) -
+                                                                Date.parse(
+                                                                    now
+                                                                )) /
+                                                                (60 * 1000)
+                                                        ) % 60
+                                                    ).toString()
+                                                ).slice(-2)}
+                                            </div>
+                                            <div className="time_label">分</div>
                                         </div>
-                                        <div className="time_label">分</div>
-                                    </div>
-                                    <div className="countdown_time">
-                                        <div className="time_value">
-                                            {(
-                                                "0" +
-                                                (
-                                                    Math.floor(
-                                                        (Date.parse(
-                                                            auction.starting_time.toString()
-                                                        ) -
-                                                            Date.parse(now)) /
-                                                            1000
-                                                    ) % 60
-                                                ).toString()
-                                            ).slice(-2)}
+                                        <div className="countdown_time">
+                                            <div className="time_value">
+                                                {(
+                                                    "0" +
+                                                    (
+                                                        Math.floor(
+                                                            (Date.parse(
+                                                                auction.starting_time.toString()
+                                                            ) -
+                                                                Date.parse(
+                                                                    now
+                                                                )) /
+                                                                1000
+                                                        ) % 60
+                                                    ).toString()
+                                                ).slice(-2)}
+                                            </div>
+                                            <div className="time_label">秒</div>
                                         </div>
-                                        <div className="time_label">秒</div>
                                     </div>
-                                </div>
+                                ) : (
+                                    <div className="counter d-flex align-items-center justify-content-center">
+                                        <span>直播即將開始...</span>
+                                    </div>
+                                )}
                                 <Card.Title className="broadcasting_title">
                                     {auction.title}
                                 </Card.Title>
