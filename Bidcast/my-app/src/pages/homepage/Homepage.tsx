@@ -4,6 +4,7 @@ import { ComingAuction } from "./Incoming-auction";
 import { Recommendation } from "./Recommendation";
 import { SellWithBidcast } from "./SellWithBidcast";
 import { useEffect, useState } from "react";
+import { HomepageCanvas } from "./components/HomePageKonva";
 
 interface HomepageProps {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,6 +19,9 @@ export function Homepage(props: HomepageProps) {
     }, [props, loadState]);
     return (
         <div>
+            <section>
+                <HomepageCanvas />
+            </section>
             <section>
                 <Broadcasting />
             </section>
