@@ -10,9 +10,10 @@ import { refreshCurrentUser } from "../../redux/user/actions";
 import { CToaster } from "@coreui/react";
 import ToastDemo from "../login/alert";
 import React from "react";
-import { DatePickerIcon } from "./component/Fontawsome";
+import { DatePickerIcon, FaClipboard } from "./component/Fontawsome";
 import { LoadingDefaultStyle } from "../loading/loading";
 import path from "path";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 type editInput = {
     username?: string;
@@ -161,6 +162,11 @@ export function AccountDetails() {
             />
         );
     }
+
+    const [copyState, setCopyState] = useState(false);
+    const onCopy = () => {
+        setCopyState(true);
+    };
 
     //loading Config Template
     const [loadStatus, setLoadStatus] = useState("loadingShown");
@@ -328,10 +334,32 @@ export function AccountDetails() {
                                             </li>
                                             <li>
                                                 點擊/verify 並輸入
-                                                {"TOKEN_" +
-                                                    (userInfo.id * 100000)
-                                                        .toString(16)
-                                                        .toUpperCase()}
+                                                <CopyToClipboard
+                                                    onCopy={onCopy}
+                                                    text={
+                                                        "TOKEN_" +
+                                                        (userInfo.id * 100000)
+                                                            .toString(16)
+                                                            .toUpperCase()
+                                                    }
+                                                >
+                                                    <span
+                                                        className={
+                                                            "Acc_Detail_TOKEN"
+                                                        }
+                                                    >
+                                                        &nbsp;
+                                                        {"TOKEN_" +
+                                                            (
+                                                                userInfo.id *
+                                                                100000
+                                                            )
+                                                                .toString(16)
+                                                                .toUpperCase()}
+                                                        &nbsp;
+                                                        <FaClipboard />
+                                                    </span>
+                                                </CopyToClipboard>
                                                 ，即可進行認証
                                             </li>
                                         </ul>
