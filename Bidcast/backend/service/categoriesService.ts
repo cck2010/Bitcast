@@ -1,8 +1,7 @@
 import { Knex } from "knex";
 
-
 export class CategoriesService {
-    constructor(private knex: Knex) { }
+    constructor(private knex: Knex) {}
 
     categoriesFilter = async (categoryId: number) => {
         const results = await this.knex.raw(
@@ -25,31 +24,31 @@ export class CategoriesService {
             on products.category_id = categories.id
             left outer join users on products.seller_id = users.id
             left outer join live on products.live_id = live.id
-            where categories.id=${categoryId}
+            where categories.id=${categoryId} and live.starting_time > NOW()
             `
-        )
+        );
         return {
             success: true,
             data: { msg: "filed Categories result", results },
-        }
-    }
+        };
+    };
 
     getProductsForFilter = async (orderCommand: string) => {
-        const orderOption: string = orderCommand
-        let orderSQLString = ''
+        const orderOption: string = orderCommand;
+        let orderSQLString = "";
         switch (orderOption) {
-            case 'DateNewToOld':
-                orderSQLString = ' order by starting_time desc';
-                break
-            case 'DateOldToNew':
-                orderSQLString = ' order by starting_time asc';
-                break
+            case "DateNewToOld":
+                orderSQLString = " order by starting_time desc";
+                break;
+            case "DateOldToNew":
+                orderSQLString = " order by starting_time asc";
+                break;
             case "PriceH2L":
-                orderSQLString = ' order by min_price desc';
-                break
+                orderSQLString = " order by min_price desc";
+                break;
             case "PriceL2H":
-                orderSQLString = ' order by min_price asc';
-                break
+                orderSQLString = " order by min_price asc";
+                break;
         }
 
         const results = await this.knex.raw(
@@ -68,12 +67,13 @@ export class CategoriesService {
             from products 
             left outer join users on products.seller_id = users.id
             left outer join live on products.live_id = live.id
+            where live.starting_time > NOW()
             ${orderSQLString}
             `
-        )
+        );
         return {
             success: true,
             data: { msg: "All relevant categories result", results },
-        }
-    }
+        };
+    };
 }

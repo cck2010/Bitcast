@@ -46,8 +46,8 @@ export class ProductsService {
                     is_live: false,
                     is_ended: false,
                     is_banned: false,
-                    created_at: new Date(),
-                    updated_at: new Date(),
+                    // created_at: new Date(),
+                    // updated_at: new Date(),
                     description: description,
                 })
                 .returning("*");
@@ -246,7 +246,7 @@ export class ProductsService {
         from products 
         left outer join users on products.seller_id = users.id
         left outer join live on products.live_id = live.id
-        where product_name ilike '%${searchKeywords}%';
+        where product_name ilike '%${searchKeywords}%' and live.starting_time - 8 * interval '1 hour' > NOW();
         `);
         return {
             success: true,
