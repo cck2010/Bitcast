@@ -318,3 +318,46 @@ $smallFontSize: 0.5em;
         }
     }
 }
+
+.LiveStreamWindow,
+.LiveStreamWindowSeller {
+    .video_canvas_combine {
+        position: relative;
+        .konvajs-content {
+            position: absolute !important;
+        }
+        .star-button,
+        .heart-button {
+            cursor: pointer;
+            position: absolute;
+            bottom: 100px;
+            right: 15px;
+            background-color: #b5ff7d;
+            color: #0b0c10;
+            padding: 1em 1em;
+            height: 1em;
+            width: 1em;
+            border-radius: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0px 0px 0px 2px #0b0c10, 0px 0px 0px 6px #b5ff7d;
+        }
+        .heart-button {
+            right: 65px;
+        }
+        .star-button,
+        .star-button__icon,
+        .heart-button,
+        .heart-button__icon {
+            transition: all 0.5s ease-in-out;
+        }
+
+        .star-button:hover,
+        .heart-button:hover {
+            transform: scale(0.9);
+            box-shadow: 0px 0px 0px 2px #0b0c10, 0px 0px 0px 7px #b5ff7d;
+            cursor: pointer;
+        }
+    }
+}

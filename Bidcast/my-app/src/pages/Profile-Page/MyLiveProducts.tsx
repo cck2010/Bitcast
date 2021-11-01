@@ -75,7 +75,7 @@ export function MyLiveProductsComponent(props: MyLiveProductsProps) {
                             myLiveProductArr[0].seller_id === userInfo.id && (
                                 <Accordion.Item
                                     eventKey={`${index}`}
-                                    key={myLiveProductArr[0].id}
+                                    key={index}
                                 >
                                     <Accordion.Header>
                                         直播名稱： {myLiveProductArr[0].title}
@@ -86,15 +86,20 @@ export function MyLiveProductsComponent(props: MyLiveProductsProps) {
                                                 <tr>
                                                     <th>#</th>
                                                     <th>商品名稱</th>
-                                                    <th>底價</th>
-                                                    <th>即買價</th>
-                                                    <th>每次叫價</th>
-                                                    <th>拍賣成功／尚未賣出</th>
+                                                    <th>成交價</th>
+                                                    <th>買家</th>
+                                                    <th>買家電郵</th>
+                                                    <th>買家電話</th>
+                                                    <th>買家TG帳號</th>
                                                 </tr>
                                             </thead>
                                             {myLiveProductArr.map(
                                                 (product, index) => (
-                                                    <tbody key={product.id}>
+                                                    <tbody
+                                                        key={
+                                                            product.product_name
+                                                        }
+                                                    >
                                                         <tr>
                                                             <td>{`${
                                                                 index + 1
@@ -106,29 +111,50 @@ export function MyLiveProductsComponent(props: MyLiveProductsProps) {
                                                             </td>
                                                             <td>
                                                                 {
-                                                                    product.min_price
+                                                                    product.current_price
                                                                 }
                                                             </td>
-                                                            <td>
-                                                                {
-                                                                    product.buy_price
-                                                                }
-                                                            </td>
-                                                            <td>
-                                                                {
-                                                                    product.bid_increment
-                                                                }
-                                                            </td>
-                                                            {product.buyer_id ===
-                                                            null ? (
-                                                                <td>
-                                                                    尚未賣出
-                                                                </td>
-                                                            ) : (
-                                                                <td>
-                                                                    拍賣成功
-                                                                </td>
-                                                            )}
+
+                                                            {product.buyer_id !==
+                                                                null &&
+                                                                product.buyer_id !==
+                                                                    product.seller_id && (
+                                                                    <td>
+                                                                        {
+                                                                            product.username
+                                                                        }
+                                                                    </td>
+                                                                )}
+                                                            {product.buyer_id !==
+                                                                null &&
+                                                                product.buyer_id !==
+                                                                    product.seller_id && (
+                                                                    <td>
+                                                                        {
+                                                                            product.email
+                                                                        }
+                                                                    </td>
+                                                                )}
+                                                            {product.buyer_id !==
+                                                                null &&
+                                                                product.buyer_id !==
+                                                                    product.seller_id && (
+                                                                    <td>
+                                                                        {
+                                                                            product.phone_number
+                                                                        }
+                                                                    </td>
+                                                                )}
+                                                            {product.buyer_id !==
+                                                                null &&
+                                                                product.buyer_id !==
+                                                                    product.seller_id && (
+                                                                    <td>
+                                                                        {
+                                                                            product.telegram_acct
+                                                                        }
+                                                                    </td>
+                                                                )}
                                                         </tr>
                                                     </tbody>
                                                 )

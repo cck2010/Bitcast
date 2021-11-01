@@ -6,8 +6,14 @@ import { ButtonGroup } from "reactstrap";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import useFetch from "react-fetch-hook";
+import { Canvass } from "../../pages/LiveStream/components/Konva2";
+import { Socket } from "socket.io-client";
 
-function LiveStreamWindow() {
+interface LiveStreamWindowProps {
+    ws: Socket | null;
+}
+
+function LiveStreamWindow(props: LiveStreamWindowProps) {
     //Get States
     const pubVideo = useRef<HTMLVideoElement>(null);
     const [client, setClient] = useState<Client | null>(null);
@@ -170,22 +176,27 @@ function LiveStreamWindow() {
                         </button>
                     </ButtonGroup>
                 )}
-                <video
-                    id="pubVideo"
-                    poster="transparent.png"
-                    className="w-100 h-100"
-                    controls
-                    ref={pubVideo}
-                    style={{
-                        backgroundImage: `${
-                            thumbnail
-                                ? `url("${process.env.REACT_APP_BACKEND_URL}/${thumbnail}")`
-                                : ""
-                        }`,
-                        backgroundRepeat: "no-repeat",
-                        backgroundSize: "100% 100%",
-                    }}
-                ></video>
+                <div className="video_canvas_combine">
+                    {pubVideo.current !== null && (
+                        <Canvass video={pubVideo} ws={props.ws} />
+                    )}
+                    <video
+                        id="pubVideo"
+                        poster="transparent.png"
+                        className="w-100 h-100"
+                        controls
+                        ref={pubVideo}
+                        style={{
+                            backgroundImage: `${
+                                thumbnail
+                                    ? `url("${process.env.REACT_APP_BACKEND_URL}/${thumbnail}")`
+                                    : ""
+                            }`,
+                            backgroundRepeat: "no-repeat",
+                            backgroundSize: "100% 100%",
+                        }}
+                    ></video>
+                </div>
             </div>
         </div>
     );

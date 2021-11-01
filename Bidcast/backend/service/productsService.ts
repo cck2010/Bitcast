@@ -2,7 +2,7 @@ import { Knex } from "knex";
 // import { ResponseJson } from '../response';
 
 export class ProductsService {
-    constructor(private knex: Knex) { }
+    constructor(private knex: Knex) {}
 
     getCategories = async () => {
         const results = await this.knex.select("*").from("categories");
@@ -27,14 +27,18 @@ export class ProductsService {
         console.log("liveImage", liveImage);
         console.log("userId", userId);
         console.log("buyerLink", buyerLink);
-        if(liveImage != undefined){
+        if (liveImage != undefined) {
             const res = await this.knex("live")
                 .insert({
                     user_id: userId,
                     title: liveTitle,
                     image: liveImage,
                     starting_time: startDate,
-                    status_id: 1,
+                    status_id: (
+                        await this.knex("status")
+                            .select("id")
+                            .where("status", "active")
+                    )[0].id,
                     max_viewers: 0,
                     current_viewers: 0,
                     seller_link: sellerLink,
@@ -54,7 +58,7 @@ export class ProductsService {
                 success: true,
                 data: { msg: "submit liveInfo success", res },
             };
-        }else{
+        } else {
             return {
                 success: false,
                 data: { msg: "submit liveInfo fail due to data undefined" },
@@ -262,7 +266,7 @@ export class ProductsService {
         userId: number
     ) => {
         console.log("index", productIndex);
-        if(productImage != undefined){
+        if (productImage != undefined) {
             const res = await this.knex("products")
                 .insert({
                     product_name: name,
@@ -283,13 +287,13 @@ export class ProductsService {
                     description: description,
                 })
                 .returning("*");
-    
+
             // console.log("Submitted products :", res);
             return {
                 success: true,
                 data: { msg: "submit product success", res },
             };
-        }else{
+        } else {
             return {
                 success: false,
                 data: { msg: "submit product fail due to data undefined" },

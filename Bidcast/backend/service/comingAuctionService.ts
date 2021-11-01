@@ -1,13 +1,13 @@
 import { Knex } from "knex";
 
 export class ComingAuctionService {
-    constructor(private knex: Knex) { }
+    constructor(private knex: Knex) {}
 
     getComingAuction = async () => {
         const results = await this.knex.raw(
             /*sql*/
             `select live.id,live.user_id, live.title, live.image, live.starting_time, live.description, username, profile_pic, live.buyer_link from live
-            left outer join users on live.user_id = users.id 
+            left outer join users on live.user_id = users.id where live.starting_time - 8 * interval '1 hour' > NOW()
             order by live.starting_time asc
             limit 10
             `
@@ -24,7 +24,7 @@ export class ComingAuctionService {
             `select * from live
             right outer join products on products.live_id = live.id
             left outer join users on live.user_id = users.id
-            where live.is_live = true and live.is_ended = false
+            where live.is_live is true and live.is_ended is false
             ORDER BY random()
             `
         );

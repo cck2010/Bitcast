@@ -172,7 +172,8 @@ export function CreateBids() {
                         }
                     );
                     const liveJson = await liveRes.json();
-                    console.log("liveJson.data.res", liveJson.data.res[0]);
+                    // console.log("liveJson.data.res", liveJson.data.res[0]);
+                    console.log("liveJson.data.res", liveJson.data.res);
                     liveId = liveJson.data.res[0].id;
                 } else {
                     liveId = null;

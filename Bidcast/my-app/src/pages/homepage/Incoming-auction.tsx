@@ -124,7 +124,7 @@ export function ComingAuction(props: ComingAuctionProps) {
                             <Card.Body>
                                 {Date.parse(auction.starting_time.toString()) -
                                     Date.parse(now) >
-                                0 ? (
+                                28800000 ? (
                                     <div className="counter">
                                         <div className="countdown_time">
                                             <div className="time_value">
@@ -132,7 +132,8 @@ export function ComingAuction(props: ComingAuctionProps) {
                                                     (Date.parse(
                                                         auction.starting_time.toString()
                                                     ) -
-                                                        Date.parse(now)) /
+                                                        Date.parse(now) -
+                                                        28800000) /
                                                         (24 * 60 * 60 * 1000)
                                                 )}
                                             </div>
@@ -149,7 +150,8 @@ export function ComingAuction(props: ComingAuctionProps) {
                                                             ) -
                                                                 Date.parse(
                                                                     now
-                                                                )) /
+                                                                ) -
+                                                                28800000) /
                                                                 (60 * 60 * 1000)
                                                         ) % 24
                                                     ).toString()
@@ -168,7 +170,8 @@ export function ComingAuction(props: ComingAuctionProps) {
                                                             ) -
                                                                 Date.parse(
                                                                     now
-                                                                )) /
+                                                                ) -
+                                                                28800000) /
                                                                 (60 * 1000)
                                                         ) % 60
                                                     ).toString()
@@ -187,7 +190,8 @@ export function ComingAuction(props: ComingAuctionProps) {
                                                             ) -
                                                                 Date.parse(
                                                                     now
-                                                                )) /
+                                                                ) -
+                                                                28800000) /
                                                                 1000
                                                         ) % 60
                                                     ).toString()
