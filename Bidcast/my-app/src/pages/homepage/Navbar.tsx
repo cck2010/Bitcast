@@ -100,13 +100,13 @@ export const HomePageNavbar = (props: NavbarProps) => {
     }, [dispatch]);
 
     const menuIconOnclickHandler = (e: React.MouseEvent) => {
-        e.stopPropagation();
+        // e.stopPropagation();
         dispatch(sidebarClick(true));
         dispatch(menuIconClick(menuCollapse ? false : true, false));
     };
-    const preventPropagation = (e: React.MouseEvent) => {
-        e.stopPropagation();
-    }
+    // const preventPropagation = (e: React.MouseEvent) => {
+    //     e.stopPropagation();
+    // }
     const navbarOnClickHandler = () => {
         if (
             menuToggle.current?.classList[
@@ -158,7 +158,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
                         id="responsive-navbar-nav"
                         className=" mt-md-0 mt-3"
                         ref={menuRef}
-                        onClick={preventPropagation}
+                    // onClick={preventPropagation}
                     >
                         <Nav className="me-auto navbar_buttons">
                             <FormGroup>
