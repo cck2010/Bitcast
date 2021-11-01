@@ -27,16 +27,13 @@ export class ProductsController {
             const { liveTitle, description, startDate, userId } = req.body;
 
             const ms = Date.parse(startDate);
-            const startDateFormat = new Date(ms + 28800000);
+            // const startDateFormat = new Date(ms + 28800000);
+            const startDateFormat = new Date(ms);
 
-            // let sellerLink = "1123";
-            // let buyerLink = "232323";
-            // let sellerLink = await v4().substring(0,8);
-            // let buyerLink = await v4().substring(0,8);
+           
             let sellerLink = await v4();
             let buyerLink = await v4();
-            // console.log("buyerLink", buyerLink);
-            // console.log("sellerLink", sellerLink);
+    
 
             const result = await this.productsService.submitBidLiveInfo(
                 liveTitle,
