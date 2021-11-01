@@ -47,6 +47,7 @@ export class ProductsController {
                 sellerLink,
                 buyerLink
             );
+
             // console.log("submitted live result (controller side)", result);
             res.json(result);
         } catch (error) {
