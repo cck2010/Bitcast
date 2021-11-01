@@ -45,10 +45,9 @@ export function AccountDetails() {
     //     const handleShow = (event:React.MouseEvent) => {
     //     event.stopPropagation();
 
-    const handleShow = (event:React.MouseEvent) => {
-    event.stopPropagation();
-    
-  };
+    // const handleShow = (event: React.MouseEvent) => {
+    //     event.stopPropagation();
+    // };
     function AlertListAppend() {
         return (
             <div>
@@ -72,7 +71,7 @@ export function AccountDetails() {
             ) {
                 if (!isToastExist) {
                     setIsAlertChecked(true);
-// console.log(isToastExist)
+                    // console.log(isToastExist)
                     addToast(<ToastDemo />);
                     setIsToastExsist(true);
                     // console.log('efwefgeg=',isAuthenticate)
@@ -118,9 +117,9 @@ export function AccountDetails() {
             : (n = n);
         data.telegramAccount
             ? editProFormData.append(
-                  "telegramAccount",
-                  `@${data.telegramAccount}`
-              )
+                "telegramAccount",
+                `@${data.telegramAccount}`
+            )
             : (n = n);
         // data.telegramChatId? editProFormData.append('telegramChatId',data.telegramChatId):n=n;
         data.aboutMe
@@ -179,6 +178,7 @@ export function AccountDetails() {
             setLoadStatus("loadingHide");
         }, 500);
     }, [userInfo]);
+    console.log(userInfo);
 
     return loadStatus === "loadingShown" ? (
         <div className={loadStatus}>
@@ -203,16 +203,15 @@ export function AccountDetails() {
                             {userImg !== undefined && (
                                 <div className="card_absolute_layer d-flex justify-content-center">
                                     <Image
-                                        src={`${
-                                            userImg.search(
-                                                /(https:\/\/)|(http:\/\/)/i
-                                            ) < 0
-                                                ? process.env
-                                                      .REACT_APP_BACKEND_URL +
-                                                  "/" +
-                                                  userImg
-                                                : userImg
-                                        }`}
+                                        src={`${userImg.search(
+                                            /(https:\/\/)|(http:\/\/)/i
+                                        ) < 0
+                                            ? process.env
+                                                .REACT_APP_BACKEND_URL +
+                                            "/" +
+                                            userImg
+                                            : userImg
+                                            }`}
                                         width="80"
                                         height="80"
                                         roundedCircle
@@ -276,8 +275,8 @@ export function AccountDetails() {
                                         userInfo.phone_number === "11111111"
                                             ? "沒有"
                                             : userInfo.phone_number
-                                            ? userInfo.phone_number
-                                            : "沒有"
+                                                ? userInfo.phone_number
+                                                : "沒有"
                                     }
                                 />
                             </div>
@@ -289,8 +288,8 @@ export function AccountDetails() {
                                     placeholder={
                                         userInfo.telegram_acct
                                             ? `${userInfo.telegram_acct.substring(
-                                                  1
-                                              )}`
+                                                1
+                                            )}`
                                             : "沒有"
                                     }
                                 />
@@ -327,8 +326,12 @@ export function AccountDetails() {
                                                 聊天室左下角打開menu{" "}
                                             </li>
                                             <li>
-                                                點擊/verify
-                                                並輸入你的電子郵件，即可進行認証
+                                                點擊/verify 並輸入
+                                                {"TOKEN_" +
+                                                    (userInfo.id * 100000)
+                                                        .toString(16)
+                                                        .toUpperCase()}
+                                                ，即可進行認証
                                             </li>
                                         </ul>
                                     </div>
@@ -373,21 +376,23 @@ export function AccountDetails() {
                                     <div className={"file_Info_container"}>
                                         {/* <div>{selectedImage.name as any}</div> */}
                                         <div>{selectedImage.type as any}</div>
-                                        <div>{`${
-                                            (
-                                                (selectedImage.size as any) /
-                                                1000000
-                                            )
-                                                .toString()
-                                                .match(/^\d+(?:\.\d{0,2})?/) +
+                                        <div>{`${(
+                                            (selectedImage.size as any) /
+                                            1000000
+                                        )
+                                            .toString()
+                                            .match(/^\d+(?:\.\d{0,2})?/) +
                                             " MB"
-                                        }`}</div>
+                                            }`}</div>
                                     </div>
                                 </div>
                             )}
 
-                            <input className={"button_default"} type="submit" onClick={handleShow} />
-                            
+                            <input
+                                className={"button_default"}
+                                type="submit"
+                            // onClick={handleShow}
+                            />
                         </form>
                     </div>
                 </Col>

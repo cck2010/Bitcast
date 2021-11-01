@@ -34,10 +34,10 @@ export function MyLive() {
 
     return (
         <div className="myLive ps-3">
-            <Container>
+            <Container className="m-0">
                 <h2 className="pt-3">我的直播</h2>
             </Container>
-            <Container className="my_live_container pt-3">
+            <Container className="my_live_container pt-3 m-0">
                 <div className="row w-100">
                     {lives.map(
                         (live) =>

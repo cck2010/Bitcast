@@ -72,7 +72,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
     const menuRef = useRef<HTMLDivElement>(null);
     const menuToggle = useRef<HTMLButtonElement>(null);
     const divRef = useRef<HTMLDivElement>(null);
-    useEffect(() => {}, [sidebarCollapse]);
+    useEffect(() => { }, [sidebarCollapse]);
 
     useEffect(() => {
         dispatch(checkCurrentUser());
@@ -86,7 +86,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
 
     const popover = (
         <Popover id="popover-basic">
-            <Popover.Header as="h3">請先登入</Popover.Header>
+            <Popover.Header as="div">請先登入</Popover.Header>
         </Popover>
     );
 
@@ -99,17 +99,18 @@ export const HomePageNavbar = (props: NavbarProps) => {
         dispatch(fetchCategories());
     }, [dispatch]);
 
-    const menuIconOnclickHandler = (e:React.MouseEvent) => {
-        e.stopPropagation();
+    const menuIconOnclickHandler = (e: React.MouseEvent) => {
+        // e.stopPropagation();
         dispatch(sidebarClick(true));
         dispatch(menuIconClick(menuCollapse ? false : true, false));
     };
-    const preventPropagation = (e:React.MouseEvent) => {
-        e.stopPropagation();}
+    // const preventPropagation = (e: React.MouseEvent) => {
+    //     e.stopPropagation();
+    // }
     const navbarOnClickHandler = () => {
         if (
             menuToggle.current?.classList[
-                Array.from(menuToggle.current?.classList).indexOf("collapsed")
+            Array.from(menuToggle.current?.classList).indexOf("collapsed")
             ] !== "collapsed"
         ) {
             menuToggle.current?.click();
@@ -138,7 +139,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
     return (
         <div ref={divRef}>
             {divRef && (
-           
+
                 <Navbar collapseOnSelect expand="md" className="navbar py-3">
                     <Link to="/" className="nav_link ms-3">
                         <img
@@ -157,7 +158,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
                         id="responsive-navbar-nav"
                         className=" mt-md-0 mt-3"
                         ref={menuRef}
-                        onClick={preventPropagation}
+                    // onClick={preventPropagation}
                     >
                         <Nav className="me-auto navbar_buttons">
                             <FormGroup>
@@ -195,6 +196,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                     trigger="click"
                                     placement="bottom"
                                     overlay={popover}
+                                    rootClose
                                 >
                                     <Link
                                         to="#"
@@ -208,7 +210,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                 <Link
                                     to={
                                         phoneNumber === "" ||
-                                        phoneNumber === "11111111"
+                                            phoneNumber === "11111111"
                                             ? "/profilePage/accountDetails"
                                             : "/createBids"
                                     }
@@ -223,9 +225,9 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                 title="商品分類"
                                 id="collasible-nav-dropdown"
                                 className="dropdown"
-                                // show={show}
-                                // onMouseEnter={showDropdown}
-                                // onMouseLeave={hideDropdown}
+                            // show={show}
+                            // onMouseEnter={showDropdown}
+                            // onMouseLeave={hideDropdown}
                             >
                                 {categories.map((category) => (
                                     <Link
@@ -270,16 +272,15 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                 {isAuthenticate && profilePic && (
                                     <img
                                         alt="profile_pic"
-                                        src={`${
-                                            profilePic.search(
-                                                /(https:\/\/)|(http:\/\/)/i
-                                            ) < 0
-                                                ? process.env
-                                                      .REACT_APP_BACKEND_URL +
-                                                  "/" +
-                                                  profilePic
-                                                : profilePic
-                                        }`}
+                                        src={`${profilePic.search(
+                                            /(https:\/\/)|(http:\/\/)/i
+                                        ) < 0
+                                            ? process.env
+                                                .REACT_APP_BACKEND_URL +
+                                            "/" +
+                                            profilePic
+                                            : profilePic
+                                            }`}
                                         width="40"
                                         height="40"
                                         className="rounded-circle"
@@ -290,9 +291,9 @@ export const HomePageNavbar = (props: NavbarProps) => {
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
-                
+
             )}
-            
+
         </div>
     );
 };
