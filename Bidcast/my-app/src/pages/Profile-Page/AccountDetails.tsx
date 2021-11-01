@@ -45,10 +45,9 @@ export function AccountDetails() {
     //     const handleShow = (event:React.MouseEvent) => {
     //     event.stopPropagation();
 
-    const handleShow = (event:React.MouseEvent) => {
-    event.stopPropagation();
-    
-  };
+    const handleShow = (event: React.MouseEvent) => {
+        event.stopPropagation();
+    };
     function AlertListAppend() {
         return (
             <div>
@@ -72,7 +71,7 @@ export function AccountDetails() {
             ) {
                 if (!isToastExist) {
                     setIsAlertChecked(true);
-// console.log(isToastExist)
+                    // console.log(isToastExist)
                     addToast(<ToastDemo />);
                     setIsToastExsist(true);
                     // console.log('efwefgeg=',isAuthenticate)
@@ -179,6 +178,7 @@ export function AccountDetails() {
             setLoadStatus("loadingHide");
         }, 500);
     }, [userInfo]);
+    console.log(userInfo);
 
     return loadStatus === "loadingShown" ? (
         <div className={loadStatus}>
@@ -327,8 +327,12 @@ export function AccountDetails() {
                                                 聊天室左下角打開menu{" "}
                                             </li>
                                             <li>
-                                                點擊/verify
-                                                並輸入你的電子郵件，即可進行認証
+                                                點擊/verify 並輸入
+                                                {"TOKEN_" +
+                                                    (userInfo.id * 100000)
+                                                        .toString(16)
+                                                        .toUpperCase()}
+                                                ，即可進行認証
                                             </li>
                                         </ul>
                                     </div>
@@ -386,8 +390,11 @@ export function AccountDetails() {
                                 </div>
                             )}
 
-                            <input className={"button_default"} type="submit" onClick={handleShow} />
-                            
+                            <input
+                                className={"button_default"}
+                                type="submit"
+                                onClick={handleShow}
+                            />
                         </form>
                     </div>
                 </Col>
