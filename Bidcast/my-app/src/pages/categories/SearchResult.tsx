@@ -166,7 +166,7 @@ export function SearchResults() {
                                     拍賣日期：
                                     {moment(
                                         searchingResult.starting_time
-                                    ).format("YYYY-MM-DD hh:mm:ss")}
+                                    ).format("YYYY-MM-DD hh:mm:ss a")}
                                 </h6>
                                 <h6>拍賣主： {searchingResult.username}</h6>
                                 <p className="products_description">

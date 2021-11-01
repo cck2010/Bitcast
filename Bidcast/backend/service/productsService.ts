@@ -246,7 +246,7 @@ export class ProductsService {
         from products 
         left outer join users on products.seller_id = users.id
         left outer join live on products.live_id = live.id
-        where product_name ilike '%${searchKeywords}%' and live.starting_time - 8 * interval '1 hour' > NOW();
+        where product_name ilike '%${searchKeywords}%' and live.starting_time > NOW();
         `);
         return {
             success: true,
