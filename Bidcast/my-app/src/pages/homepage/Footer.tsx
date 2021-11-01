@@ -52,6 +52,7 @@ export function Footer() {
                             trigger="click"
                             placement="bottom"
                             overlay={popover}
+                            rootClose
                         >
                             <Link to="#" className="nav_link">
                                 舉辦拍賣
