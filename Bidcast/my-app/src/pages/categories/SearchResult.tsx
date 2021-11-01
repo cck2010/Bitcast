@@ -117,19 +117,19 @@ export function SearchResults() {
                         : sortingMethod === "3"
                         ? [...searchingResults].sort((a, b) => {
                               if (a.min_price > b.min_price) {
-                                  return -1;
+                                  return 1;
                               }
                               if (a.min_price < b.min_price) {
-                                  return 1;
+                                  return -1;
                               }
                               return 0;
                           })
                         : [...searchingResults].sort((a, b) => {
                               if (a.min_price > b.min_price) {
-                                  return 1;
+                                  return -1;
                               }
                               if (a.min_price < b.min_price) {
-                                  return -1;
+                                  return 1;
                               }
                               return 0;
                           })

@@ -7,7 +7,7 @@ export class ComingAuctionService {
         const results = await this.knex.raw(
             /*sql*/
             `select live.id,live.user_id, live.title, live.image, live.starting_time, live.description, username, profile_pic, live.buyer_link from live
-            left outer join users on live.user_id = users.id where live.starting_time - 8 * interval '1 hour' > NOW()
+            left outer join users on live.user_id = users.id where live.starting_time > NOW()
             order by live.starting_time asc
             limit 10
             `
