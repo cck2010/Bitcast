@@ -2,10 +2,11 @@ import { Button, Card, Container, Image } from "react-bootstrap";
 import { push } from "connected-react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
     fetchMyLive,
     updateLiveStatus,
+    updateOpenLiveStatus,
 } from "../../redux/myLiveProducts/action";
 import moment from "moment";
 import "./Animation.scss";
@@ -88,6 +89,11 @@ export function MyLive() {
                                                         variant="outline-dark"
                                                         className="bid_button"
                                                         onClick={() => {
+                                                            dispatch(
+                                                                updateOpenLiveStatus(
+                                                                    live.id
+                                                                )
+                                                            );
                                                             dispatch(
                                                                 push(
                                                                     `/liveStreamingSeller?token=${live.seller_link}`

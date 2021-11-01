@@ -9,6 +9,7 @@ export interface MyLive {
     seller_link: string;
     max_viewers?: number;
     is_ended?: boolean;
+    is_live?: boolean;
 }
 
 export interface MyLiveProducts {
@@ -51,9 +52,17 @@ export function loadLiveStatus(liveId: MyLive[]) {
     }
 }
 
+export function loadOpenLiveStatus(myLiveId: MyLive[]) {
+    return {
+        type: "@@myLive/LOAD_OPEN_LIVE_STATUS" as const,
+        myLiveId,
+    }
+}
+
 export type LoadMyLiveActions = ReturnType<typeof loadMyLive>
     | ReturnType<typeof loadMyLiveProducts>
     | ReturnType<typeof loadLiveStatus>
+    | ReturnType<typeof loadOpenLiveStatus>
 
 export function fetchMyLive() {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
@@ -114,8 +123,39 @@ export function updateLiveStatus(liveId: number) {
             }
             )
             const json = await res.json()
+            if (json.succes) {
+                dispatch(loadLiveStatus(json.data.results))
+            }
 
-            dispatch(loadLiveStatus(json.data.results))
+
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+}
+
+export function updateOpenLiveStatus(myLiveId: number) {
+    return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
+        try {
+
+            const res = await fetch(
+
+                `${process.env.REACT_APP_BACKEND_URL}/profilePage/openMyLive`, {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+
+                },
+                body: JSON.stringify({ myLiveId })
+            }
+            )
+
+            const json = await res.json()
+            if (json.success) {
+
+                dispatch(loadOpenLiveStatus(json.data.results))
+            }
 
         } catch (error) {
             console.log(error);

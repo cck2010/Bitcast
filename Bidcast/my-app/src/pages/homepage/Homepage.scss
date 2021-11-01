@@ -20,7 +20,7 @@ $logoColor: #11f3a2;
 }
 .nav_link:hover {
     color: $logoColor !important;
-    font-size: 1.1em;
+    // font-size: 1.1em;
 }
 // .buttons_container {
 //   display: flex;
@@ -80,6 +80,7 @@ h4 {
     display: block;
     transition: transform 0.9s;
     user-select: none;
+    cursor: pointer;
 }
 .img_fluid:hover {
     transform: scale(1.1);
@@ -226,7 +227,7 @@ footer {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    height: 22em;
+    height: 24em;
 }
 .bid_with_bidcast {
     padding-bottom: 30px;
@@ -245,7 +246,6 @@ footer {
 }
 .nav-link:hover {
     color: $logoColor !important;
-    font-size: 1.1em;
 }
 .dropdown_items {
     color: $navbarColor;
@@ -301,6 +301,7 @@ footer {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    cursor: pointer;
 }
 .products_detailed_info {
     width: 90%;

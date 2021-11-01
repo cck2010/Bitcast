@@ -18,15 +18,14 @@ export class ComingAuctionService {
         };
     };
 
-    getBroadcastingProduct = async () => {
+    getBroadcasting = async () => {
         const results = await this.knex.raw(
             /*sql*/
             `select * from live
             right outer join products on products.live_id = live.id
             left outer join users on live.user_id = users.id
-            where products.is_selected = true
+            where live.is_live = true and live.is_ended = false
             ORDER BY random()
-            limit 10
             `
         );
         return {

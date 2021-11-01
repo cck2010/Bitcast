@@ -17,9 +17,9 @@ export class ComingAuctionController {
         }
     }
 
-    getBroadcastingProduct = async (req: Request, res: Response) => {
+    getBroadcasting = async (req: Request, res: Response) => {
         try {
-            const result = await this.comingAuctionService.getBroadcastingProduct()
+            const result = await this.comingAuctionService.getBroadcasting()
             res.json(result)
         } catch (error) {
             res.json({
@@ -31,12 +31,12 @@ export class ComingAuctionController {
         }
     }
 
-    getProductDetails = async (req: Request, res: Response)=> {
+    getProductDetails = async (req: Request, res: Response) => {
         try {
             const result = await this.comingAuctionService.getProductDetails()
-            
+
             // console.log(result.data.results.rows[0]);
-            
+
             res.json(result)
         } catch (error) {
             console.log(error);

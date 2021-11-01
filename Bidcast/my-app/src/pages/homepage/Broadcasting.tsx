@@ -93,6 +93,13 @@ export function Broadcasting() {
                                     <Image
                                         className="img_fluid"
                                         src={`${process.env.REACT_APP_BACKEND_URL}/${broadcasting.image}`}
+                                        onClick={() => {
+                                            dispatch(
+                                                push(
+                                                    `/liveStreaming?room=${broadcasting.buyer_link}`
+                                                )
+                                            );
+                                        }}
                                         fluid
                                     />
                                     <FontAwesomeIcon
@@ -101,7 +108,16 @@ export function Broadcasting() {
                                     />
                                 </div>
                                 <Card.Body>
-                                    <Card.Title className="broadcasting_title">
+                                    <Card.Title
+                                        className="broadcasting_title"
+                                        onClick={() => {
+                                            dispatch(
+                                                push(
+                                                    `/liveStreaming?room=${broadcasting.buyer_link}`
+                                                )
+                                            );
+                                        }}
+                                    >
                                         {broadcasting.title}
                                     </Card.Title>
                                     <Card.Text>

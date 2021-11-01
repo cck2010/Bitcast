@@ -56,4 +56,33 @@ export class MyLiveController {
             });
         }
     }
+
+    openMyLive = async (req: Request, res: Response) => {
+        try {
+            const { myLiveId } = req.body
+            console.log('myliveID', myLiveId);
+
+            if (myLiveId === 0) {
+                res.json({
+                    success: false,
+                    data: { msg: "no such live" }
+                })
+                return
+            }
+
+            const result = await this.myLiveService.openMyLive(parseInt(myLiveId))
+
+            setTimeout(async () => {
+                await this.myLiveService.changeMyLiveStatus(myLiveId)
+            }, 7200000);
+
+            res.json(result)
+        } catch (error) {
+            res.json({
+                success: false,
+                data: { msg: "open my live fail" },
+                error: new Error("open my live fail"),
+            });
+        }
+    }
 }
