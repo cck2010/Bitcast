@@ -45,7 +45,7 @@ export function SearchResults() {
                             eventKey="1"
                             onClick={() => setSortingMethod("2")}
                         >
-                            由新至舊
+                            由遠至近
                         </Dropdown.Item>
                         <Dropdown.Item
                             eventKey="2"
@@ -53,7 +53,7 @@ export function SearchResults() {
                                 setSortingMethod("1");
                             }}
                         >
-                            由舊至新
+                            由近至遠
                         </Dropdown.Item>
                     </DropdownButton>
                     <DropdownButton
