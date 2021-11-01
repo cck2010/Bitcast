@@ -318,3 +318,25 @@ $smallFontSize: 0.5em;
         }
     }
 }
+
+.LiveStreamWindow,
+.LiveStreamWindowSeller {
+    .video_canvas_combine {
+        position: relative;
+        .konvajs-content {
+            position: absolute !important;
+        }
+        .star {
+            border: 1px solid #ba9b48;
+            padding: 2px;
+            border-radius: 50%;
+            cursor: pointer;
+            position: absolute;
+            bottom: 100px;
+            right: 5px;
+            width: 25px;
+            height: 25px;
+            background-color: #ba9b48;
+        }
+    }
+}

@@ -142,7 +142,7 @@ function LiveStream(props: LiveStreamProps) {
                 <div className={`LiveStream m-3`} ref={liveStreamRef}>
                     <div className="row">
                         <div className={`${isTablet ? "col-8" : "col"}`}>
-                            <LiveStreamWindowSeller />
+                            <LiveStreamWindowSeller ws={ws} />
                             {isTablet ? (
                                 <>
                                     <div className="row mt-3 rounded">

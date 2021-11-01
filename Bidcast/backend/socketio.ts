@@ -39,6 +39,11 @@ export function setSocketIO(io: socketIO.Server) {
             }
             socket.emit("checkOnlineUsers", clientsInRoom);
         });
+        socket.on("starOnClick", (room: number) => {
+            console.log(room);
+
+            io.sockets.in(room.toString()).emit("starOnClick");
+        });
 
         socket.on("disconnect", () => {});
     });
