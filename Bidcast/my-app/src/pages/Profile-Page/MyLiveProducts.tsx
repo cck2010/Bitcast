@@ -86,10 +86,11 @@ export function MyLiveProductsComponent(props: MyLiveProductsProps) {
                                                 <tr>
                                                     <th>#</th>
                                                     <th>商品名稱</th>
-                                                    <th>底價</th>
-                                                    <th>即買價</th>
-                                                    <th>每次叫價</th>
-                                                    <th>拍賣成功／尚未賣出</th>
+                                                    <th>成交價</th>
+                                                    <th>買家</th>
+                                                    <th>買家電郵</th>
+                                                    <th>買家電話</th>
+                                                    <th>買家TG帳號</th>
                                                 </tr>
                                             </thead>
                                             {myLiveProductArr.map(
@@ -110,29 +111,50 @@ export function MyLiveProductsComponent(props: MyLiveProductsProps) {
                                                             </td>
                                                             <td>
                                                                 {
-                                                                    product.min_price
+                                                                    product.current_price
                                                                 }
                                                             </td>
-                                                            <td>
-                                                                {
-                                                                    product.buy_price
-                                                                }
-                                                            </td>
-                                                            <td>
-                                                                {
-                                                                    product.bid_increment
-                                                                }
-                                                            </td>
-                                                            {product.buyer_id ===
-                                                            null ? (
-                                                                <td>
-                                                                    尚未賣出
-                                                                </td>
-                                                            ) : (
-                                                                <td>
-                                                                    拍賣成功
-                                                                </td>
-                                                            )}
+
+                                                            {product.buyer_id !==
+                                                                null &&
+                                                                product.buyer_id !==
+                                                                    product.seller_id && (
+                                                                    <td>
+                                                                        {
+                                                                            product.username
+                                                                        }
+                                                                    </td>
+                                                                )}
+                                                            {product.buyer_id !==
+                                                                null &&
+                                                                product.buyer_id !==
+                                                                    product.seller_id && (
+                                                                    <td>
+                                                                        {
+                                                                            product.email
+                                                                        }
+                                                                    </td>
+                                                                )}
+                                                            {product.buyer_id !==
+                                                                null &&
+                                                                product.buyer_id !==
+                                                                    product.seller_id && (
+                                                                    <td>
+                                                                        {
+                                                                            product.phone_number
+                                                                        }
+                                                                    </td>
+                                                                )}
+                                                            {product.buyer_id !==
+                                                                null &&
+                                                                product.buyer_id !==
+                                                                    product.seller_id && (
+                                                                    <td>
+                                                                        {
+                                                                            product.telegram_acct
+                                                                        }
+                                                                    </td>
+                                                                )}
                                                         </tr>
                                                     </tbody>
                                                 )

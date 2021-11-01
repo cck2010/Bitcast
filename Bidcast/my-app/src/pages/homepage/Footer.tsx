@@ -33,21 +33,29 @@ export function Footer() {
                     />
                     <div>
                         <span className="get_started">想成為拍賣主？</span>
-                        <Link to="/loginPage" className="nav_link">
-                            <Button
-                                variant="success"
-                                className="get_started_button"
-                            >
-                                按這裏
-                            </Button>
-                        </Link>
+                        {isAuthenticate ? (
+                            <Link to="/createBids" className="nav_link">
+                                <Button
+                                    variant="success"
+                                    className="get_started_button"
+                                >
+                                    按這裏
+                                </Button>
+                            </Link>
+                        ) : (
+                            <Link to="/loginPage" className="nav_link">
+                                <Button
+                                    variant="success"
+                                    className="get_started_button"
+                                >
+                                    按這裏
+                                </Button>
+                            </Link>
+                        )}
                     </div>
                 </div>
                 <div className="footer_links">
-                    <Link
-                        to="/searchResult?SearchingKeywords="
-                        className="nav_link"
-                    >
+                    <Link to="/categoryResult?category=" className="nav_link">
                         更多商品
                     </Link>
                     {!isAuthenticate ? (
