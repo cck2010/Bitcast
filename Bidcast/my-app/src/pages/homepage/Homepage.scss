@@ -1,4 +1,4 @@
-// @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap");
 @import "~bootstrap/scss/bootstrap";
 
 $navbarColor: #1e2833;
@@ -340,9 +340,73 @@ footer {
 .modal-backdrop {
     background-color: #4e4e4e !important;
 }
+
+//*** product detail card ***//
+//*** product detail card ***//
+.btn-close {
+    color: white;
+    fill: white;
+    background-color: white;
+}
+.product_details_header {
+    background-color: $navbarColor;
+}
+.product_details_live_title {
+    text-align: start;
+    font-family: "Noto Sans TC", sans-serif;
+    font-weight: 600;
+    color: white;
+}
+.Product_detail_body_container {
+    // background-color: rgba($color: #d3d3d3, $alpha: 0.3);
+}
+.product_Details_body {
+    display: flex;
+    justify-content: center;
+    // background-color: blue;
+}
 .product_details_container {
     display: flex;
     flex-direction: column;
+    font-family: "Noto Sans TC", sans-serif;
+    width: 100%;
+    // background-color: red;
+    .product_details_image {
+        margin-bottom: 20px;
+    }
+    .product_details_Product_name {
+        margin-top: 10px;
+        font-size: 24px;
+        font-weight: 600;
+        margin-left: 20px;
+        // border-bottom: 1px solid lightgrey;
+    }
+    .New_Icon_PD {
+        width: 60px;
+        height: 30px;
+        border: 1px solid transparent;
+        border-radius: 7px;
+        color: white;
+        background-color: $logoColor;
+        // background-color: rgb(255, 57, 57);
+        font-size: 15px;
+        margin-left: 5px;
+        padding: 4px;
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+    .product_details_Product_minPrice {
+        // margin-top: 4px;
+        font-size: 18px;
+        font-weight: 600;
+        padding-left: 20px;
+        padding-top: 7px;
+        margin-bottom: 15px;
+        span {
+            // font-size: 15px;
+            // font-weight: 500;
+        }
+    }
 }
 .broadcasting_title {
     width: 100%;
@@ -358,10 +422,56 @@ footer {
     text-overflow: ellipsis;
 }
 .products_detailed_info:hover {
-    text-overflow: clip;
+    // text-overflow: clip;
     width: auto;
     white-space: normal;
 }
+.product_detailed_Date {
+    padding-bottom: 20px;
+    padding-top: 15px;
+    // border-top: 1px solid lightgrey;
+    border-bottom: 1px solid lightgrey;
+    div {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+    // span {
+    // }
+}
+.product_detailed_description {
+    padding-bottom: 20px;
+    padding-top: 20px;
+    border-bottom: 1px solid lightgrey;
+    div {
+        font-size: 18px;
+        font-weight: 600;
+    }
+}
+.product_detailed_total {
+    padding-bottom: 20px;
+    padding-top: 20px;
+    div {
+        font-size: 18px;
+        font-weight: 600;
+    }
+    border-bottom: 1px solid lightgrey;
+}
+.product_detailed_footer {
+    border-top: transparent !important;
+    background-color: rgba($color: #d3d3d3, $alpha: 0.3);
+    .PD_close_btn {
+        font-family: "Noto Sans TC", sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        padding-right: 12px;
+        padding-left: 12px;
+        background-color: $navbarColor;
+    }
+}
+//*** product detail card ***//
+//*** product detail card ***//
+
 .seller_name {
     cursor: pointer;
     width: 100%;
