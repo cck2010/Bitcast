@@ -467,3 +467,9 @@ footer {
         transform: rotate(359deg);
     }
 }
+
+.Konva_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
