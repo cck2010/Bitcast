@@ -40,7 +40,8 @@ export function MyBidHistory(props: MyBidHistoryProps) {
                     {myBidHistories.map(
                         (myBidHistory) =>
                             myBidHistory.buyer_id !== null &&
-                            myBidHistory.buyer_id === userInfo.id && (
+                            myBidHistory.buyer_id === userInfo.id &&
+                            myBidHistory.seller_id !== userInfo.id && (
                                 <div className="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
                                     <Card
                                         className="my_live_product_card_body mb-3 h-100"

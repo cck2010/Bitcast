@@ -1,4 +1,5 @@
 import { Col, Container, Row, Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { SvgBorder } from "./SvgBorder";
 
 export function Recommendation() {
@@ -16,15 +17,13 @@ export function Recommendation() {
                                     alt="Card image"
                                 />
                                 <Card.ImgOverlay className="info_container">
-                                    <Card.Title>
-                                        商品類別 原創設計 服飾配件
-                                        電腦、平板與周邊 居家、家具與園藝
-                                        運動、戶外與休閒 古董、藝術與礦石
-                                    </Card.Title>
+                                    <Card.Title>電腦、平板與周邊</Card.Title>
                                     <Card.Text>更多精選電玩產品</Card.Text>
-                                    <Card.Text className="view_more">
-                                        查看更多
-                                    </Card.Text>
+                                    <Link to={`/categoryResult?category=`}>
+                                        <Card.Text className="view_more">
+                                            查看更多
+                                        </Card.Text>
+                                    </Link>
                                 </Card.ImgOverlay>
                             </Card>
                         </div>
@@ -35,13 +34,13 @@ export function Recommendation() {
                                     alt="Card image"
                                 />
                                 <Card.ImgOverlay className="info_container">
-                                    <Card.Title>Card title</Card.Title>
-                                    <Card.Text>
-                                        熱門商品，震撼價拍賣！
-                                    </Card.Text>
-                                    <Card.Text className="view_more">
-                                        查看更多
-                                    </Card.Text>
+                                    <Card.Title>原創設計</Card.Title>
+                                    <Card.Text>拍賣主自家設計產品</Card.Text>
+                                    <Link to={`/categoryResult?category=`}>
+                                        <Card.Text className="view_more">
+                                            查看更多
+                                        </Card.Text>
+                                    </Link>
                                 </Card.ImgOverlay>
                             </Card>
                         </div>
@@ -54,13 +53,13 @@ export function Recommendation() {
                                     alt="Card image"
                                 />
                                 <Card.ImgOverlay className="info_container">
-                                    <Card.Title>Card title</Card.Title>
-                                    <Card.Text>
-                                        10 products are broadcasting
-                                    </Card.Text>
-                                    <Card.Text className="view_more">
-                                        查看更多
-                                    </Card.Text>
+                                    <Card.Title>運動、戶外與休閒</Card.Title>
+                                    <Card.Text>絕版波鞋，簽名波衫</Card.Text>
+                                    <Link to={`/categoryResult?category=`}>
+                                        <Card.Text className="view_more">
+                                            查看更多
+                                        </Card.Text>
+                                    </Link>
                                 </Card.ImgOverlay>
                             </Card>
                         </div>
@@ -71,13 +70,15 @@ export function Recommendation() {
                                     alt="Card image"
                                 />
                                 <Card.ImgOverlay className="info_container">
-                                    <Card.Title>Card title</Card.Title>
+                                    <Card.Title>古董、藝術與礦石</Card.Title>
                                     <Card.Text>
-                                        10 products are broadcasting
+                                        搜羅稀世古董，奇珍異石
                                     </Card.Text>
-                                    <Card.Text className="view_more">
-                                        查看更多
-                                    </Card.Text>
+                                    <Link to={`/categoryResult?category=`}>
+                                        <Card.Text className="view_more">
+                                            查看更多
+                                        </Card.Text>
+                                    </Link>
                                 </Card.ImgOverlay>
                             </Card>
                         </div>
