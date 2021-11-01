@@ -456,7 +456,7 @@ export class UserService {
             };
         }
     };
-    googleLogin = async (username: string, email: string, pic: string) => {
+    googleLogin = async (username: string, email: string) => {
         const googleLoginId = await this.knex("login_methods")
             .select("id")
             .where("login_method", "google");

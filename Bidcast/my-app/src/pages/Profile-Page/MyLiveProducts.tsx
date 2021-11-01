@@ -75,7 +75,7 @@ export function MyLiveProductsComponent(props: MyLiveProductsProps) {
                             myLiveProductArr[0].seller_id === userInfo.id && (
                                 <Accordion.Item
                                     eventKey={`${index}`}
-                                    key={myLiveProductArr[0].id}
+                                    key={index}
                                 >
                                     <Accordion.Header>
                                         直播名稱： {myLiveProductArr[0].title}
@@ -95,7 +95,11 @@ export function MyLiveProductsComponent(props: MyLiveProductsProps) {
                                             </thead>
                                             {myLiveProductArr.map(
                                                 (product, index) => (
-                                                    <tbody key={product.id}>
+                                                    <tbody
+                                                        key={
+                                                            product.product_name
+                                                        }
+                                                    >
                                                         <tr>
                                                             <td>{`${
                                                                 index + 1
