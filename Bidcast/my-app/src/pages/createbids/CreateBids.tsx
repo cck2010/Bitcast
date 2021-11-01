@@ -19,6 +19,7 @@ import { v4 } from "uuid";
 import "bootstrap/dist/css/bootstrap.min.css";
 import path from "path";
 import { HomepageCanvas } from "../homepage/components/HomePageKonva";
+import { Canvass } from "../LiveStream/components/Konva2";
 // import { AnySet } from "immer/dist/internal";
 // import { BsWindowSidebar } from "react-icons/bs";
 // import axios from "axios";

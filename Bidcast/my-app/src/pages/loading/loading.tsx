@@ -1,9 +1,9 @@
 // import "./styles.css";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
 import "./loading.scss";
-export function LoadingComponentTest() {
-    return <div>hi</div>;
-}
+// export function LoadingComponentTest() {
+//     return <div>hi</div>;
+// }
 
 export function LoadingDefaultStyle() {
     const ResetCss = createGlobalStyle`
