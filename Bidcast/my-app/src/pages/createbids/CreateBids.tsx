@@ -534,7 +534,7 @@ export function CreateBids() {
                                     )}
 
                                 <p className={"input_box"}>
-                                    <label>底價:</label>
+                                    <label>底價 HKD:</label>
                                     <input
                                         className={"input_default"}
                                         type="number"
@@ -547,7 +547,7 @@ export function CreateBids() {
                                 </p>
 
                                 <p className={"input_box"}>
-                                    <label>每口價:</label>
+                                    <label>每口價 HKD:</label>
                                     <input
                                         className={"input_default"}
                                         type="number"
@@ -560,7 +560,7 @@ export function CreateBids() {
                                 </p>
 
                                 <p className={"input_box"}>
-                                    <label>即買價:</label>
+                                    <label>即買價 HKD:</label>
                                     <input
                                         className={"input_default"}
                                         type="number"
