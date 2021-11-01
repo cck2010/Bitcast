@@ -168,7 +168,11 @@ export function ProductDetails(props: any) {
                                             </div>
                                             <div className="product_detailed_description">
                                                 <div>拍賣簡介： </div>
-                                                <span>
+                                                <span
+                                                    className={
+                                                        "product_detailed_description_content"
+                                                    }
+                                                >
                                                     {
                                                         (liveArr[0] as any)
                                                             .description
