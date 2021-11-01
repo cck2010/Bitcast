@@ -45,7 +45,7 @@ export function SearchResults() {
                             eventKey="1"
                             onClick={() => setSortingMethod("2")}
                         >
-                            由新至舊
+                            由遠至近
                         </Dropdown.Item>
                         <Dropdown.Item
                             eventKey="2"
@@ -53,7 +53,7 @@ export function SearchResults() {
                                 setSortingMethod("1");
                             }}
                         >
-                            由舊至新
+                            由近至遠
                         </Dropdown.Item>
                     </DropdownButton>
                     <DropdownButton
@@ -117,19 +117,19 @@ export function SearchResults() {
                         : sortingMethod === "3"
                         ? [...searchingResults].sort((a, b) => {
                               if (a.min_price > b.min_price) {
-                                  return -1;
+                                  return 1;
                               }
                               if (a.min_price < b.min_price) {
-                                  return 1;
+                                  return -1;
                               }
                               return 0;
                           })
                         : [...searchingResults].sort((a, b) => {
                               if (a.min_price > b.min_price) {
-                                  return 1;
+                                  return -1;
                               }
                               if (a.min_price < b.min_price) {
-                                  return -1;
+                                  return 1;
                               }
                               return 0;
                           })
@@ -166,7 +166,7 @@ export function SearchResults() {
                                     拍賣日期：
                                     {moment(
                                         searchingResult.starting_time
-                                    ).format("YYYY-MM-DD hh:mm:ss")}
+                                    ).format("YYYY-MM-DD hh:mm:ss a")}
                                 </h6>
                                 <h6>拍賣主： {searchingResult.username}</h6>
                                 <p className="products_description">

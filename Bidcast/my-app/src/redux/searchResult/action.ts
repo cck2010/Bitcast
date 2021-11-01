@@ -10,6 +10,7 @@ export interface SearchProduct {
     min_price: number;
     starting_time: string;
     buyer_link: string;
+    is_ended: boolean;
 }
 
 export interface CategoriesFilter {
@@ -23,6 +24,7 @@ export interface CategoriesFilter {
     min_price: number;
     category: string;
     starting_time: string;
+    is_ended: boolean;
 }
 
 export interface ProductFilter {
@@ -35,6 +37,7 @@ export interface ProductFilter {
     min_price: number;
     starting_time: string;
     buyer_link: string;
+    is_ended: boolean;
 }
 
 //load product search result

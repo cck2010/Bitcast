@@ -55,7 +55,10 @@ export function Footer() {
                     </div>
                 </div>
                 <div className="footer_links">
-                    <Link to="/categoryResult?category=" className="nav_link">
+                    <Link
+                        to="/searchResult?SearchingKeywords="
+                        className="nav_link"
+                    >
                         更多商品
                     </Link>
                     {!isAuthenticate ? (

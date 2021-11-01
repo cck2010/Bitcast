@@ -2,7 +2,7 @@ import { Knex } from "knex";
 // import { ResponseJson } from '../response';
 
 export class ProductsService {
-    constructor(private knex: Knex) {}
+    constructor(private knex: Knex) { }
 
     getCategories = async () => {
         const results = await this.knex.select("*").from("categories");
@@ -46,8 +46,8 @@ export class ProductsService {
                     is_live: false,
                     is_ended: false,
                     is_banned: false,
-                    created_at: new Date(),
-                    updated_at: new Date(),
+                    // created_at: new Date(),
+                    // updated_at: new Date(),
                     description: description,
                 })
                 .returning("*");
@@ -241,11 +241,12 @@ export class ProductsService {
         products.description, 
         users.username,
         live.starting_time,
-        live.buyer_link
+        live.buyer_link,
+        live.is_ended
         from products 
         left outer join users on products.seller_id = users.id
         left outer join live on products.live_id = live.id
-        where product_name ilike '%${searchKeywords}%';
+        where product_name ilike '%${searchKeywords}%' and live.starting_time > NOW();
         `);
         return {
             success: true,
