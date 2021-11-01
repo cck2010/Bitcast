@@ -5,13 +5,13 @@ import { LoadMyLiveActions, MyLive, MyLiveProducts } from "./action";
 export interface MyLiveState {
     myLive: MyLive[],
     myLiveProducts: MyLiveProducts[],
-    liveId: number
+    liveId: MyLive[]
 }
 
 const initialState: MyLiveState = {
     myLive: [],
     myLiveProducts: [],
-    liveId: 0
+    liveId: []
 }
 
 export function myLiveReducer(
@@ -28,6 +28,12 @@ export function myLiveReducer(
                 break;
             case "@@myLive/LOAD_LIVE_STATUS":
                 newState.liveId = action.liveId;
+                for (let ind in newState.myLive) {
+                    if (newState.myLive[ind].id === action.liveId[0].id) {
+
+                        newState.myLive[ind].is_ended = true
+                    }
+                }
                 break;
         }
     })

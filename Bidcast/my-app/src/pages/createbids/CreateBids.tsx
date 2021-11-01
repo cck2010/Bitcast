@@ -18,6 +18,7 @@ import { CloseCross, DatePickerIcon } from "./components/Fontawsome";
 import { v4 } from "uuid";
 import "bootstrap/dist/css/bootstrap.min.css";
 import path from "path";
+import { HomepageCanvas } from "../homepage/components/HomePageKonva";
 // import { AnySet } from "immer/dist/internal";
 // import { BsWindowSidebar } from "react-icons/bs";
 // import axios from "axios";
@@ -350,6 +351,7 @@ export function CreateBids() {
 
     return (
         <div className={"create_bids_container form_shown"}>
+            <HomepageCanvas />
             <div className={"outline"}>
                 <div className={"header_border"}></div>
                 {/* <header className={"test_user"}>For Dev ref Username:{userInfo.username}</header> */}
