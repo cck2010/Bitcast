@@ -2,7 +2,7 @@ import { Knex } from "knex";
 // import { ResponseJson } from '../response';
 
 export class ProductsService {
-    constructor(private knex: Knex) {}
+    constructor(private knex: Knex) { }
 
     getCategories = async () => {
         const results = await this.knex.select("*").from("categories");
@@ -241,7 +241,8 @@ export class ProductsService {
         products.description, 
         users.username,
         live.starting_time,
-        live.buyer_link
+        live.buyer_link,
+        live.is_ended
         from products 
         left outer join users on products.seller_id = users.id
         left outer join live on products.live_id = live.id

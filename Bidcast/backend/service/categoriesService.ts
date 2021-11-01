@@ -17,7 +17,8 @@ export class CategoriesService {
             users.username,
             categories.category,
             live.starting_time,
-            live.buyer_link
+            live.buyer_link,
+            live.is_ended
             from products
             left outer join categories 
             on products.category_id = categories.id
@@ -61,7 +62,8 @@ export class CategoriesService {
             products.description, 
             users.username,
             live.starting_time,
-            live.buyer_link 
+            live.buyer_link,
+            live.is_ended 
             from products 
             left outer join users on products.seller_id = users.id
             left outer join live on products.live_id = live.id
