@@ -1,31 +1,31 @@
-import moment from "moment";
+// import moment from "moment";
 import { useEffect, useState } from "react";
-import { Button, Modal, Image, Container, Row, Col } from "react-bootstrap";
-import Carousel from "react-multi-carousel";
+import { Modal, Image, Container, Row, Col } from "react-bootstrap";
+// import Carousel from "react-multi-carousel";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductDetails } from "../../redux/homepage/action";
 import { RootState } from "../../store";
 import SubscribeButton from "../../component/common/subscribeButton";
-import { fetchSellerSubscribe, fetchSubscribe } from "../../redux/user/actions";
+import { fetchSellerSubscribe } from "../../redux/user/actions";
 import { push } from "connected-react-router";
 
-const productResponsive = {
-    desktop: {
-        breakpoint: { max: 3000, min: 1024 },
-        items: 1,
-        slidesToSlide: 1, // optional, default to 1.
-    },
-    tablet: {
-        breakpoint: { max: 1024, min: 464 },
-        items: 1,
-        slidesToSlide: 1, // optional, default to 1.
-    },
-    mobile: {
-        breakpoint: { max: 464, min: 0 },
-        items: 1,
-        slidesToSlide: 1, // optional, default to 1.
-    },
-};
+// const productResponsive = {
+//     desktop: {
+//         breakpoint: { max: 3000, min: 1024 },
+//         items: 1,
+//         slidesToSlide: 1, // optional, default to 1.
+//     },
+//     tablet: {
+//         breakpoint: { max: 1024, min: 464 },
+//         items: 1,
+//         slidesToSlide: 1, // optional, default to 1.
+//     },
+//     mobile: {
+//         breakpoint: { max: 464, min: 0 },
+//         items: 1,
+//         slidesToSlide: 1, // optional, default to 1.
+//     },
+// };
 
 export function ProfileDetails(props: any) {
     // const products = useSelector((state: RootState) =>
@@ -61,7 +61,7 @@ export function ProfileDetails(props: any) {
     // const [proId, setProId] = useState("");
 
     useEffect(() => {
-        dispatch(fetchSellerSubscribe(broadcasts.id));
+        dispatch(fetchSellerSubscribe(broadcasts.user_id));
         dispatch(fetchProductDetails());
     }, [dispatch]);
 

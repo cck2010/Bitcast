@@ -72,7 +72,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
     const menuRef = useRef<HTMLDivElement>(null);
     const menuToggle = useRef<HTMLButtonElement>(null);
     const divRef = useRef<HTMLDivElement>(null);
-    useEffect(() => { }, [sidebarCollapse]);
+    useEffect(() => {}, [sidebarCollapse]);
 
     useEffect(() => {
         dispatch(checkCurrentUser());
@@ -110,7 +110,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
     const navbarOnClickHandler = () => {
         if (
             menuToggle.current?.classList[
-            Array.from(menuToggle.current?.classList).indexOf("collapsed")
+                Array.from(menuToggle.current?.classList).indexOf("collapsed")
             ] !== "collapsed"
         ) {
             menuToggle.current?.click();
@@ -118,8 +118,6 @@ export const HomePageNavbar = (props: NavbarProps) => {
     };
 
     const [categoryId, setCategoryId] = useState(0);
-
-
 
     useEffect(() => {
         dispatch(fetchFilteredCategories(categoryId));
@@ -139,14 +137,13 @@ export const HomePageNavbar = (props: NavbarProps) => {
     return (
         <div ref={divRef}>
             {divRef && (
-
-                <Navbar collapseOnSelect expand="md" className="navbar py-3">
-                    <Link to="/" className="nav_link ms-3">
+                <Navbar collapseOnSelect expand="lg" className="navbar py-0 ">
+                    <Link to="/" className="nav_link ms-3 bidcast_logo_link">
                         <img
                             alt="bidcast_logo"
                             src={bidcast_logo}
                             height="40"
-                            className="d-inline-block align-top"
+                            className="d-inline-block align-top bidcast_logo"
                         />
                     </Link>
                     <Navbar.Toggle
@@ -158,10 +155,10 @@ export const HomePageNavbar = (props: NavbarProps) => {
                         id="responsive-navbar-nav"
                         className=" mt-md-0 mt-3"
                         ref={menuRef}
-                    // onClick={preventPropagation}
+                        // onClick={preventPropagation}
                     >
                         <Nav className="me-auto navbar_buttons">
-                            <FormGroup>
+                            <FormGroup className={"search_formgroup"}>
                                 <Input
                                     type="search"
                                     name="search"
@@ -210,7 +207,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                 <Link
                                     to={
                                         phoneNumber === "" ||
-                                            phoneNumber === "11111111"
+                                        phoneNumber === "11111111"
                                             ? "/profilePage/accountDetails"
                                             : "/createBids"
                                     }
@@ -225,9 +222,9 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                 title="商品分類"
                                 id="collasible-nav-dropdown"
                                 className="dropdown"
-                            // show={show}
-                            // onMouseEnter={showDropdown}
-                            // onMouseLeave={hideDropdown}
+                                // show={show}
+                                // onMouseEnter={showDropdown}
+                                // onMouseLeave={hideDropdown}
                             >
                                 {categories.map((category) => (
                                     <Link
@@ -267,23 +264,24 @@ export const HomePageNavbar = (props: NavbarProps) => {
                             )}
                             <Link
                                 to="/profilePage/accountDetails"
-                                className="nav_link mb-md-0 mb-3 me-0 me-md-3"
+                                className="nav_link mb-md-0 mb-3 me-0 me-md-3 profile_pic"
                             >
                                 {isAuthenticate && profilePic && (
                                     <img
                                         alt="profile_pic"
-                                        src={`${profilePic.search(
-                                            /(https:\/\/)|(http:\/\/)/i
-                                        ) < 0
-                                            ? process.env
-                                                .REACT_APP_BACKEND_URL +
-                                            "/" +
-                                            profilePic
-                                            : profilePic
-                                            }`}
+                                        src={`${
+                                            profilePic.search(
+                                                /(https:\/\/)|(http:\/\/)/i
+                                            ) < 0
+                                                ? process.env
+                                                      .REACT_APP_BACKEND_URL +
+                                                  "/" +
+                                                  profilePic
+                                                : profilePic
+                                        }`}
                                         width="40"
                                         height="40"
-                                        className="rounded-circle"
+                                        className="rounded-circle "
                                         onClick={navbarOnClickHandler}
                                     />
                                 )}
@@ -291,9 +289,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
-
             )}
-
         </div>
     );
 };
