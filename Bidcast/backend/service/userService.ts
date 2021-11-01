@@ -22,7 +22,7 @@ schema
     .symbols(); //Must have symbols
 
 export class UserService {
-    constructor(private knex: Knex) {}
+    constructor(private knex: Knex) { }
 
     register = async (
         username: string,
@@ -489,7 +489,7 @@ export class UserService {
                     created_at: new Date(),
                     updated_at: new Date(),
                     telegram_is_verified: false,
-                    profile_pic: pic,
+                    profile_pic: "360_F_391192211_2w5pQpFV1aozYQhcIw3FqA35vuTxJKrB.jpg",
                     login_method_id: googleLoginId[0].id,
                     created_by: username,
                     updated_by: username,
@@ -554,14 +554,14 @@ export class UserService {
             } as ResponseJson;
         }
     };
-    getSellerSubscribe = async (sellerId:number) => {
+    getSellerSubscribe = async (sellerId: number) => {
         let sellerFollowerList = await this.knex("follow_details")
             .select("follower_id")
             .where({
                 following_id: sellerId,
             });
-            let liveRecordList = await this.knex.raw(`select live.id from users left outer join live on users.id = live.user_id where users.id=${sellerId}`)
-            return {sellerFollowerList,liveRecordList};
+        let liveRecordList = await this.knex.raw(`select live.id from users left outer join live on users.id = live.user_id where users.id=${sellerId}`)
+        return { sellerFollowerList, liveRecordList };
     }
     getSubscribe = async (userId: number) => {
         let followingList = await this.knex("follow_details")
