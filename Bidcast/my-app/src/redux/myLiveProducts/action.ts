@@ -44,7 +44,7 @@ export function loadMyLiveProducts(myLiveProducts: MyLiveProducts[]) {
     };
 }
 
-export function loadLiveStatus(liveId: number) {
+export function loadLiveStatus(liveId: MyLive[]) {
     return {
         type: "@@myLive/LOAD_LIVE_STATUS" as const,
         liveId,

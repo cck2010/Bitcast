@@ -31,11 +31,6 @@ export function MyLive() {
         dispatch(updateLiveStatus(liveId));
     }, [dispatch, liveId]);
 
-    const [, updateState] = useState({});
-    const forceUpdate = useCallback(() => updateState({}), []);
-
-    // const [disabled, setDisabled] = useState(false);
-
     return (
         <div className="myLive ps-3">
             <Container className="m-0">
@@ -93,7 +88,6 @@ export function MyLive() {
                                                         variant="outline-dark"
                                                         className="bid_button"
                                                         onClick={() => {
-                                                            setLiveId(live.id);
                                                             dispatch(
                                                                 push(
                                                                     `/liveStreamingSeller?token=${live.seller_link}`
@@ -108,8 +102,6 @@ export function MyLive() {
                                                         className="bid_button"
                                                         onClick={() => {
                                                             setLiveId(live.id);
-                                                            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                                                            forceUpdate;
                                                         }}
                                                     >
                                                         完成直播

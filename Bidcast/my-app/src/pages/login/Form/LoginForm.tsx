@@ -58,26 +58,20 @@ export function LoginForm() {
           </label>
           <input 
             type="password"
-           className="formFieldInput"
-           placeholder="Enter your password"
-           {...register('loginPassword')} />
+            className="formFieldInput"
+            placeholder="Enter your password"
+            {...register('loginPassword')} />
         </div>
         <div className="formField">
-        {error}
-          </div>
+          {error}
+        </div>
 
 
         <div className="formField">
-        <input className="formFieldButton" type="submit"/>
+          <input className="formFieldButton" type="submit"/>
         </div>
-      </form>
-      
-      
-
-
-       
-
-</div>
+      </form> 
+    </div>
   )
 }
 
