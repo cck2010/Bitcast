@@ -146,7 +146,7 @@ export function HomepageCanvas(){
     },
     to: {
         x: (size.width/widthSpec)*1.7,
-        y: (size.height/heightSpec)*0.1,
+        y: (size.height/heightSpec)*0.3,
         shadowBlur:20,
         shadowOpacity: 0.3,
         opacity:1,
@@ -236,6 +236,7 @@ export function HomepageCanvas(){
   //!! BG Tri Animation **//
   //!! BG Tri Animation **//
   const BGTriAnimation = useSpring({
+    delay:1000,
     config:{
       duration:600,
       },
@@ -243,15 +244,46 @@ export function HomepageCanvas(){
       opacity: 0,
       x: (size.width/widthSpec)*5,
       y: ((size.height/heightSpec)*5),
-      rotation:360,
+      rotation:400,
     },
     to:{
-      opacity:1,
-      x: (size.width/widthSpec)*0.0005,
-      y: ((size.height/heightSpec))*0.2,
+      opacity:0.8,
+      x: (size.width/widthSpec)*0.5,
+      y: ((size.height/heightSpec))*1,
       rotation:0,
     }
   })
+
+  const [BGTriLoop, setBGTri] = useSpring(() => ({
+    config:{
+      duration: 100000,
+      // easing:easeCubic,
+      // delay:2500,
+    },
+    from: { 
+      opacity:0.8,
+      x: (size.width/widthSpec)*0.5,
+      y: ((size.height/heightSpec))*1,
+      rotation:0, },
+  }))
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setBGTri({
+        opacity:0.8,
+      x: (size.width/widthSpec)*0.5,
+      y: ((size.height/heightSpec))*1,
+      rotation:-360,
+        loop: { reverse: true },
+      })
+      setBGTriNowEffect(BGTriLoop)
+
+    }, 1600);
+    return () => clearTimeout(timer);
+  }, [])
+
+const[ BGTriNowEffect, setBGTriNowEffect]=useState(BGTriAnimation)
+
   // ** BG LINE Animation **//
   // ** BG LINE Animation **//
 
@@ -327,7 +359,7 @@ export function HomepageCanvas(){
   //!! arrow Animation ** //
   //!! arrow Animation ** //
   const [arrowA,setArrowA] = useSpring(()=>({
-    delay:1500,
+    delay:1200,
     config:{
       duration: 1500,
       easing:easeCubic,
@@ -390,7 +422,7 @@ export function HomepageCanvas(){
         })
         setArrowNowEffect(arrowLoop)
 
-      }, 2800);
+      }, 2500);
       return () => clearTimeout(timer);
     }, [])
 
@@ -407,6 +439,7 @@ export function HomepageCanvas(){
   //!! Triangle1 **//
   //!! Triangle1 **//
   const [TriangleA1,setTriangleA1]  = useSpring(()=>({
+    delay:1000,
     config:{duration: 800,easing:easeCubic,},
     to: async (next, cancel) => {
       await next({
@@ -433,6 +466,7 @@ export function HomepageCanvas(){
   }))
 
   const [TLoop1, setTLoop1] = useSpring(() => ({
+    
     config:{
       duration: 100000,
       // easing:easeCubic,
@@ -458,7 +492,7 @@ export function HomepageCanvas(){
         })
         setTNowEffect1(TLoop1)
 
-      }, 800);
+      }, 1800);
       return () => clearTimeout(timer);
     }, [])
   const [TNowEffect1,setTNowEffect1]= useState(TriangleA1)
@@ -469,6 +503,7 @@ export function HomepageCanvas(){
   //! Triangle2 **//
   //! Triangle2 **//
   const [TriangleA2,setTriangleA2]  = useSpring(()=>({
+    delay:1000,
     config:{duration: 800,easing:easeCubic,},
     to: async (next, cancel) => {
       await next({
@@ -513,14 +548,130 @@ export function HomepageCanvas(){
         })
         setTNowEffect2(TLoop2)
 
-      }, 800);
+      }, 1800);
       return () => clearTimeout(timer);
     }, [])
   const [TNowEffect2,setTNowEffect2]= useState(TriangleA2)
   //** Triangle2 **//
   //** Triangle2 **//
 
+  //! Triangle3 **//
+  //! Triangle3 **//
+  const [TriangleA3,setTriangleA3]  = useSpring(()=>({
+    delay:1000,
+    config:{duration: 800,easing:easeCubic,},
+    to: async (next, cancel) => {
+      await next({
+        x: (size.width/widthSpec)*7, 
+        y: (size.height/heightSpec)*1.3,
+        // shadowBlur:5,
+        rotation:150,
+        opacity:0.1,
+        fill: 'hotpink',
+      })
+    },
+    from: {
+      x: (size.width/widthSpec)*3, 
+        y: (size.height/heightSpec)*4,
+        shadowBlur: 0,
+        rotation:-100,
+        opacity:0, 
+        fill: 'rgb(10,50,19)',
+    },
+    
+  }))
 
+  const [TLoop3, setTLoop3] = useSpring(() => ({
+    config:{
+      duration: 100000,
+      // easing:easeCubic,
+      // delay:2500,
+    },
+    from: { 
+      x: (size.width/widthSpec)*7, 
+        y: (size.height/heightSpec)*1.3,
+      rotation:150,
+         opacity: 0.1 },
+  }))
+
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setTLoop3({
+          x: (size.width/widthSpec)*7, 
+        y: (size.height/heightSpec)*1.3,
+          rotation:470,
+        })
+        setTNowEffect3(TLoop3)
+
+      }, 1800);
+      return () => clearTimeout(timer);
+    }, [])
+  const [TNowEffect3,setTNowEffect3]= useState(TriangleA3)
+  //** Triangle3 **//
+  //** Triangle3 **//
+
+  //!! Triangle4 **//
+  //!! Triangle4 **//
+  const [TriangleA4,setTriangleA4]  = useSpring(()=>({
+    delay:5000,
+    config:{duration: 800,easing:easeCubic,},
+    to: async (next, cancel) => {
+      await next({
+        x: (size.width/widthSpec)*2.7, 
+        y: (size.height/heightSpec)*1.6,
+        // shadowBlur:5,
+        rotation:630,
+        scaleX:0.5,
+        scaleY:0.5,
+        opacity:0.7,
+        width: 50,
+        height:  50
+      })
+    },
+    from: {
+      x: (size.width/widthSpec)*3, 
+        y: (size.height/heightSpec)*1,
+        shadowBlur: 0,
+        rotation:0,
+        scaleX:0,
+        scaleY:0,
+        opacity:0, 
+    },
+  }))
+
+  const [TLoop4, setTLoop4] = useSpring(() => ({
+    config:{
+      duration: 100000,
+      // easing:easeCubic,
+      // delay:2500,
+    },
+    from: { 
+        x: (size.width/widthSpec)*1, 
+        y: (size.height/heightSpec)*3.5,
+        rotation:430,
+        scaleX:0.5,
+        scaleY:0.5,
+        opacity: 0.03 },
+  }))
+
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setTLoop4({
+          x: (size.width/widthSpec)*1, 
+          y: (size.height/heightSpec)*3/5,
+          scaleX:0.5,
+          scaleY:0.5,
+          rotation:930,
+          opacity: 0.03
+        })
+        setTNowEffect4(TLoop4)
+
+      }, 5800);
+      return () => clearTimeout(timer);
+    }, [])
+  const [TNowEffect4,setTNowEffect4]= useState(TriangleA4)
+  //** Triangle4 **//
+  //** Triangle4 **//
   
 
   
@@ -542,21 +693,29 @@ export function HomepageCanvas(){
           <animated.Line {...LineAnimation} points={[0, 860, 800, 0]} stroke={"lightgrey"} strokeWidth={1} closed={true} />
           {/* Title*/}
           <animated.Text text="限量版" fill={`white`} fontStyle={`bold`} fontSize={150} fontWeight={900} className={"Konva_title"}{...title}/>
+          <animated.Text text="Bidcast Auction" offsetX={-175} offsetY={30}  fill={`#1E2832`} fontStyle={`bold`} fontSize={14}  className={"Konva_title"}{...title}/>
+          {/* arrow*/}
+          <animated.Image  image={arrows} {...arrowNowEffect} />
           {/* BG_Triangle1*/}
-          <animated.Line {...BGTriAnimation} points={[23, 50, 23, 160, 100, 93]} fill={"purple"} stroke={"black"} strokeWidth={0} closed={true} />
+          <animated.Line {...BGTriNowEffect} offsetX={48} offsetY={101} points={[23, 50, 23, 160, 100, 93]} fill={"purple"} stroke={"black"} strokeWidth={0} closed={true} />
           <animated.Line {...BGTriangleNowEffect}  offsetX={117} offsetY={131} points={[23, 50, 80, 250, 250, 93]} opacity={1} fill={"white"} stroke={"black"} strokeWidth={0} closed={true} />
           <animated.Line {...BGTriangleNowEffect}  offsetX={117} offsetY={131} points={[23, 50, 80, 250, 250, 93]}  fill={"darkBlue"} stroke={"black"} strokeWidth={0} closed={true} />
 
-          {/* arrow*/}
-          <animated.Image  image={arrows} {...arrowNowEffect} />
 
 
           {/* Product*/}
           <animated.Image  image={pro01} {...nowEffect} />
           {/* Triangle1 */}
+          <animated.Line {...TNowEffect1} points={[23, 50, 23, 160, 100, 93]} offsetX={48} offsetY={101} opacity={1} fill={"white"} stroke={"black"} strokeWidth={0} closed={true} />
           <animated.Line {...TNowEffect1} points={[23, 50, 23, 160, 100, 93]} offsetX={48} offsetY={101} fill={"hotpink"} stroke={"black"} strokeWidth={0} closed={true} />
           {/* Triangle2 */}
+          <animated.Line {...TNowEffect2} points={[23, 50, 23, 130, 80, 93]} offsetX={48} offsetY={101} opacity={1} fill={"white"} stroke={"black"} strokeWidth={0} closed={true} />
           <animated.Line {...TNowEffect2} points={[23, 50, 23, 130, 80, 93]} offsetX={48} offsetY={101} fill={"#00D2FF"} stroke={"black"} strokeWidth={0} closed={true} />
+          {/* Triangle3 */}
+          <animated.Line  {...TNowEffect3} points={[23, 50, 23, 130, 80, 93]} offsetX={48} offsetY={101} opacity={1} fill={"white"} stroke={"black"} strokeWidth={0} closed={true} />
+          <animated.Line  {...TNowEffect3} points={[23, 50, 23, 130, 80, 93]} offsetX={48} offsetY={101} fill={"purple"} stroke={"black"} strokeWidth={0} closed={true} />
+          {/* Triangle4 */}
+          {/* <animated.Line  {...TNowEffect4} points={[23, 50, 23, 160, 100, 93]} offsetX={48} offsetY={101} fill={"blue"} stroke={"skyblue"} strokeWidth={0} closed={true} /> */}
 
         </Layer>
       </Stage>

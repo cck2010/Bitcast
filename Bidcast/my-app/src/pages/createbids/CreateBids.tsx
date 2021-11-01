@@ -352,7 +352,7 @@ export function CreateBids() {
 
     return (
         <div className={"create_bids_container form_shown"}>
-            <HomepageCanvas />
+            {/* <HomepageCanvas /> */}
             <div className={"outline"}>
                 <div className={"header_border"}></div>
                 {/* <header className={"test_user"}>For Dev ref Username:{userInfo.username}</header> */}
