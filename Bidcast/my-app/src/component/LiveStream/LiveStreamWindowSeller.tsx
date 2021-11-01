@@ -154,6 +154,7 @@ function LiveStreamWindow(props: LiveStreamWindowProps) {
     //Broadcast button Handler
 
     //set Copy Clip Board
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, setCopyState] = useState(false);
     const onCopy = () => {
         setCopyState(true);
