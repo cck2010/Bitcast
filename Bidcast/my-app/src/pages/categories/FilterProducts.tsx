@@ -58,7 +58,7 @@ export function FilterProducts() {
                                 );
                             }}
                         >
-                            由新至舊
+                            由遠至近
                         </Dropdown.Item>
 
                         <Dropdown.Item
@@ -70,7 +70,7 @@ export function FilterProducts() {
                                 );
                             }}
                         >
-                            由舊至新
+                            由近至遠
                         </Dropdown.Item>
                     </DropdownButton>
                     <DropdownButton
