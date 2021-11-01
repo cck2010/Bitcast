@@ -321,6 +321,10 @@ $smallFontSize: 0.5em;
 
 .LiveStreamWindow,
 .LiveStreamWindowSeller {
+    .clipboard {
+        cursor: pointer;
+        width: fit-content;
+    }
     .video_canvas_combine {
         position: relative;
         .konvajs-content {

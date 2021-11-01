@@ -8,6 +8,8 @@ import { RootState } from "../../store";
 import useFetch from "react-fetch-hook";
 import { Canvass } from "../../pages/LiveStream/components/Konva2";
 import { Socket } from "socket.io-client";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import { FaClipboard } from "../../pages/Profile-Page/component/Fontawsome";
 
 interface LiveStreamWindowProps {
     ws: Socket | null;
@@ -151,9 +153,29 @@ function LiveStreamWindow(props: LiveStreamWindowProps) {
     };
     //Broadcast button Handler
 
+    //set Copy Clip Board
+    const [_, setCopyState] = useState(false);
+    const onCopy = () => {
+        setCopyState(true);
+    };
+    //set Copy Clip Board
+
     return (
         <div className="LiveStreamWindowSeller">
             <div className="flex flex-col h-screen relative">
+                <CopyToClipboard
+                    onCopy={onCopy}
+                    text={`${process.env.REACT_APP_FRONTEND_URL}/liveStreaming?room=${result.data?.room}`}
+                >
+                    <span className="buyer_link">
+                        &nbsp;
+                        {`按右邊圖示複製觀眾直播連結 `}
+                        <i className="fas fa-arrow-right"></i>{" "}
+                        <span className="clipboard">
+                            <FaClipboard />
+                        </span>
+                    </span>
+                </CopyToClipboard>
                 {client != null && isAuthenticate && username === seller && (
                     <ButtonGroup className="w-100">
                         <button

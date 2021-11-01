@@ -2,12 +2,12 @@ import { Request, Response } from "express";
 import { MyLiveService } from "../service/myLiveService";
 
 export class MyLiveController {
-    constructor(private myLiveService: MyLiveService) { }
+    constructor(private myLiveService: MyLiveService) {}
 
     getMyLive = async (req: Request, res: Response) => {
         try {
-            const result = await this.myLiveService.getMyLive()
-            res.json(result)
+            const result = await this.myLiveService.getMyLive();
+            res.json(result);
         } catch (error) {
             res.json({
                 success: false,
@@ -15,12 +15,12 @@ export class MyLiveController {
                 error: new Error("get my live fail"),
             });
         }
-    }
+    };
 
     getMyBidHistory = async (req: Request, res: Response) => {
         try {
-            const result = await this.myLiveService.getMyBidHistory()
-            res.json(result)
+            const result = await this.myLiveService.getMyBidHistory();
+            res.json(result);
         } catch (error) {
             res.json({
                 success: false,
@@ -28,12 +28,12 @@ export class MyLiveController {
                 error: new Error("get my bid history fail"),
             });
         }
-    }
+    };
 
     getMyLiveProducts = async (req: Request, res: Response) => {
         try {
-            const result = await this.myLiveService.getMyLiveProducts()
-            res.json(result)
+            const result = await this.myLiveService.getMyLiveProducts();
+            res.json(result);
         } catch (error) {
             res.json({
                 success: false,
@@ -41,13 +41,13 @@ export class MyLiveController {
                 error: new Error("get my live products fail"),
             });
         }
-    }
+    };
 
     changeLiveStatus = async (req: Request, res: Response) => {
         try {
-            const { liveId } = req.body
-            const result = await this.myLiveService.changeLiveStatus(liveId)
-            res.json(result)
+            const { liveId } = req.body;
+            const result = await this.myLiveService.changeLiveStatus(liveId);
+            res.json(result);
         } catch (error) {
             res.json({
                 success: false,
@@ -55,28 +55,30 @@ export class MyLiveController {
                 error: new Error("get live status fail"),
             });
         }
-    }
+    };
 
     openMyLive = async (req: Request, res: Response) => {
         try {
-            const { myLiveId } = req.body
-            console.log('myliveID', myLiveId);
+            const { myLiveId } = req.body;
+            console.log("myliveID", myLiveId);
 
             if (myLiveId === 0) {
                 res.json({
                     success: false,
-                    data: { msg: "no such live" }
-                })
-                return
+                    data: { msg: "no such live" },
+                });
+                return;
             }
 
-            const result = await this.myLiveService.openMyLive(parseInt(myLiveId))
+            const result = await this.myLiveService.openMyLive(
+                parseInt(myLiveId)
+            );
 
             setTimeout(async () => {
-                await this.myLiveService.changeMyLiveStatus(myLiveId)
-            }, 15000);
+                await this.myLiveService.changeMyLiveStatus(myLiveId);
+            }, 7200000);
 
-            res.json(result)
+            res.json(result);
         } catch (error) {
             res.json({
                 success: false,
@@ -84,5 +86,5 @@ export class MyLiveController {
                 error: new Error("open my live fail"),
             });
         }
-    }
+    };
 }
