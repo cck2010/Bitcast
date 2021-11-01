@@ -60,6 +60,7 @@ export function ComingAuction(props: ComingAuctionProps) {
     }, [dispatch]);
 
     async function profilePreview(info: any) {
+        // console.log("click");
         for (let auction of auctions) {
             if (auction.id === info) {
                 // console.log("auction", auction);
@@ -222,11 +223,11 @@ export function ComingAuction(props: ComingAuctionProps) {
                                         主辦
                                     </div>
                                 </Card.Text>
-                                {modalShowProf === auction.id && (
+                                {modalShowProf === auction.user_id && (
                                     <ProfileDetails
-                                        show={auction.id}
+                                        show={auction.user_id}
                                         broadcasts={auction}
-                                        id={auction.id}
+                                        id={auction.user_id}
                                         onHide={() => setModalShowProf(-1)}
                                     />
                                 )}

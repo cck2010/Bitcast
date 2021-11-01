@@ -9,32 +9,18 @@ import {
 import "./CategoryResult.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSlidersH } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { fetchProductsForFilter } from "../../redux/searchResult/action";
-import { push } from "connected-react-router";
+import { useState } from "react";
 
 export function SearchResults() {
     const searchingResults = useSelector(
         (state: RootState) => state.searchProduct.productList
     );
 
-    console.log(searchingResults);
-
-    const dispatch = useDispatch();
-
-    const [orderCommand, setOrderCommand] = useState(" ");
-
-    useEffect(() => {
-        dispatch(fetchProductsForFilter(orderCommand));
-    }, [dispatch, orderCommand]);
-
-    const searchResults = [...searchingResults];
-
-    console.log(searchResults);
+    const [sortingMethod, setSortingMethod] = useState("2");
 
     return (
         <div className="category_page">
@@ -48,7 +34,7 @@ export function SearchResults() {
                             icon={faSlidersH}
                             className="filter_icon"
                         />
-                        篩選器：
+                        篩選器：{" "}
                     </div>
                     <DropdownButton
                         as={ButtonGroup}
@@ -57,21 +43,14 @@ export function SearchResults() {
                     >
                         <Dropdown.Item
                             eventKey="1"
-                            onClick={() =>
-                                searchResults.sort((a, b) =>
-                                    a.starting_time > b.starting_time ? 1 : -1
-                                )
-                            }
+                            onClick={() => setSortingMethod("2")}
                         >
                             由新至舊
                         </Dropdown.Item>
                         <Dropdown.Item
                             eventKey="2"
                             onClick={() => {
-                                setOrderCommand("DateOldToNew");
-                                dispatch(
-                                    push(`/filteredProducts?DateOldToNew`)
-                                );
+                                setSortingMethod("1");
                             }}
                         >
                             由舊至新
@@ -83,19 +62,17 @@ export function SearchResults() {
                         id="bg-nested-dropdown"
                     >
                         <Dropdown.Item
-                            eventKey="1"
+                            eventKey="3"
                             onClick={() => {
-                                setOrderCommand("PriceH2L");
-                                dispatch(push(`/filteredProducts?PriceH2L`));
+                                setSortingMethod("4");
                             }}
                         >
                             由高至低
                         </Dropdown.Item>
                         <Dropdown.Item
-                            eventKey="2"
+                            eventKey="4"
                             onClick={() => {
-                                setOrderCommand("PriceL2H");
-                                dispatch(push(`/filteredProducts?PriceL2H`));
+                                setSortingMethod("3");
                             }}
                         >
                             由低至高
@@ -104,44 +81,100 @@ export function SearchResults() {
                 </ButtonGroup>
                 <hr />
 
-                {searchingResults.map((searchingResult) => (
-                    <div
-                        className="category_items_container"
-                        key={searchingResult.id}
-                    >
-                        <Col xs={6} md={4} className="category_img_container">
-                            <Link
-                                to={`/liveStreaming?room=${searchingResult.buyer_link}`}
+                {searchingResults &&
+                    (sortingMethod === "1"
+                        ? [...searchingResults].sort((a, b) => {
+                              if (
+                                  new Date(Date.parse(a.starting_time)) >
+                                  new Date(Date.parse(b.starting_time))
+                              ) {
+                                  return 1;
+                              }
+                              if (
+                                  new Date(Date.parse(a.starting_time)) <
+                                  new Date(Date.parse(b.starting_time))
+                              ) {
+                                  return -1;
+                              }
+                              return 0;
+                          })
+                        : sortingMethod === "2"
+                        ? [...searchingResults].sort((a, b) => {
+                              if (
+                                  new Date(Date.parse(a.starting_time)) >
+                                  new Date(Date.parse(b.starting_time))
+                              ) {
+                                  return -1;
+                              }
+                              if (
+                                  new Date(Date.parse(a.starting_time)) <
+                                  new Date(Date.parse(b.starting_time))
+                              ) {
+                                  return 1;
+                              }
+                              return 0;
+                          })
+                        : sortingMethod === "3"
+                        ? [...searchingResults].sort((a, b) => {
+                              if (a.min_price > b.min_price) {
+                                  return -1;
+                              }
+                              if (a.min_price < b.min_price) {
+                                  return 1;
+                              }
+                              return 0;
+                          })
+                        : [...searchingResults].sort((a, b) => {
+                              if (a.min_price > b.min_price) {
+                                  return 1;
+                              }
+                              if (a.min_price < b.min_price) {
+                                  return -1;
+                              }
+                              return 0;
+                          })
+                    ).map((searchingResult) => (
+                        <div
+                            className="category_items_container"
+                            key={searchingResult.id}
+                        >
+                            <Col
+                                xs={6}
+                                md={4}
+                                className="category_img_container"
                             >
-                                <Image
-                                    key={searchingResult.id}
-                                    src={`${process.env.REACT_APP_BACKEND_URL}/${searchingResult.product_image}`}
-                                    fluid
-                                />
-                            </Link>
-                        </Col>
-                        <div className="description_container">
-                            <Link
-                                className="product_name_link"
-                                to={`/liveStreaming?room=${searchingResult.buyer_link}`}
-                            >
-                                <h3>{searchingResult.product_name}</h3>
-                            </Link>
-                            <h6>底價： {searchingResult.min_price}</h6>
-                            <h6>即買價： {searchingResult.buy_price}</h6>
-                            <h6>
-                                拍賣日期：
-                                {moment(searchingResult.starting_time).format(
-                                    "YYYY-MM-DD hh:mm:ss"
-                                )}
-                            </h6>
-                            <h6>拍賣主： {searchingResult.username}</h6>
-                            <p className="products_description">
-                                商品簡介： {searchingResult.description}
-                            </p>
+                                <Link
+                                    to={`/liveStreaming?room=${searchingResult.buyer_link}`}
+                                >
+                                    <Image
+                                        key={searchingResult.id}
+                                        src={`${process.env.REACT_APP_BACKEND_URL}/${searchingResult.product_image}`}
+                                        fluid
+                                    />
+                                </Link>
+                            </Col>
+                            <div className="description_container">
+                                <Link
+                                    className="product_name_link"
+                                    to={`/liveStreaming?room=${searchingResult.buyer_link}`}
+                                >
+                                    <h3>{searchingResult.product_name}</h3>
+                                </Link>
+                                <h6>底價： {searchingResult.min_price}</h6>
+                                <h6>即買價： {searchingResult.buy_price}</h6>
+                                <h6>
+                                    拍賣日期：
+                                    {moment(
+                                        searchingResult.starting_time
+                                    ).format("YYYY-MM-DD hh:mm:ss")}
+                                </h6>
+                                <h6>拍賣主： {searchingResult.username}</h6>
+                                <p className="products_description">
+                                    商品簡介： {searchingResult.description}
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
             </Container>
         </div>
     );

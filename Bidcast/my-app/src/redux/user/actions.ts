@@ -175,7 +175,7 @@ export function checkCurrentUser() {
             );
             // console.log("fetched")
             const newToken: any = res.data;
-
+            
             localStorage.setItem("token", newToken);
             dispatch(login(newToken));
             dispatch(loadToken(newToken));
@@ -214,6 +214,7 @@ export function fetchSellerSubscribe(sellerId: number) {
                     },
                 }
             );
+            // console.log(res.data)
             if (res.data.success) {
                 dispatch(
                     loadSellerFollower(

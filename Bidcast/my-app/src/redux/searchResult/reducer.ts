@@ -21,14 +21,13 @@ export function productSearchReducer(
 
         switch (action.type) {
             case "@@products/LOAD_PRODUCT_SEARCH_RESULT":
+                // console.log("newState", newState.productList)
                 newState.productList = action.productList
-                console.log("newState", newState.productList)
                 break;
             case "@@products/SORT_BY_DATE":
                 newState.productList = action.sortByDates
-                const searchResults = newState.productList
+                const searchResults = [...newState.productList]
                 searchResults.sort((a, b) => a.starting_time > b.starting_time ? 1 : -1)
-                console.log(searchResults);
                 break;
             case "@@products/LOAD_PRODUCT_CATEGORIES":
                 newState.categories = action.categories

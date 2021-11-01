@@ -24,7 +24,7 @@ export class ComingAuctionService {
             `select * from live
             right outer join products on products.live_id = live.id
             left outer join users on live.user_id = users.id
-            where live.is_live = true and live.is_ended = false
+            where live.is_live is true and live.is_ended is false
             ORDER BY random()
             `
         );

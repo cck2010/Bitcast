@@ -87,8 +87,11 @@ export class MyLiveService {
             .where("id", myLiveId)
             .update({
                 "is_ended": true,
-                "is_live": false
+                "is_live": false,
+                "buyer_link": "",
+                "seller_link": ""
             })
+
 
         return {
             success: true,

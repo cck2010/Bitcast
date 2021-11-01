@@ -10,17 +10,34 @@ $logoColor: #11f3a2;
     .form-group {
         width: 180px;
     }
+    .search_formgroup {
+        margin-right: 20px;
+    }
 }
 .nav_link {
-    color: #ffffff !important;
-    padding: 0.5rem !important;
+    // padding: 0.5rem !important;
+    // text-align: center;
+    color: #ffffff;
+    width: 100px !important;
+    height: 70px !important;
     display: flex;
+    justify-content: center;
     align-items: center;
     text-decoration: none;
 }
 .nav_link:hover {
-    color: $logoColor !important;
+    color: $navbarColor;
     // font-size: 1.1em;
+    animation: nav_BG_hover1 ease-out 0.6s;
+    animation-fill-mode: forwards;
+    @keyframes nav_BG_hover1 {
+        0% {
+            background-color: $navbarColor;
+        }
+        100% {
+            background-color: $logoColor;
+        }
+    }
 }
 // .buttons_container {
 //   display: flex;
@@ -30,6 +47,7 @@ $logoColor: #11f3a2;
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    margin-right: 50px !important;
 }
 #exampleSearch {
     font-weight: 500 !important;
@@ -237,15 +255,45 @@ footer {
     cursor: pointer;
 }
 .nav-link {
+    // padding: 0.5rem !important;
+    // text-align: center;
     color: #ffffff !important;
-    padding: 0.5rem !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100px !important;
+    height: 70px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
     text-decoration: none;
 }
 .nav-link:hover {
-    color: $logoColor !important;
+    color: $navbarColor !important;
+    // font-size: 1.1em;
+    animation: nav_BG_hover2 ease-out 0.6s;
+    animation-fill-mode: forwards;
+    @keyframes nav_BG_hover2 {
+        0% {
+            color: $logoColor;
+            background-color: $navbarColor;
+        }
+        100% {
+            color: $navbarColor;
+            background-color: $logoColor;
+        }
+    }
+}
+.bidcast_logo {
+    z-index: 555;
+    padding-left: 130px;
+}
+.profile_pic:hover {
+    // margin-left: 30px;
+    // margin-right: 10px;
+    background-color: $navbarColor !important;
+}
+.bidcast_logo_link:hover {
+    // margin-left: 30px;
+    // margin-right: 10px;
+    background-color: $navbarColor !important;
 }
 .dropdown_items {
     color: $navbarColor;
@@ -457,7 +505,7 @@ footer {
 }
 
 .rotate_image {
-    animation: rotation 15s infinite linear;
+    animation: rotation 30s infinite linear;
     margin-left: 10px;
 }
 @keyframes rotation {
@@ -474,6 +522,6 @@ footer {
     justify-content: center;
     align-items: center;
 }
-.popover{
-    z-index:2003 !important ;
+.popover {
+    z-index: 2003 !important ;
 }
