@@ -8,7 +8,7 @@ export interface SearchProduct {
     description: string;
     username: string;
     min_price: number;
-    starting_time: Date;
+    starting_time: string;
     buyer_link: string;
 }
 
@@ -22,7 +22,7 @@ export interface CategoriesFilter {
     buyer_link: string;
     min_price: number;
     category: string;
-    starting_time: Date;
+    starting_time: string;
 }
 
 export interface ProductFilter {
@@ -33,7 +33,7 @@ export interface ProductFilter {
     description: string;
     username: string;
     min_price: number;
-    starting_time: Date;
+    starting_time: string;
     buyer_link: string;
 }
 

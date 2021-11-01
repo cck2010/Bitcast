@@ -457,7 +457,7 @@ footer {
 }
 
 .rotate_image {
-    animation: rotation 15s infinite linear;
+    animation: rotation 30s infinite linear;
     margin-left: 10px;
 }
 @keyframes rotation {
@@ -474,6 +474,6 @@ footer {
     justify-content: center;
     align-items: center;
 }
-.popover{
-    z-index:2003 !important ;
+.popover {
+    z-index: 2003 !important ;
 }

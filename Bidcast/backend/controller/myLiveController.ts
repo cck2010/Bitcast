@@ -74,7 +74,7 @@ export class MyLiveController {
 
             setTimeout(async () => {
                 await this.myLiveService.changeMyLiveStatus(myLiveId)
-            }, 7200000);
+            }, 15000);
 
             res.json(result)
         } catch (error) {
