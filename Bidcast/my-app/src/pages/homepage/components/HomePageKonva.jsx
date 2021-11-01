@@ -694,13 +694,13 @@ const[ BGTriNowEffect, setBGTriNowEffect]=useState(BGTriAnimation)
           {/* Title*/}
           <animated.Text text="限量版" fill={`white`} fontStyle={`bold`} fontSize={150} fontWeight={900} className={"Konva_title"}{...title}/>
           <animated.Text text="Bidcast Auction" offsetX={-175} offsetY={30}  fill={`#1E2832`} fontStyle={`bold`} fontSize={14}  className={"Konva_title"}{...title}/>
-          {/* arrow*/}
-          <animated.Image  image={arrows} {...arrowNowEffect} />
           {/* BG_Triangle1*/}
           <animated.Line {...BGTriNowEffect} offsetX={48} offsetY={101} points={[23, 50, 23, 160, 100, 93]} fill={"purple"} stroke={"black"} strokeWidth={0} closed={true} />
           <animated.Line {...BGTriangleNowEffect}  offsetX={117} offsetY={131} points={[23, 50, 80, 250, 250, 93]} opacity={1} fill={"white"} stroke={"black"} strokeWidth={0} closed={true} />
           <animated.Line {...BGTriangleNowEffect}  offsetX={117} offsetY={131} points={[23, 50, 80, 250, 250, 93]}  fill={"darkBlue"} stroke={"black"} strokeWidth={0} closed={true} />
 
+          {/* arrow*/}
+          <animated.Image  image={arrows} {...arrowNowEffect} />
 
 
           {/* Product*/}

@@ -61,7 +61,7 @@ export function ProfileDetails(props: any) {
     // const [proId, setProId] = useState("");
 
     useEffect(() => {
-        dispatch(fetchSellerSubscribe(broadcasts.id));
+        dispatch(fetchSellerSubscribe(broadcasts.user_id));
         dispatch(fetchProductDetails());
     }, [dispatch]);
 
