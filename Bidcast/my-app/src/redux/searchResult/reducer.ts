@@ -21,8 +21,8 @@ export function productSearchReducer(
 
         switch (action.type) {
             case "@@products/LOAD_PRODUCT_SEARCH_RESULT":
+                // console.log("newState", newState.productList)
                 newState.productList = action.productList
-                console.log("newState", newState.productList)
                 break;
             case "@@products/SORT_BY_DATE":
                 newState.productList = action.sortByDates

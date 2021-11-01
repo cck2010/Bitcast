@@ -60,12 +60,12 @@ export function ComingAuction(props: ComingAuctionProps) {
     }, [dispatch]);
 
     async function profilePreview(info: any) {
-        console.log("click");
+        // console.log("click");
         for (let auction of auctions) {
             if (auction.id === info) {
-                console.log("auction", auction);
-                console.log("auction", auction.username);
-                console.log("auction", auction.user_id);
+                // console.log("auction", auction);
+                // console.log("auction", auction.username);
+                // console.log("auction", auction.user_id);
                 dispatch(fetchSellerSubscribe(auction.user_id));
                 setModalShowProf(auction.user_id);
             }

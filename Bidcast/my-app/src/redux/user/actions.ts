@@ -214,7 +214,7 @@ export function fetchSellerSubscribe(sellerId: number) {
                     },
                 }
             );
-            console.log(res.data)
+            // console.log(res.data)
             if (res.data.success) {
                 dispatch(
                     loadSellerFollower(
