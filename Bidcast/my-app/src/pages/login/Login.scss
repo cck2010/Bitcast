@@ -89,11 +89,12 @@ body
 }
 
 .appForm {
+  padding-top: 120px !important;
   width: 50%;
   background-color:#ffffff80;
   padding: 25px 40px;
   overflow: auto;
-  
+  height: auto;
 }
 .formCenter {
   margin-bottom: 100px;

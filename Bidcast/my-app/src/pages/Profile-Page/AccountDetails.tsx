@@ -46,9 +46,9 @@ export function AccountDetails() {
     //     const handleShow = (event:React.MouseEvent) => {
     //     event.stopPropagation();
 
-    const handleShow = (event: React.MouseEvent) => {
-        event.stopPropagation();
-    };
+    // const handleShow = (event: React.MouseEvent) => {
+    //     event.stopPropagation();
+    // };
     function AlertListAppend() {
         return (
             <div>
@@ -118,9 +118,9 @@ export function AccountDetails() {
             : (n = n);
         data.telegramAccount
             ? editProFormData.append(
-                  "telegramAccount",
-                  `@${data.telegramAccount}`
-              )
+                "telegramAccount",
+                `@${data.telegramAccount}`
+            )
             : (n = n);
         // data.telegramChatId? editProFormData.append('telegramChatId',data.telegramChatId):n=n;
         data.aboutMe
@@ -209,16 +209,15 @@ export function AccountDetails() {
                             {userImg !== undefined && (
                                 <div className="card_absolute_layer d-flex justify-content-center">
                                     <Image
-                                        src={`${
-                                            userImg.search(
-                                                /(https:\/\/)|(http:\/\/)/i
-                                            ) < 0
-                                                ? process.env
-                                                      .REACT_APP_BACKEND_URL +
-                                                  "/" +
-                                                  userImg
-                                                : userImg
-                                        }`}
+                                        src={`${userImg.search(
+                                            /(https:\/\/)|(http:\/\/)/i
+                                        ) < 0
+                                            ? process.env
+                                                .REACT_APP_BACKEND_URL +
+                                            "/" +
+                                            userImg
+                                            : userImg
+                                            }`}
                                         width="80"
                                         height="80"
                                         roundedCircle
@@ -282,8 +281,8 @@ export function AccountDetails() {
                                         userInfo.phone_number === "11111111"
                                             ? "沒有"
                                             : userInfo.phone_number
-                                            ? userInfo.phone_number
-                                            : "沒有"
+                                                ? userInfo.phone_number
+                                                : "沒有"
                                     }
                                 />
                             </div>
@@ -295,8 +294,8 @@ export function AccountDetails() {
                                     placeholder={
                                         userInfo.telegram_acct
                                             ? `${userInfo.telegram_acct.substring(
-                                                  1
-                                              )}`
+                                                1
+                                            )}`
                                             : "沒有"
                                     }
                                 />
@@ -405,15 +404,14 @@ export function AccountDetails() {
                                     <div className={"file_Info_container"}>
                                         {/* <div>{selectedImage.name as any}</div> */}
                                         <div>{selectedImage.type as any}</div>
-                                        <div>{`${
-                                            (
-                                                (selectedImage.size as any) /
-                                                1000000
-                                            )
-                                                .toString()
-                                                .match(/^\d+(?:\.\d{0,2})?/) +
+                                        <div>{`${(
+                                            (selectedImage.size as any) /
+                                            1000000
+                                        )
+                                            .toString()
+                                            .match(/^\d+(?:\.\d{0,2})?/) +
                                             " MB"
-                                        }`}</div>
+                                            }`}</div>
                                     </div>
                                 </div>
                             )}
@@ -421,7 +419,7 @@ export function AccountDetails() {
                             <input
                                 className={"button_default"}
                                 type="submit"
-                                onClick={handleShow}
+                            // onClick={handleShow}
                             />
                         </form>
                     </div>

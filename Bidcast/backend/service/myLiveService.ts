@@ -12,9 +12,11 @@ export class MyLiveService {
         live.starting_time, 
         live.max_viewers, 
         live.seller_link, 
-        live.is_ended 
+        live.is_ended,
+        live.is_live 
         from live
         `)
+
         return {
             success: true,
             data: { msg: "get my live products success", results }
@@ -59,6 +61,35 @@ export class MyLiveService {
                 "is_ended": true,
                 "is_live": false
             }, ['id', 'is_ended', 'is_live'])
+        return {
+            success: true,
+            data: { msg: "update live status success", results }
+        }
+    }
+
+    openMyLive = async (myLiveId: number) => {
+
+        const results = await this.knex("live")
+            .where("id", myLiveId)
+            .update({
+                "is_live": true
+            }, ['id', 'is_live'])
+
+        return {
+            success: true,
+            data: { msg: "update live status success", results }
+        }
+    }
+
+    changeMyLiveStatus = async (myLiveId: number) => {
+
+        const results = await this.knex("live")
+            .where("id", myLiveId)
+            .update({
+                "is_ended": true,
+                "is_live": false
+            })
+
         return {
             success: true,
             data: { msg: "update live status success", results }

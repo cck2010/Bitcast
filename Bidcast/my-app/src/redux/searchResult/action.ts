@@ -59,10 +59,26 @@ export function loadProductForFilter(productFilter: ProductFilter[]) {
     };
 }
 
+export function sortByDate(sortByDates: SearchProduct[]) {
+    return {
+        type: "@@products/SORT_BY_DATE" as const,
+        sortByDates,
+    }
+}
+
+export function sortByPrice(sortByPrices: SearchProduct[]) {
+    return {
+        type: "@@products/SORT_BY_PRICE" as const,
+        sortByPrices,
+    }
+}
+
 export type SearchProductsActions =
     | ReturnType<typeof loadProductSearchResult>
     | ReturnType<typeof loadProductCategories>
-    | ReturnType<typeof loadProductForFilter>;
+    | ReturnType<typeof loadProductForFilter>
+    | ReturnType<typeof sortByDate>
+    | ReturnType<typeof sortByPrice>
 
 export function fetchProductSearchResult(searchKeywords: string) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {

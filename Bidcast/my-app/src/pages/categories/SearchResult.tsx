@@ -22,6 +22,8 @@ export function SearchResults() {
         (state: RootState) => state.searchProduct.productList
     );
 
+    console.log(searchingResults);
+
     const dispatch = useDispatch();
 
     const [orderCommand, setOrderCommand] = useState(" ");
@@ -29,6 +31,10 @@ export function SearchResults() {
     useEffect(() => {
         dispatch(fetchProductsForFilter(orderCommand));
     }, [dispatch, orderCommand]);
+
+    const searchResults = [...searchingResults];
+
+    console.log(searchResults);
 
     return (
         <div className="category_page">
@@ -51,12 +57,11 @@ export function SearchResults() {
                     >
                         <Dropdown.Item
                             eventKey="1"
-                            onClick={() => {
-                                setOrderCommand("DateNewToOld");
-                                dispatch(
-                                    push(`/filteredProducts?DateNewToOld`)
-                                );
-                            }}
+                            onClick={() =>
+                                searchResults.sort((a, b) =>
+                                    a.starting_time > b.starting_time ? 1 : -1
+                                )
+                            }
                         >
                             由新至舊
                         </Dropdown.Item>
