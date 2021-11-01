@@ -5,7 +5,6 @@ import { config, webSocketIP } from "../../configuration/ion-sfu";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { Canvass } from "../../pages/LiveStream/components/Konva2";
-import star from "./star.svg";
 import { Socket } from "socket.io-client";
 
 interface LiveStreamWindowProps {
@@ -77,12 +76,16 @@ function LiveStreamWindow(props: LiveStreamWindowProps) {
             props.ws.emit("starOnClick", liveId);
         }
     };
+    const heartOnClickHandler = () => {
+        if (props.ws && liveId !== null) {
+            props.ws.emit("heartOnClick", liveId);
+        }
+    };
     //starOnClickHandler
 
     return (
         <div className="LiveStreamWindow">
             <div className="flex flex-col h-screen relative">
-                <header className="flex h-16 justify-center items-center text-xl bg-black text-white"></header>
                 <div className="video_canvas_combine">
                     {subVideo.current !== null && (
                         <Canvass video={subVideo} ws={props.ws} />
@@ -103,12 +106,12 @@ function LiveStreamWindow(props: LiveStreamWindowProps) {
                             backgroundSize: "100% 100%",
                         }}
                     ></video>
-                    <img
-                        className="star m-3"
-                        src={star}
-                        alt="star"
-                        onClick={starOnClickHandler}
-                    />
+                    <div className="star-button" onClick={starOnClickHandler}>
+                        <i className="fas fa-star"></i>
+                    </div>
+                    <div className="heart-button" onClick={heartOnClickHandler}>
+                        <i className="fas fa-heart"></i>
+                    </div>
                 </div>
             </div>
         </div>
