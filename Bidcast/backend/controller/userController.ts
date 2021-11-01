@@ -26,7 +26,7 @@ declare global {
     }
 }
 export class UserController {
-    constructor(private userService: UserService) {}
+    constructor(private userService: UserService) { }
     register = async (req: Request, res: Response) => {
         try {
             const { username, email, password, phoneNumber } = req.body;
@@ -243,7 +243,6 @@ export class UserController {
             const result = await this.userService.googleLogin(
                 googleInfo.name,
                 googleInfo.email,
-                googleInfo.image
             );
             const payload = result.data.user;
             const signOptions: {} = {
@@ -307,9 +306,9 @@ export class UserController {
             });
         }
     };
-    getSellerSubscribe = async (req:Request, res:Response)=>{
+    getSellerSubscribe = async (req: Request, res: Response) => {
         try {
-            const {id} = req.params
+            const { id } = req.params
             console.log("getSellerSubscribe->>>id", id);
             let sellerId = parseInt(id)
             if (sellerId === 0) {
@@ -338,7 +337,7 @@ export class UserController {
     }
     getSubscribe = async (req: Request, res: Response) => {
         try {
-            
+
             console.log("in getSubscribe")
             // console.log("seller_id_for_subscribe", id);
             const userId = req.user && req.user.id ? req.user.id : 0;
