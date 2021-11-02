@@ -1,7 +1,7 @@
 import { Knex } from "knex";
 
 export class ComingAuctionService {
-    constructor(private knex: Knex) {}
+    constructor(private knex: Knex) { }
 
     getComingAuction = async () => {
         const results = await this.knex.raw(
