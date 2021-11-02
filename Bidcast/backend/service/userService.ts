@@ -22,7 +22,7 @@ schema
     .symbols(); //Must have symbols
 
 export class UserService {
-    constructor(private knex: Knex) {}
+    constructor(private knex: Knex) { }
 
     register = async (
         username: string,
@@ -62,7 +62,7 @@ export class UserService {
                 error: new Error("Please input your correct email"),
             };
         }
-        if (phoneNumber.toString().length != 8) {
+        if (phoneNumber.toString().length !== 8) {
             return {
                 success: false,
                 data: {
@@ -117,7 +117,7 @@ export class UserService {
         const emailCount = parseInt(checkRepeatEmail.rows[0].count);
         // console.log("emailCount=", emailCount);
 
-        if (emailCount != 1) {
+        if (emailCount !== 1) {
             await this.knex("users").del().where("id", createUserResult[0]);
             return {
                 success: false,
@@ -137,7 +137,7 @@ export class UserService {
 
         const usernameCount = parseInt(checkRepeatusername.rows[0].count);
 
-        if (usernameCount != 1) {
+        if (usernameCount !== 1) {
             await this.knex("users").del().where("id", createUserResult[0]);
             return {
                 success: false,
@@ -417,7 +417,7 @@ export class UserService {
         // console.log("profilePic", profilePic);
 
         // console.log("edit_service_mark")
-        if (telegramAccount != undefined) {
+        if (telegramAccount !== undefined) {
             const result = await this.knex("users")
                 .update({
                     username: username,
@@ -456,7 +456,7 @@ export class UserService {
             };
         }
     };
-    googleLogin = async (username: string, email: string, pic: string) => {
+    googleLogin = async (username: string, email: string) => {
         const googleLoginId = await this.knex("login_methods")
             .select("id")
             .where("login_method", "google");
@@ -489,7 +489,7 @@ export class UserService {
                     created_at: new Date(),
                     updated_at: new Date(),
                     telegram_is_verified: false,
-                    profile_pic: pic,
+                    profile_pic: "360_F_391192211_2w5pQpFV1aozYQhcIw3FqA35vuTxJKrB.jpg",
                     login_method_id: googleLoginId[0].id,
                     created_by: username,
                     updated_by: username,
@@ -554,7 +554,15 @@ export class UserService {
             } as ResponseJson;
         }
     };
-
+    getSellerSubscribe = async (sellerId: number) => {
+        let sellerFollowerList = await this.knex("follow_details")
+            .select("follower_id")
+            .where({
+                following_id: sellerId,
+            });
+        let liveRecordList = await this.knex.raw(`select live.id from users left outer join live on users.id = live.user_id where users.id=${sellerId}`)
+        return { sellerFollowerList, liveRecordList };
+    }
     getSubscribe = async (userId: number) => {
         let followingList = await this.knex("follow_details")
             .select("following_id")
@@ -596,5 +604,20 @@ export class UserService {
                 })
                 .del();
         }
+    };
+
+    getUserCardInfo = async (idArr: number[]) => {
+        const result = await this.knex("users")
+            .select(
+                "id",
+                "profile_pic as propic",
+                "username",
+                "telegram_acct as telegramAcct",
+                "phone_number as phoneNumber",
+                "email",
+                "description"
+            )
+            .whereIn("id", idArr);
+        return result;
     };
 }

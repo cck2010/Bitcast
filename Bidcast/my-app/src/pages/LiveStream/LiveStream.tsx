@@ -13,13 +13,19 @@ import {
     fetchInitialChatMessages,
     fetchliveStreamInfo,
     fetchliveStreamProducts,
+    fetchSameCategoryLive,
     resetLiveId,
 } from "../../redux/LiveStream/actions";
 import { RootState } from "../../store";
 import io, { Socket } from "socket.io-client";
 import LiveStreamBiddingInfo from "../../component/LiveStream/LiveStreamBiddingInfo";
+import Four0Four from "../four0Four/four0Four";
 
-function LiveStream() {
+interface LiveStreamProps {
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function LiveStream(props: LiveStreamProps) {
     //Get States
     const dispatch = useDispatch();
     const liveStreamRef = useRef<HTMLDivElement>(null);
@@ -45,7 +51,36 @@ function LiveStream() {
             dispatch(fetchInitialChatMessages(liveId));
         }
     }, [dispatch, liveId]);
+
+    const recommendProducts = useSelector(
+        (state: RootState) =>
+            state.liveStream.liveStreamProducts.liveStreamProductsArr
+    );
+
+    useEffect(() => {
+        let categoryIdSet = new Set<number>();
+        for (let product of recommendProducts) {
+            categoryIdSet.add(product.categoryId);
+        }
+        dispatch(
+            fetchSameCategoryLive(liveId, categoryIdSet, props.setIsLoading)
+        );
+    }, [dispatch, recommendProducts, liveId, props]);
+
+    useEffect(() => {
+        if (liveId === 0) {
+            props.setIsLoading(true);
+        } else if (liveId === -1) {
+            props.setIsLoading(false);
+        }
+    }, [props, liveId]);
     //Get States
+
+    //Scroll to top
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+    //Scroll to top
 
     //React-responsive
     const isDesktop = useMediaQuery({
@@ -78,6 +113,7 @@ function LiveStream() {
                     ws.on("render", () => {
                         dispatch(fetchliveStreamProducts(liveId, false));
                     });
+                    ws.emit("checkOnlineUsers", liveId);
                 }
             };
             initWebSocket();
@@ -104,42 +140,15 @@ function LiveStream() {
     //Add event listener
 
     return (
-        <div className="LiveStream m-3" ref={liveStreamRef}>
-            <div className="row">
-                <div className={`${isTablet ? "col-8" : "col"}`}>
-                    <LiveStreamWindow />
-                    {isTablet ? (
-                        <>
-                            <div className="row mt-3 rounded">
-                                <div className={`col-12`}>
-                                    <LiveStreamBiddingInfo ws={ws} />
-                                </div>
-                            </div>
-                            <LiveStreamControlPanel
-                                isDesktop={isDesktop}
-                                isTablet={isTablet}
-                                ws={ws}
-                            />
-                            <LiveStreamHeader ws={ws} />
-                        </>
-                    ) : (
-                        <>
-                            <ButtonGroup className="w-100">
-                                <Button onClick={() => setPage(1)}>
-                                    直播資料
-                                </Button>
-                                <Button onClick={() => setPage(2)}>
-                                    拍賣設定
-                                </Button>
-                                <Button onClick={() => setPage(3)}>
-                                    聊天室
-                                </Button>
-                                <Button onClick={() => setPage(4)}>
-                                    其他拍賣直播
-                                </Button>
-                            </ButtonGroup>
-                            {page === 1 && <LiveStreamHeader ws={ws} />}
-                            {page === 2 && (
+        <>
+            {liveId === -1 ? (
+                <Four0Four />
+            ) : (
+                <div className="LiveStream m-3" ref={liveStreamRef}>
+                    <div className="row">
+                        <div className={`${isTablet ? "col-8" : "col"}`}>
+                            <LiveStreamWindow ws={ws} />
+                            {isTablet ? (
                                 <>
                                     <div className="row mt-3 rounded">
                                         <div className={`col-12`}>
@@ -151,37 +160,90 @@ function LiveStream() {
                                         isTablet={isTablet}
                                         ws={ws}
                                     />
+                                    <LiveStreamHeader ws={ws} />
+                                </>
+                            ) : (
+                                <>
+                                    <ButtonGroup className="w-100">
+                                        <Button
+                                            className="page_btn"
+                                            onClick={() => setPage(1)}
+                                        >
+                                            直播資料
+                                        </Button>
+                                        <Button
+                                            className="page_btn"
+                                            onClick={() => setPage(2)}
+                                        >
+                                            拍賣設定
+                                        </Button>
+                                        <Button
+                                            className="page_btn"
+                                            onClick={() => setPage(3)}
+                                        >
+                                            聊天室
+                                        </Button>
+                                        <Button
+                                            className="page_btn"
+                                            onClick={() => setPage(4)}
+                                        >
+                                            其他拍賣直播
+                                        </Button>
+                                    </ButtonGroup>
+                                    {page === 1 && <LiveStreamHeader ws={ws} />}
+                                    {page === 2 && (
+                                        <>
+                                            <div className="row mt-3 rounded">
+                                                <div className={`col-12`}>
+                                                    <LiveStreamBiddingInfo
+                                                        ws={ws}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <LiveStreamControlPanel
+                                                isDesktop={isDesktop}
+                                                isTablet={isTablet}
+                                                ws={ws}
+                                            />
+                                        </>
+                                    )}
+                                    {page === 3 && (
+                                        <LiveStreamChatRoom
+                                            liveStreamRef={liveStreamRef}
+                                            isTablet={isTablet}
+                                        />
+                                    )}
+                                    {page === 4 && (
+                                        <LiveStreamRecommend
+                                            setIsLoading={props.setIsLoading}
+                                        />
+                                    )}
                                 </>
                             )}
-                            {page === 3 && (
-                                <LiveStreamChatRoom
-                                    liveStreamRef={liveStreamRef}
-                                    isTablet={isTablet}
-                                />
-                            )}
-                            {page === 4 && <LiveStreamRecommend />}
-                        </>
-                    )}
-                </div>
-                {isTablet && (
-                    <div className="col-4">
-                        <div className="row">
-                            <div className="col">
-                                <LiveStreamChatRoom
-                                    liveStreamRef={liveStreamRef}
-                                    isTablet={isTablet}
-                                />
-                            </div>
                         </div>
-                        <div className="row">
-                            <div className="col">
-                                <LiveStreamRecommend />
+                        {isTablet && (
+                            <div className="col-4">
+                                <div className="row">
+                                    <div className="col">
+                                        <LiveStreamChatRoom
+                                            liveStreamRef={liveStreamRef}
+                                            isTablet={isTablet}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col">
+                                        <LiveStreamRecommend
+                                            setIsLoading={props.setIsLoading}
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
-                )}
-            </div>
-        </div>
+                </div>
+            )}
+        </>
     );
 }
 

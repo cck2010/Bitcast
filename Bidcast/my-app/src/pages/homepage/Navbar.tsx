@@ -86,7 +86,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
 
     const popover = (
         <Popover id="popover-basic">
-            <Popover.Header as="h3">請先登入</Popover.Header>
+            <Popover.Header as="div">請先登入</Popover.Header>
         </Popover>
     );
 
@@ -99,9 +99,22 @@ export const HomePageNavbar = (props: NavbarProps) => {
         dispatch(fetchCategories());
     }, [dispatch]);
 
-    const menuIconOnclickHandler = () => {
+    const menuIconOnclickHandler = (e: React.MouseEvent) => {
+        // e.stopPropagation();
         dispatch(sidebarClick(true));
         dispatch(menuIconClick(menuCollapse ? false : true, false));
+    };
+    // const preventPropagation = (e: React.MouseEvent) => {
+    //     e.stopPropagation();
+    // }
+    const navbarOnClickHandler = () => {
+        if (
+            menuToggle.current?.classList[
+                Array.from(menuToggle.current?.classList).indexOf("collapsed")
+            ] !== "collapsed"
+        ) {
+            menuToggle.current?.click();
+        }
     };
 
     const [categoryId, setCategoryId] = useState(0);
@@ -124,13 +137,13 @@ export const HomePageNavbar = (props: NavbarProps) => {
     return (
         <div ref={divRef}>
             {divRef && (
-                <Navbar collapseOnSelect expand="md" className="navbar py-3">
-                    <Link to="/" className="nav_link ms-3">
+                <Navbar collapseOnSelect expand="lg" className="navbar py-0 ">
+                    <Link to="/" className="nav_link ms-3 bidcast_logo_link">
                         <img
                             alt="bidcast_logo"
                             src={bidcast_logo}
                             height="40"
-                            className="d-inline-block align-top"
+                            className="d-inline-block align-top bidcast_logo"
                         />
                     </Link>
                     <Navbar.Toggle
@@ -142,9 +155,10 @@ export const HomePageNavbar = (props: NavbarProps) => {
                         id="responsive-navbar-nav"
                         className=" mt-md-0 mt-3"
                         ref={menuRef}
+                        // onClick={preventPropagation}
                     >
                         <Nav className="me-auto navbar_buttons">
-                            <FormGroup>
+                            <FormGroup className={"search_formgroup"}>
                                 <Input
                                     type="search"
                                     name="search"
@@ -165,7 +179,12 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                     }}
                                 />
                             </FormGroup>
-                            <Link to="/" className="nav_link">
+
+                            <Link
+                                to="/"
+                                className="nav_link"
+                                onClick={navbarOnClickHandler}
+                            >
                                 主頁
                             </Link>
 
@@ -174,8 +193,13 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                     trigger="click"
                                     placement="bottom"
                                     overlay={popover}
+                                    rootClose
                                 >
-                                    <Link to="#" className="nav_link">
+                                    <Link
+                                        to="#"
+                                        className="nav_link"
+                                        onClick={navbarOnClickHandler}
+                                    >
                                         舉辦拍賣
                                     </Link>
                                 </OverlayTrigger>
@@ -188,6 +212,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                             : "/createBids"
                                     }
                                     className="nav_link"
+                                    onClick={navbarOnClickHandler}
                                 >
                                     舉辦拍賣
                                 </Link>
@@ -206,16 +231,21 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                         to={`/categoryResult?category=${category.category}`}
                                         className="dropdown_items"
                                         key={category.id}
-                                        onClick={() =>
-                                            setCategoryId(category.id)
-                                        }
+                                        onClick={() => {
+                                            setCategoryId(category.id);
+                                            navbarOnClickHandler();
+                                        }}
                                     >
                                         {category.category}
                                     </Link>
                                 ))}
                             </NavDropdown>
                             {!isAuthenticate ? (
-                                <Link to="/loginPage" className="nav_link">
+                                <Link
+                                    to="/loginPage"
+                                    className="nav_link"
+                                    onClick={navbarOnClickHandler}
+                                >
                                     登入 ／ 註冊
                                 </Link>
                             ) : (
@@ -225,6 +255,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                         e.preventDefault();
                                         dispatch(logoutThunk());
                                         dispatch(push("/"));
+                                        navbarOnClickHandler();
                                     }}
                                     className="nav_link"
                                 >
@@ -233,7 +264,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
                             )}
                             <Link
                                 to="/profilePage/accountDetails"
-                                className="nav_link mb-md-0 mb-3 me-0 me-md-3"
+                                className="nav_link mb-md-0 mb-3 me-0 me-md-3 profile_pic"
                             >
                                 {isAuthenticate && profilePic && (
                                     <img
@@ -250,7 +281,8 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                         }`}
                                         width="40"
                                         height="40"
-                                        className="rounded-circle"
+                                        className="rounded-circle "
+                                        onClick={navbarOnClickHandler}
                                     />
                                 )}
                             </Link>

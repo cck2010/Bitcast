@@ -10,25 +10,17 @@ import "./CategoryResult.scss";
 import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSlidersH } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { useEffect, useState } from "react";
-import { fetchProductsForFilter } from "../../redux/searchResult/action";
-import { push } from "connected-react-router";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export function CategoriesFilter() {
     const filterProducts = useSelector(
         (state: RootState) => state.searchProduct.categories
     );
 
-    const dispatch = useDispatch();
-
-    const [orderCommand, setOrderCommand] = useState(" ");
-
-    useEffect(() => {
-        dispatch(fetchProductsForFilter(orderCommand));
-    }, [dispatch, orderCommand]);
+    const [sortingMethod, setSortingMethod] = useState("2");
 
     return (
         <div className="category_page">
@@ -51,25 +43,15 @@ export function CategoriesFilter() {
                     >
                         <Dropdown.Item
                             eventKey="1"
-                            onClick={() => {
-                                setOrderCommand("DateNewToOld");
-                                dispatch(
-                                    push(`/filteredProducts?DateNewToOld`)
-                                );
-                            }}
+                            onClick={() => setSortingMethod("2")}
                         >
-                            由新至舊
+                            由遠至近
                         </Dropdown.Item>
                         <Dropdown.Item
                             eventKey="2"
-                            onClick={() => {
-                                setOrderCommand("DateOldToNew");
-                                dispatch(
-                                    push(`/filteredProducts?DateOldToNew`)
-                                );
-                            }}
+                            onClick={() => setSortingMethod("1")}
                         >
-                            由舊至新
+                            由近至遠
                         </Dropdown.Item>
                     </DropdownButton>
                     <DropdownButton
@@ -78,20 +60,14 @@ export function CategoriesFilter() {
                         id="bg-nested-dropdown"
                     >
                         <Dropdown.Item
-                            eventKey="1"
-                            onClick={() => {
-                                setOrderCommand("PriceH2L");
-                                dispatch(push(`/filteredProducts?PriceH2L`));
-                            }}
+                            eventKey="3"
+                            onClick={() => setSortingMethod("4")}
                         >
                             由高至低
                         </Dropdown.Item>
                         <Dropdown.Item
-                            eventKey="2"
-                            onClick={() => {
-                                setOrderCommand("PriceL2H");
-                                dispatch(push(`/filteredProducts?PriceL2H`));
-                            }}
+                            eventKey="4"
+                            onClick={() => setSortingMethod("3")}
                         >
                             由低至高
                         </Dropdown.Item>
@@ -100,7 +76,58 @@ export function CategoriesFilter() {
                 <hr />
 
                 {filterProducts &&
-                    filterProducts.map((filterProduct) => (
+                    (sortingMethod === "1"
+                        ? [...filterProducts].sort((a, b) => {
+                              if (
+                                  new Date(Date.parse(a.starting_time)) >
+                                  new Date(Date.parse(b.starting_time))
+                              ) {
+                                  return 1;
+                              }
+                              if (
+                                  new Date(Date.parse(a.starting_time)) <
+                                  new Date(Date.parse(b.starting_time))
+                              ) {
+                                  return -1;
+                              }
+                              return 0;
+                          })
+                        : sortingMethod === "2"
+                        ? [...filterProducts].sort((a, b) => {
+                              if (
+                                  new Date(Date.parse(a.starting_time)) >
+                                  new Date(Date.parse(b.starting_time))
+                              ) {
+                                  return -1;
+                              }
+                              if (
+                                  new Date(Date.parse(a.starting_time)) <
+                                  new Date(Date.parse(b.starting_time))
+                              ) {
+                                  return 1;
+                              }
+                              return 0;
+                          })
+                        : sortingMethod === "3"
+                        ? [...filterProducts].sort((a, b) => {
+                              if (a.min_price > b.min_price) {
+                                  return 1;
+                              }
+                              if (a.min_price < b.min_price) {
+                                  return -1;
+                              }
+                              return 0;
+                          })
+                        : [...filterProducts].sort((a, b) => {
+                              if (a.min_price > b.min_price) {
+                                  return -1;
+                              }
+                              if (a.min_price < b.min_price) {
+                                  return 1;
+                              }
+                              return 0;
+                          })
+                    ).map((filterProduct) => (
                         <div
                             className="category_items_container"
                             key={filterProduct.id}

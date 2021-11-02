@@ -27,14 +27,18 @@ export class ProductsService {
         console.log("liveImage", liveImage);
         console.log("userId", userId);
         console.log("buyerLink", buyerLink);
-        if(liveImage != undefined){
+        if (liveImage !== undefined) {
             const res = await this.knex("live")
                 .insert({
                     user_id: userId,
                     title: liveTitle,
                     image: liveImage,
                     starting_time: startDate,
-                    status_id: 1,
+                    status_id: (
+                        await this.knex("status")
+                            .select("id")
+                            .where("status", "active")
+                    )[0].id,
                     max_viewers: 0,
                     current_viewers: 0,
                     seller_link: sellerLink,
@@ -42,8 +46,8 @@ export class ProductsService {
                     is_live: false,
                     is_ended: false,
                     is_banned: false,
-                    created_at: new Date(),
-                    updated_at: new Date(),
+                    // created_at: new Date(),
+                    // updated_at: new Date(),
                     description: description,
                 })
                 .returning("*");
@@ -54,7 +58,7 @@ export class ProductsService {
                 success: true,
                 data: { msg: "submit liveInfo success", res },
             };
-        }else{
+        } else {
             return {
                 success: false,
                 data: { msg: "submit liveInfo fail due to data undefined" },
@@ -237,11 +241,12 @@ export class ProductsService {
         products.description, 
         users.username,
         live.starting_time,
-        live.buyer_link
+        live.buyer_link,
+        live.is_ended
         from products 
         left outer join users on products.seller_id = users.id
         left outer join live on products.live_id = live.id
-        where product_name ilike '%${searchKeywords}%';
+        where product_name ilike '%${searchKeywords}%' and live.starting_time > NOW();
         `);
         return {
             success: true,
@@ -262,7 +267,7 @@ export class ProductsService {
         userId: number
     ) => {
         console.log("index", productIndex);
-        if(productImage != undefined){
+        if (productImage !== undefined) {
             const res = await this.knex("products")
                 .insert({
                     product_name: name,
@@ -283,13 +288,13 @@ export class ProductsService {
                     description: description,
                 })
                 .returning("*");
-    
+
             // console.log("Submitted products :", res);
             return {
                 success: true,
                 data: { msg: "submit product success", res },
             };
-        }else{
+        } else {
             return {
                 success: false,
                 data: { msg: "submit product fail due to data undefined" },

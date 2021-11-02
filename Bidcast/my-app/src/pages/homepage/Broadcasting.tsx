@@ -11,8 +11,10 @@ import { push } from "connected-react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { RWebShare } from "react-web-share";
 import { RootState } from "../../store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchBroadcastingProducts } from "../../redux/broadcastingProducts/actions";
+import { ProfileDetails } from "./ProfileDetails";
+import { fetchSellerSubscribe } from "../../redux/user/actions";
 
 const responsive = {
     desktop: {
@@ -41,6 +43,20 @@ export function Broadcasting() {
     useEffect(() => {
         dispatch(fetchBroadcastingProducts());
     }, [dispatch]);
+
+    async function profilePreview(info: any) {
+        for (let broadcasting of broadcastings) {
+            if (broadcasting.id === info) {
+                // console.log("broadcasting", broadcasting);
+                // console.log("broadcasting", broadcasting.username);
+                // console.log("broadcasting", broadcasting.seller_id);
+                dispatch(fetchSellerSubscribe(broadcasting.seller_id));
+                setModalShow(broadcasting.seller_id);
+            }
+        }
+    }
+
+    const [modalShow, setModalShow] = useState(-1);
 
     return (
         <div>
@@ -77,6 +93,13 @@ export function Broadcasting() {
                                     <Image
                                         className="img_fluid"
                                         src={`${process.env.REACT_APP_BACKEND_URL}/${broadcasting.image}`}
+                                        onClick={() => {
+                                            dispatch(
+                                                push(
+                                                    `/liveStreaming?room=${broadcasting.buyer_link}`
+                                                )
+                                            );
+                                        }}
                                         fluid
                                     />
                                     <FontAwesomeIcon
@@ -85,25 +108,16 @@ export function Broadcasting() {
                                     />
                                 </div>
                                 <Card.Body>
-                                    <div className="counter">
-                                        <div className="countdown_time">
-                                            <div className="time_value">00</div>
-                                            <div className="time_label">日</div>
-                                        </div>
-                                        <div className="countdown_time">
-                                            <div className="time_value">00</div>
-                                            <div className="time_label">時</div>
-                                        </div>
-                                        <div className="countdown_time">
-                                            <div className="time_value">00</div>
-                                            <div className="time_label">分</div>
-                                        </div>
-                                        <div className="countdown_time">
-                                            <div className="time_value">00</div>
-                                            <div className="time_label">秒</div>
-                                        </div>
-                                    </div>
-                                    <Card.Title className="broadcasting_title">
+                                    <Card.Title
+                                        className="broadcasting_title"
+                                        onClick={() => {
+                                            dispatch(
+                                                push(
+                                                    `/liveStreaming?room=${broadcasting.buyer_link}`
+                                                )
+                                            );
+                                        }}
+                                    >
                                         {broadcasting.title}
                                     </Card.Title>
                                     <Card.Text>
@@ -113,9 +127,34 @@ export function Broadcasting() {
                                         </span>
                                     </Card.Text>
                                     <Card.Text>
-                                        由{broadcasting.username}主辦
+                                        <span
+                                            key={broadcasting.id}
+                                            onClick={() => {
+                                                profilePreview(broadcasting.id);
+                                            }}
+                                            // onClick={() =>
+                                            //     setModalShow(broadcasting.id)
+                                            // }
+                                            className={"seller_name"}
+                                        >
+                                            <span>由</span>
+                                            <span className={"card_username"}>
+                                                &nbsp;{broadcasting.username}
+                                                &nbsp;
+                                            </span>
+                                            主辦
+                                        </span>
                                     </Card.Text>
-                                    <div className="bid_share_container">
+                                    {modalShow === broadcasting.id && (
+                                        <ProfileDetails
+                                            show={broadcasting.id}
+                                            broadcasts={broadcasting}
+                                            id={broadcasting.id}
+                                            onHide={() => setModalShow(-1)}
+                                        />
+                                    )}
+
+                                    <div className="bid_share_container w-75 justify-content-aorund">
                                         <Button
                                             variant="outline-dark"
                                             className="bid_button"
@@ -133,7 +172,7 @@ export function Broadcasting() {
                                         <RWebShare
                                             data={{
                                                 text: "",
-                                                url: "",
+                                                url: `${process.env.REACT_APP_FRONTEND_URL}/liveStreaming?room=${broadcasting.buyer_link}`,
                                                 title: "Look at this amazing live",
                                             }}
                                             onClick={() =>

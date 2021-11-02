@@ -1,6 +1,7 @@
 import { CToaster } from "@coreui/react";
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useMediaQuery } from "react-responsive";
 import { Socket } from "socket.io-client";
 import {
     fetchBidIncrement,
@@ -96,6 +97,9 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
     ]);
     const [toast, addToast] = useState<JSX.Element>(<></>);
     const toaster = useRef<HTMLDivElement>(null);
+    const responsive = useMediaQuery({
+        query: "(min-width: 420px)",
+    });
     //Get States
 
     //Countdown End Handler
@@ -256,12 +260,12 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
 
     return (
         <div className="LiveStreamBiddingInfo h-100 rounded my-3">
-            {phoneNumber === "" || phoneNumber === "11111111" ? (
-                <InputPhoneNumber />
-            ) : isAuthenticate ? (
+            {!isAuthenticate ? (
+                <Login message={"請先登入再進行拍賣"} />
+            ) : phoneNumber !== "" && phoneNumber !== "11111111" ? (
                 <div className="info w-100 h-100 d-flex justify-contens-center align-items-center flex-column">
                     <div className="row">
-                        <div className="col-12 d-flex flex-row justify-content-center align-items-center w-100 h-100 mt-3">
+                        <div className="col-12 d-flex flex-row justify-content-center align-items-center w-100 h-100 mb-5">
                             <img
                                 key={selectedProduct.id}
                                 className={`selected_img me-4`}
@@ -269,7 +273,13 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                                 alt={`pic${selectedProduct.id}`}
                             />
                             <div className="instant_info d-flex flex-column">
-                                <div className="current_price ms-4">
+                                <div
+                                    className={`${
+                                        responsive
+                                            ? "current_price"
+                                            : "responsive_current_price"
+                                    } ms-4`}
+                                >
                                     <i className="fas fa-money-bill-wave"></i>{" "}
                                     現在價格:
                                     <br /> $
@@ -279,24 +289,42 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                                         最高出價者:{" "}
                                         {selectedProductDynamic.buyer == null ||
                                         selectedProductDynamic.buyer === ""
-                                            ? "暫時未有叫價"
+                                            ? "ー"
                                             : selectedProductDynamic.buyer}
                                     </span>
                                 </div>
                                 {!isBidding &&
                                 selectedProductDynamic.countdownEndTime ===
                                     undefined ? (
-                                    <div className="remaining_time mt-2 ms-4">
+                                    <div
+                                        className={`${
+                                            responsive
+                                                ? "remaining_time"
+                                                : "responsive_remaining_time"
+                                        } mt-2 ms-4`}
+                                    >
                                         拍賣尚未開始
                                     </div>
                                 ) : !isBidding &&
                                   selectedProductDynamic.countdownEndTime !==
                                       undefined ? (
-                                    <div className="remaining_time mt-2 ms-4">
+                                    <div
+                                        className={`${
+                                            responsive
+                                                ? "remaining_time"
+                                                : "responsive_remaining_time"
+                                        } mt-2 ms-4`}
+                                    >
                                         拍賣已結束
                                     </div>
                                 ) : (
-                                    <div className="remaining_time mt-2 ms-4 text-center">
+                                    <div
+                                        className={`${
+                                            responsive
+                                                ? "remaining_time"
+                                                : "responsive_remaining_time"
+                                        } mt-2 ms-4 text-center`}
+                                    >
                                         <i className="fas fa-hourglass-half"></i>
                                         {""}剩餘 {remainingTime} 秒
                                     </div>
@@ -361,7 +389,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                     </div>
                 </div>
             ) : (
-                <Login />
+                <InputPhoneNumber />
             )}
 
             <CToaster ref={toaster} push={toast} placement="bottom-end" />

@@ -1,6 +1,5 @@
 import { RootState, RootThunkDispatch } from "../../store";
 
-
 export interface MyLive {
     id: number;
     user_id: number;
@@ -8,8 +7,9 @@ export interface MyLive {
     image: string;
     starting_time: Date;
     seller_link: string;
-    max_viewer?: number;
+    max_viewers?: number;
     is_ended?: boolean;
+    is_live?: boolean;
 }
 
 export interface MyLiveProducts {
@@ -22,33 +22,51 @@ export interface MyLiveProducts {
     buyer_id: number;
     title: string;
     live_id: number;
+    username: string;
+    email: string;
+    phone_number: number;
+    current_price: number;
+    product_image: string;
+    starting_time: Date;
+    telegram_acct: string;
 }
 
-export function loadMyLive(
-    myLive: MyLive[]
-) {
+export function loadMyLive(myLive: MyLive[]) {
     return {
         type: "@@myLive/LOAD_MY_LIVE" as const,
         myLive,
-    }
+    };
 }
 
-export function loadMyLiveProducts(
-    myLiveProducts: MyLiveProducts[]
-) {
+export function loadMyLiveProducts(myLiveProducts: MyLiveProducts[]) {
     return {
         type: "@@myLive/LOAD_MY_LIVE_PRODUCTS" as const,
         myLiveProducts,
+    };
+}
+
+export function loadLiveStatus(liveId: MyLive[]) {
+    return {
+        type: "@@myLive/LOAD_LIVE_STATUS" as const,
+        liveId,
+    }
+}
+
+export function loadOpenLiveStatus(myLiveId: MyLive[]) {
+    return {
+        type: "@@myLive/LOAD_OPEN_LIVE_STATUS" as const,
+        myLiveId,
     }
 }
 
 export type LoadMyLiveActions = ReturnType<typeof loadMyLive>
     | ReturnType<typeof loadMyLiveProducts>
+    | ReturnType<typeof loadLiveStatus>
+    | ReturnType<typeof loadOpenLiveStatus>
 
 export function fetchMyLive() {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         try {
-
             const res = await fetch(
                 `${process.env.REACT_APP_BACKEND_URL}/profilePage/myLive`
             );
@@ -56,10 +74,60 @@ export function fetchMyLive() {
             const json = await res.json();
 
             if (json) {
-                dispatch(loadMyLive(json.data.results.rows))
+                dispatch(loadMyLive(json.data.results.rows));
             } else {
-                dispatch(loadMyLive([]))
+                dispatch(loadMyLive([]));
             }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+}
+
+export function fetchMyLiveProducts(
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    setLoadState: React.Dispatch<React.SetStateAction<number>>
+) {
+    return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
+        try {
+            const res = await fetch(
+                `${process.env.REACT_APP_BACKEND_URL}/profilePage/myLiveProducts`
+            );
+
+            const json = await res.json();
+
+            if (json) {
+                dispatch(loadMyLiveProducts(json.data.results.rows));
+            } else {
+                dispatch(loadMyLiveProducts([]));
+            }
+            setIsLoading(false);
+            setLoadState((loadState) => loadState + 1);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export function updateLiveStatus(liveId: number) {
+    return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
+        try {
+            const res = await fetch(
+                `${process.env.REACT_APP_BACKEND_URL}/profilePage/liveIsEnded`, {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+
+                },
+                body: JSON.stringify({ liveId })
+            }
+            )
+            const json = await res.json()
+            if (json.succes) {
+                dispatch(loadLiveStatus(json.data.results))
+            }
+
+
         } catch (error) {
             console.log(error);
 
@@ -67,23 +135,31 @@ export function fetchMyLive() {
     }
 }
 
-export function fetchMyLiveProducts() {
+export function updateOpenLiveStatus(myLiveId: number) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         try {
 
             const res = await fetch(
-                `${process.env.REACT_APP_BACKEND_URL}/profile/myLiveProducts`
-            );
 
-            const json = await res.json();
+                `${process.env.REACT_APP_BACKEND_URL}/profilePage/openMyLive`, {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
 
-            if (json) {
-                dispatch(loadMyLiveProducts(json.data.results.rows))
-            } else {
-                dispatch(loadMyLiveProducts([]))
+                },
+                body: JSON.stringify({ myLiveId })
             }
+            )
+
+            const json = await res.json()
+            if (json.success) {
+
+                dispatch(loadOpenLiveStatus(json.data.results))
+            }
+
         } catch (error) {
             console.log(error);
+
         }
     }
 }

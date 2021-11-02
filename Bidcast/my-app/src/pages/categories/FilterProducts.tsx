@@ -30,8 +30,6 @@ export function FilterProducts() {
         Object.values(state.searchProduct.productFilter)
     );
 
-    console.log(products);
-
     return (
         <div className="category_page">
             <Container>
@@ -60,7 +58,7 @@ export function FilterProducts() {
                                 );
                             }}
                         >
-                            由新至舊
+                            由遠至近
                         </Dropdown.Item>
 
                         <Dropdown.Item
@@ -72,7 +70,7 @@ export function FilterProducts() {
                                 );
                             }}
                         >
-                            由舊至新
+                            由近至遠
                         </Dropdown.Item>
                     </DropdownButton>
                     <DropdownButton

@@ -18,6 +18,8 @@ import { CloseCross, DatePickerIcon } from "./components/Fontawsome";
 import { v4 } from "uuid";
 import "bootstrap/dist/css/bootstrap.min.css";
 import path from "path";
+import { HomepageCanvas } from "../homepage/components/HomePageKonva";
+import { Canvass } from "../LiveStream/components/Konva2";
 // import { AnySet } from "immer/dist/internal";
 // import { BsWindowSidebar } from "react-icons/bs";
 // import axios from "axios";
@@ -170,7 +172,8 @@ export function CreateBids() {
                         }
                     );
                     const liveJson = await liveRes.json();
-                    console.log("liveJson.data.res", liveJson.data.res[0]);
+                    // console.log("liveJson.data.res", liveJson.data.res[0]);
+                    console.log("liveJson.data.res", liveJson.data.res);
                     liveId = liveJson.data.res[0].id;
                 } else {
                     liveId = null;
@@ -350,6 +353,7 @@ export function CreateBids() {
 
     return (
         <div className={"create_bids_container form_shown"}>
+            {/* <HomepageCanvas /> */}
             <div className={"outline"}>
                 <div className={"header_border"}></div>
                 {/* <header className={"test_user"}>For Dev ref Username:{userInfo.username}</header> */}
@@ -530,7 +534,7 @@ export function CreateBids() {
                                     )}
 
                                 <p className={"input_box"}>
-                                    <label>底價:</label>
+                                    <label>底價 HKD:</label>
                                     <input
                                         className={"input_default"}
                                         type="number"
@@ -543,7 +547,7 @@ export function CreateBids() {
                                 </p>
 
                                 <p className={"input_box"}>
-                                    <label>每口價:</label>
+                                    <label>每口價 HKD:</label>
                                     <input
                                         className={"input_default"}
                                         type="number"
@@ -556,7 +560,7 @@ export function CreateBids() {
                                 </p>
 
                                 <p className={"input_box"}>
-                                    <label>即買價:</label>
+                                    <label>即買價 HKD:</label>
                                     <input
                                         className={"input_default"}
                                         type="number"

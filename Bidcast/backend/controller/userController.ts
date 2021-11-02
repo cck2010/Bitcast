@@ -26,7 +26,7 @@ declare global {
     }
 }
 export class UserController {
-    constructor(private userService: UserService) {}
+    constructor(private userService: UserService) { }
     register = async (req: Request, res: Response) => {
         try {
             const { username, email, password, phoneNumber } = req.body;
@@ -186,7 +186,7 @@ export class UserController {
 
                 return res.json(token);
             } else {
-                return res.status(401).json({
+                return res.json({
                     token: null,
                     message: "Incorrect token",
                 });
@@ -223,7 +223,7 @@ export class UserController {
                     token: token,
                 });
             } else {
-                return res.status(401).json({
+                return res.json({
                     token: null,
                     message: "Incorrect token",
                 });
@@ -243,7 +243,6 @@ export class UserController {
             const result = await this.userService.googleLogin(
                 googleInfo.name,
                 googleInfo.email,
-                googleInfo.image
             );
             const payload = result.data.user;
             const signOptions: {} = {
@@ -258,7 +257,7 @@ export class UserController {
                     token: token,
                 });
             } else {
-                return res.status(401).json({
+                return res.json({
                     token: null,
                     message: "Incorrect token",
                 });
@@ -307,9 +306,40 @@ export class UserController {
             });
         }
     };
-
+    getSellerSubscribe = async (req: Request, res: Response) => {
+        try {
+            const { id } = req.params
+            console.log("getSellerSubscribe->>>id", id);
+            let sellerId = parseInt(id)
+            if (sellerId === 0) {
+                res.json({
+                    success: false,
+                    data: { msg: "get seller subscribe fail" },
+                });
+            }
+            const result = await this.userService.getSellerSubscribe(sellerId);
+            // console.log("result", result.sellerFollowerList);
+            // console.log("result", result.liveRecordList);
+            const response = {
+                sellerFollowerList: result.sellerFollowerList,
+                liveRecordList: result.liveRecordList.rows,
+                success: true,
+            };
+            res.json(response);
+            return;
+        } catch (error) {
+            res.json({
+                success: false,
+                data: { msg: "get seller subscribe fail" },
+                error: new Error("get seller subscribe fail"),
+            });
+        }
+    }
     getSubscribe = async (req: Request, res: Response) => {
         try {
+
+            console.log("in getSubscribe")
+            // console.log("seller_id_for_subscribe", id);
             const userId = req.user && req.user.id ? req.user.id : 0;
             if (userId === 0) {
                 res.json({
@@ -338,7 +368,7 @@ export class UserController {
         try {
             const { followingId } = req.body;
             const userId = req.user && req.user.id ? req.user.id : 0;
-            if (userId === 0) {
+            if (userId === 0 || followingId === userId) {
                 res.json({
                     success: false,
                     data: { msg: "subscribe fail" },
@@ -353,6 +383,36 @@ export class UserController {
                 success: false,
                 data: { msg: "subscribe fail" },
                 error: new Error("subscribe fail"),
+            });
+        }
+    };
+
+    getUserCardInfo = async (req: Request, res: Response) => {
+        try {
+            const { idString } = req.query;
+            const idArr = JSON.stringify(idString)
+                .replace(/"/g, "")
+                .split(",")
+                .map((id) => parseInt(id));
+            console.log(idArr);
+
+            if (idArr.length === 0) {
+                res.json({
+                    result: [],
+                    success: false,
+                });
+            }
+            const result = await this.userService.getUserCardInfo(idArr);
+            const response = {
+                result,
+                success: true,
+            };
+            res.json(response);
+        } catch (error) {
+            res.json({
+                success: false,
+                data: { msg: "get user card info fail" },
+                error: new Error("get user card info fail"),
             });
         }
     };

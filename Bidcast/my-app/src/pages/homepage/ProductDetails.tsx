@@ -39,6 +39,7 @@ export function ProductDetails(props: any) {
     const [liveArr, setLiveArr] = useState([]);
 
     useEffect(() => {
+        // console.log("lives", lives);
         setLiveArr(lives.filter((live: any) => live.id === props.id));
     }, []);
 
@@ -56,21 +57,20 @@ export function ProductDetails(props: any) {
                     centered
                     key={(liveArr[0] as any).id}
                 >
-                    <Modal.Header closeButton>
+                    <Modal.Header
+                        className={"product_details_header"}
+                        // closeButton
+                    >
                         <Modal.Title id="contained-modal-title-vcenter">
-                            {(liveArr[0] as any).title}
+                            <div className={"product_details_live_title"}>
+                                {(liveArr[0] as any).title}
+                            </div>
                         </Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>
-                        <h4>
-                            拍賣時間：{" "}
-                            {moment((liveArr[0] as any).starting_time).format(
-                                "YYYY-MM-DD hh:mm:ss"
-                            )}
-                        </h4>
+                    <Modal.Body className={"Product_detail_body_container"}>
                         <Container>
-                            <Row>
-                                <Col xs={6} md={4}>
+                            <Row className={"product_Details_body"}>
+                                <Col xs={12} md={4}>
                                     <Carousel
                                         additionalTransfrom={0}
                                         autoPlay={false}
@@ -103,23 +103,46 @@ export function ProductDetails(props: any) {
                                                         key={product.id}
                                                     >
                                                         <Image
+                                                            className={
+                                                                "product_details_image"
+                                                            }
                                                             src={`${process.env.REACT_APP_BACKEND_URL}/${product.product_image}`}
                                                             fluid
                                                         />
                                                         <div>
-                                                            商品名稱：{" "}
-                                                            {
-                                                                product.product_name
+                                                            {/* 商品名稱：{" "} */}
+                                                            <div
+                                                                className={
+                                                                    "product_details_Product_name"
+                                                                }
+                                                            >
+                                                                {
+                                                                    product.product_name
+                                                                }
+                                                                <span
+                                                                    className={
+                                                                        "New_Icon_PD"
+                                                                    }
+                                                                >
+                                                                    NEW
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            className={
+                                                                "product_details_Product_minPrice"
                                                             }
+                                                        >
+                                                            起標：{" "}
+                                                            <span>
+                                                                {product.min_price +
+                                                                    " HKD "}
+                                                            </span>
                                                         </div>
-                                                        <div>
-                                                            底價：{" "}
-                                                            {product.min_price}
-                                                        </div>
-                                                        <div>
+                                                        {/* <p>
                                                             即買價：{" "}
                                                             {product.buy_price}
-                                                        </div>
+                                                        </p> */}
                                                     </div>
                                                 )
                                         )}
@@ -128,17 +151,38 @@ export function ProductDetails(props: any) {
                                 <Col xs={12} md={8}>
                                     <div className="products_info_container">
                                         <div className="products_detailed_info">
-                                            <p className="product_detailed_description">
-                                                拍賣簡介：{" "}
-                                                {
-                                                    (liveArr[0] as any)
-                                                        .description
+                                            <div
+                                                className={
+                                                    "product_detailed_Date"
                                                 }
-                                            </p>
+                                            >
+                                                <div>拍賣時間： </div>
+                                                <span>
+                                                    {moment(
+                                                        (liveArr[0] as any)
+                                                            .starting_time
+                                                    ).format(
+                                                        "YYYY-MM-DD hh:mm:ss"
+                                                    )}
+                                                </span>
+                                            </div>
+                                            <div className="product_detailed_description">
+                                                <div>拍賣簡介： </div>
+                                                <span
+                                                    className={
+                                                        "product_detailed_description_content"
+                                                    }
+                                                >
+                                                    {
+                                                        (liveArr[0] as any)
+                                                            .description
+                                                    }
+                                                </span>
+                                            </div>
 
-                                            <div>
-                                                <p>
-                                                    拍賣商品數量：
+                                            <div className="product_detailed_total">
+                                                <div>拍賣商品數量：</div>
+                                                <span>
                                                     {
                                                         products.filter(
                                                             (product) =>
@@ -148,7 +192,7 @@ export function ProductDetails(props: any) {
                                                                 ).id
                                                         ).length
                                                     }
-                                                </p>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -156,8 +200,13 @@ export function ProductDetails(props: any) {
                             </Row>
                         </Container>
                     </Modal.Body>
-                    <Modal.Footer>
-                        <Button onClick={props.onHide}>Close</Button>
+                    <Modal.Footer className={"product_detailed_footer"}>
+                        <Button
+                            className={"PD_close_btn"}
+                            onClick={props.onHide}
+                        >
+                            離開
+                        </Button>
                     </Modal.Footer>
                 </Modal>
             )}

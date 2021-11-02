@@ -6,8 +6,16 @@ import { ButtonGroup } from "reactstrap";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import useFetch from "react-fetch-hook";
+import { Canvass } from "../../pages/LiveStream/components/Konva2";
+import { Socket } from "socket.io-client";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import { FaClipboard } from "../../pages/Profile-Page/component/Fontawsome";
 
-function LiveStreamWindow() {
+interface LiveStreamWindowProps {
+    ws: Socket | null;
+}
+
+function LiveStreamWindow(props: LiveStreamWindowProps) {
     //Get States
     const pubVideo = useRef<HTMLVideoElement>(null);
     const [client, setClient] = useState<Client | null>(null);
@@ -145,9 +153,29 @@ function LiveStreamWindow() {
     };
     //Broadcast button Handler
 
+    //set Copy Clip Board
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, setCopyState] = useState(false);
+    const onCopy = () => {
+        setCopyState(true);
+    };
+    //set Copy Clip Board
+
     return (
         <div className="LiveStreamWindowSeller">
             <div className="flex flex-col h-screen relative">
+                <CopyToClipboard
+                    onCopy={onCopy}
+                    text={`${process.env.REACT_APP_FRONTEND_URL}/liveStreaming?room=${result.data?.room}`}
+                >
+                    <div className="buyer_link">
+                        按右邊圖示複製觀眾直播連結{" "}
+                        <i className="fas fa-arrow-right"></i>{" "}
+                        <span className="clipboard">
+                            <FaClipboard />
+                        </span>
+                    </div>
+                </CopyToClipboard>
                 {client != null && isAuthenticate && username === seller && (
                     <ButtonGroup className="w-100">
                         <button
@@ -170,22 +198,27 @@ function LiveStreamWindow() {
                         </button>
                     </ButtonGroup>
                 )}
-                <video
-                    id="pubVideo"
-                    poster="transparent.png"
-                    className="w-100 h-100"
-                    controls
-                    ref={pubVideo}
-                    style={{
-                        backgroundImage: `${
-                            thumbnail
-                                ? `url("${process.env.REACT_APP_BACKEND_URL}/${thumbnail}")`
-                                : ""
-                        }`,
-                        backgroundRepeat: "no-repeat",
-                        backgroundSize: "100% 100%",
-                    }}
-                ></video>
+                <div className="video_canvas_combine">
+                    {pubVideo.current !== null && (
+                        <Canvass video={pubVideo} ws={props.ws} />
+                    )}
+                    <video
+                        id="pubVideo"
+                        poster="transparent.png"
+                        className="w-100 h-100"
+                        controls
+                        ref={pubVideo}
+                        style={{
+                            backgroundImage: `${
+                                thumbnail
+                                    ? `url("${process.env.REACT_APP_BACKEND_URL}/${thumbnail}")`
+                                    : ""
+                            }`,
+                            backgroundRepeat: "no-repeat",
+                            backgroundSize: "100% 100%",
+                        }}
+                    ></video>
+                </div>
             </div>
         </div>
     );
