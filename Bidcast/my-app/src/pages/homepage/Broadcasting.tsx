@@ -127,7 +127,7 @@ export function Broadcasting() {
                                         </span>
                                     </Card.Text>
                                     <Card.Text>
-                                        <div
+                                        <span
                                             key={broadcasting.id}
                                             onClick={() => {
                                                 profilePreview(broadcasting.id);
@@ -137,13 +137,13 @@ export function Broadcasting() {
                                             // }
                                             className={"seller_name"}
                                         >
-                                            由
+                                            <span>由</span>
                                             <span className={"card_username"}>
                                                 &nbsp;{broadcasting.username}
                                                 &nbsp;
                                             </span>
                                             主辦
-                                        </div>
+                                        </span>
                                     </Card.Text>
                                     {modalShow === broadcasting.id && (
                                         <ProfileDetails
