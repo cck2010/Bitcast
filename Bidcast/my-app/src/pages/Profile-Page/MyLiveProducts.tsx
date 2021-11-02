@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { Accordion, Container, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMyLiveProducts } from "../../redux/myLiveProducts/action";
+import {
+    fetchMyLiveProducts,
+    fetchSoldProducts,
+} from "../../redux/myLiveProducts/action";
 import { RootState } from "../../store";
 import { MyLiveProducts } from "../../redux/myLiveProducts/action";
 import "./Animation.scss";
@@ -14,6 +17,9 @@ interface MyLiveProductsProps {
 export function MyLiveProductsComponent(props: MyLiveProductsProps) {
     const [loadState, setLoadState] = useState<number>(0);
     const myLiveProducts = useSelector((state: RootState) =>
+        Object.values(state.myLive.myLiveProducts)
+    );
+    const mySoldProducts = useSelector((state: RootState) =>
         Object.values(state.myLive.myLiveProducts)
     );
     let myLiveProductsSorted: MyLiveProducts[] = myLiveProducts.sort(
@@ -56,9 +62,13 @@ export function MyLiveProductsComponent(props: MyLiveProductsProps) {
             props.setIsLoading(true);
         }
     }, [loadState, props]);
+
     useEffect(() => {
         dispatch(fetchMyLiveProducts(props.setIsLoading, setLoadState));
     }, [dispatch, props]);
+    useEffect(() => {
+        dispatch(fetchSoldProducts());
+    }, [dispatch]);
 
     const user = useSelector((state: RootState) => state.authState.user);
     const userInfo = JSON.parse(JSON.stringify(user));
@@ -93,7 +103,7 @@ export function MyLiveProductsComponent(props: MyLiveProductsProps) {
                                                     <th>買家TG帳號</th>
                                                 </tr>
                                             </thead>
-                                            {myLiveProductArr.map(
+                                            {mySoldProducts.map(
                                                 (product, index) => (
                                                     <tbody
                                                         key={

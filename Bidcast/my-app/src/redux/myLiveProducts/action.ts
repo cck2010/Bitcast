@@ -59,10 +59,19 @@ export function loadOpenLiveStatus(myLiveId: MyLive[]) {
     }
 }
 
+export function loadSoldProducts(myLiveId: MyLiveProducts[]) {
+    return {
+        type: "@@myLive/LOAD_SOLD_PRODUCTS" as const,
+        myLiveId,
+    }
+}
+
 export type LoadMyLiveActions = ReturnType<typeof loadMyLive>
     | ReturnType<typeof loadMyLiveProducts>
     | ReturnType<typeof loadLiveStatus>
     | ReturnType<typeof loadOpenLiveStatus>
+    | ReturnType<typeof loadSoldProducts>
+
 
 export function fetchMyLive() {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
@@ -77,6 +86,25 @@ export function fetchMyLive() {
                 dispatch(loadMyLive(json.data.results.rows));
             } else {
                 dispatch(loadMyLive([]));
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+}
+export function fetchSoldProducts() {
+    return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
+        try {
+            const res = await fetch(
+                `${process.env.REACT_APP_BACKEND_URL}/profilePage/mySoldHistory`
+            );
+
+            const json = await res.json();
+
+            if (json) {
+                dispatch(loadSoldProducts(json.data.results.rows));
+            } else {
+                dispatch(loadSoldProducts([]));
             }
         } catch (error) {
             console.log(error);

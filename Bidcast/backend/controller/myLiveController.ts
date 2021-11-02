@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { MyLiveService } from "../service/myLiveService";
 
+
 export class MyLiveController {
-    constructor(private myLiveService: MyLiveService) {}
+    constructor(private myLiveService: MyLiveService) { }
 
     getMyLive = async (req: Request, res: Response) => {
         try {
@@ -17,9 +18,9 @@ export class MyLiveController {
         }
     };
 
-    getMyBidHistory = async (req: Request, res: Response) => {
+    getMySellHistory = async (req: Request, res: Response) => {
         try {
-            const result = await this.myLiveService.getMyBidHistory();
+            const result = await this.myLiveService.getMySellHistory();
             res.json(result);
         } catch (error) {
             res.json({

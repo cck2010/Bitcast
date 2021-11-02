@@ -23,12 +23,12 @@ export class MyLiveService {
         }
     }
 
-    getMyBidHistory = async () => {
+    getMySellHistory = async () => {
         const results = await this.knex.raw(
             /*sql */
             `
             select * from products
-            left outer join users on products.seller_id = users.id
+            left outer join users on products.buyer_id = users.id
             `
         )
         return {
