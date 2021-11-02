@@ -11,7 +11,10 @@ import { getComingAuctions } from "../../redux/homepage/action";
 import { useEffect, useState } from "react";
 import { ProductDetails } from "./ProductDetails";
 import { fetchBroadcastingProducts } from "../../redux/broadcastingProducts/actions";
-import { fetchSellerSubscribe } from "../../redux/user/actions";
+import {
+    fetchSellerSubscribe,
+    fetchUserProfileCardInfo,
+} from "../../redux/user/actions";
 import { ProfileDetails } from "./ProfileDetails";
 import "./Incoming-auction.scss";
 
@@ -66,6 +69,9 @@ export function ComingAuction(props: ComingAuctionProps) {
                 // console.log("auction", auction);
                 // console.log("auction", auction.username);
                 // console.log("auction", auction.user_id);
+                await dispatch(
+                    fetchUserProfileCardInfo([auction.user_id], "following")
+                );
                 dispatch(fetchSellerSubscribe(auction.user_id));
                 setModalShowProf(auction.user_id);
             }

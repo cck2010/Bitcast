@@ -14,7 +14,10 @@ import { RootState } from "../../store";
 import { useEffect, useState } from "react";
 import { fetchBroadcastingProducts } from "../../redux/broadcastingProducts/actions";
 import { ProfileDetails } from "./ProfileDetails";
-import { fetchSellerSubscribe } from "../../redux/user/actions";
+import {
+    fetchSellerSubscribe,
+    fetchUserProfileCardInfo,
+} from "../../redux/user/actions";
 
 const responsive = {
     desktop: {
@@ -50,6 +53,12 @@ export function Broadcasting() {
                 // console.log("broadcasting", broadcasting);
                 // console.log("broadcasting", broadcasting.username);
                 // console.log("broadcasting", broadcasting.seller_id);
+                await dispatch(
+                    fetchUserProfileCardInfo(
+                        [broadcasting.seller_id],
+                        "following"
+                    )
+                );
                 dispatch(fetchSellerSubscribe(broadcasting.seller_id));
                 setModalShow(broadcasting.seller_id);
             }
@@ -154,7 +163,7 @@ export function Broadcasting() {
                                         />
                                     )}
 
-                                    <div className="bid_share_container w-75 justify-content-aorund">
+                                    <div className="bid_share_container w-75 justify-content-around">
                                         <Button
                                             variant="outline-dark"
                                             className="bid_button"
