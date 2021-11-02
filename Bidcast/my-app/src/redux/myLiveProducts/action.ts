@@ -156,7 +156,7 @@ export function updateLiveStatus(liveId: number) {
             }
             )
             const json = await res.json()
-            if (json.succes) {
+            if (json.success) {
                 dispatch(loadLiveStatus(json.data.results))
             }
 
