@@ -28,6 +28,8 @@ $logoColor: #11f3a2;
 .nav_link:hover {
     color: $navbarColor;
     // font-size: 1.1em;
+}
+.highlight_hover:hover {
     animation: nav_BG_hover1 ease-out 0.6s;
     animation-fill-mode: forwards;
     @keyframes nav_BG_hover1 {
@@ -268,18 +270,18 @@ footer {
 .nav-link:hover {
     color: $navbarColor !important;
     // font-size: 1.1em;
-    animation: nav_BG_hover2 ease-out 0.6s;
-    animation-fill-mode: forwards;
-    @keyframes nav_BG_hover2 {
-        0% {
-            color: $logoColor;
-            background-color: $navbarColor;
-        }
-        100% {
-            color: $navbarColor;
-            background-color: $logoColor;
-        }
-    }
+    // animation: nav_BG_hover2 ease-out 0.6s;
+    // animation-fill-mode: forwards;
+    // @keyframes nav_BG_hover2 {
+    //     0% {
+    //         color: $logoColor;
+    //         background-color: $navbarColor;
+    //     }
+    //     100% {
+    //         color: $navbarColor;
+    //         background-color: $logoColor;
+    //     }
+    // }
 }
 .bidcast_logo {
     z-index: 555;
