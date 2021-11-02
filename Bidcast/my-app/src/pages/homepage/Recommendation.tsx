@@ -1,6 +1,10 @@
 import { Col, Container, Row, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { SvgBorder } from "./SvgBorder";
+import green from "./assets/categories_green.png";
+import blue from "./assets/categories_blue.png";
+import red from "./assets/categories_red.png";
+import yellow from "./assets/categories_yellow.png";
 
 export function Recommendation() {
     return (
@@ -12,10 +16,7 @@ export function Recommendation() {
                     <Col sm={6} className="recommendation_column">
                         <div className="first_category_container">
                             <Card className="bg-light text-white recommendation_card">
-                                <Card.Img
-                                    src="https://ibid.modeltheme.com/wp-content/uploads/2018/09/masonry-banner111-1024x466.jpg"
-                                    alt="Card image"
-                                />
+                                <Card.Img src={green} alt="Card image" />
                                 <Card.ImgOverlay className="info_container">
                                     <Card.Title>電腦、平板與周邊</Card.Title>
                                     <Card.Text>更多精選電玩產品</Card.Text>
@@ -29,10 +30,7 @@ export function Recommendation() {
                         </div>
                         <div className="second_category_container">
                             <Card className="bg-light text-white recommendation_card">
-                                <Card.Img
-                                    src="https://ibid.modeltheme.com/wp-content/uploads/2018/09/masonry-banner33332-1-1024x653.jpg"
-                                    alt="Card image"
-                                />
+                                <Card.Img src={red} alt="Card image" />
                                 <Card.ImgOverlay className="info_container">
                                     <Card.Title>原創設計</Card.Title>
                                     <Card.Text>拍賣主自家設計產品</Card.Text>
@@ -48,10 +46,7 @@ export function Recommendation() {
                     <Col sm={6} className="recommendation_column">
                         <div className="third_category_container">
                             <Card className="bg-light text-white recommendation_card">
-                                <Card.Img
-                                    src="https://ibid.modeltheme.com/wp-content/uploads/2018/09/masonry-banner222-1-1024x653.jpg"
-                                    alt="Card image"
-                                />
+                                <Card.Img src={yellow} alt="Card image" />
                                 <Card.ImgOverlay className="info_container">
                                     <Card.Title>運動、戶外與休閒</Card.Title>
                                     <Card.Text>絕版波鞋，簽名波衫</Card.Text>
@@ -65,10 +60,7 @@ export function Recommendation() {
                         </div>
                         <div className="fourth_category_container">
                             <Card className="bg-light text-white recommendation_card">
-                                <Card.Img
-                                    src="https://ibid.modeltheme.com/wp-content/uploads/2018/09/masonry-banner444-1-1024x466.jpg"
-                                    alt="Card image"
-                                />
+                                <Card.Img src={blue} alt="Card image" />
                                 <Card.ImgOverlay className="info_container">
                                     <Card.Title>古董、藝術與礦石</Card.Title>
                                     <Card.Text>
