@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { useEffect } from "react";
-import { checkCurrentUser } from "../../redux/user/actions";
+import { checkCurrentUser, logoutThunk } from "../../redux/user/actions";
+import { push } from "connected-react-router";
 
 export function Footer() {
     const dispatch = useDispatch();
@@ -77,9 +78,23 @@ export function Footer() {
                             舉辦拍賣
                         </Link>
                     )}
-                    <Link to="/loginPage" className="nav_link">
-                        登入 ／ 註冊
-                    </Link>
+                    {!isAuthenticate ? (
+                        <Link to="/loginPage" className="nav_link">
+                            登入 ／ 註冊
+                        </Link>
+                    ) : (
+                        <Link
+                            to="#"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                dispatch(logoutThunk());
+                                dispatch(push("/"));
+                            }}
+                            className="nav_link"
+                        >
+                            登出
+                        </Link>
+                    )}
                 </div>
                 <span className="copyright">
                     Copyright © 2021 Bidcast All Rights Reserved.
