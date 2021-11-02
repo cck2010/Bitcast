@@ -48,7 +48,6 @@ export function MyLiveProductsComponent(props: MyLiveProductsProps) {
             }
         }
     }
-    console.log(myLiveProductsArr);
 
     const dispatch = useDispatch();
 
