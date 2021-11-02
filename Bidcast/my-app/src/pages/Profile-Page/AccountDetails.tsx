@@ -30,6 +30,7 @@ export function AccountDetails() {
     const token = localStorage.getItem("token");
     const user = useSelector((state: RootState) => state.authState.user);
     const userInfo = JSON.parse(JSON.stringify(user));
+    console.log("userInfo", userInfo);
     let userImg = userInfo.profile_pic;
     const isAuthenticate = useSelector(
         (state: RootState) => state.user.isAuthenticate
@@ -221,8 +222,8 @@ export function AccountDetails() {
                             {/* <Card.Text >{item.phone_number}</Card.Text> */}
                             {/* <Card.Text>{item.email}</Card.Text> */}
                             <Card.Text className={"name_card_vice"}>
-                                {userInfo.telegramAcct
-                                    ? `${userInfo.telegramAcct}`
+                                {userInfo.telegram_is_verified
+                                    ? `${userInfo.telegram_acct}`
                                     : "此用戶並未登記 Telegram 帳號"}
                             </Card.Text>
                             <Card.Text>
