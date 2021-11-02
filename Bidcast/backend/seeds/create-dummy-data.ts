@@ -140,7 +140,7 @@ export async function seed(knex: Knex): Promise<void> {
                     current_viewers: 0,
                     seller_link: chance.fbid(),
                     buyer_link: chance.fbid(),
-                    is_live: true,
+                    is_live: false,
                     is_ended: false,
                     is_banned: false,
                     description: chance.paragraph(),

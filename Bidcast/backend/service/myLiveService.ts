@@ -29,6 +29,7 @@ export class MyLiveService {
             `
             select * from products
             left outer join users on products.buyer_id = users.id
+            left outer join live on products.live_id = live.id
             `
         )
         return {

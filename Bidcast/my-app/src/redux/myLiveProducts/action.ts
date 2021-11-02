@@ -59,10 +59,10 @@ export function loadOpenLiveStatus(myLiveId: MyLive[]) {
     }
 }
 
-export function loadSoldProducts(myLiveId: MyLiveProducts[]) {
+export function loadSoldProducts(myLiveProducts: MyLiveProducts[]) {
     return {
         type: "@@myLive/LOAD_SOLD_PRODUCTS" as const,
-        myLiveId,
+        myLiveProducts,
     }
 }
 
@@ -92,7 +92,10 @@ export function fetchMyLive() {
         }
     };
 }
-export function fetchSoldProducts() {
+export function fetchSoldProducts(
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    setLoadState: React.Dispatch<React.SetStateAction<number>>
+) {
     return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
         try {
             const res = await fetch(
@@ -106,6 +109,8 @@ export function fetchSoldProducts() {
             } else {
                 dispatch(loadSoldProducts([]));
             }
+            setIsLoading(false);
+            setLoadState((loadState) => loadState + 1);
         } catch (error) {
             console.log(error);
         }

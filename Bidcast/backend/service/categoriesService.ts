@@ -24,7 +24,7 @@ export class CategoriesService {
             on products.category_id = categories.id
             left outer join users on products.seller_id = users.id
             left outer join live on products.live_id = live.id
-            where categories.id=${categoryId} and live.starting_time > NOW()
+            where categories.id=${categoryId} and live.starting_time > NOW() - 2 * interval '1 hour'
             `
         );
         return {

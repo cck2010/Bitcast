@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 import { Accordion, Container, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    fetchMyLiveProducts,
-    fetchSoldProducts,
-} from "../../redux/myLiveProducts/action";
+import { fetchSoldProducts } from "../../redux/myLiveProducts/action";
 import { RootState } from "../../store";
 import { MyLiveProducts } from "../../redux/myLiveProducts/action";
 import "./Animation.scss";
@@ -19,11 +16,8 @@ export function MyLiveProductsComponent(props: MyLiveProductsProps) {
     const myLiveProducts = useSelector((state: RootState) =>
         Object.values(state.myLive.myLiveProducts)
     );
-    const mySoldProducts = useSelector((state: RootState) =>
-        Object.values(state.myLive.myLiveProducts)
-    );
     let myLiveProductsSorted: MyLiveProducts[] = myLiveProducts.sort(
-        (item1, item2) => item2.id - item1.id
+        (item1, item2) => item2.live_id - item1.live_id
     );
     let myLiveProductsArr: MyLiveProducts[][] = [];
     let ind = 0;
@@ -38,8 +32,8 @@ export function MyLiveProductsComponent(props: MyLiveProductsProps) {
         } else {
             if (
                 myLiveProductsArr[myLiveProductsArr.length - 1][0].id &&
-                myLiveProductsSorted[ind].id ===
-                    myLiveProductsArr[myLiveProductsArr.length - 1][0].id
+                myLiveProductsSorted[ind].live_id ===
+                    myLiveProductsArr[myLiveProductsArr.length - 1][0].live_id
             ) {
                 myLiveProductsArr[myLiveProductsArr.length - 1].push(
                     myLiveProductsSorted[ind]
@@ -54,6 +48,7 @@ export function MyLiveProductsComponent(props: MyLiveProductsProps) {
             }
         }
     }
+    console.log(myLiveProductsArr);
 
     const dispatch = useDispatch();
 
@@ -64,11 +59,8 @@ export function MyLiveProductsComponent(props: MyLiveProductsProps) {
     }, [loadState, props]);
 
     useEffect(() => {
-        dispatch(fetchMyLiveProducts(props.setIsLoading, setLoadState));
+        dispatch(fetchSoldProducts(props.setIsLoading, setLoadState));
     }, [dispatch, props]);
-    useEffect(() => {
-        dispatch(fetchSoldProducts());
-    }, [dispatch]);
 
     const user = useSelector((state: RootState) => state.authState.user);
     const userInfo = JSON.parse(JSON.stringify(user));
@@ -103,7 +95,7 @@ export function MyLiveProductsComponent(props: MyLiveProductsProps) {
                                                     <th>買家TG帳號</th>
                                                 </tr>
                                             </thead>
-                                            {mySoldProducts.map(
+                                            {myLiveProductArr.map(
                                                 (product, index) => (
                                                     <tbody
                                                         key={
