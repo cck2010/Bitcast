@@ -47,7 +47,7 @@ export async function isLoggedIn(
     try {
         const token = permit.check(req);
         if (!token) {
-            return res.status(401).json("Unauthorized");
+            return res.json("Unauthorized");
         }
 
         const verifyOptions: verifyOptions = {
@@ -64,14 +64,14 @@ export async function isLoggedIn(
                 req.user = result.data.user;
                 return next();
             } else {
-                return res.status(401).json("請先登入");
+                return res.json("請先登入");
             }
         } else {
-            return res.status(401).json("請先登入");
+            return res.json("請先登入");
         }
     } catch (e) {
         console.error(e);
 
-        return res.status(401).json("Incorrect token");
+        return res.json("Incorrect token");
     }
 }
