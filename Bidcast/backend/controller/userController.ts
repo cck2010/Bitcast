@@ -186,7 +186,7 @@ export class UserController {
 
                 return res.json(token);
             } else {
-                return res.status(401).json({
+                return res.json({
                     token: null,
                     message: "Incorrect token",
                 });
@@ -223,7 +223,7 @@ export class UserController {
                     token: token,
                 });
             } else {
-                return res.status(401).json({
+                return res.json({
                     token: null,
                     message: "Incorrect token",
                 });
@@ -257,7 +257,7 @@ export class UserController {
                     token: token,
                 });
             } else {
-                return res.status(401).json({
+                return res.json({
                     token: null,
                     message: "Incorrect token",
                 });
