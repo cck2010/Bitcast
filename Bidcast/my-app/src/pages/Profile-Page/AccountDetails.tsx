@@ -378,6 +378,9 @@ export function AccountDetails() {
                                         onChange={imageChange}
                                     />
                                 </div>
+                                <div className={"upload_reminder"}>
+                                    (只接收不高於1MB的JPG/PNG/JPEG 照片)
+                                </div>
                             </div>
                             {selectedImage && (
                                 <div className={"proImg_container"}>

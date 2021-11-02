@@ -319,10 +319,10 @@ export function CreateBids() {
                     watchProduct.productImage != undefined &&
                     watchProduct.productImage.length
                 ) {
-                    console.log(
-                        "i want to check this!!!!",
-                        watchProduct.productImage[0]
-                    );
+                    // console.log(
+                    //     "i want to check this!!!!",
+                    //     watchProduct.productImage[0]
+                    // );
                     if (
                         path.extname(watchProduct.productImage[0].name) ===
                             ".jpg" ||
@@ -333,18 +333,18 @@ export function CreateBids() {
                     ) {
                         console.log("Image type accept");
                     } else {
-                        console.log(
-                            "watchProduct.productImage[0].name",
-                            watchProduct.productImage[0].name
-                        );
-                        console.log("Image to null");
+                        // console.log(
+                        //     "watchProduct.productImage[0].name",
+                        //     watchProduct.productImage[0].name
+                        // );
+                        // console.log("Image to null");
 
                         watchProduct.productImage = [];
 
-                        console.log(
-                            "watchProduct.productImage",
-                            watchProduct.productImage
-                        );
+                        // console.log(
+                        //     "watchProduct.productImage",
+                        //     watchProduct.productImage
+                        // );
                     }
                 }
             }
@@ -369,7 +369,7 @@ export function CreateBids() {
                     </div>
 
                     <div className={"input_box"}>
-                        <label>直播圖片:</label>{" "}
+                        <label>直播圖片: </label>{" "}
                         <div className={"files"}>
                             <input
                                 type="file"
@@ -378,6 +378,9 @@ export function CreateBids() {
                                 onChange={imageChange}
                                 required
                             />
+                        </div>
+                        <div className={"upload_reminder"}>
+                            (只接收不高於1MB的JPG/PNG/JPEG 照片)
                         </div>
                     </div>
 
@@ -472,7 +475,7 @@ export function CreateBids() {
                                 </p>
 
                                 <div className={"input_box"}>
-                                    <label>物品圖片:</label>
+                                    <label>物品圖片: </label>
                                     <div className={"files"}>
                                         <input
                                             type="file"
@@ -482,6 +485,9 @@ export function CreateBids() {
                                             )}
                                             required
                                         />
+                                    </div>
+                                    <div className={"upload_reminder"}>
+                                        (只接收不高於1MB的JPG/PNG/JPEG 照片)
                                     </div>
                                 </div>
 

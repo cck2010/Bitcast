@@ -384,6 +384,7 @@
     border: transparent;
     border-radius: 10px;
     display: flex;
+    flex-wrap: wrap;
     text-align: center;
     align-items: center;
     justify-content: flex-start;
@@ -405,9 +406,20 @@
         opacity: 0;
         width: 300px;
         margin-left: 10%;
+        display: flex;
+        flex-wrap: wrap;
+        // justify-content: center;
+        align-items: center;
         animation: imgInfo_container ease-out 0.5s;
         animation-fill-mode: forwards;
         animation-delay: 1s;
+        div {
+            font-weight: 500;
+            font-size: 15px;
+            padding-left: 30px;
+            margin-bottom: 15px;
+            // padding-right: 30px;
+        }
         @keyframes imgInfo_container {
             0% {
                 opacity: 0;
@@ -417,11 +429,11 @@
             }
         }
     }
-    @media screen and (max-width: 650px) {
-        .file_Info_container {
-            display: none;
-        }
-    }
+    // @media screen and (max-width: 650px) {
+    //     .file_Info_container {
+    //         display: none;
+    //     }
+    // }
 }
 input[type="file"] {
     text-indent: -120000px;
@@ -500,4 +512,12 @@ input::-webkit-inner-spin-button {
 }
 .FaClipboard {
     color: grey;
+}
+.upload_reminder {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 13px;
+    font-size: 500;
+    color: black;
+    font-family: "Noto Sans TC", sans-serif;
 }
