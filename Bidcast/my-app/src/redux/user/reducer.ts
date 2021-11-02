@@ -48,8 +48,8 @@ export type JWTPayload = {
     description?: string;
 };
 export interface sellerFollowerState {
-    sellerId:number[];
-    liveRecord:number[];
+    sellerId: number[];
+    liveRecord: number[];
 }
 export interface FollowerState {
     userId: number[];
@@ -63,8 +63,8 @@ export interface FollowingState {
     success: boolean;
 }
 const sellerFollowerInitalState: sellerFollowerState = {
-    sellerId:[],
-    liveRecord:[]
+    sellerId: [],
+    liveRecord: []
 }
 
 const followerInitalState: FollowerState = {
@@ -80,15 +80,15 @@ const followingInitalState: FollowingState = {
 
 export function sellerFollowerReducer(
     state: sellerFollowerState = sellerFollowerInitalState,
-    action: sellerFollowerActions 
-    ): sellerFollowerState {
-        return produce(state, (newState)=>{
-            if (action.type === "@@sellerFollower/LOAD_SELLERFOLLOWER"){
-                newState.sellerId = action.sellerId;
-                newState.liveRecord = action.liveRecord;
-            }
-        });
-    }
+    action: sellerFollowerActions
+): sellerFollowerState {
+    return produce(state, (newState) => {
+        if (action.type === "@@sellerFollower/LOAD_SELLERFOLLOWER") {
+            newState.sellerId = action.sellerId;
+            newState.liveRecord = action.liveRecord;
+        }
+    });
+}
 
 export function followerReducer(
     state: FollowerState = followerInitalState,
@@ -151,13 +151,13 @@ export let authReducer = (
                         algorithms: ["RS512"],
                     };
 
-                    let a = process.env.REACT_APP_PUBLIC_KEY!.replace(
+                    let publicKey = process.env.REACT_APP_PUBLIC_KEY!.replace(
                         /\\n/g,
                         "\n"
                     );
                     let payload: string | JwtPayload | any = jwt.verify(
                         action.token,
-                        a,
+                        publicKey,
                         verifyOptions
                     );
                     // console.log('payload= ', payload)
