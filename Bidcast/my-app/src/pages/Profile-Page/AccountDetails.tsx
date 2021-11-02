@@ -221,8 +221,8 @@ export function AccountDetails() {
                             {/* <Card.Text >{item.phone_number}</Card.Text> */}
                             {/* <Card.Text>{item.email}</Card.Text> */}
                             <Card.Text className={"name_card_vice"}>
-                                {userInfo.telegramAcct
-                                    ? `${userInfo.telegramAcct}`
+                                {userInfo.telegram_Acct !== null
+                                    ? `${userInfo.telegram_Acct}`
                                     : "此用戶並未登記 Telegram 帳號"}
                             </Card.Text>
                             <Card.Text>
