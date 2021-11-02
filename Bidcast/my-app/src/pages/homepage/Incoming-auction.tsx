@@ -231,7 +231,7 @@ export function ComingAuction(props: ComingAuctionProps) {
                                         onHide={() => setModalShowProf(-1)}
                                     />
                                 )}
-                                <div className="bid_share_container w-75 justify-content-aorund">
+                                <div className="bid_share_container w-75 justify-content-around">
                                     <Button
                                         key={auction.id}
                                         variant="outline-dark"
@@ -249,11 +249,15 @@ export function ComingAuction(props: ComingAuctionProps) {
                                             onHide={() => setModalShow(-1)}
                                         />
                                     )}
-
-                                    <RWebShare
+                                    {/* {console.log(
+                                        "auction.buyer_link",
+                                        auction.buyer_link
+                                    )} */}
+                                    {/* <RWebShare
                                         data={{
                                             text: "",
                                             url: `${process.env.REACT_APP_FRONTEND_URL}/liveStreaming?room=${auction.buyer_link}`,
+
                                             title: "Look at this amazing live",
                                         }}
                                         onClick={() =>
@@ -264,7 +268,7 @@ export function ComingAuction(props: ComingAuctionProps) {
                                             className="share_icon"
                                             icon={faExternalLinkAlt}
                                         />
-                                    </RWebShare>
+                                    </RWebShare> */}
                                 </div>
                             </Card.Body>
                         </Card>
