@@ -2,7 +2,7 @@ import { Knex } from "knex";
 // import { ResponseJson } from '../response';
 
 export class ProductsService {
-    constructor(private knex: Knex) { }
+    constructor(private knex: Knex) {}
 
     getCategories = async () => {
         const results = await this.knex.select("*").from("categories");
@@ -246,7 +246,7 @@ export class ProductsService {
         from products 
         left outer join users on products.seller_id = users.id
         left outer join live on products.live_id = live.id
-        where product_name ilike '%${searchKeywords}%' and live.starting_time > NOW();
+        where product_name ilike '%${searchKeywords}%' and live.starting_time > NOW() - 2 * interval '1 hour';
         `);
         return {
             success: true,
