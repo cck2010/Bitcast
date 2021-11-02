@@ -88,11 +88,11 @@ $smallFontSize: 0.5em;
                 justify-content: space-between;
                 top: 0;
                 bottom: 0;
-                opacity: 10%;
+                opacity: 0.1 !important;
                 user-select: none;
             }
             .carousel_btn:hover {
-                opacity: 50%;
+                opacity: 0.5 !important;
             }
             .carousel_btn:focus {
                 box-shadow: none;
@@ -108,7 +108,7 @@ $smallFontSize: 0.5em;
 
             .carousel_btn_left:active,
             .carousel_btn_right:active {
-                opacity: 1;
+                opacity: 1 !important;
             }
         }
     }
@@ -390,6 +390,9 @@ $smallFontSize: 0.5em;
             transform: scale(0.9);
             box-shadow: 0px 0px 0px 2px #0b0c10, 0px 0px 0px 7px #b5ff7d;
             cursor: pointer;
+        }
+        video {
+            max-height: 50vh;
         }
     }
 }
