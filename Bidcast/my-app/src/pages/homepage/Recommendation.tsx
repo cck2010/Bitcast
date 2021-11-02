@@ -19,7 +19,9 @@ export function Recommendation() {
                                 <Card.ImgOverlay className="info_container">
                                     <Card.Title>電腦、平板與周邊</Card.Title>
                                     <Card.Text>更多精選電玩產品</Card.Text>
-                                    <Link to={`/categoryResult?category=`}>
+                                    <Link
+                                        to={`/categoryResult?category=電腦、平板與周邊`}
+                                    >
                                         <Card.Text className="view_more">
                                             查看更多
                                         </Card.Text>
@@ -36,7 +38,9 @@ export function Recommendation() {
                                 <Card.ImgOverlay className="info_container">
                                     <Card.Title>原創設計</Card.Title>
                                     <Card.Text>拍賣主自家設計產品</Card.Text>
-                                    <Link to={`/categoryResult?category=`}>
+                                    <Link
+                                        to={`/categoryResult?category=原創設計`}
+                                    >
                                         <Card.Text className="view_more">
                                             查看更多
                                         </Card.Text>
@@ -55,7 +59,9 @@ export function Recommendation() {
                                 <Card.ImgOverlay className="info_container">
                                     <Card.Title>運動、戶外與休閒</Card.Title>
                                     <Card.Text>絕版波鞋，簽名波衫</Card.Text>
-                                    <Link to={`/categoryResult?category=`}>
+                                    <Link
+                                        to={`/categoryResult?category=運動、戶外與休閒`}
+                                    >
                                         <Card.Text className="view_more">
                                             查看更多
                                         </Card.Text>
@@ -74,7 +80,9 @@ export function Recommendation() {
                                     <Card.Text>
                                         搜羅稀世古董，奇珍異石
                                     </Card.Text>
-                                    <Link to={`/categoryResult?category=`}>
+                                    <Link
+                                        to={`/categoryResult?category=古董、藝術與礦石`}
+                                    >
                                         <Card.Text className="view_more">
                                             查看更多
                                         </Card.Text>
