@@ -7,6 +7,7 @@ services:
             POSTGRES_PASSWORD: postgres
             POSTGRES_DB: bidcast
             POSTGRES_HOST: db
+            FRONTEND_URL: ${FRONTEND_URL}
         depends_on:
             - db
         links:

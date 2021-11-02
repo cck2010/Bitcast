@@ -340,6 +340,7 @@ export class UserService {
                 })
                 .returning([
                     "id",
+                    "username",
                     "status_id",
                     "email",
                     "phone_number",
@@ -496,6 +497,7 @@ export class UserService {
                 })
                 .returning([
                     "id",
+                    "username",
                     "status_id",
                     "email",
                     "phone_number",

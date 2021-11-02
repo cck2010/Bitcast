@@ -3,10 +3,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { SvgBorder } from "./SvgBorder";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faExternalLinkAlt,
-    faPodcast,
-} from "@fortawesome/free-solid-svg-icons";
+import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { push } from "connected-react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { RWebShare } from "react-web-share";
@@ -28,7 +25,7 @@ const responsive = {
     tablet: {
         breakpoint: { max: 1024, min: 464 },
         items: 2,
-        slidesToSlide: 1, // optional, default to 1.
+        slidesToSlide: 2, // optional, default to 1.
     },
     mobile: {
         breakpoint: { max: 464, min: 0 },
@@ -75,8 +72,8 @@ export function Broadcasting() {
                 <Carousel
                     additionalTransfrom={0}
                     arrows={false}
-                    autoPlay
-                    autoPlaySpeed={5000}
+                    autoPlay={false}
+                    // autoPlaySpeed={5000}
                     centerMode={false}
                     className=""
                     containerClass="container-with-dots"
@@ -96,29 +93,70 @@ export function Broadcasting() {
                     swipeable
                 >
                     {broadcastings.map((broadcasting) => (
-                        <div key={broadcasting.id}>
-                            <Card className="product_card">
-                                <div className="img_icon_container">
-                                    <Image
-                                        className="img_fluid"
-                                        src={`${process.env.REACT_APP_BACKEND_URL}/${broadcasting.image}`}
+                        <Card className="product_card" key={broadcasting.id}>
+                            <Image
+                                className="img_fluid"
+                                src={`${process.env.REACT_APP_BACKEND_URL}/${broadcasting.image}`}
+                                onClick={() => {
+                                    dispatch(
+                                        push(
+                                            `/liveStreaming?room=${broadcasting.buyer_link}`
+                                        )
+                                    );
+                                }}
+                                fluid
+                            />
+                            <Card.Body>
+                                <Card.Title
+                                    className="broadcasting_title"
+                                    onClick={() => {
+                                        dispatch(
+                                            push(
+                                                `/liveStreaming?room=${broadcasting.buyer_link}`
+                                            )
+                                        );
+                                    }}
+                                >
+                                    {broadcasting.title}
+                                </Card.Title>
+                                <Card.Text>
+                                    目前價格:{" "}
+                                    <span className="biding_price">
+                                        HKD {broadcasting.current_price}
+                                    </span>
+                                </Card.Text>
+                                <Card.Text>
+                                    <span
+                                        key={broadcasting.id}
                                         onClick={() => {
-                                            dispatch(
-                                                push(
-                                                    `/liveStreaming?room=${broadcasting.buyer_link}`
-                                                )
-                                            );
+                                            profilePreview(broadcasting.id);
                                         }}
-                                        fluid
+                                        // onClick={() =>
+                                        //     setModalShow(broadcasting.id)
+                                        // }
+                                        className={"seller_name"}
+                                    >
+                                        <span>由</span>
+                                        <span className={"card_username"}>
+                                            &nbsp;{broadcasting.username}
+                                            &nbsp;
+                                        </span>
+                                        主辦
+                                    </span>
+                                </Card.Text>
+                                {modalShow === broadcasting.id && (
+                                    <ProfileDetails
+                                        show={broadcasting.id}
+                                        broadcasts={broadcasting}
+                                        id={broadcasting.id}
+                                        onHide={() => setModalShow(-1)}
                                     />
-                                    <FontAwesomeIcon
-                                        className="podcast_icon"
-                                        icon={faPodcast}
-                                    />
-                                </div>
-                                <Card.Body>
-                                    <Card.Title
-                                        className="broadcasting_title"
+                                )}
+
+                                <div className="bid_share_container w-75 justify-content-around">
+                                    <Button
+                                        variant="outline-danger"
+                                        className="bid_button"
                                         onClick={() => {
                                             dispatch(
                                                 push(
@@ -127,7 +165,7 @@ export function Broadcasting() {
                                             );
                                         }}
                                     >
-                                        {broadcasting.title}
+                                        {/* {broadcasting.title}
                                     </Card.Title>
                                     <Card.Text>
                                         目前價格:{" "}
@@ -174,31 +212,28 @@ export function Broadcasting() {
                                                     )
                                                 );
                                             }}
-                                        >
-                                            觀看直播
-                                        </Button>
+                                        > */}
+                                        觀看直播
+                                    </Button>
 
-                                        <RWebShare
-                                            data={{
-                                                text: "",
-                                                url: `${process.env.REACT_APP_FRONTEND_URL}/liveStreaming?room=${broadcasting.buyer_link}`,
-                                                title: "Look at this amazing live",
-                                            }}
-                                            onClick={() =>
-                                                console.log(
-                                                    "shared successfully!"
-                                                )
-                                            }
-                                        >
-                                            <FontAwesomeIcon
-                                                className="share_icon"
-                                                icon={faExternalLinkAlt}
-                                            />
-                                        </RWebShare>
-                                    </div>
-                                </Card.Body>
-                            </Card>
-                        </div>
+                                    <RWebShare
+                                        data={{
+                                            text: "",
+                                            url: `${process.env.REACT_APP_FRONTEND_URL}/liveStreaming?room=${broadcasting.buyer_link}`,
+                                            title: "Look at this amazing live",
+                                        }}
+                                        onClick={() =>
+                                            console.log("shared successfully!")
+                                        }
+                                    >
+                                        <FontAwesomeIcon
+                                            className="share_icon"
+                                            icon={faExternalLinkAlt}
+                                        />
+                                    </RWebShare>
+                                </div>
+                            </Card.Body>
+                        </Card>
                     ))}
                 </Carousel>
             </Container>
