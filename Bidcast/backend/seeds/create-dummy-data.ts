@@ -33,10 +33,12 @@ export async function seed(knex: Knex): Promise<void> {
         .returning("id");
     const categoryId = await knex("categories")
         .insert([
-            { category: "food" },
-            { category: "cloths" },
-            { category: "games" },
-            { category: "shoes" },
+            { category: "原創設計" },
+            { category: "電腦、平板與周邊" },
+            { category: "居家、家具與園藝" },
+            { category: "運動、戶外與休閒" },
+            { category: "古董、藝術與礦石" },
+            { category: "精品與服飾" },
         ])
         .returning("id");
 
@@ -75,7 +77,7 @@ export async function seed(knex: Knex): Promise<void> {
                     updated_by: "knex seed",
                     login_method_id:
                         loginMethodsId[
-                            Math.floor(Math.random() * loginMethodsId.length)
+                        Math.floor(Math.random() * loginMethodsId.length)
                         ],
                 })
                 .returning("id")
@@ -86,9 +88,8 @@ export async function seed(knex: Knex): Promise<void> {
                 .insert({
                     user_id: userId,
                     title: chance.sentence(),
-                    image: `${
-                        imgArr[Math.floor(Math.random() * imgArr.length)]
-                    }`,
+                    image: `${imgArr[Math.floor(Math.random() * imgArr.length)]
+                        }`,
                     starting_time: chance.date({ year: 2021 }),
                     status_id:
                         statusId[Math.floor(Math.random() * statusId.length)],
@@ -121,9 +122,8 @@ export async function seed(knex: Knex): Promise<void> {
                 bid_increment: Math.floor(price / 10) + 1,
                 category_id:
                     categoryId[Math.floor(Math.random() * categoryId.length)],
-                product_image: `${
-                    imgArr[Math.floor(Math.random() * imgArr.length)]
-                }`,
+                product_image: `${imgArr[Math.floor(Math.random() * imgArr.length)]
+                    }`,
                 is_selected: isSelected,
                 duration: 0,
                 created_by: "knex seed",
@@ -157,13 +157,12 @@ export async function seed(knex: Knex): Promise<void> {
                     .insert({
                         user_id: userId2,
                         title: chance.sentence(),
-                        image: `${
-                            imgArr[Math.floor(Math.random() * imgArr.length)]
-                        }`,
+                        image: `${imgArr[Math.floor(Math.random() * imgArr.length)]
+                            }`,
                         starting_time: chance.date({ year: 2021 }),
                         status_id:
                             statusId[
-                                Math.floor(Math.random() * statusId.length)
+                            Math.floor(Math.random() * statusId.length)
                             ],
                         max_viewers: Math.floor(Math.random() * 1000) + 500,
                         current_viewers: 0,
@@ -193,11 +192,10 @@ export async function seed(knex: Knex): Promise<void> {
                     bid_increment: Math.floor(price / 10) + 1,
                     category_id:
                         categoryId[
-                            Math.floor(Math.random() * categoryId.length)
+                        Math.floor(Math.random() * categoryId.length)
                         ],
-                    product_image: `${
-                        imgArr[Math.floor(Math.random() * imgArr.length)]
-                    }`,
+                    product_image: `${imgArr[Math.floor(Math.random() * imgArr.length)]
+                        }`,
                     is_selected: isSelected,
                     duration: 0,
                     created_by: "knex seed",

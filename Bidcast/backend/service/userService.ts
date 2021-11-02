@@ -62,7 +62,7 @@ export class UserService {
                 error: new Error("Please input your correct email"),
             };
         }
-        if (phoneNumber.toString().length != 8) {
+        if (phoneNumber.toString().length !== 8) {
             return {
                 success: false,
                 data: {
@@ -117,7 +117,7 @@ export class UserService {
         const emailCount = parseInt(checkRepeatEmail.rows[0].count);
         // console.log("emailCount=", emailCount);
 
-        if (emailCount != 1) {
+        if (emailCount !== 1) {
             await this.knex("users").del().where("id", createUserResult[0]);
             return {
                 success: false,
@@ -137,7 +137,7 @@ export class UserService {
 
         const usernameCount = parseInt(checkRepeatusername.rows[0].count);
 
-        if (usernameCount != 1) {
+        if (usernameCount !== 1) {
             await this.knex("users").del().where("id", createUserResult[0]);
             return {
                 success: false,
@@ -417,7 +417,7 @@ export class UserService {
         // console.log("profilePic", profilePic);
 
         // console.log("edit_service_mark")
-        if (telegramAccount != undefined) {
+        if (telegramAccount !== undefined) {
             const result = await this.knex("users")
                 .update({
                     username: username,

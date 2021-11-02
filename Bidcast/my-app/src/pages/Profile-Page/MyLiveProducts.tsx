@@ -109,11 +109,16 @@ export function MyLiveProductsComponent(props: MyLiveProductsProps) {
                                                                     product.product_name
                                                                 }
                                                             </td>
-                                                            <td>
-                                                                {
-                                                                    product.current_price
-                                                                }
-                                                            </td>
+                                                            {product.buyer_id !==
+                                                                null &&
+                                                                product.buyer_id !==
+                                                                    product.seller_id && (
+                                                                    <td>
+                                                                        {
+                                                                            product.current_price
+                                                                        }
+                                                                    </td>
+                                                                )}
 
                                                             {product.buyer_id !==
                                                                 null &&

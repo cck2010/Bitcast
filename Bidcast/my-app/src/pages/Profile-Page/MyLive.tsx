@@ -77,7 +77,7 @@ export function MyLive() {
                                                     </Card.Text>
                                                     <Button
                                                         variant="outline-dark"
-                                                        className="bid_button"
+                                                        className="bid_button ms-3"
                                                         disabled
                                                     >
                                                         直播完結
