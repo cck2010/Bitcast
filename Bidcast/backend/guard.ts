@@ -57,7 +57,7 @@ export async function isLoggedIn(
         const User = jwt.verify(token, jwtKey.publicKEY, verifyOptions as {});
         // console.log(User)
         // database check
-        if (typeof User != "string") {
+        if (typeof User !== "string") {
             const id = User.id;
             const result = await userService.getCurrentUser(id);
             if (result.success === true) {

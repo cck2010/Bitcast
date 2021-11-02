@@ -27,7 +27,7 @@ export class ProductsService {
         console.log("liveImage", liveImage);
         console.log("userId", userId);
         console.log("buyerLink", buyerLink);
-        if (liveImage != undefined) {
+        if (liveImage !== undefined) {
             const res = await this.knex("live")
                 .insert({
                     user_id: userId,
@@ -267,7 +267,7 @@ export class ProductsService {
         userId: number
     ) => {
         console.log("index", productIndex);
-        if (productImage != undefined) {
+        if (productImage !== undefined) {
             const res = await this.knex("products")
                 .insert({
                     product_name: name,

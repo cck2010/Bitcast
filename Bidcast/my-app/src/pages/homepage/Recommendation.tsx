@@ -36,10 +36,10 @@ export function Recommendation() {
                                     alt="Card image"
                                 />
                                 <Card.ImgOverlay className="info_container">
-                                    <Card.Title>原創設計</Card.Title>
-                                    <Card.Text>拍賣主自家設計產品</Card.Text>
+                                    <Card.Title>居家、家具與園藝</Card.Title>
+                                    <Card.Text>拍賣獨特家居產品</Card.Text>
                                     <Link
-                                        to={`/categoryResult?category=原創設計`}
+                                        to={`/categoryResult?category=居家、家具與園藝`}
                                     >
                                         <Card.Text className="view_more">
                                             查看更多
