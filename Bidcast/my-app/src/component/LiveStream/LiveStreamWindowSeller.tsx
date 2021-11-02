@@ -168,14 +168,13 @@ function LiveStreamWindow(props: LiveStreamWindowProps) {
                     onCopy={onCopy}
                     text={`${process.env.REACT_APP_FRONTEND_URL}/liveStreaming?room=${result.data?.room}`}
                 >
-                    <span className="buyer_link">
-                        &nbsp;
-                        {`按右邊圖示複製觀眾直播連結 `}
+                    <div className="buyer_link">
+                        按右邊圖示複製觀眾直播連結{" "}
                         <i className="fas fa-arrow-right"></i>{" "}
                         <span className="clipboard">
                             <FaClipboard />
                         </span>
-                    </span>
+                    </div>
                 </CopyToClipboard>
                 {client != null && isAuthenticate && username === seller && (
                     <ButtonGroup className="w-100">

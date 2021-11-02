@@ -205,7 +205,7 @@ export function ComingAuction(props: ComingAuctionProps) {
                                     {auction.title}
                                 </Card.Title>
                                 <Card.Text>
-                                    <div
+                                    <span
                                         key={auction.id}
                                         onClick={() => {
                                             profilePreview(auction.id);
@@ -215,13 +215,13 @@ export function ComingAuction(props: ComingAuctionProps) {
                                         // }
                                         className={"seller_name"}
                                     >
-                                        由
+                                        <span>由</span>
                                         <span className={"card_username"}>
                                             &nbsp;{auction.username}
                                             &nbsp;
                                         </span>
                                         主辦
-                                    </div>
+                                    </span>
                                 </Card.Text>
                                 {modalShowProf === auction.user_id && (
                                     <ProfileDetails
