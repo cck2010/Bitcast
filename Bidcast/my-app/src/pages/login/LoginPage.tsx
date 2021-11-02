@@ -143,11 +143,13 @@ export function LoginPage() {
 
 
                   <GoogleLogin
+
                     clientId={process.env.REACT_APP_GOOGLE_APP_ID || ''}
                     buttonText="Login with Google"
                     onSuccess={responseGoogle}
                     onFailure={responseGoogle}
                     cookiePolicy={'single_host_origin'}
+
                   />
 
                   {error}

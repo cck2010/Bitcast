@@ -319,3 +319,41 @@ export function fetchUserCardInfo(
         }
     };
 }
+export function fetchUserProfileCardInfo(
+    idArr: number[],
+    type: string,
+) {
+    return async (dispatch: RootThunkDispatch, getState: () => RootState) => {
+        const token = localStorage.getItem("token");
+
+        if (token == null) {
+            console.log("no token");
+            return;
+        }
+
+        try {
+            let idString = idArr.join(",");
+            const res = await axios.get<{
+                result: UserCardInfo[];
+                success: boolean;
+            }>(
+                `${process.env.REACT_APP_BACKEND_URL}/userCardInfo?idString=${idString}`,
+                {
+                    headers: {
+                        Authorization: "Bearer " + token,
+                    },
+                }
+            );
+
+            if (res.data.success) {
+                if (type === "following") {
+                    dispatch(loadFollowingDetails(res.data.result));
+                } else if (type === "follower") {
+                    dispatch(loadFollowerDetails(res.data.result));
+                }
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
+}

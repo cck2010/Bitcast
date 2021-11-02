@@ -26,7 +26,6 @@ import { push } from "connected-react-router";
 //         slidesToSlide: 1, // optional, default to 1.
 //     },
 // };
-
 export function ProfileDetails(props: any) {
     // const products = useSelector((state: RootState) =>
     //     Object.values(state.comingAuction.productDetails)
@@ -39,6 +38,7 @@ export function ProfileDetails(props: any) {
             return state.authState.user?.id;
         }
     });
+
     const sellerFollowers = useSelector((state: RootState) => {
         if (
             typeof state.authState.user !== "string" &&
@@ -48,20 +48,18 @@ export function ProfileDetails(props: any) {
         }
     });
 
-    const dispatch = useDispatch();
-    //get subscript
-    // dispatch(fetchSubscribe(true);
+    const followingDetails = useSelector(
+        (state: RootState) => state.following.userDetails
+    );
 
-    //post subscript
-    // dispatch(fetchSubscribe(false, userId));
+    const dispatch = useDispatch();
 
     const { broadcasts } = props;
     const [broadcastArr, setBroadcastArr] = useState([]);
 
-    // const [proId, setProId] = useState("");
-
     useEffect(() => {
         dispatch(fetchSellerSubscribe(broadcasts.user_id));
+        // dispatch(fetchUserProfileCardInfo([broadcasts.user_id], "following"));
         dispatch(fetchProductDetails());
     }, [dispatch]);
 
@@ -122,8 +120,8 @@ export function ProfileDetails(props: any) {
                                 <Col xs={12} md={8}></Col>
                                 <div className={"profile_card_description"}>
                                     「&nbsp;
-                                    {(broadcastArr[0] as any).description
-                                        ? (broadcastArr[0] as any).description
+                                    {followingDetails[0].description
+                                        ? followingDetails[0].description
                                         : "此人尚未撰寫個人介紹"}
                                     &nbsp;」
                                 </div>

@@ -11,7 +11,10 @@ import { RootState } from "../../store";
 import { useEffect, useState } from "react";
 import { fetchBroadcastingProducts } from "../../redux/broadcastingProducts/actions";
 import { ProfileDetails } from "./ProfileDetails";
-import { fetchSellerSubscribe } from "../../redux/user/actions";
+import {
+    fetchSellerSubscribe,
+    fetchUserProfileCardInfo,
+} from "../../redux/user/actions";
 
 const responsive = {
     desktop: {
@@ -47,6 +50,12 @@ export function Broadcasting() {
                 // console.log("broadcasting", broadcasting);
                 // console.log("broadcasting", broadcasting.username);
                 // console.log("broadcasting", broadcasting.seller_id);
+                await dispatch(
+                    fetchUserProfileCardInfo(
+                        [broadcasting.seller_id],
+                        "following"
+                    )
+                );
                 dispatch(fetchSellerSubscribe(broadcasting.seller_id));
                 setModalShow(broadcasting.seller_id);
             }
@@ -156,6 +165,54 @@ export function Broadcasting() {
                                             );
                                         }}
                                     >
+                                        {/* {broadcasting.title}
+                                    </Card.Title>
+                                    <Card.Text>
+                                        目前價格:{" "}
+                                        <span className="biding_price">
+                                            HKD {broadcasting.current_price}
+                                        </span>
+                                    </Card.Text>
+                                    <Card.Text>
+                                        <span
+                                            key={broadcasting.id}
+                                            onClick={() => {
+                                                profilePreview(broadcasting.id);
+                                            }}
+                                            // onClick={() =>
+                                            //     setModalShow(broadcasting.id)
+                                            // }
+                                            className={"seller_name"}
+                                        >
+                                            <span>由</span>
+                                            <span className={"card_username"}>
+                                                &nbsp;{broadcasting.username}
+                                                &nbsp;
+                                            </span>
+                                            主辦
+                                        </span>
+                                    </Card.Text>
+                                    {modalShow === broadcasting.id && (
+                                        <ProfileDetails
+                                            show={broadcasting.id}
+                                            broadcasts={broadcasting}
+                                            id={broadcasting.id}
+                                            onHide={() => setModalShow(-1)}
+                                        />
+                                    )}
+
+                                    <div className="bid_share_container w-75 justify-content-around">
+                                        <Button
+                                            variant="outline-dark"
+                                            className="bid_button"
+                                            onClick={() => {
+                                                dispatch(
+                                                    push(
+                                                        `/liveStreaming?room=${broadcasting.buyer_link}`
+                                                    )
+                                                );
+                                            }}
+                                        > */}
                                         觀看直播
                                     </Button>
 
