@@ -182,7 +182,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
 
                             <Link
                                 to="/"
-                                className="nav_link"
+                                className="nav_link highlight_hover"
                                 onClick={navbarOnClickHandler}
                             >
                                 主頁
@@ -197,7 +197,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                 >
                                     <Link
                                         to="#"
-                                        className="nav_link"
+                                        className="nav_link highlight_hover"
                                         onClick={navbarOnClickHandler}
                                     >
                                         舉辦拍賣
@@ -211,7 +211,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                             ? "/profilePage/accountDetails"
                                             : "/createBids"
                                     }
-                                    className="nav_link"
+                                    className="nav_link highlight_hover"
                                     onClick={navbarOnClickHandler}
                                 >
                                     舉辦拍賣
@@ -221,7 +221,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
                             <NavDropdown
                                 title="商品分類"
                                 id="collasible-nav-dropdown"
-                                className="dropdown"
+                                className="dropdown highlight_hover"
                                 // show={show}
                                 // onMouseEnter={showDropdown}
                                 // onMouseLeave={hideDropdown}
@@ -243,7 +243,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
                             {!isAuthenticate ? (
                                 <Link
                                     to="/loginPage"
-                                    className="nav_link"
+                                    className="nav_link highlight_hover"
                                     onClick={navbarOnClickHandler}
                                 >
                                     登入 ／ 註冊
@@ -257,7 +257,7 @@ export const HomePageNavbar = (props: NavbarProps) => {
                                         dispatch(push("/"));
                                         navbarOnClickHandler();
                                     }}
-                                    className="nav_link"
+                                    className="nav_link highlight_hover"
                                 >
                                     登出
                                 </Link>
