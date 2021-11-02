@@ -148,7 +148,7 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                                             1000
                                     )
                                 );
-                            }, 16)
+                            }, 33)
                         );
                     }
                     break;

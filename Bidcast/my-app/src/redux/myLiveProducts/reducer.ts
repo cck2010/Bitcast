@@ -28,6 +28,9 @@ export function myLiveReducer(
             case "@@myLive/LOAD_MY_LIVE_PRODUCTS":
                 newState.myLiveProducts = action.myLiveProducts;
                 break;
+            case "@@myLive/LOAD_SOLD_PRODUCTS":
+                newState.myLiveProducts = action.myLiveProducts;
+                break;
             case "@@myLive/LOAD_LIVE_STATUS":
                 newState.liveId = action.liveId;
                 for (let ind in newState.myLive) {
