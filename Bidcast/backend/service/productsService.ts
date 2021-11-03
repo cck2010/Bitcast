@@ -342,4 +342,22 @@ export class ProductsService {
             buyerTelegramChatId: buyerTelegramInfo.telegram_chat_id,
         };
     };
+
+    findFollowersTelegram = async (userId: number) => {
+        const telegram = await this.knex("follow_details as f")
+            .leftJoin("users as u", "u.id", "f.follower_id")
+            .select(
+                "u.telegram_acct as telegramAcct",
+                "u.telegram_chat_id as telegramChatId",
+                "u.telegram_is_verified as telegramIsVerified"
+            )
+            .where("f.following_id", userId);
+        const username = (
+            await this.knex("users").select("username").where("id", userId)
+        )[0].username;
+        return {
+            username,
+            telegram,
+        };
+    };
 }
