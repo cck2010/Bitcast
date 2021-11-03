@@ -9,5 +9,4 @@ myLiveRoutes.get("/profilePage/myLive", (req, res) => myLiveController.getMyLive
 myLiveRoutes.get("/profilePage/mySoldHistory", (req, res) => myLiveController.getMySellHistory(req, res))
 myLiveRoutes.get("/profilePage/myLiveProducts", (req, res) => myLiveController.getMyLiveProducts(req, res))
 myLiveRoutes.put("/profilePage/liveIsEnded", (req, res) => myLiveController.changeLiveStatus(req, res))
-myLiveRoutes.put("/profilePage/liveIsEnded", (req, res) => myLiveController.changeLiveStatus(req, res))
 myLiveRoutes.put("/profilePage/openMyLive", (req, res) => myLiveController.openMyLive(req, res))

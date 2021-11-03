@@ -159,7 +159,7 @@ export function CategoriesFilter() {
                                 <h6>
                                     拍賣日期：
                                     {moment(filterProduct.starting_time).format(
-                                        "YYYY-MM-DD hh:mm:ss"
+                                        "YYYY-MM-DD hh:mm:ss a"
                                     )}
                                 </h6>
                                 <h6>拍賣主： {filterProduct.username}</h6>
