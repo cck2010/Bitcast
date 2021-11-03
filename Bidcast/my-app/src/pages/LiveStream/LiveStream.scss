@@ -396,3 +396,37 @@ $smallFontSize: 0.5em;
         }
     }
 }
+
+.buyerLink_QRcode {
+    margin: 1.8rem;
+    width: 90%;
+    padding: 25px 10px 25px 10px;
+    background-color: rgba($color: #b9b9b9, $alpha: 0.2);
+    border: transparent;
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    div {
+        font-size: 12px;
+        width: 50%;
+        margin-left: 30px;
+    }
+    span {
+        font-size: 15px;
+        font-weight: 700;
+    }
+    ul {
+        margin-top: 10px;
+    }
+    @media screen and (max-width: 410px) {
+        div {
+            display: none;
+        }
+    }
+    .QRcode_pic {
+        cursor: pointer;
+    }
+}
