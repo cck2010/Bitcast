@@ -69,7 +69,9 @@ export function Broadcasting() {
             <Container>
                 <h4 className="Incoming_auction">直播中</h4>
                 <SvgBorder />
-                {broadcastings.length === 0 && <div>暫時沒有直播</div>}
+                {broadcastings.length === 0 && (
+                    <div className="text-center my-3">暫時沒有直播</div>
+                )}
                 <Carousel
                     additionalTransfrom={0}
                     arrows={false}
