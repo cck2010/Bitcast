@@ -20,6 +20,8 @@ import { RootState } from "../../store";
 import io, { Socket } from "socket.io-client";
 import LiveStreamBiddingInfo from "../../component/LiveStream/LiveStreamBiddingInfo";
 import Four0Four from "../four0Four/four0Four";
+import QRCode from "qrcode.react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 interface LiveStreamProps {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,6 +31,9 @@ function LiveStream(props: LiveStreamProps) {
     //Get States
     const dispatch = useDispatch();
     const liveStreamRef = useRef<HTMLDivElement>(null);
+    let roomForQRcode = new URLSearchParams(window.location.search).get("room");
+    roomForQRcode = roomForQRcode != null ? roomForQRcode : "";
+
     useEffect(() => {
         let room = new URLSearchParams(window.location.search).get("room");
         room = room != null ? room : "";
@@ -139,6 +144,11 @@ function LiveStream(props: LiveStreamProps) {
     }, [dispatch]);
     //Add event listener
 
+    const [copyState, setCopyState] = useState(false);
+    const onCopy = () => {
+        setCopyState(true);
+    };
+
     return (
         <>
             {liveId === -1 ? (
@@ -152,7 +162,11 @@ function LiveStream(props: LiveStreamProps) {
                                 <>
                                     <div className="row mt-3 rounded">
                                         <div className={`col-12`}>
-                                            <LiveStreamBiddingInfo ws={ws} />
+                                            <div>
+                                                <LiveStreamBiddingInfo
+                                                    ws={ws}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                     <LiveStreamControlPanel
@@ -220,6 +234,24 @@ function LiveStream(props: LiveStreamProps) {
                                     )}
                                 </>
                             )}
+                            <div className={"buyerLink_QRcode"}>
+                                <CopyToClipboard
+                                    onCopy={onCopy}
+                                    text={`${process.env.REACT_APP_FRONTEND_URL}/liveStreaming?room=${roomForQRcode}`}
+                                >
+                                    <QRCode
+                                        value={`${process.env.REACT_APP_FRONTEND_URL}/liveStreaming?room=${roomForQRcode}`}
+                                        className={"QRcode_pic"}
+                                    />
+                                </CopyToClipboard>
+                                <div>
+                                    <span>此拍賣頁連結QR code</span>
+                                    <ul>
+                                        <li>手機掃描QR code即可打開</li>
+                                        <li>點擊圖案，複制連結並分享</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                         {isTablet && (
                             <div className="col-4">

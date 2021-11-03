@@ -20,6 +20,9 @@ import { RootState } from "../../store";
 import io, { Socket } from "socket.io-client";
 import LiveStreamBiddingInfoSeller from "../../component/LiveStream/LiveStreamBiddingInfoSeller";
 import Four0Four from "../four0Four/four0Four";
+import useFetch from "react-fetch-hook";
+import QRCode from "qrcode.react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 interface LiveStreamProps {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,6 +32,14 @@ function LiveStream(props: LiveStreamProps) {
     //Get States
     const dispatch = useDispatch();
     const liveStreamRef = useRef<HTMLDivElement>(null);
+    //QR code data
+    const token: string | null = new URLSearchParams(
+        window.location.search
+    ).get("token");
+    const result = useFetch<{ room: string }>(
+        `${process.env.REACT_APP_BACKEND_URL}/room?token=${token}`
+    );
+    // result.data?.room
 
     useEffect(() => {
         let room = new URLSearchParams(window.location.search).get("room");
@@ -133,6 +144,10 @@ function LiveStream(props: LiveStreamProps) {
         };
     }, [dispatch]);
     //Add event listener
+    const [copyState, setCopyState] = useState(false);
+    const onCopy = () => {
+        setCopyState(true);
+    };
 
     return (
         <>
@@ -215,6 +230,24 @@ function LiveStream(props: LiveStreamProps) {
                                     )}
                                 </>
                             )}
+                            <div className={"buyerLink_QRcode"}>
+                                <CopyToClipboard
+                                    onCopy={onCopy}
+                                    text={`${process.env.REACT_APP_FRONTEND_URL}/liveStreaming?room=${result.data?.room}`}
+                                >
+                                    <QRCode
+                                        value={`${process.env.REACT_APP_FRONTEND_URL}/liveStreaming?room=${result.data?.room}`}
+                                        className={"QRcode_pic"}
+                                    />
+                                </CopyToClipboard>
+                                <div>
+                                    <span>此拍賣頁連結QR code</span>
+                                    <ul>
+                                        <li>手機掃描QR code即可打開</li>
+                                        <li>點擊圖案，複制連結並分享</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                         {isTablet && (
                             <div className="col-4">
