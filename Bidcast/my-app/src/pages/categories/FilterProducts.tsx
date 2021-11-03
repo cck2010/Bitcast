@@ -133,7 +133,7 @@ export function FilterProducts() {
                                 <h6>
                                     拍賣日期：
                                     {moment(product.starting_time).format(
-                                        "YYYY-MM-DD hh:mm:ss s"
+                                        "YYYY-MM-DD hh:mm:ss a"
                                     )}
                                 </h6>
                                 <h6>拍賣主： {product.username}</h6>

@@ -301,11 +301,13 @@ export function AccountDetails() {
                             </div>
                             {
                                 <div className={"bidcast_bot_Info_container"}>
-                                    <img
-                                        className={"bidcast_bot_QR"}
-                                        src={bidcastQRcode}
-                                        alt="bidcastQRcode"
-                                    ></img>
+                                    <a href="https://t.me/Bidcast_bot">
+                                        <img
+                                            className={"bidcast_bot_QR"}
+                                            src={bidcastQRcode}
+                                            alt="bidcastQRcode"
+                                        ></img>
+                                    </a>
                                     <div className={"bot_info"}>
                                         <div>
                                             Telegram帳戶認証機器人：「 Bidcast

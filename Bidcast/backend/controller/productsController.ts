@@ -30,10 +30,8 @@ export class ProductsController {
             // const startDateFormat = new Date(ms + 28800000);
             const startDateFormat = new Date(ms);
 
-           
             let sellerLink = await v4();
             let buyerLink = await v4();
-    
 
             const result = await this.productsService.submitBidLiveInfo(
                 liveTitle,
@@ -44,6 +42,24 @@ export class ProductsController {
                 sellerLink,
                 buyerLink
             );
+
+            const { username, telegram } =
+                await this.productsService.findFollowersTelegram(
+                    parseInt(userId)
+                );
+            if (telegram.length !== 0 && result.data.res) {
+                for (let tg of telegram) {
+                    if (tg.telegramIsVerified) {
+                        await axios.post(
+                            `https://api.telegram.org/bot${env.TOKEN}/sendMessage`,
+                            {
+                                chat_id: tg.telegramChatId,
+                                text: `您關注中的用戶@${username}已預約新的拍賣直播, 請勿錯過!!\n${env.FRONTEND_URL}/${result.data.res[0].buyer_link}`,
+                            }
+                        );
+                    }
+                }
+            }
 
             // console.log("submitted live result (controller side)", result);
             res.json(result);
