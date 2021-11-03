@@ -75,8 +75,8 @@ export function Broadcasting() {
                 <Carousel
                     additionalTransfrom={0}
                     arrows={false}
-                    autoPlay={false}
-                    // autoPlaySpeed={5000}
+                    autoPlay
+                    autoPlaySpeed={5000}
                     centerMode={false}
                     className=""
                     containerClass="container-with-dots"
