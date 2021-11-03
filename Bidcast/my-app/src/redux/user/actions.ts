@@ -160,7 +160,6 @@ export function checkCurrentUser() {
         const token = localStorage.getItem("token");
 
         if (token == null) {
-            console.log("no token");
             return;
         }
 
@@ -175,7 +174,7 @@ export function checkCurrentUser() {
             );
             // console.log("fetched")
             const newToken: any = res.data;
-            
+
             localStorage.setItem("token", newToken);
             dispatch(login(newToken));
             dispatch(loadToken(newToken));
