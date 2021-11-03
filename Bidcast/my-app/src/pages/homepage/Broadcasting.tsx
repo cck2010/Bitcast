@@ -69,11 +69,14 @@ export function Broadcasting() {
             <Container>
                 <h4 className="Incoming_auction">直播中</h4>
                 <SvgBorder />
+                {broadcastings.length === 0 && (
+                    <div className="text-center my-3">暫時沒有直播</div>
+                )}
                 <Carousel
                     additionalTransfrom={0}
                     arrows={false}
-                    autoPlay={false}
-                    // autoPlaySpeed={5000}
+                    autoPlay
+                    autoPlaySpeed={5000}
                     centerMode={false}
                     className=""
                     containerClass="container-with-dots"
@@ -222,9 +225,6 @@ export function Broadcasting() {
                                             url: `${process.env.REACT_APP_FRONTEND_URL}/liveStreaming?room=${broadcasting.buyer_link}`,
                                             title: "Look at this amazing live",
                                         }}
-                                        onClick={() =>
-                                            console.log("shared successfully!")
-                                        }
                                     >
                                         <FontAwesomeIcon
                                             className="share_icon"

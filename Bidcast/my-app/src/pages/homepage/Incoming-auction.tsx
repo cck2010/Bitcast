@@ -96,9 +96,9 @@ export function ComingAuction(props: ComingAuctionProps) {
                 <SvgBorder />
                 <Carousel
                     additionalTransfrom={0}
-                    autoPlay={false}
+                    autoPlay
                     arrows={false}
-                    // autoPlaySpeed={5000}
+                    autoPlaySpeed={5000}
                     centerMode={false}
                     className=""
                     containerClass="container-with-dots"

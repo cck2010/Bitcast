@@ -30,7 +30,7 @@ export function AccountDetails() {
     const token = localStorage.getItem("token");
     const user = useSelector((state: RootState) => state.authState.user);
     const userInfo = JSON.parse(JSON.stringify(user));
-    console.log("userInfo", userInfo);
+
     let userImg = userInfo.profile_pic;
     const isAuthenticate = useSelector(
         (state: RootState) => state.user.isAuthenticate
@@ -189,7 +189,7 @@ export function AccountDetails() {
                     id="toast"
                 />
             ) : (
-                console.log("not11111111")
+                <div> </div>
             )}
             <Row className={"details_container"}>
                 <Col className={"Detail_col_Right "} xs={12} md={4}>

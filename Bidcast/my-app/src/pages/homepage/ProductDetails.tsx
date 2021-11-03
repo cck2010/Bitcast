@@ -162,7 +162,7 @@ export function ProductDetails(props: any) {
                                                         (liveArr[0] as any)
                                                             .starting_time
                                                     ).format(
-                                                        "YYYY-MM-DD hh:mm:ss"
+                                                        "YYYY-MM-DD hh:mm:ss a"
                                                     )}
                                                 </span>
                                             </div>

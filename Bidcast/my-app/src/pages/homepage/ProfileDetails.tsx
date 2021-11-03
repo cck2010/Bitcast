@@ -70,7 +70,6 @@ export function ProfileDetails(props: any) {
     }, []);
 
     if (!broadcasts) {
-        console.log("no user");
         return <div></div>;
     }
 
