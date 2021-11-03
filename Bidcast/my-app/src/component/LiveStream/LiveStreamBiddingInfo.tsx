@@ -195,8 +195,6 @@ function LiveStreamBiddingInfo(props: LiveStreamBiddingInfoProps) {
                 }
             );
             props.ws.on("updateCurrentPriceFail", (code: number) => {
-                console.log(code);
-
                 if (code === 0) {
                     addToast(<ErrorCannotSelfBid />);
                 } else if (code === -10) {

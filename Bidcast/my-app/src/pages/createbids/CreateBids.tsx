@@ -106,7 +106,6 @@ export function CreateBids() {
         let confirm: boolean = false;
         // console.log("pro", checkProductsList);
 
-        console.log("before check productImgConfirm>>>", productImgConfirm);
         if (checkProductsList.length > 0) {
             for (let product of checkProductsList) {
                 if (
@@ -114,20 +113,15 @@ export function CreateBids() {
                     // product.productImage != null ||
                     // product.productImage != undefined
                 ) {
-                    console.log("pass");
-                    console.log("product.productImage", product.productImage);
                     // setProductImgConfirm(true);
                     confirm = true;
                 } else {
-                    console.log("not pass");
-                    console.log("product.productImage", product.productImage);
                     // setProductImgConfirm(false);
                     //Alert
                 }
             }
             if (confirm) {
                 const live = data.liveInput;
-                console.log("live", live);
 
                 // ** live Inputs FormData Field **
                 // ** live Inputs FormData Field **
@@ -137,11 +131,8 @@ export function CreateBids() {
                 liveFormData.append("liveTitle", data.liveInput.liveTitle);
 
                 if (selectedImage != undefined) {
-                    console.log("dataImage", data.liveInput.liveImage[0]);
-                    console.log("selectedImage", selectedImage);
                     liveFormData.append("liveImage", selectedImage);
                 } else {
-                    console.log("live image undefined");
                 }
 
                 if (data.liveInput.description) {
@@ -173,7 +164,6 @@ export function CreateBids() {
                     );
                     const liveJson = await liveRes.json();
                     // console.log("liveJson.data.res", liveJson.data.res[0]);
-                    console.log("liveJson.data.res", liveJson.data.res);
                     liveId = liveJson.data.res[0].id;
                 } else {
                     liveId = null;
@@ -232,18 +222,14 @@ export function CreateBids() {
                             }
                         );
                         const proJson = await proRes.json();
-                        console.log("proJson.data.res", proJson.data.res);
                     }
 
                     // dispatch to reducer
                     dispatch(push("/"));
                 } else {
-                    console.log(
-                        "***** Product upload fail due to live submit failure *****"
-                    );
                 }
             } else {
-                if (alert.length == 0) {
+                if (alert.length === 0) {
                     setAlert(alert.concat(<AlertRequireProductsImageAppend />));
                 } else {
                     // setAlert([]);
@@ -251,7 +237,7 @@ export function CreateBids() {
                 }
             }
         } else {
-            if (alert.length == 0) {
+            if (alert.length === 0) {
                 setAlert(alert.concat(<AlertRequireProductsListAppend />));
             } else {
                 setAlert([<AlertRequireProductsListAppend />]);
@@ -331,7 +317,6 @@ export function CreateBids() {
                         path.extname(watchProduct.productImage[0].name) ===
                             ".png"
                     ) {
-                        console.log("Image type accept");
                     } else {
                         // console.log(
                         //     "watchProduct.productImage[0].name",
@@ -389,6 +374,7 @@ export function CreateBids() {
                             <img
                                 className={"resize_upload_photo photo_shown"}
                                 src={URL.createObjectURL(selectedImage as any)}
+                                alt=""
                             />
                             <div className={"file_Info_container"}>
                                 {/* <div>{selectedImage.name as any}</div> */}
@@ -509,6 +495,7 @@ export function CreateBids() {
                                                 src={URL.createObjectURL(
                                                     productsPicture[0] as any
                                                 )}
+                                                alt=""
                                             />
                                             <div
                                                 className={

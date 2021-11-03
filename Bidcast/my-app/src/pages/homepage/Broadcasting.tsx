@@ -225,9 +225,6 @@ export function Broadcasting() {
                                             url: `${process.env.REACT_APP_FRONTEND_URL}/liveStreaming?room=${broadcasting.buyer_link}`,
                                             title: "Look at this amazing live",
                                         }}
-                                        onClick={() =>
-                                            console.log("shared successfully!")
-                                        }
                                     >
                                         <FontAwesomeIcon
                                             className="share_icon"
