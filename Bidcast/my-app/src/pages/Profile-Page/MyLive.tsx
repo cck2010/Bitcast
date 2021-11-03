@@ -66,7 +66,9 @@ export function MyLive() {
                                             <Card.Text>
                                                 {moment(
                                                     live.starting_time
-                                                ).format("YYYY-MM-DD hh:mm:ss")}
+                                                ).format(
+                                                    "YYYY-MM-DD hh:mm:ss a"
+                                                )}
                                             </Card.Text>
 
                                             {live.is_ended ? (
