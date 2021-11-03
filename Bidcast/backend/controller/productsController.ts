@@ -54,7 +54,7 @@ export class ProductsController {
                             `https://api.telegram.org/bot${env.TOKEN}/sendMessage`,
                             {
                                 chat_id: tg.telegramChatId,
-                                text: `您關注中的用戶@${username}已預約新的拍賣直播, 請勿錯過!!\n${env.FRONTEND_URL}/${result.data.res[0].buyer_link}`,
+                                text: `您關注中的用戶@${username}已預約於${result.data.res[0].starting_time}舉行新的拍賣直播, 請勿錯過!!\n${env.FRONTEND_URL}/liveStreaming?room=${result.data.res[0].buyer_link}`,
                             }
                         );
                     }
