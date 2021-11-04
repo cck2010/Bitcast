@@ -144,6 +144,7 @@ function LiveStream(props: LiveStreamProps) {
     }, [dispatch]);
     //Add event listener
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [copyState, setCopyState] = useState(false);
     const onCopy = () => {
         setCopyState(true);

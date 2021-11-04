@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useMediaQuery } from "react-responsive";
 import { fetchSellerSubscribe, fetchSubscribe } from "../../redux/user/actions";
 import { RootState } from "../../store";
 
@@ -17,6 +18,12 @@ function SubscribeButton(props: SubscriptionBtnProps) {
         (state: RootState) => state.following.userId
     );
     //Get States
+
+    //React-responsive
+    const isTablet = useMediaQuery({
+        query: "(min-width: 768px)",
+    });
+    //React-responsive
 
     //Check Subscription
     useEffect(() => {
@@ -59,7 +66,7 @@ function SubscribeButton(props: SubscriptionBtnProps) {
                     <button
                         className={`subscribe_btn btn ${
                             isSubscribed ? "btn-secondary" : "btn-danger"
-                        }`}
+                        } ${isTablet ? "" : "small_font px-2"}`}
                         // onClick={() => {
                         //     dispatch(fetchSubscribe(false, props.targetId));
                         // }}

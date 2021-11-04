@@ -41,6 +41,9 @@ $smallFontSize: 0.5em;
     .subscribe_btn:focus {
         box-shadow: none;
     }
+    .small_font {
+        font-size: $smallFontSize;
+    }
 }
 .LiveStreamControlPanel {
     .panel_bar {

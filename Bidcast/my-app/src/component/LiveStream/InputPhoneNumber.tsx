@@ -7,7 +7,7 @@ function InputPhoneNumber() {
             <div className="message">請先設定電話號碼及其他資料再進行拍賣</div>
             <div className="w-25 d-flex flex-row justify-content-around">
                 <Link to="/profilePage/accountDetails">
-                    <button className="btn btn-primary">設定資料</button>
+                    <button className="btn btn-primary">設定</button>
                 </Link>
             </div>
         </div>
