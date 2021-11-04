@@ -72,7 +72,7 @@ export function MyLive() {
                                             </Card.Text>
 
                                             {live.is_ended ? (
-                                                <div>
+                                                <div className="w-100">
                                                     <Card.Text>
                                                         觀看人數：{" "}
                                                         {live.max_viewers}
