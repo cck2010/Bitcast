@@ -103,7 +103,7 @@ export function FilterProducts() {
                 {products &&
                     products.map((product) => (
                         <div
-                            className="category_items_container"
+                            className="category_items_container pe-3"
                             key={product.id}
                         >
                             <Col
