@@ -39,25 +39,30 @@ export function Broadcasting() {
     const broadcastings = useSelector((state: RootState) =>
         Object.values(state.broadcastingProducts.broadcastingProduct)
     );
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
         dispatch(fetchBroadcastingProducts());
     }, [dispatch]);
 
     async function profilePreview(info: any) {
-        for (let broadcasting of broadcastings) {
-            if (broadcasting.id === info) {
-                // console.log("broadcasting", broadcasting);
-                // console.log("broadcasting", broadcasting.username);
-                // console.log("broadcasting", broadcasting.seller_id);
-                await dispatch(
-                    fetchUserProfileCardInfo(
-                        [broadcasting.seller_id],
-                        "following"
-                    )
-                );
-                dispatch(fetchSellerSubscribe(broadcasting.seller_id));
-                setModalShow(broadcasting.seller_id);
+        if (token == null) {
+            return;
+        } else {
+            for (let broadcasting of broadcastings) {
+                if (broadcasting.id === info) {
+                    // console.log("broadcasting", broadcasting);
+                    // console.log("broadcasting", broadcasting.username);
+                    // console.log("broadcasting", broadcasting.seller_id);
+                    await dispatch(
+                        fetchUserProfileCardInfo(
+                            [broadcasting.seller_id],
+                            "following"
+                        )
+                    );
+                    dispatch(fetchSellerSubscribe(broadcasting.seller_id));
+                    setModalShow(broadcasting.seller_id);
+                }
             }
         }
     }

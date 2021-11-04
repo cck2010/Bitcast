@@ -43,6 +43,7 @@ export function ComingAuction(props: ComingAuctionProps) {
     const auctions = useSelector((state: RootState) =>
         Object.values(state.comingAuction.comingAuctions)
     );
+    const token = localStorage.getItem("token");
 
     const dispatch = useDispatch();
 
@@ -61,16 +62,20 @@ export function ComingAuction(props: ComingAuctionProps) {
 
     async function profilePreview(info: any) {
         // console.log("click");
-        for (let auction of auctions) {
-            if (auction.id === info) {
-                // console.log("auction", auction);
-                // console.log("auction", auction.username);
-                // console.log("auction", auction.user_id);
-                await dispatch(
-                    fetchUserProfileCardInfo([auction.user_id], "following")
-                );
-                dispatch(fetchSellerSubscribe(auction.user_id));
-                setModalShowProf(auction.user_id);
+        if (token == null) {
+            return;
+        } else {
+            for (let auction of auctions) {
+                if (auction.id === info) {
+                    // console.log("auction", auction);
+                    // console.log("auction", auction.username);
+                    // console.log("auction", auction.user_id);
+                    await dispatch(
+                        fetchUserProfileCardInfo([auction.user_id], "following")
+                    );
+                    dispatch(fetchSellerSubscribe(auction.user_id));
+                    setModalShowProf(auction.user_id);
+                }
             }
         }
     }
